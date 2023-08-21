@@ -1,0 +1,12 @@
+---
+import { getCollection } from "astro:content";
+import Lightbox from "../components/Lightbox.astro";
+
+const events = await getCollection("events");
+events.sort((b, a) => Date.parse(a.data.date) - Date.parse(b.data.date));
+const images = [...new Set(events.map((event) => event.data.images).flat())];
+---
+
+<section class="min-h-screen flex items-center w-[90%] mx-auto">
+  <Lightbox images={images} />
+</section>

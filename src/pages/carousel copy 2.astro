@@ -1,0 +1,33 @@
+---
+import { getCollection } from "astro:content";
+
+const events = await getCollection("events");
+events.sort((b, a) => Date.parse(a.data.date) - Date.parse(b.data.date));
+const eventImages = [...new Set(events.map((event) => event.data.test).flat())];
+---
+
+<div x-data={`{ eventImages: ${JSON.stringify(eventImages)}}`}>
+  <template x-for="image in eventImages">
+    <p x-text="image.src"></p>
+  </template>
+  <section>
+    <script is:inline>
+      function carousel() {
+        return {
+          images: [eventImages],
+        };
+      }
+    </script>
+    <div
+      x-data="carousel()"
+      x-on:mount="carousel()"
+      class="flex gap-1 mt-1 items-center"
+    >
+      <template x-for="image in images">
+        <div>
+          <img :src="image.src" alt="image.alt" width="auto" height="auto" />
+        </div>
+      </template>
+    </div>
+  </section>
+</div>

@@ -1,0 +1,142 @@
+---
+import { Image } from "astro:assets";
+import { Icon } from "astro-icon";
+
+export interface Props {
+  images: Array<object>;
+}
+
+const { images } = Astro.props as Props;
+---
+
+<!-- Lightbox -->
+<div
+  class="lightbox invisible fixed top-0 left-0 z-50 w-full h-full bg-opacity-90 backdrop-blur-xl cursor-default p-6"
+>
+  <div class="h-full overflow-hidden">
+    <ul class="carousel relative h-full p-0 m-0 list-none transition">
+      {
+        images.map((image: any) => (
+          <li
+            class={`${image.data} absolute top-[50%] -translate-y-[50%] w-full h-screen flex items-center`}
+          >
+            <Image
+              src={image.src}
+              alt="alt"
+              class="mx-auto rounded-md h-[90%] w-full object-cover"
+            />
+          </li>
+        ))
+      }
+    </ul>
+  </div>
+  <!-- Nav -->
+  <Icon
+    name="ion:md-arrow-dropleft-circle"
+    class="carouselButton left is-hidden"
+  />
+  <Icon name="ion:close-circled" class="carouselButton close" />
+  <Icon name="ion:md-arrow-dropright-circle" class="carouselButton right" />
+</div>
+<!-- Gallery -->
+<ul class="imageGrid grid grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-3">
+  {
+    images.map((image: any) => (
+      <li class="cursor-pointer">
+        <Image
+          src={image.src}
+          alt="alt"
+          class="rounded-md object-none h-full"
+        />
+      </li>
+    ))
+  }
+</ul>
+
+<style>
+  .carouselButton {
+    @apply absolute top-[50%] -translate-y-[50%] text-primary rounded-full text-4xl z-50 h-12 w-12 cursor-pointer;
+  }
+  .close {
+    @apply top-[40px] right-[50%] translate-x-[50%];
+  }
+  .left {
+    @apply left-[30px];
+  }
+  .right {
+    @apply right-[30px];
+  }
+  .is-hidden {
+    @apply hidden;
+  }
+</style>
+
+<script is:inline>
+const lightbox = document.querySelector(".lightbox");
+const close = document.querySelector(".close");
+const carousel = document.querySelector(".carousel");
+const slides = Array.from(carousel.children);
+const nextButton = document.querySelector(".right");
+const prevButton = document.querySelector(".left");
+const imageGrid = document.querySelector(".imageGrid");
+const imageGridImage = Array.from(imageGrid.children);
+const slideWidth = slides[0].getBoundingClientRect().width;
+// imageGrid
+imageGrid.addEventListener("click", (e) => {
+  lightbox.classList.remove("invisible");
+  const targetImage = e.target.closest("li");
+  if (!targetImage) return;
+  const active = carousel.querySelector(".active");
+  const targetIndex = imageGridImage.findIndex(
+    (image) => image === targetImage
+  );
+  const targetSlide = slides[targetIndex];
+  moveToSlide(carousel, active, targetSlide);
+  arrowVis(slides, prevButton, nextButton, targetIndex);
+});
+// carousel
+// arrange
+const setSlidePosition = (slide, index) => {
+  slide.style.left = slideWidth * index + "px";
+};
+slides.forEach(setSlidePosition);
+// move
+const moveToSlide = (carousel, active, targetSlide) => {
+  carousel.style.transform = "translateX(-" + targetSlide.style.left + ")";
+  active.classList.remove("active");
+  targetSlide.classList.add("active");
+};
+// arrow visability
+const arrowVis = (slides, prevButton, nextButton, targetIndex) => {
+  if (targetIndex === 0) {
+    prevButton.classList.add("is-hidden");
+    nextButton.classList.remove("is-hidden");
+  } else if (targetIndex === slides.length - 1) {
+    prevButton.classList.remove("is-hidden");
+    nextButton.classList.add("is-hidden");
+  } else {
+    prevButton.classList.remove("is-hidden");
+    nextButton.classList.remove("is-hidden");
+  }
+};
+// prev
+prevButton.addEventListener("click", (e) => {
+  const active = carousel.querySelector(".active");
+  const prevSlide = active.previousElementSibling;
+  const prevIndex = slides.findIndex((slide) => slide === prevSlide);
+  moveToSlide(carousel, active, prevSlide);
+  arrowVis(slides, prevButton, nextButton, prevIndex);
+});
+// next
+nextButton.addEventListener("click", (e) => {
+  const active = carousel.querySelector(".active");
+  const nextSlide = active.nextElementSibling;
+  const nextIndex = slides.findIndex((slide) => slide === nextSlide);
+  moveToSlide(carousel, active, nextSlide);
+  arrowVis(slides, prevButton, nextButton, nextIndex);
+});
+// close
+close.addEventListener("click", (e) => {
+  lightbox.classList.add("invisible");
+});
+</script>

@@ -1,0 +1,23 @@
+---
+import { getCollection } from "astro:content";
+import { Image } from "astro:assets";
+
+const events = await getCollection("events");
+events.sort((b, a) => Date.parse(a.data.date) - Date.parse(b.data.date));
+const images = [...new Set(events.map((event) => event.data.images).flat())];
+---
+
+<section
+  class="flex min-h-screen items-center justify-center max-w-[98%] mx-auto"
+>
+  <div class="grid grid-cols-6 gap-3">
+    {
+      images.map((image: any) => (
+        <div>
+          <p>{image.alt}</p>
+          <Image src={image.src} alt={image.alt} class="rounded-lg" />
+        </div>
+      ))
+    }
+  </div>
+</section>
