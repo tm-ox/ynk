@@ -3,9 +3,9 @@ import { getCollection } from "astro:content";
 import Lightbox from "../components/Lightbox.astro";
 import BaseLayout from "../layouts/BaseLayout.astro";
 
-const events = await getCollection("events");
-events.sort((b, a) => Date.parse(a.data.date) - Date.parse(b.data.date));
-const images = [...new Set(events.map((event) => event.data.images).flat())];
+const event = await getCollection("events");
+event.sort((b, a) => Date.parse(a.data.date) - Date.parse(b.data.date));
+const images = [...new Set(event.map((event) => event.data.images).flat())];
 ---
 
 <BaseLayout>

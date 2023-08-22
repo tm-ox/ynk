@@ -22,7 +22,7 @@ const { images } = Astro.props as Props;
           <Image
             src={image.src}
             alt={image.alt}
-            class="mx-auto rounded-md h-auto lg:h-full w-full lg:w-auto object-contain"
+            class="mx-auto h-auto lg:h-full w-full lg:w-auto object-contain"
           />
         </li>
       ))
@@ -42,15 +42,11 @@ const { images } = Astro.props as Props;
   </div>
 </div>
 <!-- Gallery -->
-<ul class="imageGrid grid grid-cols-3 md:grid-cols-4 lg:grid-cols-12 gap-3">
+<ul class="imageGrid">
   {
     images.map((image: any) => (
       <li class="cursor-pointer aspect-square">
-        <Image
-          src={image.src}
-          alt={image.alt}
-          class="rounded-md object-none h-full"
-        />
+        <Image src={image.src} alt={image.alt} class="object-none h-full" />
       </li>
     ))
   }
