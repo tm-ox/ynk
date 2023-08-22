@@ -9,7 +9,7 @@ const images = [...new Set(events.map((event) => event.data.images).flat())];
 ---
 
 <BaseLayout>
-  <section class="min-h-screen flex items-center w-[90%] mx-auto">
+  <section>
     <Lightbox images={images} />
   </section>
 </BaseLayout>

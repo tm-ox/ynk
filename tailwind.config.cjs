@@ -3,9 +3,10 @@ module.exports = {
 	content: ['./src/**/*.{astro,html,js,jsx,md,mdx,svelte,ts,tsx,vue}'],
 	theme: {
 		colors: {
-			primary: "#ff7f0a",
-			secondary: "#fff0d3",
-			tertiary: "#461604",
+			primary: "#ee00ee",
+			secondary: "#f0f0f0",
+			tertiary: "#160016",
+			hover: "#ff3dff",
 			success: "#02231158",
 			danger: "#11809134",
 			warning: "#794939",
@@ -13,7 +14,12 @@ module.exports = {
 			light: "#25545149",
 			dark: "#5338200",
 		},
-		extend: {},
+		extend: {
+			fontFamily: {
+				display: ["BioRhyme Expanded", "serif;"],
+				body: ["BioRhyme", "serif;"],
+			},
+		},
 	},
 	plugins: [],
 }

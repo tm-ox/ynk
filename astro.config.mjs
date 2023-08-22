@@ -9,5 +9,7 @@ export default defineConfig({
     assets: true,
     viewTransitions: true,
   },
-  integrations: [tailwind(), alpinejs()]
+  integrations: [tailwind({
+    applyBaseStyles: false
+  }), alpinejs()]
 });

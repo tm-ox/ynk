@@ -12,16 +12,19 @@ events.sort((b, a) => Date.parse(a.data.date) - Date.parse(b.data.date));
   <section
     class="flex min-h-screen items-center justify-center max-w-[98%] mx-auto"
   >
-    <ul class="grid grid-cols-6 gap-3">
+    <ul class="eventGrid">
       {
-        events.map((page: any) => (
+        events.map((event: any) => (
           <li>
-            <a href={`/events/${page.slug}`} class="rounded-md">
+            <a
+              href={`/events/${event.slug}`}
+              class="rounded-md"
+              transition:name={event.data.title}
+            >
+              <h5>{event.data.title}</h5>
               <Image
-                src={page.data.images[0].src}
-                alt={page.data.images[0].alt}
-                class="rounded-md bg-secondary"
-                transition:name={page.data.title}
+                src={event.data.images[0].src}
+                alt={event.data.images[0].alt}
               />
             </a>
           </li>

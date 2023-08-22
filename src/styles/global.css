@@ -1,0 +1,69 @@
+@import url("https://fonts.googleapis.com/css2?family=BioRhyme:wght@200;300;400;700;800&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=BioRhyme+Expanded:wght@200;300;400;700;800&display=swap");
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    @apply bg-secondary;
+  }
+  body {
+    @apply max-w-6xl mx-1 lg:mx-auto font-body text-tertiary font-light;
+  }
+  nav {
+    @apply fixed top-0 pt-4;
+  }
+  section {
+    @apply flex flex-col justify-center w-full min-h-screen snap-both mb-6 sm:mb-0;
+  }
+  h1,
+  h2,
+  h3,
+  h4,
+  h5 {
+    @apply text-primary font-display font-normal;
+  }
+  h1 {
+    @apply font-extrabold text-5xl sm:text-5xl md:text-6xl xl:text-7xl uppercase mb-2;
+  }
+  h2 {
+    @apply text-xl md:text-2xl font-extrabold mb-2;
+  }
+  a {
+    @apply font-medium text-primary hover:text-hover transition;
+  }
+  img {
+    @apply rounded md:rounded-md;
+  }
+}
+
+@layer components {
+  .eventGrid {
+    @apply grid grid-cols-3 md:grid-cols-6 gap-2;
+  }
+}
+
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+textarea:-webkit-autofill,
+textarea:-webkit-autofill:hover,
+textarea:-webkit-autofill:focus,
+select:-webkit-autofill,
+select:-webkit-autofill:hover,
+select:-webkit-autofill:focus {
+  -webkit-text-fill-color: #69e228;
+  -webkit-box-shadow: 0 0 0px 1000px #1e293b inset;
+  transition: background-color 5000s ease-in-out 0s;
+}
+
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-thumb {
+  border-radius: 6px;
+  background: linear-gradient(transparent, #ee00ee, transparent);
+}

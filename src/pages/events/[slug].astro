@@ -20,22 +20,25 @@ const data = page.data;
   <a href="/events">
     <Button name="ion:close-circled" />
   </a>
-  <section class="min-h-screen flex items-center w-[90%] mx-auto">
-    <div class="grid grid-cols-3">
+  <div class="grid grid-cols-3 gap-3" transition:name={page.data.title}>
+    <div>
+      <h1>{data.title}</h1>
       <Image
         src={data.images[0].src}
         alt={data.images[0].alt}
-        class="mx-auto rounded-md h-auto md:h-full w-full md:w-auto object-contain"
-        transition:name={page.data.title}
+        class="rounded-md mb-auto"
       />
-      <div class="col-span-2">
-        <h1>{data.title}</h1>
-        <h1>{data.date}</h1>
-        <h1>{data.time}</h1>
-        <h1>{data.venue}</h1>
-        <h1>{data.with}</h1>
-        <Content />
-      </div>
     </div>
-  </section>
+    <div class="col-span-2">
+      <h5>date:</h5>
+      <h2>{data.date}</h2>
+      <h5>time:</h5>
+      <h2>{data.time}</h2>
+      <h5>venue:</h5>
+      <h2>{data.venue}</h2>
+      <h5>with:</h5>
+      <h2>{data.with}</h2>
+      <Content />
+    </div>
+  </div>
 </BaseLayout>
