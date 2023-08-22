@@ -1,5 +1,5 @@
 ---
-title: YND#01
+title: ynd-01
 date: "2023-04-27"
 time: "20.00"
 venue: Taphouse

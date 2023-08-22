@@ -6,7 +6,8 @@ import alpinejs from "@astrojs/alpinejs";
 // https://astro.build/config
 export default defineConfig({
   experimental: {
-    assets: true
-   },
+    assets: true,
+    viewTransitions: true,
+  },
   integrations: [tailwind(), alpinejs()]
 });

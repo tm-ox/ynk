@@ -1,6 +1,5 @@
 ---
 import { Image } from "astro:assets";
-import Button from "../components/Button.astro";
 import { Icon } from "astro-icon";
 
 export interface Props {
@@ -30,15 +29,12 @@ const { images } = Astro.props as Props;
     }
   </ul>
   <!-- Nav -->
-  <button class="carouselButton left is-hidden">
-    <Button name="ion:md-arrow-dropleft-circle" />
-  </button>
-  <button class="carouselButton close">
-    <Button name="ion:close-circled" />
-  </button>
-  <button class="carouselButton right">
-    <Button name="ion:md-arrow-dropright-circle" />
-  </button>
+  <Icon
+    name="ion:md-arrow-dropleft-circle"
+    class="carouselButton left is-hidden"
+  />
+  <Icon name="ion:close-circled" class="carouselButton close" />
+  <Icon name="ion:md-arrow-dropright-circle" class="carouselButton right" />
 </div>
 <!-- Gallery -->
 <ul class="imageGrid grid grid-cols-3 md:grid-cols-4 lg:grid-cols-12 gap-3">
@@ -57,7 +53,7 @@ const { images } = Astro.props as Props;
 
 <style>
   .carouselButton {
-    @apply absolute bottom-[40px] md:top-[50%] -translate-y-[50%];
+    @apply absolute bottom-[40px] md:top-[50%] -translate-y-[50%] text-primary rounded-full text-4xl z-50 h-12 w-12 cursor-pointer;
   }
   .close {
     @apply md:top-[40px] right-[50%] translate-x-[50%];

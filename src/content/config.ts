@@ -7,6 +7,10 @@ export const collections = {
       z.object({
         title: z.string(),
         date: z.string(),
+        time: z.string(),
+        venue: z.string(),
+        venueURL: z.string(),
+        with: z.string(),
         flyer: z.object({
           src: image().refine((img) => img.width >= 300, {
             message: "Cover image must be at least 300 pixels wide!",
