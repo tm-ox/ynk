@@ -1,9 +1,10 @@
 ---
 title: ynd-01
+type: ynd
+number: "01"
 date: "2023-04-27"
 time: "20.00"
-venue: Taphouse
-venueURL: "https://www.instagram.com/taphousejogja/"
+venue: { name: Taphouse, url: https://www.instagram.com/taphousejogja }
 with: BHKT, Emra Grid, TerbujurKaku, VWXYZ & YNKDJ
 info: "Kontribusi: IDR 25.000"
 flyer: { src: ../flyers/YND-01.png, alt: YND#01 }
@@ -29,4 +30,6 @@ Mulai bulan ini Yes No Klub menggelar program musik klab setiap sebulan sekali. 
 
 Sebagai sebuah inisiatif berskala kecil dan mandiri, kami berkeyakinan bahwa siapapun yang terlibat dalam wahana ini baik itu penyelenggara, pemilik ruang, penampil, penonton, dan penyokong adalah entitas-entitas aktif dalam himpunan yang berkontribusi baik materiil dan imateriil dalam terselenggaranya sebuah acara yang lestari dan sejahtera.
 
-Acara ini disokong oleh @idnetaudio @taphousejogja @rekambergerak #yesnodisko #yesnoklub #musikklab #clubmusic #gigyogyakarta
+Acara ini disokong oleh @idnetaudio @taphousejogja @rekambergerak #yesnodisko #yesnoklub #musikklab #clubmusic 
+
+#### #gigyogyakarta

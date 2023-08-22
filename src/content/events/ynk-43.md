@@ -1,22 +1,20 @@
 ---
 title: ynk-43
+type: ynk
+number: "43"
 date: "2023-07-29"
 time: "20.00"
-venue: Kedai Kebun Forum
-venueURL: "https://kedaikebun.com"
+venue: { name: Kedai Kebun Forum, url: https://kedaikebun.com }
 with: Raja Kirik x Silir Wangi x Ari Dwianto, KUNTARI (Elektronik) & BHKT
-info:
+info: "Terbatas untuk 150 penonton - Kontribusi IDR 65.000"
+flyer: { src: ../flyers/YNK_43.png, alt: YNK#43 }
 images:
   - src: ../flyers/YNK_43.png
-    alt: YND#03
+    alt: YNK#43
     data: active
 ---
 
 ### Phantasmagoria of Jathilan
-
-#### Terbatas untuk 150 penonton.
-
-##### Kontribusi IDR 65.000
 
 Pesan tempatmu mulai tanggal 20 Juli 2023
 Luring:
@@ -32,4 +30,4 @@ Dalam pertunjukan ini, performer mewujudkan berbagai karakter legenda kepahlawan
 
 Versi audio dari karya ini yang dirilis pada tahun baru 1455 Hijriyah bisa didengar di https://yesnowave.com
 
-#rajakirik #phantasmagoriaofjathilan #jathilan
+#### #rajakirik #phantasmagoriaofjathilan #jathilan

@@ -1,9 +1,10 @@
 ---
 title: ynd-02
+type: ynd
+number: "02"
 date: "2023-05-26"
 time: "20.00"
-venue: Taphouse
-venueURL: "https://www.instagram.com/taphousejogja/"
+venue: { name: Taphouse, url: https://www.instagram.com/taphousejogja }
 with: BHKT, Emra Grid, TerbujurKaku, VWXYZ & YNKDJ
 info: "Kontribusi: IDR 25.000"
 flyer: { src: ../flyers/YND-02.png, alt: YND#02 }
@@ -29,4 +30,4 @@ Sebagai sebuah inisiatif berskala kecil dan mandiri, kami berkeyakinan bahwa sia
 
 Acara ini disokong oleh @idnetaudioforum @taphousejogja @rekambergerak
 
-#yesnodisko #yesnoklub #musikklab #clubmusic #gigyogyakarta
+#### #yesnodisko #yesnoklub #musikklab #clubmusic #gigyogyakarta

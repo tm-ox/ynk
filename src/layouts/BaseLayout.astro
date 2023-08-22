@@ -1,27 +1,18 @@
 ---
 import "../styles/global.css";
-import { ViewTransitions } from "astro:transitions";
+import Base from "./Base.astro";
 ---
 
-<html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <meta name="viewport" content="width=device-width" />
-    <meta name="generator" content={Astro.generator} />
-    <title>Title</title>
-    <ViewTransitions />
-  </head>
-  <body>
-    <header>
-      <nav>
-        <a href="/">Home</a>
-        <a href="/events">Events</a>
-        <a href="/images">Images</a>
-      </nav>
-    </header>
-    <main>
-      <slot />
-    </main>
-  </body>
-</html>
+<Base>
+  <header>
+    <nav>
+      <img src="/ynk.svg" alt="" class="h-9 w-auto text-primary mr-2" />
+      <a href="/"><h5>Home</h5></a>
+      <a href="/events"><h5>Events</h5></a>
+      <a href="/images"><h5>Images</h5></a>
+    </nav>
+  </header>
+  <main>
+    <slot />
+  </main>
+</Base>

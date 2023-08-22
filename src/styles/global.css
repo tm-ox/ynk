@@ -1,5 +1,6 @@
 @import url("https://fonts.googleapis.com/css2?family=BioRhyme:wght@200;300;400;700;800&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=BioRhyme+Expanded:wght@200;300;400;700;800&display=swap");
+@import url('https://fonts.googleapis.com/css2?family=Pathway+Extreme:wght@300;400;600;700&display=swap');
 
 @tailwind base;
 @tailwind components;
@@ -10,10 +11,10 @@
     @apply bg-secondary;
   }
   body {
-    @apply max-w-6xl mx-2 lg:mx-auto font-body text-tertiary font-light;
+    @apply max-w-6xl mx-2 lg:mx-auto;
   }
   nav {
-    @apply fixed top-0 pt-4;
+    @apply fixed top-0 pt-4 flex justify-center items-center gap-2;
   }
   section {
     @apply flex flex-col w-full my-16;
@@ -23,19 +24,31 @@
   h3,
   h4,
   h5 {
-    @apply text-primary font-display font-normal;
+    @apply text-primary font-display font-bold;
   }
   h1 {
-    @apply font-extrabold text-5xl sm:text-5xl md:text-6xl xl:text-7xl uppercase mb-2;
+    @apply font-black text-5xl sm:text-5xl md:text-6xl xl:text-7xl uppercase mb-2;
   }
   h2 {
-    @apply text-xl md:text-2xl font-extrabold mb-2;
+    @apply text-2xl md:text-3xl mb-2;
+  }
+  h3 {
+    @apply text-lg md:text-xl mb-2;
   }
   h4 {
-    @apply font-extrabold uppercase;
+    @apply font-displayCon font-light text-base;
+  }
+  h5 {
+    @apply font-displayCon font-normal text-lg tracking-wide;
+  }
+  p {
+    @apply font-body text-tertiary font-light tracking-wide mb-2;
   }
   a {
-    @apply font-medium text-primary hover:text-hover transition;
+    @apply  text-primary hover:text-hover transition;
+  }
+  p a {
+    @apply font-displayCon font-medium ;
   }
   img {
     @apply rounded md:rounded-md;

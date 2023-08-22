@@ -6,11 +6,16 @@ export const collections = {
     schema: ({ image }) =>
       z.object({
         title: z.string(),
+        type: z.string(),
+        number: z.string().optional(),
         date: z.string(),
         time: z.string(),
-        venue: z.string(),
-        venueURL: z.string(),
+        venue: z.object({
+          name: z.string().optional(),
+          url: z.string().optional(),
+        }).optional(),
         with: z.string(),
+        info: z.string(),
         flyer: z.object({
           src: image().refine((img) => img.width >= 300, {
             message: "Cover image must be at least 300 pixels wide!",

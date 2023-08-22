@@ -1,9 +1,10 @@
 ---
 title: ynd-03
+type: ynd
+number: "03"
 date: "2023-06-23"
 time: "20.00"
-venue: Taphouse
-venueURL: "https://www.instagram.com/taphousejogja/"
+venue: { name: Taphouse, url: https://www.instagram.com/taphousejogja }
 with: DJ Scotch Egg, Sanjonas, TerbujurKaku, Rarawk & YNKDJ
 info: "IDR 25.000"
 flyer: { src: ../flyers/YND-03.png, alt: YND#03 }
@@ -19,4 +20,4 @@ Sebagai sebuah inisiatif berskala kecil dan mandiri, kami berkeyakinan bahwa sia
 
 Acara ini disokong oleh @idnetaudioforum @taphousejogja @rekambergerak
 
-#yesnodisko #yesnoklub #musikklab #clubmusic #gigyogyakarta
+#### #yesnodisko #yesnoklub #musikklab #clubmusic #gigyogyakarta

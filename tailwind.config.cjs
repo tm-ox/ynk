@@ -16,8 +16,9 @@ module.exports = {
 		},
 		extend: {
 			fontFamily: {
+				body: ["Pathway Extreme", "sans;"],
 				display: ["BioRhyme Expanded", "serif;"],
-				body: ["BioRhyme", "serif;"],
+				displayCon: ["BioRhyme", "serif;"],
 			},
 		},
 	},
