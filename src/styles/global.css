@@ -16,7 +16,7 @@
     @apply fixed top-0 pt-4;
   }
   section {
-    @apply flex flex-col w-full min-h-screen my-16;
+    @apply flex flex-col w-full my-16;
   }
   h1,
   h2,
