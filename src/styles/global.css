@@ -8,7 +8,7 @@
 
 @layer base {
   html {
-    @apply bg-secondary;
+    @apply bg-tertiary;
   }
   body {
     @apply max-w-6xl mx-2 lg:mx-auto;
@@ -30,25 +30,25 @@
     @apply font-black text-5xl sm:text-5xl md:text-6xl xl:text-7xl uppercase mb-2;
   }
   h2 {
-    @apply text-2xl md:text-3xl mb-2;
+    @apply text-xl md:text-3xl mb-2;
   }
   h3 {
-    @apply text-lg md:text-xl mb-2;
+    @apply text-sm md:text-xl mb-2;
   }
   h4 {
-    @apply font-displayCon font-normal text-lg tracking-wide;
+    @apply font-displayCon font-normal text-base md:text-lg tracking-wide;
   }
   h5 {
-    @apply font-displayCon font-light text-base;
+    @apply font-displayCon font-light text-sm md:text-base;
   } 
   p {
-    @apply font-body text-tertiary font-light tracking-wide mb-2;
+    @apply font-body text-secondary font-light text-sm md:text-base tracking-wide mb-2;
   }
   a {
     @apply  text-primary hover:text-hover transition;
   }
   p a {
-    @apply font-displayCon font-medium ;
+    @apply font-displayCon font-medium;
   }
   img {
     @apply rounded md:rounded-md;
@@ -60,19 +60,13 @@
 
 @layer components {
   .icon {
-    @apply text-secondary  border border-primary bg-primary hover:bg-hover transition text-4xl z-50 h-6 w-6 cursor-pointer rounded md:rounded-md;
-  }
-  .arrow {
-    @apply border hover:text-secondary hover:bg-hover;
-  }
-  .close {
-    @apply text-secondary hover:text-primary border border-primary bg-primary hover:bg-secondary;
+    @apply text-tertiary  border border-primary bg-primary hover:bg-hover transition text-4xl z-50 h-8 md:h-6 w-8 md:w-6 cursor-pointer rounded md:rounded-md;
   }
   .eventGrid {
     @apply grid grid-cols-3 md:grid-cols-6 gap-2;
   }
   .imageGrid {
-    @apply grid grid-cols-5 md:grid-cols-4 lg:grid-cols-12 gap-2;
+    @apply grid grid-cols-3 md:grid-cols-4 lg:grid-cols-9 gap-2;
   }
 }
 

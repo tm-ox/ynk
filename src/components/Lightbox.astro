@@ -1,6 +1,7 @@
 ---
 import { Image } from "astro:assets";
 import Button from "../components/Button.astro";
+import { Icon } from "astro-icon";
 
 export interface Props {
   images: Array<object>;
@@ -31,13 +32,13 @@ const { images } = Astro.props as Props;
   <!-- Nav -->
   <div class="max-w-6xl">
     <button class="carouselButton left is-hidden">
-      <Button name="ion:md-arrow-dropleft-circle" />
+      <Icon name="ion:arrow-back-sharp" class="icon" />
     </button>
     <button class="carouselButton close">
-      <Button name="ion:close-circled" />
+      <Icon name="ion:close-sharp" class="icon" />
     </button>
     <button class="carouselButton right">
-      <Button name="ion:md-arrow-dropright-circle" />
+      <Icon name="ion:arrow-forward-sharp" class="icon" />
     </button>
   </div>
 </div>
@@ -46,6 +47,7 @@ const { images } = Astro.props as Props;
   {
     images.map((image: any) => (
       <li class="cursor-pointer aspect-square">
+        <h5 class="uppercase">{image.alt}</h5>
         <Image src={image.src} alt={image.alt} class="object-none h-full" />
       </li>
     ))

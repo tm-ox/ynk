@@ -4,14 +4,14 @@ import Base from "./Base.astro";
 ---
 
 <Base>
-  <header>
-    <nav>
-      <img src="/ynk.svg" alt="" class="h-9 w-auto text-primary mr-2" />
-      <a href="/"><h5>Home</h5></a>
-      <a href="/events"><h5>Events</h5></a>
-      <a href="/images"><h5>Images</h5></a>
-    </nav>
-  </header>
+  <div slot="nav" class="flex gap-3">
+    <a href="/"><h4>About</h4></a>
+    <a href="/events"><h4>Events</h4></a>
+    <a href="/images"><h4>Images</h4></a>
+    <a href="/images"><h4>Others</h4></a>
+    <a href="/images"><h4>Us</h4></a>
+  </div>
+
   <main>
     <slot />
   </main>
