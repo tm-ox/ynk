@@ -2,65 +2,102 @@
 import { getCollection } from "astro:content";
 import { Image } from "astro:assets";
 import Base from "../../layouts/Base.astro";
-import Button from "../../components/Button.astro";
+import { Icon } from "astro-icon";
 
 export async function getStaticPaths() {
-  const event = await getCollection("events");
-  return event.map((page) => ({
-    params: { slug: page.slug },
-    props: { page },
-  }));
+  const events = await getCollection("events");
+  const numberOfEvents = events.length;
+  return events
+    .sort((b, a) => Date.parse(b.data.date) - Date.parse(a.data.date))
+    .map((event, i) => ({
+      params: {
+        slug: event.slug,
+      },
+      props: {
+        event,
+        prevEvent: i + 1 === numberOfEvents ? { data: "" } : events[i + 1],
+        nextEvent: i === 0 ? { data: "" } : events[i - 1],
+      },
+    }));
 }
-const { page } = Astro.props;
-const { Content } = await page.render();
-const data = page.data;
+const { event, prevEvent, nextEvent } = Astro.props;
+const { Content } = await event.render();
 ---
 
 <Base>
-  <section class="mt-2" transition:name={page.data.title}>
-    <a href="/events" class="ml-auto">
-      <Button name="ion:close-circled" />
-    </a>
+  <section class="mt-4" transition:name={event.data.title}>
+    <hr class="mb-1" />
     <div class="flex gap-4">
-      <div>
-        <img src="/ynk.svg" alt="" class="h-auto w-16 mb-2" />
-        <h2 class="text-center">{data.number}</h2>
-        <h2 class="uppercase upright mx-auto">Yes No Klub</h2>
-      </div>
       <Image
-        src={data.flyer.src}
-        alt={data.flyer.alt}
-        class="w-2/5 h-auto object-contain mb-auto"
+        src={event.data.flyer.src}
+        alt={event.data.flyer.alt}
+        class="h-auto object-contain mt-1 mb-auto w-1/2"
       />
-
-      <div class="flex relative">
-        <div>
-          <h4>date:</h4>
-          <h3>{data.date}</h3>
-          <h4>time:</h4>
-          <h3>{data.time}</h3>
-          <h4>venue:</h4>
-          <h3>
-            <a href={data.venue.url} target="_blank">
-              {data.venue.name}
+      <div class="w-full">
+        <div class="flex items-center mb-1">
+          <h2 class="uppercase mb-0">
+            {event.data.type}#{event.data.number}
+          </h2>
+          <div class="flex items-center ml-auto gap-1">
+            {
+              prevEvent.data && (
+                <a href={`/events/${prevEvent.slug}/`}>
+                  <Icon name="ion:arrow-back-sharp" class="icon" />
+                </a>
+              )
+            }
+            {
+              nextEvent.data && (
+                <a href={`/events/${nextEvent.slug}/`}>
+                  <Icon name="ion:arrow-forward-sharp" class="icon" />
+                </a>
+              )
+            }
+            <a href="/events">
+              <Icon name="ion:close-sharp" class="icon" />
             </a>
-          </h3>
-          <h4>with:</h4>
-          <h3>{data.with}</h3>
-          {
-            data.info !== "" && (
-              <>
-                <h4>info:</h4>
-                <h5>{data.info}</h5>
-              </>
-            )
-          }
-          <div class="mt-4">
-            <Content />
           </div>
+        </div>
+        <hr />
+        <div class="flex gap-10">
+          <div class="flex flex-col">
+            <h5>date:</h5>
+            <h4>{event.data.date}</h4>
+          </div>
+          <div class="flex flex-col mx-auto">
+            <h5>time:</h5>
+            <h4>
+              {event.data.time}
+            </h4>
+          </div>
+          <div class="mr-auto">
+            <h5>venue:</h5>
+            <h4>
+              <a href={event.data.venue.url} target="_blank">
+                {event.data.venue.name}
+              </a>
+            </h4>
+          </div>
+        </div>
+        <hr class="mt-1" />
+        <h5 class="mt-1">with:</h5>
+        <h3>{event.data.with}</h3>
+        <hr />
+        {
+          event.data.info !== "" && (
+            <>
+              <h5 class="mt-1">info:</h5>
+              <h4 class="mb-1">{event.data.info}</h4>
+              <hr />
+            </>
+          )
+        }
+        <div class="my-2">
+          <Content />
         </div>
       </div>
     </div>
+    <hr />
   </section>
 </Base>
 

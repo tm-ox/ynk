@@ -18,9 +18,9 @@ events.sort((b, a) => Date.parse(a.data.date) - Date.parse(b.data.date));
               class="rounded-md"
               transition:name={event.data.title}
             >
-              <h4 class="uppercase">
+              <h5 class="uppercase">
                 {event.data.type}#{event.data.number}
-              </h4>
+              </h5>
               <Image src={event.data.flyer.src} alt={event.data.flyer.alt} />
             </a>
           </li>

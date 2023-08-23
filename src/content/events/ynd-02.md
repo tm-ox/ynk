@@ -30,4 +30,6 @@ Sebagai sebuah inisiatif berskala kecil dan mandiri, kami berkeyakinan bahwa sia
 
 Acara ini disokong oleh @idnetaudioforum @taphousejogja @rekambergerak
 
-#### #yesnodisko #yesnoklub #musikklab #clubmusic #gigyogyakarta
+<hr/>
+
+##### #yesnodisko #yesnoklub #musikklab #clubmusic #gigyogyakarta

@@ -36,11 +36,11 @@
     @apply text-lg md:text-xl mb-2;
   }
   h4 {
-    @apply font-displayCon font-light text-base;
-  }
-  h5 {
     @apply font-displayCon font-normal text-lg tracking-wide;
   }
+  h5 {
+    @apply font-displayCon font-light text-base;
+  } 
   p {
     @apply font-body text-tertiary font-light tracking-wide mb-2;
   }
@@ -53,9 +53,21 @@
   img {
     @apply rounded md:rounded-md;
   }
+  hr {
+    @apply text-primary mb-1;
+  }
 }
 
 @layer components {
+  .icon {
+    @apply text-secondary  border border-primary bg-primary hover:bg-hover transition text-4xl z-50 h-6 w-6 cursor-pointer rounded md:rounded-md;
+  }
+  .arrow {
+    @apply border hover:text-secondary hover:bg-hover;
+  }
+  .close {
+    @apply text-secondary hover:text-primary border border-primary bg-primary hover:bg-secondary;
+  }
   .eventGrid {
     @apply grid grid-cols-3 md:grid-cols-6 gap-2;
   }
