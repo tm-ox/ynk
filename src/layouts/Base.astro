@@ -15,11 +15,13 @@ import { ViewTransitions } from "astro:transitions";
   <body>
     <header>
       <nav>
-        <img
-          src="/ynk.svg"
-          alt=""
-          class="h-5 md:h-9 w-auto text-primary mr-1 md:mr-2 z-50"
-        />
+        <a href="/">
+          <img
+            src="/ynk.svg"
+            alt=""
+            class="h-5 md:h-9 w-auto text-primary mr-1 md:mr-2 z-50"
+          />
+        </a>
         <slot name="nav" />
       </nav>
     </header>
