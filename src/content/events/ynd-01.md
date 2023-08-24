@@ -9,11 +9,9 @@ with: BHKT, Emra Grid, TerbujurKaku, VWXYZ & YNKDJ
 info: "Kontribusi: IDR 25.000"
 flyer: { src: ../flyers/YND-01.png, alt: YND#01 }
 images:
-  - src: ../flyers/YND-01.png
-    alt: YND#01
-    data: active
   - src: ../images/YND01_01.jpg
     alt: YND#01
+    data: active
   - src: ../images/YND01_02.jpg
     alt: YND#01
   - src: ../images/YND01_03.jpg

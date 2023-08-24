@@ -1,6 +1,6 @@
 ---
 import { getCollection } from "astro:content";
-import Lightbox from "../components/Lightbox.astro";
+import { Image } from "astro:assets";
 import BaseLayout from "../layouts/BaseLayout.astro";
 
 const events = await getCollection("events", ({ data }) => {
@@ -12,6 +12,15 @@ const images = [...new Set(events.map((event) => event.data.images).flat())];
 
 <BaseLayout>
   <section>
-    <Lightbox images={images} />
+    <ul class="imageGrid">
+      {
+        images.map((image: any) => (
+          <li class="cursor-pointer aspect-square">
+            <h5 class="uppercase">{image.alt}</h5>
+            <Image src={image.src} alt={image.alt} class="object-none h-full" />
+          </li>
+        ))
+      }
+    </ul>
   </section>
 </BaseLayout>

@@ -8,10 +8,6 @@ venue: { name: Taphouse, url: https://www.instagram.com/taphousejogja }
 with: DJ Scotch Egg, Sanjonas, TerbujurKaku, Rarawk & YNKDJ
 info: "IDR 25.000"
 flyer: { src: ../flyers/YND-03.png, alt: YND#03 }
-images:
-  - src: ../flyers/YND-03.png
-    alt: YND#03
-    data: active
 ---
 
 Sejak bulan April lalu Yes No Klub menggelar program musik klab setiap sebulan sekali. Program ini memberikan wahana bagi musisi, DJ, dan komunitasnya untuk mengeksplorasi musik dan bebunyian secara inklusif, populer, dan eksperimental.

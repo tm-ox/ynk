@@ -1,17 +1,13 @@
 ---
-title: Pestapora Day 1
+title: Pestapora Day 3
 type: ynk
 number: Pestapora
-date: "2023-09-22"
+date: "2023-09-24"
 time: ""
 venue: { name: Gambir Expo, Kemayoran Jakarta, url: https://www.instagram.com/pestapora }
 with: ""
 info: ""
-flyer: { src: ../flyers/YNK_Pestapora_2023_01.jpg, alt: YND#01 }
-images:
-  - src: ../flyers/YND-01.png
-    alt: YND#01
-    data: active
+flyer: { src: ../flyers/YNK_Pestapora_2023_03.jpg, alt: Pestapora }
 ---
 
 _Full lineup:_

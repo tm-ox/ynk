@@ -28,6 +28,7 @@ export const collections = {
               message: "Image must be at least 300 pixels wide!",
             }).optional(),
             alt: z.string().optional(),
+            id: z.string().optional(),
             data: z.string().optional(),
           }).optional(),
         ).optional(),
