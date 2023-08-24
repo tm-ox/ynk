@@ -11,17 +11,23 @@ flyer: { src: ../flyers/YND-01.png, alt: YND#01 }
 images:
   - src: ../images/YND01_01.jpg
     alt: YND#01
+    id: ynd01-01
     data: active
   - src: ../images/YND01_02.jpg
     alt: YND#01
+    id: ynd01-02
   - src: ../images/YND01_03.jpg
     alt: YND#01
+    id: ynd01-03
   - src: ../images/YND01_04.jpg
     alt: YND#01
+    id: ynd01-04
   - src: ../images/YND01_05.jpg
     alt: YND#01
+    id: ynd01-05
   - src: ../images/YND01_06.jpg
     alt: YND#01
+    id: ynd01-06
 ---
 
 Mulai bulan ini Yes No Klub menggelar program musik klab setiap sebulan sekali. Program ini memberikan wahana bagi musisi, DJ, dan komunitasnya untuk mengeksplorasi musik dan bebunyian secara inklusif, populer, dan eksperimental.
