@@ -30,7 +30,7 @@
   h3,
   h4,
   h5 {
-    @apply font-bold text-primary font-display;
+    @apply font-bold leading-none text-primary font-display;
   }
   h1 {
     @apply mb-2 text-5xl font-black uppercase sm:text-5xl md:text-6xl xl:text-7xl;
@@ -42,7 +42,7 @@
     @apply mb-2 text-sm md:text-xl;
   }
   h4 {
-    @apply text-base font-normal tracking-wide font-displayCon md:text-lg;
+    @apply p-0 mb-0 text-base font-normal tracking-wide font-displayCon md:text-lg;
   }
   h5 {
     @apply text-xs font-light font-displayCon md:text-sm;

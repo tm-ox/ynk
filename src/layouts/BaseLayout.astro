@@ -5,11 +5,17 @@ import { Icon } from "astro-icon";
 ---
 
 <Base>
-  <div slot="nav" class="flex items-end gap-4 ml-auto uppercase">
-    <a href="/" target="_self"><h4>About</h4></a>
-    <a href="/events" target="_self"><h4>Events</h4></a>
-    <a href="/images" target="_self"><h4>Images</h4></a>
-    <div class="flex items-start h-full gap-1 px-3 border-x border-x-primary">
+  <div slot="nav" class="flex gap-3 ml-auto uppercase">
+    <h4 class="my-auto">
+      <a href="/" target="_self">About</a>
+    </h4>
+    <h4 class="my-auto">
+      <a href="/images" target="_self">Images</a>
+    </h4>
+    <h4 class="my-auto">
+      <a href="/events" target="_self">Events</a>
+    </h4>
+    <div class="flex items-start h-full gap-1 pl-3 border-l border-l-primary">
       <a href="https://www.instagram.com/yes.no.klub/">
         <Icon name="tabler:brand-soundcloud" class="border-none icon" />
       </a>

@@ -27,9 +27,9 @@ const { image, prevImage, nextImage } = Astro.props;
 ---
 
 <Base>
-  <div slot="nav" class="flex justify-between w-full gap-3">
-    <h3 class="m-0">{image.alt}</h3>
-    <div class="flex items-center gap-1 ml-auto">
+  <div slot="nav" class="flex items-center w-full gap-3">
+    <h3 class="m-0 ml-auto">{image.alt}</h3>
+    <div class="flex items-center gap-1">
       {
         prevImage.id && (
           <a href={`/images/${prevImage.id}/`}>
