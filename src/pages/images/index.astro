@@ -15,8 +15,8 @@ const images = [...new Set(events.map((event) => event.data.images).flat())];
     <ul class="imageGrid">
       {
         images.map((image: any) => (
-          <li class="cursor-pointer aspect-square">
-            <a href={`/images/${image.id}/`}>
+          <li class="aspect-square">
+            <a href={`/images/${image.id}/`} transition:name={image.id}>
               <h5 class="uppercase">{image.alt}</h5>
               <Image
                 src={image.src}

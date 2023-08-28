@@ -1,11 +1,13 @@
 ---
 import "../styles/global.css";
 import Base from "./Base.astro";
+import Logo from "../components/Logo.astro";
 import { Icon } from "astro-icon";
 ---
 
 <Base>
-  <div slot="nav" class="flex gap-3">
+  <nav slot="header" class="flex gap-3">
+    <Logo />
     <a href="/"><h4>About</h4></a>
     <a href="/events"><h4>Events</h4></a>
     <a href="/images"><h4>Images</h4></a>
@@ -14,8 +16,7 @@ import { Icon } from "astro-icon";
     <div class="ml-auto">
       <Icon name="ion:social-instagram" class="icon" />
     </div>
-  </div>
-
+  </nav>
   <main>
     <slot />
   </main>

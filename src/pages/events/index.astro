@@ -15,7 +15,6 @@ events.sort((b, a) => Date.parse(a.data.date) - Date.parse(b.data.date));
           <li>
             <a
               href={`/events/${event.slug}`}
-              class="rounded-md"
               transition:name={event.data.title}
             >
               <h5 class="uppercase">
