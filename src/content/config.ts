@@ -5,9 +5,8 @@ export const collections = {
   events: defineCollection({
     schema: ({ image }) =>
       z.object({
+        id: z.string(),
         title: z.string(),
-        type: z.string(),
-        number: z.string().optional(),
         date: z.string(),
         time: z.string(),
         venue: z.object({

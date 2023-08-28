@@ -18,11 +18,13 @@ const images = [...new Set(events.map((event) => event.data.images).flat())];
           <li class="aspect-square">
             <a href={`/images/${image.id}/`} transition:name={image.id}>
               <h5 class="uppercase">{image.alt}</h5>
+              <hr />
               <Image
                 src={image.src}
                 alt={image.alt}
                 class="object-none h-full"
               />
+              <hr />
             </a>
           </li>
         ))

@@ -1,5 +1,6 @@
 ---
-title: Pestapora Day 2
+id: pp2023-day-2
+title: Pestapora 2023 2
 type: ynk
 number: Pestapora
 date: "2023-09-23"

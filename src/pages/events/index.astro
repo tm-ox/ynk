@@ -13,14 +13,11 @@ events.sort((b, a) => Date.parse(a.data.date) - Date.parse(b.data.date));
       {
         events.map((event: any) => (
           <li>
-            <a
-              href={`/events/${event.slug}`}
-              transition:name={event.data.title}
-            >
-              <h5 class="uppercase">
-                {event.data.type}#{event.data.number}
-              </h5>
+            <a href={`/events/${event.slug}`} transition:name={event.data.id}>
+              <h5 class="uppercase">{event.data.title}</h5>
+              <hr />
               <Image src={event.data.flyer.src} alt={event.data.flyer.alt} />
+              <hr />
             </a>
           </li>
         ))

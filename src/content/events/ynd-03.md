@@ -1,7 +1,6 @@
 ---
-title: ynd-03
-type: ynd
-number: "03"
+id: ynd03
+title: YND#03
 date: "2023-06-23"
 time: "20.00"
 venue: { name: Taphouse, url: https://www.instagram.com/taphousejogja }

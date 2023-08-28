@@ -1,6 +1,7 @@
 ---
 import "../styles/global.css";
 import { ViewTransitions } from "astro:transitions";
+import Logo from "../components/Logo.astro";
 ---
 
 <html lang="en">
@@ -9,13 +10,19 @@ import { ViewTransitions } from "astro:transitions";
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="viewport" content="width=device-width" />
     <meta name="generator" content={Astro.generator} />
-    <title>Title</title>
+    <title>Yes No Klub</title>
     <ViewTransitions />
+    <base target="_blank" />
   </head>
   <body>
     <header>
-      <slot name="header" />
+      <nav>
+        <Logo />
+        <slot name="nav" />
+      </nav>
     </header>
-    <slot />
+    <main>
+      <slot />
+    </main>
   </body>
 </html>

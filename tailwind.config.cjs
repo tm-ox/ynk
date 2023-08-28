@@ -5,10 +5,10 @@ module.exports = {
 		colors: {
 			primary: "#ee00ee",
 			secondary: "#f0f0f0",
-			tertiary: "#160016",
+			tertiary: "#15192f",
 			hover: "#ff3dff",
 			success: "#02231158",
-			danger: "#11809134",
+			danger: "#160016",
 			warning: "#794939",
 			info: "#170170169",
 			light: "#25545149",

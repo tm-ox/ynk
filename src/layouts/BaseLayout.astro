@@ -1,23 +1,25 @@
 ---
 import "../styles/global.css";
 import Base from "./Base.astro";
-import Logo from "../components/Logo.astro";
 import { Icon } from "astro-icon";
 ---
 
 <Base>
-  <nav slot="header" class="flex gap-3">
-    <Logo />
-    <a href="/"><h4>About</h4></a>
-    <a href="/events"><h4>Events</h4></a>
-    <a href="/images"><h4>Images</h4></a>
-    <a href="/images"><h4>Others</h4></a>
-    <a href="/images"><h4>Us</h4></a>
-    <div class="ml-auto">
-      <Icon name="ion:social-instagram" class="icon" />
+  <div slot="nav" class="flex items-end gap-4 ml-auto uppercase">
+    <a href="/" target="_self"><h4>About</h4></a>
+    <a href="/events" target="_self"><h4>Events</h4></a>
+    <a href="/images" target="_self"><h4>Images</h4></a>
+    <div class="flex items-start h-full gap-1 px-3 border-x border-x-primary">
+      <a href="https://www.instagram.com/yes.no.klub/">
+        <Icon name="tabler:brand-soundcloud" class="border-none icon" />
+      </a>
+      <a href="https://www.instagram.com/yes.no.klub/">
+        <Icon name="ion:social-instagram" class="border-none icon" />
+      </a>
+      <a href="https://www.facebook.com/yesnoklubyk">
+        <Icon name="carbon:logo-facebook" class="border-none icon" />
+      </a>
     </div>
-  </nav>
-  <main>
-    <slot />
-  </main>
+  </div>
+  <slot />
 </Base>

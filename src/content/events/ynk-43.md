@@ -1,7 +1,6 @@
 ---
-title: ynk-43
-type: ynk
-number: "43"
+id: ynk43
+title: YNK#43
 date: "2023-07-29"
 time: "20.00"
 venue: { name: Kedai Kebun Forum, url: https://kedaikebun.com }

@@ -1,7 +1,6 @@
 ---
-title: ynd-02
-type: ynd
-number: "02"
+id: ynd02
+title: YND#02
 date: "2023-05-26"
 time: "20.00"
 venue: { name: Taphouse, url: https://www.instagram.com/taphousejogja }
@@ -12,7 +11,6 @@ images:
   - src: ../images/YND02_01.jpg
     alt: YND#02
     id: ynd02-01
-    data: active
   - src: ../images/YND02_02.jpg
     alt: YND#02
     id: ynd02-02
