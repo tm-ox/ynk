@@ -23,6 +23,7 @@ const images = [...new Set(events.map((event) => event.data.images).flat())];
                 src={image.src}
                 alt={image.alt}
                 class="object-none h-full"
+                height={200}
               />
               <hr />
             </a>

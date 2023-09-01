@@ -7,6 +7,40 @@
 @tailwind utilities;
 
 @layer base {
+  :root {
+    --color-primary: 238 0 238;
+    --color-primary-hover: 255 61 255;
+    --color-secondary: 213 215 213;
+    --color-tertiary: 21 25 47;
+  }
+  @media (prefers-color-scheme: light) {
+    :root {
+      --color-primary: 238 0 238;
+      --color-primary-hover: 255 61 255;
+      --color-secondary: 21 25 47;
+      --color-tertiary: 213 215 213;
+    }
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --color-primary: 238 0 238;
+      --color-primary-hover: 255 61 255;
+      --color-secondary: 213 215 213;
+      --color-tertiary: 21 25 47;
+    }
+  }
+  [data-theme="light"] {
+    --color-primary: 238 0 238;
+    --color-primary-hover: 255 61 255;
+    --color-secondary: 21 25 47;
+    --color-tertiary: 213 215 213;
+  }
+  [data-theme="dark"] {
+    --color-primary: 238 0 238;
+    --color-primary-hover: 255 61 255;
+    --color-secondary: 213 215 213;
+    --color-tertiary: 21 25 47;
+  }
   html {
     @apply bg-tertiary;
   }
@@ -14,7 +48,7 @@
     @apply max-w-[1440px] px-2 lg:mx-auto;
   }
   header {
-    @apply fixed top-0 left-0 z-50 w-full;
+    @apply fixed top-0 left-0 z-50 w-full bg-tertiary/20 backdrop-blur;
   }
   nav {
     @apply flex justify-between items-center gap-2 h-16 max-w-[1440px] mx-auto px-2;
@@ -45,7 +79,10 @@
     @apply p-0 mb-0 text-base font-normal tracking-wide font-displayCon md:text-lg;
   }
   h5 {
-    @apply text-xs font-light font-displayCon md:text-sm;
+    @apply text-xs font-displayCon md:text-sm;
+  } 
+  h6 {
+    @apply text-xs font-light font-displayCon md:text-sm text-primary;
   } 
   p {
     @apply mb-2 text-sm font-light tracking-wide font-body text-secondary md:text-base;
@@ -57,19 +94,22 @@
     @apply font-medium font-displayCon;
   }
   img {
-    @apply rounded md:rounded-md;
+    @apply rounded md:rounded-sm;
   }
   hr {
     @apply my-2 text-primary;
+  }
+  li a {
+    @apply p-0 mb-0 text-base font-normal tracking-wide font-displayCon md:text-lg;
   }
 }
 
 @layer components {
   .icon {
-    @apply z-50 w-8 h-8 text-4xl transition border rounded cursor-pointer text-primary border-primary bg-none hover:text-tertiary hover:bg-hover md:rounded-md;
+    @apply z-50 text-4xl transition cursor-pointer w-7 h-7 text-primary border-primary bg-none hover:text-hover;
   }
   .eventGrid {
-    @apply grid grid-cols-3 gap-2 md:grid-cols-6;
+    @apply grid grid-cols-2 gap-2 md:grid-cols-6;
   }
   .imageGrid {
     @apply grid grid-cols-3 gap-2 md:grid-cols-4 lg:grid-cols-9;

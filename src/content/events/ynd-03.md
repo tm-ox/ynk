@@ -17,4 +17,4 @@ Acara ini disokong oleh @idnetaudioforum @taphousejogja @rekambergerak
 
 <hr />
 
-##### #yesnodisko #yesnoklub #musikklab #clubmusic #gigyogyakarta
+###### #yesnodisko #yesnoklub #musikklab #clubmusic #gigyogyakarta

@@ -2,6 +2,7 @@
 import "../styles/global.css";
 import { ViewTransitions } from "astro:transitions";
 import Logo from "../components/Logo.astro";
+import { Icon } from "astro-icon";
 ---
 
 <html lang="en">
@@ -19,10 +20,40 @@ import Logo from "../components/Logo.astro";
       <nav>
         <Logo />
         <slot name="nav" />
+        <button
+          class="h-8 pl-3 ml-1 border-l border-l-primary"
+          data-theme-toggle
+          aria-label="toggle theme"
+          transition:persist="theme"
+        >
+          <Icon
+            name="bx:bxs-sun"
+            class="w-6 h-6 text-primary hover:text-hover"
+          />
+        </button>
       </nav>
     </header>
     <main>
       <slot />
     </main>
+    <script>
+      const themeToggles = document.querySelectorAll("[data-theme-toggle]");
+
+      const getTheme = () => localStorage.getItem("theme") || "dark";
+
+      const setTheme = (theme) =>
+        document.documentElement.setAttribute("data-theme", theme);
+
+      window.addEventListener("DOMContentLoaded", () => setTheme(getTheme()));
+      document.addEventListener("astro:after-swap", () => setTheme(getTheme()));
+
+      themeToggles.forEach((toggle) => {
+        toggle.addEventListener("click", () => {
+          const nextTheme = getTheme() === "light" ? "dark" : "light";
+          localStorage.setItem("theme", nextTheme);
+          setTheme(nextTheme);
+        });
+      });
+    </script>
   </body>
 </html>

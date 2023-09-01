@@ -3,10 +3,14 @@ module.exports = {
 	content: ['./src/**/*.{astro,html,js,jsx,md,mdx,svelte,ts,tsx,vue}'],
 	theme: {
 		colors: {
-			primary: "#ee00ee",
-			secondary: "#f0f0f0",
-			tertiary: "#15192f",
-			hover: "#ff3dff",
+			primary: 'rgb(var(--color-primary) / <alpha-value>)',
+			hover: 'rgb(var(--color-primary-hover) / <alpha-value>)',
+			secondary: 'rgb(var(--color-secondary) / <alpha-value>)',
+			tertiary: 'rgb(var(--color-tertiary) / <alpha-value>)',
+			prim: "#ee00ee",
+			sec: "#f0f0f0",
+			ter: "#15192f",
+			hov: "#ff3dff",
 			success: "#02231158",
 			danger: "#160016",
 			warning: "#794939",

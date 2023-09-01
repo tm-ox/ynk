@@ -2,30 +2,57 @@
 import "../styles/global.css";
 import Base from "./Base.astro";
 import { Icon } from "astro-icon";
+
+const pathname = new URL(Astro.request.url).pathname;
+const currentPath = pathname.slice(1); // remove the first "/"
 ---
 
 <Base>
-  <div slot="nav" class="flex gap-3 ml-auto uppercase">
-    <h4 class="my-auto">
-      <a href="/" target="_self">About</a>
-    </h4>
-    <h4 class="my-auto">
-      <a href="/images" target="_self">Images</a>
-    </h4>
-    <h4 class="my-auto">
-      <a href="/events" target="_self">Events</a>
-    </h4>
-    <div class="flex items-start h-full gap-1 pl-3 border-l border-l-primary">
-      <a href="https://www.instagram.com/yes.no.klub/">
-        <Icon name="tabler:brand-soundcloud" class="border-none icon" />
+  <ul slot="nav" class="flex items-center gap-3 ml-auto uppercase">
+    <li>
+      <a class={currentPath === "" ? "active" : ""} href="/" target="_self">
+        About
       </a>
-      <a href="https://www.instagram.com/yes.no.klub/">
-        <Icon name="ion:social-instagram" class="border-none icon" />
+    </li>
+    <li>
+      <a
+        class={currentPath === "images" ? "active" : ""}
+        href="/images"
+        target="_self"
+      >
+        Images
       </a>
-      <a href="https://www.facebook.com/yesnoklubyk">
-        <Icon name="carbon:logo-facebook" class="border-none icon" />
+    </li>
+    <li>
+      <a
+        class={currentPath === "events" ? "active" : ""}
+        href="/events"
+        target="_self"
+      >
+        Events
       </a>
-    </div>
-  </div>
+    </li>
+    <li>
+      <div
+        class="flex items-center h-full gap-1 pl-3 border-l border-l-primary"
+      >
+        <a href="https://www.instagram.com/yes.no.klub/">
+          <Icon name="tabler:brand-soundcloud" class="icon h-8 w-8" />
+        </a>
+        <a href="https://www.instagram.com/yes.no.klub/">
+          <Icon name="ion:social-instagram" class="icon" />
+        </a>
+        <a href="https://www.facebook.com/yesnoklubyk">
+          <Icon name="ant-design:facebook-filled" class="icon rounded-full" />
+        </a>
+      </div>
+    </li>
+  </ul>
   <slot />
 </Base>
+
+<style>
+  .active {
+    @apply text-secondary;
+  }
+</style>
