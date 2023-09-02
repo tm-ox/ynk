@@ -1,0 +1,16 @@
+<div class="z-50 cursor-pointer hamburger ml-44 sm:hidden">
+    <span class="mb-2 line"></span>
+    <span class="line"></span>
+</div>
+
+<style>
+    .hamburger .line {
+        @apply block w-9 h-[6px] bg-primary hover:bg-hover;
+    }
+</style>
+
+<script is:inline>
+document.querySelector(".hamburger").addEventListener("click", () => {
+    document.querySelector(".main-nav").classList.toggle("expanded");
+});
+</script>

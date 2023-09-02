@@ -1,58 +1,63 @@
 ---
+import Hamburger from "../components/Hamburger.astro";
 import "../styles/global.css";
 import Base from "./Base.astro";
-import { Icon } from "astro-icon";
+import Sosmed from "../components/Sosmed.astro";
+import Theme from "../components/Theme.astro";
 
 const pathname = new URL(Astro.request.url).pathname;
 const currentPath = pathname.slice(1); // remove the first "/"
 ---
 
 <Base>
-  <ul slot="nav" class="flex items-center gap-3 ml-auto uppercase">
-    <li>
-      <a class={currentPath === "" ? "active" : ""} href="/" target="_self">
-        About
-      </a>
-    </li>
-    <li>
-      <a
-        class={currentPath === "images" ? "active" : ""}
-        href="/images"
-        target="_self"
+  <div slot="nav" class="flex items-center">
+    <Hamburger />
+    <div
+      class="absolute top-0 left-0 justify-center hidden w-full h-screen sm:flex sm:w-auto sm:h-auto sm:relative main-nav bg-tertiary/90"
+    >
+      <ul
+        class="flex flex-col items-center justify-center sm:flex-row sm:gap-x-3 gap-y-6"
       >
-        Images
-      </a>
-    </li>
-    <li>
-      <a
-        class={currentPath === "events" ? "active" : ""}
-        href="/events"
-        target="_self"
-      >
-        Events
-      </a>
-    </li>
-    <li>
-      <div
-        class="flex items-center h-full gap-1 pl-3 border-l border-l-primary"
-      >
-        <a href="https://www.instagram.com/yes.no.klub/">
-          <Icon name="tabler:brand-soundcloud" class="icon h-8 w-8" />
-        </a>
-        <a href="https://www.instagram.com/yes.no.klub/">
-          <Icon name="ion:social-instagram" class="icon" />
-        </a>
-        <a href="https://www.facebook.com/yesnoklubyk">
-          <Icon name="ant-design:facebook-filled" class="icon rounded-full" />
-        </a>
-      </div>
-    </li>
-  </ul>
+        <li>
+          <a class={currentPath === "" ? "active" : ""} href="/" target="_self">
+            About
+          </a>
+        </li>
+        <li>
+          <a
+            class={currentPath === "events" ? "active" : ""}
+            href="/events"
+            target="_self"
+          >
+            Events
+          </a>
+        </li>
+        <li>
+          <a
+            class={currentPath === "images" ? "active" : ""}
+            href="/images"
+            target="_self"
+          >
+            Images
+          </a>
+        </li>
+        <li>
+          <Sosmed />
+        </li>
+        <li>
+          <Theme />
+        </li>
+      </ul>
+    </div>
+  </div>
   <slot />
 </Base>
 
 <style>
   .active {
     @apply text-secondary;
+  }
+  .expanded {
+    @apply flex;
   }
 </style>

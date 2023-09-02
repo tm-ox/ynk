@@ -100,13 +100,13 @@
     @apply my-2 text-primary;
   }
   li a {
-    @apply p-0 mb-0 text-base font-normal tracking-wide font-displayCon md:text-lg;
+    @apply p-0 mb-0 text-2xl font-normal tracking-wide uppercase font-displayCon sm:text-lg;
   }
 }
 
 @layer components {
   .icon {
-    @apply z-50 text-4xl transition cursor-pointer w-7 h-7 text-primary border-primary bg-none hover:text-hover;
+    @apply z-50 w-8 h-8 text-4xl transition cursor-pointer sm:w-6 sm:h-6 text-primary border-primary bg-none hover:text-hover;
   }
   .eventGrid {
     @apply grid grid-cols-2 gap-2 md:grid-cols-6;

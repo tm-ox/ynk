@@ -1,0 +1,32 @@
+---
+import { Icon } from "astro-icon";
+---
+
+<button
+    class="z-50 h-8 ml-1 sm:pl-3 sm:border-l sm:border-l-primary"
+    data-theme-toggle
+    aria-label="toggle theme"
+    transition:persist="theme"
+>
+    <Icon name="bx:bxs-sun" class="icon" />
+</button>
+
+<script is:inline>
+const themeToggles = document.querySelectorAll("[data-theme-toggle]");
+
+const getTheme = () => localStorage.getItem("theme") || "dark";
+
+const setTheme = (theme) =>
+    document.documentElement.setAttribute("data-theme", theme);
+
+window.addEventListener("DOMContentLoaded", () => setTheme(getTheme()));
+document.addEventListener("astro:after-swap", () => setTheme(getTheme()));
+
+themeToggles.forEach((toggle) => {
+    toggle.addEventListener("click", () => {
+        const nextTheme = getTheme() === "light" ? "dark" : "light";
+        localStorage.setItem("theme", nextTheme);
+        setTheme(nextTheme);
+    });
+});
+</script>
