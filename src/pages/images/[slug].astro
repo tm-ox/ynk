@@ -28,7 +28,7 @@ const { image, prevImage, nextImage } = Astro.props;
 
 <Base>
   <div slot="nav" class="flex items-center w-full gap-3">
-    <h3 class="m-0 ml-auto">{image.alt}</h3>
+    <h3 class="m-0 ml-auto invisible md:visible">{image.alt}</h3>
     <div class="flex items-center gap-1 pl-3 border-l border-l-primary">
       {
         prevImage.id && (
@@ -50,10 +50,11 @@ const { image, prevImage, nextImage } = Astro.props;
     </div>
   </div>
   <section class="h-[calc(100vh-96px)]" transition:name={image.id}>
+    <h3 class="md:hidden">{image.alt}</h3>
     <Image
       src={image.src}
       alt={image.alt}
-      class="object-contain w-full h-full mt-1 rounded-xl"
+      class="object-contain w-full h-full"
     />
   </section>
 </Base>

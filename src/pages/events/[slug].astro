@@ -60,7 +60,8 @@ const { Content } = await event.render();
           </h2>        
         </div>
         <hr />
-        <div class="flex gap-10">
+        <div class="flex flex-col sm:flex-row justify-between">
+          <div class="flex w-full">
           <div class="flex flex-col">
             <h5>date:</h5>
             <h4>{event.data.date}</h4>
@@ -73,7 +74,9 @@ const { Content } = await event.render();
               </div>
             )
           }
-          <div class="mr-auto">
+          </div>
+          <hr>
+          <div class="w-full">
             <h5>venue:</h5>
             <h4>
               <a href={event.data.venue.url} target="_blank">
@@ -82,7 +85,7 @@ const { Content } = await event.render();
             </h4>
           </div>
         </div>
-        <hr class="mt-1" />
+        <hr />
         {
           event.data.with !== "" && (
         <h5 class="mt-1">with:</h5>

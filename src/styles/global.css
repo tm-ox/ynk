@@ -73,7 +73,7 @@
     @apply mb-2 text-xl md:text-3xl;
   }
   h3 {
-    @apply mb-2 text-sm md:text-xl;
+    @apply mb-2 text-base md:text-lg;
   }
   h4 {
     @apply p-0 mb-0 text-base font-normal tracking-wide font-displayCon md:text-lg;
@@ -93,14 +93,17 @@
   p a {
     @apply font-medium font-displayCon;
   }
-  img {
-    @apply rounded md:rounded-sm;
-  }
   hr {
     @apply my-2 text-primary;
   }
+  ul {
+    @apply w-full;
+  }
+  li {
+    @apply w-full;
+  }
   li a {
-    @apply p-0 mb-0 text-2xl font-normal tracking-wide uppercase font-displayCon sm:text-lg;
+    @apply p-0 mb-0 text-2xl md:text-lg font-normal tracking-wide uppercase font-displayCon sm:text-base w-full;
   }
 }
 
@@ -109,7 +112,7 @@
     @apply z-50 w-8 h-8 text-4xl transition cursor-pointer sm:w-6 sm:h-6 text-primary border-primary bg-none hover:text-hover;
   }
   .eventGrid {
-    @apply grid grid-cols-2 gap-2 md:grid-cols-6;
+    @apply grid grid-cols-2 gap-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6;
   }
   .imageGrid {
     @apply grid grid-cols-3 gap-2 md:grid-cols-4 lg:grid-cols-9;

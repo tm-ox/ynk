@@ -25,6 +25,4 @@ Dalam pertunjukan ini, performer mewujudkan berbagai karakter legenda kepahlawan
 
 Versi audio dari karya ini yang dirilis pada tahun baru 1455 Hijriyah bisa didengar di https://yesnowave.com
 
-<hr />
-
-###### #rajakirik #phantasmagoriaofjathilan #jathilan
+#rajakirik #phantasmagoriaofjathilan #jathilan
