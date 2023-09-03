@@ -88,7 +88,7 @@
     @apply mb-2 text-sm font-light tracking-wide font-body text-secondary md:text-base;
   }
   a {
-    @apply  transition text-primary hover:text-hover;
+    @apply transition text-primary hover:text-hover;
   }
   p a {
     @apply font-medium font-displayCon;
