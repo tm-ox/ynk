@@ -9,20 +9,32 @@ const currentPath = pathname.slice(1); // remove the first "/"
 ---
 
 <Base>
-  <div slot="nav" class="flex w-full items-center justify-center">
-    <h3 class="mr-auto my-auto uppercase font-extrabold tracking-wider">
+  <div slot="nav" class="flex items-center justify-center w-full">
+    <h3
+      class="hidden my-auto mr-auto font-extrabold tracking-wider uppercase sm:block"
+    >
       Yes No Klub
     </h3>
     <Hamburger />
     <div
-      class="absolute top-0 left-0 justify-center hidden w-full h-screen sm:flex sm:w-auto sm:h-auto sm:relative main-nav bg-tertiary/90 sm:bg-opacity-0"
+      class="absolute top-0 left-0 justify-center hidden w-full h-screen sm:flex sm:w-auto sm:h-auto sm:relative main-nav bg-tertiary/90 sm:bg-tertiary/0"
     >
       <ul
-        class="flex flex-col items-center justify-center sm:flex-row sm:gap-x-3 text-center"
+        class="flex flex-col items-center justify-center text-center sm:flex-row sm:gap-x-3"
       >
+        <li class="sm:hidden">
+          <hr class="sm:hidden" />
+          <a class={currentPath === "" ? "active" : ""} href="/" target="_self"
+            >Yes No Klub</a
+          >
+        </li>
         <li>
           <hr class="sm:hidden" />
-          <a class={currentPath === "" ? "active" : ""} href="/" target="_self">
+          <a
+            class={currentPath === "about" ? "active" : ""}
+            href="/about"
+            target="_self"
+          >
             About
           </a>
           <hr class="sm:hidden" />

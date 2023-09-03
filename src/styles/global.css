@@ -57,7 +57,7 @@
     @apply pt-16 pb-8;
   }
   section {
-    @apply pt-3 pb-4 border-y border-y-primary;
+    @apply pt-3 pb-4 border-y border-y-primary min-h-[calc(100vh-106px)] sm:min-h-[calc(100vh-96px)];
   }
   h1,
   h2,
@@ -103,7 +103,7 @@
     @apply w-full;
   }
   li a {
-    @apply p-0 mb-0 text-2xl md:text-lg font-normal tracking-wide uppercase font-displayCon sm:text-base w-full;
+    @apply w-full p-0 mb-0 text-2xl font-normal tracking-wide uppercase md:text-lg font-displayCon sm:text-base;
   }
 }
 

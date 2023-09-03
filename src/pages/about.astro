@@ -1,0 +1,26 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+
+import * as about from "../content/about/about.md";
+import { Content as Content } from "../content/about/about.md";
+---
+
+<BaseLayout>
+  <section>
+    <div class="grid text-center sm:text-left sm:gap-6 sm:grid-cols-3">
+      <h2 class="mt-1 text-sm sm:text-2xl sm:text-right">
+        {about.frontmatter.description}
+      </h2>
+      <hr class="invisible sm:hidden" />
+      <div class="col-span-2">
+        <hr class="sm:hidden" />
+        <h1>{about.frontmatter.title}</h1>
+        <hr />
+        <div class="grid sm:gap-6 sm:grid-cols-2">
+          <Content />
+        </div>
+        <hr />
+      </div>
+    </div>
+  </section>
+</BaseLayout>
