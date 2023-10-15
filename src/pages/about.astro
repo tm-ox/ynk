@@ -7,13 +7,14 @@ import { Content as Content } from "../content/about/about.md";
 
 <BaseLayout>
   <section>
-    <div class="grid text-center sm:text-left sm:gap-6 sm:grid-cols-3">
-      <h2 class="mt-1 text-sm sm:text-2xl sm:text-right">
+    <div class="grid text-left lg:gap-6 lg:grid-cols-3">
+      <h2
+        class="mt-1 text-sm sm:text-2xl lg:text-right col-span-1 sm:col-span-3 lg:col-span-1"
+      >
         {about.frontmatter.description}
       </h2>
-      <hr class="invisible sm:hidden" />
       <div class="col-span-2">
-        <hr class="sm:hidden" />
+        <hr class="lg:hidden" />
         <h1>{about.frontmatter.title}</h1>
         <hr />
         <div class="grid sm:gap-6 sm:grid-cols-2">

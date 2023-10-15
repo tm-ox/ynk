@@ -28,7 +28,9 @@ const { image, prevImage, nextImage } = Astro.props;
 
 <Base>
   <div slot="nav" class="flex items-center w-full gap-3">
-    <h3 class="m-0 ml-auto invisible md:visible">{image.alt}</h3>
+    <h4 class="m-0 ml-auto invisible md:visible">
+      {image.alt}
+    </h4>
     <div class="flex items-center gap-1 pl-3 border-l border-l-primary">
       {
         prevImage.id && (

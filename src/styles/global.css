@@ -1,6 +1,6 @@
 @import url("https://fonts.googleapis.com/css2?family=BioRhyme:wght@200;300;400;700;800&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=BioRhyme+Expanded:wght@200;300;400;700;800&display=swap");
-@import url('https://fonts.googleapis.com/css2?family=Pathway+Extreme:wght@300;400;600;700&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Pathway+Extreme:wght@300;400;600;700&display=swap");
 
 @tailwind base;
 @tailwind components;
@@ -76,14 +76,14 @@
     @apply mb-2 text-base md:text-lg;
   }
   h4 {
-    @apply p-0 mb-0 text-base font-normal tracking-wide font-displayCon md:text-lg;
+    @apply p-0 mb-0 text-base font-normal tracking-wide font-display;
   }
   h5 {
     @apply text-xs font-displayCon md:text-sm;
-  } 
+  }
   h6 {
     @apply text-xs font-light font-displayCon md:text-sm text-primary;
-  } 
+  }
   p {
     @apply mb-2 text-sm font-light tracking-wide font-body text-secondary md:text-base;
   }
@@ -103,7 +103,7 @@
     @apply w-full;
   }
   li a {
-    @apply w-full p-0 mb-0 text-2xl font-normal tracking-wide uppercase md:text-lg font-displayCon sm:text-base;
+    @apply w-full p-0 mb-0 text-xl font-normal tracking-wide uppercase md:text-base font-displayCon sm:text-base;
   }
 }
 
