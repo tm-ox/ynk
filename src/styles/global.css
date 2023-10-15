@@ -109,13 +109,13 @@
 
 @layer components {
   .icon {
-    @apply z-50 w-8 h-8 text-4xl transition cursor-pointer sm:w-6 sm:h-6 text-primary border-primary bg-none hover:text-hover;
+    @apply z-50 text-4xl transition cursor-pointer w-7 h-7 text-primary border-primary bg-none hover:text-hover;
   }
   .eventGrid {
     @apply grid grid-cols-2 gap-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6;
   }
   .imageGrid {
-    @apply grid grid-cols-3 gap-2 md:grid-cols-4 lg:grid-cols-9;
+    @apply grid grid-cols-3 gap-2 md:grid-cols-4 lg:grid-cols-6 xl:grid-cols-8;
   }
 }
 

@@ -35,14 +35,14 @@ const { image, prevImage, nextImage } = Astro.props;
       {
         prevImage.id && (
           <a href={`/images/${prevImage.id}/`}>
-            <Icon name="ion:arrow-back-sharp" class="icon" />
+            <Icon name="ion:arrow-back-sharp" class="icon h-6 w-6" />
           </a>
         )
       }
       {
         nextImage.id && (
           <a href={`/images/${nextImage.id}/`}>
-            <Icon name="ion:arrow-forward-sharp" class="icon" />
+            <Icon name="ion:arrow-forward-sharp" class="icon h-6 w-6" />
           </a>
         )
       }
