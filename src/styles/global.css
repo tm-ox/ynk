@@ -11,13 +11,13 @@
     --color-primary: 238 0 238;
     --color-primary-hover: 255 61 255;
     --color-secondary: 213 215 213;
-    --color-tertiary: 21 25 47;
+    --color-tertiary: 35 40 47;
   }
   @media (prefers-color-scheme: light) {
     :root {
       --color-primary: 238 0 238;
       --color-primary-hover: 255 61 255;
-      --color-secondary: 21 25 47;
+      --color-secondary: 35 40 47;
       --color-tertiary: 213 215 213;
     }
   }
@@ -26,20 +26,20 @@
       --color-primary: 238 0 238;
       --color-primary-hover: 255 61 255;
       --color-secondary: 213 215 213;
-      --color-tertiary: 21 25 47;
+      --color-tertiary: 35 40 47;
     }
   }
   [data-theme="light"] {
     --color-primary: 238 0 238;
     --color-primary-hover: 255 61 255;
-    --color-secondary: 21 25 47;
+    --color-secondary: 35 40 47;
     --color-tertiary: 213 215 213;
   }
   [data-theme="dark"] {
     --color-primary: 238 0 238;
     --color-primary-hover: 255 61 255;
     --color-secondary: 213 215 213;
-    --color-tertiary: 21 25 47;
+    --color-tertiary: 35 40 47;
   }
   html {
     @apply bg-tertiary;
@@ -48,7 +48,7 @@
     @apply max-w-[1440px] px-2 lg:mx-auto;
   }
   header {
-    @apply fixed top-0 left-0 z-50 w-full bg-tertiary/20 backdrop-blur;
+    @apply fixed top-0 left-0 z-50 w-full bg-tertiary/80 backdrop-blur;
   }
   nav {
     @apply flex justify-between items-center gap-2 h-16 max-w-[1440px] mx-auto px-2;
