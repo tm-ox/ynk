@@ -1,11 +1,14 @@
 ---
 id: pp2023-day-1
 title: Pestapora 2023 1
-type: Pestapora 2023
-number: Day 1
 date: "2023-09-22"
 time: ""
-venue: { name: Gambir Expo, Kemayoran Jakarta, url: https://www.instagram.com/pestapora }
+venue:
+  {
+    name: Gambir Expo,
+    Kemayoran Jakarta,
+    url: https://www.instagram.com/pestapora,
+  }
 with: ""
 info: ""
 flyer: { src: ../flyers/YNK_Pestapora_2023_01.jpg, alt: Pestapora }
