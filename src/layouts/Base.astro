@@ -3,6 +3,7 @@ import "../styles/global.css";
 import { ViewTransitions } from "astro:transitions";
 import Logo from "../components/Logo.astro";
 import Theme from "../components/Theme.astro";
+import { GoogleAnalytics } from "astro-google-analytics";
 ---
 
 <html lang="en">
@@ -49,6 +50,7 @@ import Theme from "../components/Theme.astro";
     <meta property="twitter:image" content="android-chrome-512x512.png" />
     <ViewTransitions />
     <base target="_blank" />
+    <GoogleAnalytics id="G-T32SXCFCXD" />
   </head>
   <body>
     <header>
