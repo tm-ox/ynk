@@ -27,34 +27,34 @@ images:
     id: pp2023-day-3-04
   - src: ../images/pestapora day 3_19.jpg
     alt: YNK#pp2023-day-3
-    id: pp2023-day-3-04
+    id: pp2023-day-3-05
   - src: ../images/pestapora day 3_27.jpg
     alt: YNK#pp2023-day-3
-    id: pp2023-day-3-05
+    id: pp2023-day-3-06
   - src: ../images/pestapora day 3_38.jpg
     alt: YNK#pp2023-day-3
-    id: pp2023-day-3-06
+    id: pp2023-day-3-07
   - src: ../images/pestapora day 3_40.jpg
     alt: YNK#pp2023-day-3
-    id: pp2023-day-3-07
+    id: pp2023-day-3-08
   - src: ../images/pestapora day 3_42.jpg
     alt: YNK#pp2023-day-3
-    id: pp2023-day-3-08
+    id: pp2023-day-3-09
   - src: ../images/pestapora day 3_47.jpg
     alt: YNK#pp2023-day-3
-    id: pp2023-day-3-09
+    id: pp2023-day-3-10
   - src: ../images/pestapora day 3_51.jpg
     alt: YNK#pp2023-day-3
-    id: pp2023-day-3-10
+    id: pp2023-day-3-11
   - src: ../images/pestapora day 3_112.jpg
     alt: YNK#pp2023-day-3
-    id: pp2023-day-3-11
+    id: pp2023-day-3-12
   - src: ../images/pestapora day 3_115.jpg
     alt: YNK#pp2023-day-3
-    id: pp2023-day-3-12
+    id: pp2023-day-3-13
   - src: ../images/pestapora day 3_116.jpg
     alt: YNK#pp2023-day-3
-    id: pp2023-day-3-13
+    id: pp2023-day-3-14
 ---
 
 _Full lineup:_

@@ -27,31 +27,31 @@ images:
     id: pp2023-day-2-04
   - src: ../images/Pespor day 2 sony-37.jpg
     alt: YNK#pp2023-day-2
-    id: pp2023-day-2-04
+    id: pp2023-day-2-05
   - src: ../images/Pespor day 2 sony-42.jpg
     alt: YNK#pp2023-day-2
-    id: pp2023-day-2-05
+    id: pp2023-day-2-06
   - src: ../images/Pespor day 2 sony-58.jpg
     alt: YNK#pp2023-day-2
-    id: pp2023-day-2-06
+    id: pp2023-day-2-07
   - src: ../images/Pespor day 2 sony-62.jpg
     alt: YNK#pp2023-day-2
-    id: pp2023-day-2-07
+    id: pp2023-day-2-08
   - src: ../images/Pespor day 2 sony-63.jpg
     alt: YNK#pp2023-day-2
-    id: pp2023-day-2-08
+    id: pp2023-day-2-09
   - src: ../images/Pespor day 2 sony-64.jpg
     alt: YNK#pp2023-day-2
-    id: pp2023-day-2-09
+    id: pp2023-day-2-10
   - src: ../images/Pespor day 2 sony-74.jpg
     alt: YNK#pp2023-day-2
-    id: pp2023-day-2-10
+    id: pp2023-day-2-11
   - src: ../images/Pespor day 2-80.jpg
     alt: YNK#pp2023-day-2
-    id: pp2023-day-2-11
+    id: pp2023-day-2-12
   - src: ../images/Pespor day 2-82.jpg
     alt: YNK#pp2023-day-2
-    id: pp2023-day-2-12
+    id: pp2023-day-2-13
 ---
 
 _Full lineup:_
