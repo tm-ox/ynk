@@ -3,6 +3,7 @@ import Hamburger from "../components/Hamburger.astro";
 import "../styles/global.css";
 import Base from "./Base.astro";
 import Sosmed from "../components/Sosmed.astro";
+import { Link } from "astro-link";
 
 const pathname = new URL(Astro.request.url).pathname;
 const currentPath = pathname.slice(1); // remove the first "/"
@@ -57,6 +58,16 @@ const currentPath = pathname.slice(1); // remove the first "/"
           >
             Images
           </a>
+          <hr class="sm:hidden" />
+        </li>
+        <li>
+          <Link
+            href={"mailto:yesnoklub@gmail.com" /* Required */}
+            title={"Contact Us"}
+            externalInNewTab={true}
+          >
+            Contact
+          </Link>
           <hr class="sm:hidden" />
         </li>
         <li>
