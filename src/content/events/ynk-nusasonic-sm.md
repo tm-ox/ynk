@@ -13,24 +13,24 @@ info: ""
 flyer: { src: ../flyers/YNK_Nusasonic_SM.jpg, alt: YNK#Nusasonic }
 images:
   - src: ../images/YNKNusasonic_SM_01.jpg
-    alt: YNK#Nusasonic
+    alt: Nusasonic
     id: ynknusasonicsm-01
   - src: ../images/YNKNusasonic_SM_02.jpg
-    alt: YNK#Nusasonic
+    alt: Nusasonic
     id: ynknusasonicsm-02
   - src: ../images/YNKNusasonic_SM_03.jpg
-    alt: YNK#Nusasonic
+    alt: Nusasonic
     id: ynknusasonicsm-03
   - src: ../images/YNKNusasonic_SM_04.jpg
-    alt: YNK#Nusasonic
+    alt: Nusasonic
     id: ynknusasonicsm-04
   - src: ../images/YNKNusasonic_SM_05.jpg
-    alt: YNK#Nusasonic
+    alt: Nusasonic
     id: ynknusasonicsm-05
   - src: ../images/YNKNusasonic_SM_06.jpg
-    alt: YNK#Nusasonic
+    alt: Nusasonic
     id: ynknusasonicsm-06
   - src: ../images/YNKNusasonic_SM_07.jpg
-    alt: YNK#Nusasonic
+    alt: Nusasonic
     id: ynknusasonicsm-07
 ---

@@ -1,5 +1,5 @@
 ---
-id: pp2023-day-1
+id: pp2023-1
 title: Pestapora 2023 1
 date: "2023-09-22"
 time: ""
@@ -14,53 +14,53 @@ info: ""
 flyer: { src: ../flyers/YNK_Pestapora_2023_01.jpg, alt: Pestapora }
 images:
   - src: ../images/pestapora day 1_19.jpg
-    alt: YNK#pp2023-day-1
-    id: pp2023-day-1-01
+    alt: YNK#pp2023-1
+    id: pp2023-1-01
   - src: ../images/pestapora day 1_21.jpg
-    alt: YNK#pp2023-day-1
-    id: pp2023-day-1-02
+    alt: YNK#pp2023-1
+    id: pp2023-1-02
   - src: ../images/pestapora day 1_22.jpg
-    alt: YNK#pp2023-day-1
-    id: pp2023-day-1-03
+    alt: YNK#pp2023-1
+    id: pp2023-1-03
   - src: ../images/pestapora day 1_27.jpg
-    alt: YNK#pp2023-day-1
-    id: pp2023-day-1-04
+    alt: YNK#pp2023-1
+    id: pp2023-1-04
   - src: ../images/pestapora day 1_33.jpg
-    alt: YNK#pp2023-day-1
-    id: pp2023-day-1-05
+    alt: YNK#pp2023-1
+    id: pp2023-1-05
   - src: ../images/pestapora day 1_40.jpg
-    alt: YNK#pp2023-day-1
-    id: pp2023-day-1-06
+    alt: YNK#pp2023-1
+    id: pp2023-1-06
   - src: ../images/pestapora day 1_46.jpg
-    alt: YNK#pp2023-day-1
-    id: pp2023-day-1-07
+    alt: YNK#pp2023-1
+    id: pp2023-1-07
   - src: ../images/pestapora day 1_52.jpg
-    alt: YNK#pp2023-day-1
-    id: pp2023-day-1-08
+    alt: YNK#pp2023-1
+    id: pp2023-1-08
   - src: ../images/pestapora day 1_55.jpg
-    alt: YNK#pp2023-day-1
-    id: pp2023-day-1-09
+    alt: YNK#pp2023-1
+    id: pp2023-1-09
   - src: ../images/pestapora day 1_63.jpg
-    alt: YNK#pp2023-day-1
-    id: pp2023-day-1-10
+    alt: YNK#pp2023-1
+    id: pp2023-1-10
   - src: ../images/pestapora day 1_64.jpg
-    alt: YNK#pp2023-day-1
-    id: pp2023-day-1-11
+    alt: YNK#pp2023-1
+    id: pp2023-1-11
   - src: ../images/pestapora day 1_70.jpg
-    alt: YNK#pp2023-day-1
-    id: pp2023-day-1-12
+    alt: YNK#pp2023-1
+    id: pp2023-1-12
   - src: ../images/pestapora day 1_83.jpg
-    alt: YNK#pp2023-day-1
-    id: pp2023-day-1-13
+    alt: YNK#pp2023-1
+    id: pp2023-1-13
   - src: ../images/pestapora day 1_86.jpg
-    alt: YNK#pp2023-day-1
-    id: pp2023-day-1-14
+    alt: YNK#pp2023-1
+    id: pp2023-1-14
   - src: ../images/pestapora day 1_103.jpg
-    alt: YNK#pp2023-day-1
-    id: pp2023-day-1-15
+    alt: YNK#pp2023-1
+    id: pp2023-1-15
   - src: ../images/pestapora day 1_110.jpg
-    alt: YNK#pp2023-day-1
-    id: pp2023-day-1-16
+    alt: YNK#pp2023-1
+    id: pp2023-1-16
 ---
 
 _Full lineup:_

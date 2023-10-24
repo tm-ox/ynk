@@ -67,25 +67,25 @@
     @apply font-bold leading-none text-primary font-display;
   }
   h1 {
-    @apply mb-2 text-5xl font-black uppercase sm:text-5xl md:text-6xl xl:text-7xl;
+    @apply text-center sm:text-left mb-2 text-5xl font-black uppercase sm:text-5xl md:text-6xl xl:text-7xl;
   }
   h2 {
-    @apply mb-2 text-xl md:text-3xl;
+    @apply text-center sm:text-left mb-2 text-xl md:text-3xl;
   }
   h3 {
-    @apply mb-2 text-base md:text-lg;
+    @apply text-center sm:text-left mb-2 text-base md:text-lg;
   }
   h4 {
-    @apply p-0 mb-0 text-base font-normal tracking-wide font-display;
+    @apply text-center sm:text-left p-0 mb-0 text-base font-normal tracking-wide font-display;
   }
   h5 {
-    @apply text-xs font-displayCon md:text-sm;
+    @apply text-center sm:text-left text-xs font-displayCon md:text-sm;
   }
   h6 {
-    @apply text-xs font-light font-displayCon md:text-sm text-primary;
+    @apply text-center sm:text-left text-xs font-light font-displayCon md:text-sm text-primary;
   }
   p {
-    @apply mb-2 text-sm font-light tracking-wide font-body text-secondary md:text-base;
+    @apply text-center sm:text-left mb-2 text-sm font-light tracking-wide font-body text-secondary md:text-base;
   }
   a {
     @apply transition text-primary hover:text-hover;

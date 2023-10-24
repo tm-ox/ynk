@@ -1,5 +1,5 @@
 ---
-id: pp2023-day-3
+id: pp2023-3
 title: Pestapora 2023 3
 date: "2023-09-24"
 time: ""
@@ -14,47 +14,47 @@ info: ""
 flyer: { src: ../flyers/YNK_Pestapora_2023_03.jpg, alt: Pestapora }
 images:
   - src: ../images/pestapora day 3_8.jpg
-    alt: YNK#pp2023-day-3
-    id: pp2023-day-3-01
+    alt: YNK#pp2023-3
+    id: pp2023-3-01
   - src: ../images/pestapora day 3_9.jpg
-    alt: YNK#pp2023-day-3
-    id: pp2023-day-3-02
+    alt: YNK#pp2023-3
+    id: pp2023-3-02
   - src: ../images/pestapora day 3_12.jpg
-    alt: YNK#pp2023-day-3
-    id: pp2023-day-3-03
+    alt: YNK#pp2023-3
+    id: pp2023-3-03
   - src: ../images/pestapora day 3_16.jpg
-    alt: YNK#pp2023-day-3
-    id: pp2023-day-3-04
+    alt: YNK#pp2023-3
+    id: pp2023-3-04
   - src: ../images/pestapora day 3_19.jpg
-    alt: YNK#pp2023-day-3
-    id: pp2023-day-3-05
+    alt: YNK#pp2023-3
+    id: pp2023-3-05
   - src: ../images/pestapora day 3_27.jpg
-    alt: YNK#pp2023-day-3
-    id: pp2023-day-3-06
+    alt: YNK#pp2023-3
+    id: pp2023-3-06
   - src: ../images/pestapora day 3_38.jpg
-    alt: YNK#pp2023-day-3
-    id: pp2023-day-3-07
+    alt: YNK#pp2023-3
+    id: pp2023-3-07
   - src: ../images/pestapora day 3_40.jpg
-    alt: YNK#pp2023-day-3
-    id: pp2023-day-3-08
+    alt: YNK#pp2023-3
+    id: pp2023-3-08
   - src: ../images/pestapora day 3_42.jpg
-    alt: YNK#pp2023-day-3
-    id: pp2023-day-3-09
+    alt: YNK#pp2023-3
+    id: pp2023-3-09
   - src: ../images/pestapora day 3_47.jpg
-    alt: YNK#pp2023-day-3
-    id: pp2023-day-3-10
+    alt: YNK#pp2023-3
+    id: pp2023-3-10
   - src: ../images/pestapora day 3_51.jpg
-    alt: YNK#pp2023-day-3
-    id: pp2023-day-3-11
+    alt: YNK#pp2023-3
+    id: pp2023-3-11
   - src: ../images/pestapora day 3_112.jpg
-    alt: YNK#pp2023-day-3
-    id: pp2023-day-3-12
+    alt: YNK#pp2023-3
+    id: pp2023-3-12
   - src: ../images/pestapora day 3_115.jpg
-    alt: YNK#pp2023-day-3
-    id: pp2023-day-3-13
+    alt: YNK#pp2023-3
+    id: pp2023-3-13
   - src: ../images/pestapora day 3_116.jpg
-    alt: YNK#pp2023-day-3
-    id: pp2023-day-3-14
+    alt: YNK#pp2023-3
+    id: pp2023-3-14
 ---
 
 _Full lineup:_
