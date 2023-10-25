@@ -10,7 +10,9 @@
 </style>
 
 <script is:inline>
-document.querySelector(".hamburger").addEventListener("click", () => {
+document.addEventListener("astro:page-load", () => {
+  document.querySelector(".hamburger").addEventListener("click", () => {
     document.querySelector(".main-nav").classList.toggle("expanded");
+  });
 });
 </script>

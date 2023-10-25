@@ -26,9 +26,6 @@ dependencies:
   astro-icon:
     specifier: ^0.8.1
     version: 0.8.1
-  astro-link:
-    specifier: ^1.2.1
-    version: 1.2.1
   sharp:
     specifier: ^0.32.6
     version: 0.32.6
@@ -992,10 +989,6 @@ packages:
       node-fetch: 3.3.2
       resolve-pkg: 2.0.0
       svgo: 2.8.0
-    dev: false
-
-  /astro-link@1.2.1:
-    resolution: {integrity: sha512-bYMpGBXfucSr7TRjNVaJPjCt3sbaTcSiPdPUreC4PUkplhoAZzXid5zVDL2l9AYWAWvWxKNJdBLH0oziHdOEcA==}
     dev: false
 
   /astro@3.3.2:
