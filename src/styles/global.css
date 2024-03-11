@@ -8,36 +8,36 @@
 
 @layer base {
   :root {
-    --color-primary: 238 0 238;
-    --color-primary-hover: 255 61 255;
+    --color-primary: 3 201 29;
+    --color-primary-hover: 0 141 20;
     --color-secondary: 213 215 213;
     --color-tertiary: 35 40 47;
   }
   @media (prefers-color-scheme: light) {
     :root {
-      --color-primary: 238 0 238;
-      --color-primary-hover: 255 61 255;
+      --color-primary: 0 141 20;
+      --color-primary-hover: 3 201 29;
       --color-secondary: 35 40 47;
-      --color-tertiary: 213 215 213;
+      --color-tertiary: 235 255 254;
     }
   }
   @media (prefers-color-scheme: dark) {
     :root {
-      --color-primary: 238 0 238;
-      --color-primary-hover: 255 61 255;
+      --color-primary: 3 201 29;
+      --color-primary-hover: 0 141 20;
       --color-secondary: 213 215 213;
       --color-tertiary: 35 40 47;
     }
   }
   [data-theme="light"] {
-    --color-primary: 238 0 238;
-    --color-primary-hover: 255 61 255;
+    --color-primary: 0 141 20;
+    --color-primary-hover: 3 201 29;
     --color-secondary: 35 40 47;
-    --color-tertiary: 213 215 213;
+    --color-tertiary: 235 255 254;
   }
   [data-theme="dark"] {
-    --color-primary: 238 0 238;
-    --color-primary-hover: 255 61 255;
+    --color-primary: 3 201 29;
+    --color-primary-hover: 0 141 20;
     --color-secondary: 213 215 213;
     --color-tertiary: 35 40 47;
   }
