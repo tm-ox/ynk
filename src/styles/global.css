@@ -139,5 +139,5 @@ select:-webkit-autofill:focus {
 
 ::-webkit-scrollbar-thumb {
   border-radius: 6px;
-  background: linear-gradient(transparent, #ee00ee, transparent);
+  background: linear-gradient(transparent, #03C91D, transparent);
 }
