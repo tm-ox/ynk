@@ -1,4 +1,5 @@
 ---
+import Hamburger from "../../components/Hamburger.astro";
 import { getCollection } from "astro:content";
 import { Image } from "astro:assets";
 import Base from "../../layouts/Base.astro";
@@ -27,7 +28,10 @@ const { image, prevImage, nextImage } = Astro.props;
 ---
 
 <Base>
-  <div slot="nav" class="flex items-center w-full gap-3">
+    <div class="collapse">
+      <Hamburger  />
+    </div>
+    <div slot="nav" class="flex items-center w-full gap-3">
     <h4 class="m-0 ml-auto invisible md:visible">
       {image.alt}
     </h4>

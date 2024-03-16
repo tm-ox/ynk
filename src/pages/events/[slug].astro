@@ -25,6 +25,9 @@ const { Content } = await event.render();
 ---
 
 <Base>
+    <div class="collapse">
+      <Hamburger  />
+    </div>
     <div slot="nav" class="flex items-center gap-1 pl-3 ml-auto border-l border-l-primary">
       {
         prevEvent.data && (
