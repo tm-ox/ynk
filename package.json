@@ -11,6 +11,7 @@
   },
   "dependencies": {
     "@astrojs/alpinejs": "^0.2.2",
+    "@astrojs/partytown": "^2.0.4",
     "@astrojs/tailwind": "^5.0.0",
     "@types/alpinejs": "^3.7.2",
     "alpinejs": "^3.12.3",
