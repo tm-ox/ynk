@@ -3,7 +3,7 @@ import "../styles/global.css";
 import { ViewTransitions } from "astro:transitions";
 import Logo from "../components/Logo.astro";
 import Theme from "../components/Theme.astro";
-// import { GoogleAnalytics } from "astro-google-analytics";
+import { GoogleAnalytics } from "astro-google-analytics";
 ---
 
 <html lang="en">
@@ -50,9 +50,9 @@ import Theme from "../components/Theme.astro";
     <meta property="twitter:image" content="android-chrome-512x512.png" />
     <ViewTransitions />
     <base target="_blank" />
-    <!-- <GoogleAnalytics id="G-T32SXCFCXD" /> -->
+    <GoogleAnalytics id="G-T32SXCFCXD" />
     <!-- Google tag (gtag.js) -->
-    <script
+    <!-- <script
       type="text/partytown"
       async
       src="https://www.googletagmanager.com/gtag/js?id=G-T32SXCFCXD"></script>
@@ -64,7 +64,7 @@ import Theme from "../components/Theme.astro";
       gtag("js", new Date());
 
       gtag("config", "G-T32SXCFCXD");
-    </script>
+    </script> -->
   </head>
   <body>
     <header>
