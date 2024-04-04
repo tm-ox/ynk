@@ -3,7 +3,6 @@ import { getCollection } from "astro:content";
 import { Image } from "astro:assets";
 import Base from "../../layouts/Base.astro";
 import { Icon } from "astro-icon";
-import Hamburger from "../../components/Hamburger.astro";
 
 export async function getStaticPaths() {
   const events = await getCollection("events");
@@ -26,9 +25,6 @@ const { Content } = await event.render();
 ---
 
 <Base>
-  <div class="collapse">
-    <Hamburger />
-  </div>
   <div
     slot="nav"
     class="flex items-center gap-1 pl-3 ml-auto border-l border-l-primary"
