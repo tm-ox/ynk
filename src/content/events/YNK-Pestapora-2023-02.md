@@ -40,7 +40,7 @@ images:
   - src: ../images/Pespor day 2 sony-63.jpg
     alt: YNK#pp2023-2
     id: pp2023-2-09
-  - src: ../images/Pespor day 2 sony-64.jpg
+  - src: ../images/Pespor-day-2-sony-64.jpg
     alt: YNK#pp2023-2
     id: pp2023-2-10
   - src: ../images/Pespor day 2 sony-74.jpg
