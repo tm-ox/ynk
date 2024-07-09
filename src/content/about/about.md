@@ -5,7 +5,7 @@ description: YES NO KLUB UTILISES MULTIPLE VENUES AND FORMATS TO FACILITATE LOCA
 
 <div>
 
-Established in 2010 as a monthly experimental whatever event at Jogja National Museum in Yogyakarta, Indonesia by Wok the Rock ([Yes No Wave](https://yesnowave.com), [Mes 56](http://mes56.com/)) & Timothy O'Donoghue ([Oxen Free](https://oxenfree.net), [Bus](https://www.busprojects.org.au/)), Yes No Klub (YNK) now cosnsists of a core group of contributors responsible for operations as required.
+Established in 2010 as a monthly experimental whatever event at Jogja National Museum in Yogyakarta, Indonesia by Wok the Rock ([Yes No Wave](https://yesnowave.com), [Mes 56](http://mes56.com/)) & Timothy O'Donoghue ([Oxen Free](https://oxenfree.net), [Bus](https://www.busprojects.org.au/)), Yes No Klub (YNK) now consists of a core group of contributors responsible for operations as required.
 
 YNK is an official host organisation for [AsiaLink](https://asialink.unimelb.edu.au/) (Australia) in Indonesia and co-managed a project with the German cultural centre [Goethe-Institute](https://www.goethe.de/ins/id/en/index.html/), Germany's [CTM Festival](https://www.ctm-festival.de/) for Adventurous Music and Art, Singapore's [Playfreely / Blackkaji](https://www.facebook.com/playfreelyexperiment) and Manila's [WSK Festival](https://www.wsk.io/) entitled [Nusasonic](http://www.nusasonic.com/).
 
