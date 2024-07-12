@@ -1,7 +1,7 @@
 ---
 import { getCollection } from "astro:content";
 import { Image } from "astro:assets";
-import Base from "../../layouts/Base.astro";
+import BaseLayout from "../../layouts/BaseLayout.astro";
 import { Icon } from "astro-icon";
 
 export async function getStaticPaths() {
@@ -24,10 +24,10 @@ const { event, prevEvent, nextEvent } = Astro.props;
 const { Content } = await event.render();
 ---
 
-<Base>
+<BaseLayout>
   <div
-    slot="nav"
-    class="flex items-center gap-1 pl-3 ml-auto border-l border-l-primary"
+    slot="subnav"
+    class="flex items-center gap-1 px-3 ml-4 mr-auto border-x border-x-primary"
   >
     {
       prevEvent.data && (
@@ -113,4 +113,4 @@ const { Content } = await event.render();
       </div>
     </div>
   </section>
-</Base>
+</BaseLayout>

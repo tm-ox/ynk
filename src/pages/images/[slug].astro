@@ -1,7 +1,7 @@
 ---
 import { getCollection } from "astro:content";
 import { Image } from "astro:assets";
-import Base from "../../layouts/Base.astro";
+import BaseLayout from "../../layouts/BaseLayout.astro";
 import { Icon } from "astro-icon";
 
 export async function getStaticPaths() {
@@ -26,12 +26,13 @@ export async function getStaticPaths() {
 const { image, prevImage, nextImage } = Astro.props;
 ---
 
-<Base>
-  <div slot="nav" class="flex items-center w-full gap-3">
-    <h4 class="m-0 ml-auto invisible md:visible">
-      {image.alt}
-    </h4>
-    <div class="flex items-center gap-1 pl-3 border-l border-l-primary">
+<BaseLayout>
+  <div
+    slot="subnav"
+    class="flex items-center gap-1 px-3 ml-3 mr-auto border-x border-x-primary"
+  >
+    
+    <div class="flex items-center gap-1">
       {
         prevImage.id && (
           <a href={`/images/${prevImage.id}/`}>
@@ -51,7 +52,7 @@ const { image, prevImage, nextImage } = Astro.props;
       </a>
     </div>
   </div>
-  <section class="h-[calc(100vh-96px)]" transition:name={image.id}>
+  <section class="h-[calc(100vh-96px)] flex flex-col" transition:name={image.id}>
     <h3 class="md:hidden">{image.alt}</h3>
     <Image
       src={image.src}
@@ -60,4 +61,4 @@ const { image, prevImage, nextImage } = Astro.props;
       class="object-contain w-full h-full"
     />
   </section>
-</Base>
+</BaseLayout>

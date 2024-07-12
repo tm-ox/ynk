@@ -12,13 +12,14 @@ const currentPath = pathname.slice(1); // remove the first "/"
 <Base>
   <div slot="nav" class="flex items-center justify-center w-full">
     <h4
-      class="hidden mt-auto mb-[1px] mr-auto font-extrabold tracking-wider uppercase sm:block"
+      class="hidden mt-auto mb-[1px] font-extrabold tracking-wider uppercase sm:block"
     >
       <a href="/">Yes No Klub</a>
     </h4>
-    <Hamburger transition:persist />
+    <slot name="subnav" transition:persist />
+    <Hamburger />
     <div
-      class="absolute top-0 left-0 justify-center hidden w-full h-screen sm:flex sm:w-auto sm:h-auto sm:relative main-nav bg-tertiary/90 sm:bg-tertiary/0"
+      class="absolute top-0 left-0 ml-auto justify-center hidden w-full h-screen sm:flex sm:w-auto sm:h-auto sm:relative main-nav bg-tertiary/90 sm:bg-tertiary/0"
     >
       <ul
         class="flex flex-col items-center justify-center text-center sm:flex-row sm:gap-x-3"
