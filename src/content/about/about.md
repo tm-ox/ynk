@@ -18,6 +18,6 @@ In 2020 YNK furthered its international network through a collaboration with Hur
 
 During Covid YNK shifted its focus to the curation of content for external events, most notably [ArtJog](https://www.artjog.id/), the facilitation of a stage at [Pestapora](https://pestapora.com) with artists from throughout Indonesia, Malaysia, Thailand and the Philippines and virtual participation in [MUTEK Montréal](https://montreal.mutek.org/).
 
-2023 sees YNK return to regular programming with electronic event Yes No Disko, continued curation for both ArtJog and Pestapora and sporadic Yes No Klub gigs.
+Post-covid YNK has returned to semi-regular programming with electronic event Yes No Disko, continued curation for both ArtJog and Pestapora and sporadic Yes No Klub gigs.
 
 </div>
