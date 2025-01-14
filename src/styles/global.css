@@ -7,116 +7,116 @@
 @tailwind utilities;
 
 @layer base {
-  :root {
-    --color-primary: 3 201 29;
-    --color-primary-hover: 0 141 20;
-    --color-secondary: 213 215 213;
-    --color-tertiary: 35 40 47;
-  }
-  @media (prefers-color-scheme: light) {
     :root {
-      --color-primary: 0 141 20;
-      --color-primary-hover: 3 201 29;
-      --color-secondary: 35 40 47;
-      --color-tertiary: 235 255 254;
+        --color-primary: 3 201 29;
+        --color-primary-hover: 0 141 20;
+        --color-secondary: 213 215 213;
+        --color-tertiary: 4 27 27;
     }
-  }
-  @media (prefers-color-scheme: dark) {
-    :root {
-      --color-primary: 3 201 29;
-      --color-primary-hover: 0 141 20;
-      --color-secondary: 213 215 213;
-      --color-tertiary: 35 40 47;
+    @media (prefers-color-scheme: light) {
+        :root {
+            --color-primary: 0 141 20;
+            --color-primary-hover: 3 201 29;
+            --color-secondary: 32 18 1;
+            --color-tertiary: 2228 251 251;
+        }
     }
-  }
-  [data-theme="light"] {
-    --color-primary: 0 141 20;
-    --color-primary-hover: 3 201 29;
-    --color-secondary: 35 40 47;
-    --color-tertiary: 235 255 254;
-  }
-  [data-theme="dark"] {
-    --color-primary: 3 201 29;
-    --color-primary-hover: 0 141 20;
-    --color-secondary: 213 215 213;
-    --color-tertiary: 35 40 47;
-  }
-  html {
-    @apply bg-tertiary;
-  }
-  body {
-    @apply max-w-[1440px] px-2 lg:mx-auto;
-  }
-  header {
-    @apply fixed top-0 left-0 z-50 w-full bg-tertiary/80 backdrop-blur;
-  }
-  nav {
-    @apply flex justify-between items-center gap-2 h-16 max-w-[1440px] mx-auto px-2;
-  }
-  main {
-    @apply pt-16 pb-8;
-  }
-  section {
-    @apply flex items-center pt-3 pb-4 border-y border-y-primary min-h-[calc(100vh-106px)] sm:min-h-[calc(100vh-96px)];
-  }
-  h1,
-  h2,
-  h3,
-  h4,
-  h5 {
-    @apply font-bold leading-none text-primary font-display;
-  }
-  h1 {
-    @apply text-center sm:text-left mb-2 text-5xl font-black uppercase sm:text-5xl md:text-6xl xl:text-7xl;
-  }
-  h2 {
-    @apply text-center sm:text-left mb-2 text-xl md:text-3xl;
-  }
-  h3 {
-    @apply text-center sm:text-left mb-2 text-base md:text-lg;
-  }
-  h4 {
-    @apply text-center sm:text-left p-0 mb-0 text-base font-normal tracking-wide font-display;
-  }
-  h5 {
-    @apply text-center sm:text-left text-xs font-displayCon md:text-sm;
-  }
-  h6 {
-    @apply text-center sm:text-left text-xs font-light font-displayCon md:text-sm text-primary;
-  }
-  p {
-    @apply text-center sm:text-left mb-2 text-sm font-light tracking-wide font-body text-secondary md:text-base;
-  }
-  a {
-    @apply transition text-primary hover:text-hover;
-  }
-  p a {
-    @apply font-medium font-displayCon;
-  }
-  hr {
-    @apply my-2 text-primary;
-  }
-  ul {
-    @apply w-full;
-  }
-  li {
-    @apply w-full;
-  }
-  li a {
-    @apply w-full p-0 mb-0 text-xl font-normal tracking-wide uppercase md:text-base font-displayCon sm:text-base;
-  }
+    @media (prefers-color-scheme: dark) {
+        :root {
+            --color-primary: 3 201 29;
+            --color-primary-hover: 0 141 20;
+            --color-secondary: 213 215 213;
+            --color-tertiary: 4 27 27;
+        }
+    }
+    [data-theme="light"] {
+        --color-primary: 0 141 20;
+        --color-primary-hover: 3 201 29;
+        --color-secondary: 35 40 47;
+        --color-tertiary: 249 251 251;
+    }
+    [data-theme="dark"] {
+        --color-primary: 3 201 29;
+        --color-primary-hover: 0 141 20;
+        --color-secondary: 213 215 213;
+        --color-tertiary: 4 27 27;
+    }
+    html {
+        @apply bg-tertiary;
+    }
+    body {
+        @apply max-w-[1440px] px-2 lg:mx-auto;
+    }
+    header {
+        @apply fixed top-0 left-0 z-50 w-full bg-tertiary/80 backdrop-blur;
+    }
+    nav {
+        @apply flex justify-between items-center gap-2 h-16 max-w-[1440px] mx-auto px-2;
+    }
+    main {
+        @apply pt-16 pb-8;
+    }
+    section {
+        @apply flex items-center pt-3 pb-4 border-y border-y-primary min-h-[calc(100vh-106px)] sm:min-h-[calc(100vh-96px)];
+    }
+    h1,
+    h2,
+    h3,
+    h4,
+    h5 {
+        @apply font-bold leading-none text-primary font-display;
+    }
+    h1 {
+        @apply text-center sm:text-left mb-2 text-5xl font-black uppercase sm:text-5xl md:text-6xl xl:text-7xl;
+    }
+    h2 {
+        @apply text-center sm:text-left mb-2 text-xl md:text-3xl;
+    }
+    h3 {
+        @apply text-center sm:text-left mb-2 text-base md:text-lg;
+    }
+    h4 {
+        @apply text-center sm:text-left p-0 mb-0 text-base font-normal tracking-wide font-display;
+    }
+    h5 {
+        @apply text-center sm:text-left text-xs font-displayCon md:text-sm;
+    }
+    h6 {
+        @apply text-center sm:text-left text-xs font-light font-displayCon md:text-sm text-primary;
+    }
+    p {
+        @apply text-center sm:text-left mb-2 text-sm font-light tracking-wide font-body text-secondary md:text-base;
+    }
+    a {
+        @apply transition text-primary hover:text-hover;
+    }
+    p a {
+        @apply font-medium font-displayCon;
+    }
+    hr {
+        @apply my-2 text-primary;
+    }
+    ul {
+        @apply w-full;
+    }
+    li {
+        @apply w-full;
+    }
+    li a {
+        @apply w-full p-0 mb-0 text-xl font-normal tracking-wide uppercase md:text-base font-displayCon sm:text-base;
+    }
 }
 
 @layer components {
-  .icon {
-    @apply z-50 text-4xl transition cursor-pointer w-7 h-7 text-primary border-primary bg-none hover:text-hover;
-  }
-  .eventGrid {
-    @apply grid grid-cols-2 gap-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6;
-  }
-  .imageGrid {
-    @apply grid grid-cols-2 gap-2 md:grid-cols-4 lg:grid-cols-6 xl:grid-cols-8;
-  }
+    .icon {
+        @apply z-50 text-4xl transition cursor-pointer w-7 h-7 text-primary border-primary bg-none hover:text-hover;
+    }
+    .eventGrid {
+        @apply grid grid-cols-2 gap-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6;
+    }
+    .imageGrid {
+        @apply grid grid-cols-2 gap-2 md:grid-cols-4 lg:grid-cols-6 xl:grid-cols-8;
+    }
 }
 
 input:-webkit-autofill,
@@ -128,16 +128,16 @@ textarea:-webkit-autofill:focus,
 select:-webkit-autofill,
 select:-webkit-autofill:hover,
 select:-webkit-autofill:focus {
-  -webkit-text-fill-color: #69e228;
-  -webkit-box-shadow: 0 0 0px 1000px #1e293b inset;
-  transition: background-color 5000s ease-in-out 0s;
+    -webkit-text-fill-color: #69e228;
+    -webkit-box-shadow: 0 0 0px 1000px #1e293b inset;
+    transition: background-color 5000s ease-in-out 0s;
 }
 
 ::-webkit-scrollbar {
-  width: 6px;
+    width: 6px;
 }
 
 ::-webkit-scrollbar-thumb {
-  border-radius: 6px;
-  background: linear-gradient(transparent, #03C91D, transparent);
+    border-radius: 6px;
+    background: linear-gradient(transparent, #03c91d, transparent);
 }

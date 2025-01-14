@@ -10,77 +10,79 @@ const currentPath = pathname.slice(1); // remove the first "/"
 ---
 
 <Base>
-  <div slot="nav" class="flex items-center justify-center w-full">
-    <h4
-      class="hidden mt-auto mb-[1px] font-extrabold tracking-wider uppercase sm:block"
-    >
-      <a href="/">Yes No Klub</a>
-    </h4>
-    <slot name="subnav" transition:persist />
-    <Hamburger />
-    <div
-      class="absolute top-0 left-0 ml-auto justify-center hidden w-full h-screen sm:flex sm:w-auto sm:h-auto sm:relative main-nav bg-tertiary/90 sm:bg-tertiary/0"
-    >
-      <ul
-        class="flex flex-col items-center justify-center text-center sm:flex-row sm:gap-x-3"
-      >
-        <li class="sm:hidden">
-          <hr class="sm:hidden" />
-          <a class={currentPath === "" ? "active" : ""} href="/" target="_self"
-            >Yes No Klub</a
-          >
-        </li>
-        <li>
-          <hr class="sm:hidden" />
-          <a
-            class={currentPath === "about" ? "active" : ""}
-            href="/about"
-            target="_self"
-          >
-            About
-          </a>
-          <hr class="sm:hidden" />
-        </li>
-        <li>
-          <a
-            class={currentPath === "events" ? "active" : ""}
-            href="/events"
-            target="_self"
-          >
-            Events
-          </a>
-          <hr class="sm:hidden" />
-        </li>
-        <li>
-          <a
-            class={currentPath === "images" ? "active" : ""}
-            href="/images"
-            target="_self"
-          >
-            Images
-          </a>
-          <hr class="sm:hidden" />
-        </li>
-        <li>
-          <a href="mailto:y%65%73noklub@gmail%2E%63om" target="_blank"
-            >&#67;on&#116;act</a
-          >
-          <hr class="sm:hidden" />
-        </li>
-        <li>
-          <Sosmed />
-        </li>
-      </ul>
+    <div slot="nav" class="flex items-center justify-center w-full">
+        <h4
+            class="hidden mt-auto mb-[1px] font-extrabold tracking-wider uppercase sm:block"
+        >
+            <a href="/">Yes No Klub</a>
+        </h4>
+        <slot name="subnav" transition:persist />
+        <Hamburger />
+        <div
+            class="absolute top-0 left-0 ml-auto justify-center hidden w-full h-screen sm:flex sm:w-auto sm:h-auto sm:relative main-nav bg-tertiary/90 sm:bg-tertiary/0"
+        >
+            <ul
+                class="flex flex-col items-center justify-center text-center sm:flex-row sm:gap-x-3"
+            >
+                <li class="sm:hidden">
+                    <hr class="sm:hidden" />
+                    <a
+                        class={currentPath === "" ? "active" : ""}
+                        href="/"
+                        target="_self">Yes No Klub</a
+                    >
+                </li>
+                <li>
+                    <hr class="sm:hidden" />
+                    <a
+                        class={currentPath === "about" ? "active" : ""}
+                        href="/about"
+                        target="_self"
+                    >
+                        About
+                    </a>
+                    <hr class="sm:hidden" />
+                </li>
+                <li>
+                    <a
+                        class={currentPath === "events" ? "active" : ""}
+                        href="/events"
+                        target="_self"
+                    >
+                        Events
+                    </a>
+                    <hr class="sm:hidden" />
+                </li>
+                <li>
+                    <a
+                        class={currentPath === "images" ? "active" : ""}
+                        href="/images"
+                        target="_self"
+                    >
+                        Images
+                    </a>
+                    <hr class="sm:hidden" />
+                </li>
+                <li>
+                    <a href="mailto:y%65%73noklub@gmail%2E%63om" target="_self"
+                        >&#67;on&#116;act</a
+                    >
+                    <hr class="sm:hidden" />
+                </li>
+                <li>
+                    <Sosmed />
+                </li>
+            </ul>
+        </div>
     </div>
-  </div>
-  <slot />
+    <slot />
 </Base>
 
 <style>
-  .active {
-    @apply text-secondary;
-  }
-  .expanded {
-    @apply flex;
-  }
+    .active {
+        @apply text-secondary;
+    }
+    .expanded {
+        @apply flex;
+    }
 </style>
