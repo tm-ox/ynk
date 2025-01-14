@@ -1,18 +1,18 @@
 <div class="z-50 ml-auto mr-1 cursor-pointer hamburger sm:hidden sm:ml-0">
-  <span class="mb-[7px] line"></span>
-  <span class="line"></span>
+    <span class="mb-[7px] line"></span>
+    <span class="line"></span>
 </div>
 
 <style>
-  .hamburger .line {
-    @apply block w-8 h-[5px] bg-primary hover:bg-hover;
-  }
+    .hamburger .line {
+        @apply block w-8 h-[5px] bg-primary hover:bg-hover;
+    }
 </style>
 
 <script is:inline>
-document.addEventListener("astro:page-load", () => {
-  document.querySelector(".hamburger").addEventListener("click", () => {
-    document.querySelector(".main-nav").classList.toggle("expanded");
-  });
-});
+    document.addEventListener("astro:page-load", () => {
+        document.querySelector(".hamburger").addEventListener("click", () => {
+            document.querySelector(".main-nav").classList.toggle("expanded");
+        });
+    });
 </script>
