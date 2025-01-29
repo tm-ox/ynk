@@ -1,0 +1,52 @@
+---
+import type { GetStaticPaths } from "astro";
+import { getCollection } from "astro:content";
+import { Image } from "astro:assets";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import Pagination from "../../components/Pagination.astro";
+
+export async function getStaticPaths({ paginate }) {
+    const events = await getCollection("events", ({ data }) => {
+        return data.images && data.images.length > 0;
+    });
+    events.sort((b, a) => Date.parse(a.data.date) - Date.parse(b.data.date));
+
+    const images = [
+        ...new Set(events.map((event) => event.data.images).flat()),
+    ];
+
+    return paginate(images, {
+        pageSize: 24,
+    });
+}
+
+const { page } = Astro.props;
+---
+
+<BaseLayout>
+    <section class="flex-col">
+        <ul class="imageGrid">
+            {
+                page.data.map((image: any) => (
+                    <li class="aspect-square">
+                        <a
+                            href={`/images/${image.id}/`}
+                            transition:name={image.id}
+                        >
+                            <h5 class="uppercase">{image.alt}</h5>
+                            <hr />
+                            <Image
+                                src={image.src}
+                                alt={image.alt}
+                                class="object-none h-full"
+                                height={200}
+                            />
+                            <hr />
+                        </a>
+                    </li>
+                ))
+            }
+        </ul>
+        <Pagination prevUrl={page.url.prev} nextUrl={page.url.next} />
+    </section>
+</BaseLayout>

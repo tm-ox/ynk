@@ -1,0 +1,21 @@
+---
+import { Icon } from "astro-icon";
+const { prevUrl, nextUrl } = Astro.props;
+---
+
+<nav aria-label="Pagination">
+    {
+        prevUrl && (
+            <a href={prevUrl}>
+                <Icon name="ion:arrow-back-sharp" class="icon h-6 w-6" />
+            </a>
+        )
+    }
+    {
+        nextUrl && (
+            <a href={nextUrl}>
+                <Icon name="ion:arrow-forward-sharp" class="icon h-6 w-6" />
+            </a>
+        )
+    }
+</nav>
