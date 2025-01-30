@@ -3,7 +3,7 @@ id: ynd04
 title: YND#04
 date: "2024-04-26"
 time: "20.00"
-venue: { name: dêCored Coffee & Beer Garden, url: https://www.instagram.com/decored.coffee_beergarden }
+venue: { name: dêCored Coffee & Beer Garden, url: https://www.instagram.com/decored.coffee/ }
 with: Sukatani, Prontaxan, Y-DRA, TerbujurKaku & Rarawk
 info: "IDR 65.000"
 flyer: { src: ../flyers/YND-04.png, alt: YND#04 }
