@@ -6,7 +6,7 @@ time: "20.00"
 venue: { name: dêCored Coffee & Beer Garden, url: https://www.instagram.com/decored.coffee/ }
 with: Evita Manji, Su Dance110, Scantofia, Proto Animalia Project & Dj Lo-Tek
 info: "IDR 50.000"
-flyer: { src: ../flyers/IMG_5586.PNG, alt: YND#05 }
+flyer: { src: ../flyers/YND 5.png, alt: YND#05 }
 ---
 
 Yes No Disko adalah program musik klab dari Yes No Klub yang memberikan wahana bagi musisi, DJ, dan komunitasnya untuk mengeksplorasi musik dan bebunyian secara inklusif, populer, dan eksperimental.
