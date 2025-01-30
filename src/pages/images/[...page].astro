@@ -21,11 +21,12 @@ export async function getStaticPaths({ paginate }) {
 }
 
 const { page } = Astro.props;
+console.log(page);
 ---
 
 <BaseLayout>
     <section class="flex-col">
-        <ul class="imageGrid">
+        <ul class="imageGrid mb-auto">
             {
                 page.data.map((image: any) => (
                     <li class="aspect-square">
@@ -47,6 +48,12 @@ const { page } = Astro.props;
                 ))
             }
         </ul>
-        <Pagination prevUrl={page.url.prev} nextUrl={page.url.next} />
+        <Pagination
+            prevUrl={page.url.prev}
+            nextUrl={page.url.next}
+            lastPage={page.lastPage}
+            ,
+            currentPage={page.currentPage}
+        />
     </section>
 </BaseLayout>

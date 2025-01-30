@@ -1,21 +1,47 @@
 ---
 import { Icon } from "astro-icon";
-const { prevUrl, nextUrl } = Astro.props;
+const { prevUrl, nextUrl, lastPage, currentPage } = Astro.props;
 ---
 
-<nav aria-label="Pagination">
-    {
-        prevUrl && (
-            <a href={prevUrl}>
-                <Icon name="ion:arrow-back-sharp" class="icon h-6 w-6" />
-            </a>
-        )
-    }
-    {
-        nextUrl && (
-            <a href={nextUrl}>
-                <Icon name="ion:arrow-forward-sharp" class="icon h-6 w-6" />
-            </a>
-        )
-    }
+<nav aria-label="Pagination" class="flex flex-col my-4">
+    <div class="flex gap-3">
+        {
+            prevUrl && (
+                <a href={prevUrl}>
+                    <Icon name="ion:arrow-back-sharp" class="icon h-6 w-6" />
+                </a>
+            )
+        }
+        {
+            nextUrl && (
+                <a href={nextUrl}>
+                    <Icon name="ion:arrow-forward-sharp" class="icon h-6 w-6" />
+                </a>
+            )
+        }
+    </div>
+    <div class="flex gap-6">
+        {
+            Array.from({ length: lastPage }, (_, i) => i + 1).map((num) => (
+                <h5>
+                    <a
+                        href={num === 1 ? "/images" : `/images/${num}`}
+                        class={
+                            currentPage === num
+                                ? "active"
+                                : "flex text-center justify-center"
+                        }
+                    >
+                        {num}
+                    </a>
+                </h5>
+            ))
+        }
+    </div>
 </nav>
+
+<style>
+    .active {
+        @apply underline underline-offset-8;
+    }
+</style>
