@@ -10,18 +10,15 @@ export async function getStaticPaths({ paginate }) {
         return data.images && data.images.length > 0;
     });
     events.sort((b, a) => Date.parse(a.data.date) - Date.parse(b.data.date));
-
     const images = [
         ...new Set(events.map((event) => event.data.images).flat()),
     ];
-
     return paginate(images, {
         pageSize: 24,
     });
 }
 
 const { page } = Astro.props;
-console.log(page);
 ---
 
 <BaseLayout>
@@ -52,7 +49,6 @@ console.log(page);
             prevUrl={page.url.prev}
             nextUrl={page.url.next}
             lastPage={page.lastPage}
-            ,
             currentPage={page.currentPage}
         />
     </section>
