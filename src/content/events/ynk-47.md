@@ -4,7 +4,7 @@ title: YNK#47
 date: "2025-07-05"
 time: "19.30"
 venue: { name: Kedai Kebun Forum, url: https://kedaikebun.com }
-with: Xhabarabot, Mahamboro, Lydian Dunban & Gabsav
+with: Xhabarabot, Mahamboro, Lydian Dunbar & Gabsav
 info: Kontribusi IDR 50.000 (langsung di lokasi)
 flyer: { src: ../flyers/YNK_47.png, alt: YNK#47 }
 ---
