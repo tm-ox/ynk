@@ -17,3 +17,7 @@ Lydian Dunbar adalah musisi asal Australia, yang dikenal lewat grup eksperimenta
 Gabsav, yang dikenal sebagai bagian dari duo Jessla, trio Tanangan, juga kibordis The Upstairs akan beraksi mandiri dengan ragam permainan synth yang eksploratif.
 
 Pertunjukan akan ditampilkan dalam tata suara spasial multi-kanal oleh @rekambergerak.
+
+Acara ini disokong bersama Liquid Architecture (Naarm), Rekambergerak, Kedai Kebun Forum, Uma Yumcha, dan Musik Jogja.
+
+#yesnoklub
