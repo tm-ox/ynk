@@ -8,7 +8,7 @@ with: Xhabarabot, Mahamboro, Lydian Dunbar & Gabsav
 info: Kontribusi IDR 50.000 (langsung di lokasi)
 flyer: { src: ../flyers/YNK_47.png, alt: YNK#47 }
 images:
-  - src: ../images/YNK 5 Juli 2025_KKF_-57.jpg
+  - src: ../images/YNK 5 Juli2025_KKF_-57.jpg
     alt: YNK#47
     id: ynk47-01
   - src: ../images/YNK 5 Juli 2025_KKF_-77.jpg
@@ -63,6 +63,7 @@ images:
     alt: YNK#47
     id: ynk47-18
 ---
+
 Xhabarabot, sebuah perangkat penciptaan musik-bunyi digital berbasis situs web yang dikembangkan oleh Rully Shabara, akan didemonstrasikan bersamanya secara live untuk pertama kali di Indonesia.
 
 Mahamboro akan menampilkan album terbarunya 7 Jazz Pop Greats yang membentang luas dalam lanskap jazz, noise, doom, hingga shoegaze.
