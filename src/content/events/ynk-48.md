@@ -1,79 +1,24 @@
 ---
 id: ynk48
-title: xPesporxGaung
-date: "2025-08-13"
+title: YNK#48
+date: "2025-10-29"
 time: "19.30"
-venue: { name: Ruang Pana, url: https://www.instagram.com/ruang.pana/ }
-with: Wahono (Jakarta), puantronik (Jakarta, Bandung, Yogyakarta), Lauren Squire (Melbourne), Sandikala Ensemble (Yogyakarta) & Gumatat Gumitit Gospell (Denpasar)
-info: ""
-flyer: { src: ../flyers/Latihan YNK Pestapora.png, alt: YNK#48 }
-images:
-  - src: ../images/YNK Ruangpana_140825_-7.jpg
-    alt: xPesporxGaung
-    id: ynk48-01
-  - src: ../images/YNK Ruangpana_140825_-86.jpg
-    alt: xPesporxGaung
-    id: ynk48-02
-  - src: ../images/YNK Ruangpana_140825_-15.jpg
-    alt: xPesporxGaung
-    id: ynk48-03
-  - src: ../images/YNK Ruangpana_140825_-102.jpg
-    alt: xPesporxGaung
-    id: ynk48-04
-  - src: ../images/YNK Ruangpana_140825_-21.jpg
-    alt: xPesporxGaung
-    id: ynk48-05
-  - src: ../images/YNK Ruangpana_140825_-22.jpg
-    alt: xPesporxGaung
-    id: ynk48-06
-  - src: ../images/YNK Ruangpana_140825_-111.jpg
-    alt: xPesporxGaung
-    id: ynk48-07
-  - src: ../images/YNK Ruangpana_140825_-122.jpg
-    alt: xPesporxGaung
-    id: ynk48-08
-  - src: ../images/YNK Ruangpana_140825_-145.jpg
-    alt: xPesporxGaung
-    id: ynk48-09
-  # - src: ../images/YNK Ruangpana_140825_-14.jpg
-  #   alt: xPesporxGaung
-  #   id: ynk48-10
-  - src: ../images/YNK Ruangpana_140825_-159.jpg
-    alt: xPesporxGaung
-    id: ynk48-11
-  - src: ../images/YNK Ruangpana_140825_-167.jpg
-    alt: xPesporxGaung
-    id: ynk48-12
-  - src: ../images/YNK Ruangpana_140825_-30.jpg
-    alt: xPesporxGaung
-    id: ynk48-13
-  - src: ../images/YNK Ruangpana_140825_-37.jpg
-    alt: xPesporxGaung
-    id: ynk48-14
-  - src: ../images/YNK Ruangpana_140825_-28.jpg
-    alt: xPesporxGaung
-    id: ynk48-15
-  - src: ../images/YNK Ruangpana_140825_-174.jpg
-    alt: xPesporxGaung
-    id: ynk48-16
-  - src: ../images/YNK Ruangpana_140825_-43.jpg
-    alt: xPesporxGaung
-    id: ynk48-17
-  - src: ../images/YNK Ruangpana_140825_-44.jpg
-    alt: xPesporxGaung
-    id: ynk48-18
-  - src: ../images/YNK Ruangpana_140825_-195.jpg
-    alt: xPesporxGaung
-    id: ynk48-19
-  - src: ../images/YNK Ruangpana_140825_-49.jpg
-    alt: xPesporxGaung
-    id: ynk48-20
-  - src: ../images/YNK Ruangpana_140825_-63.jpg
-    alt: xPesporxGaung
-    id: ynk48-21
-  - src: ../images/YNK Ruangpana_140825_-70.jpg
-    alt: xPesporxGaung
-    id: ynk48-22
+venue: { name: Teater Garasi, url: https://teatergarasi.org/ }
+with: Hulubalang, Tot Onyx, Emra Grid & Palasik Mod
+info: "IDR 50.000"
+flyer: { src: ../flyers/ynk-48.jpeg, alt: YNK#48 }
 ---
 
-https://maps.app.goo.gl/CquuGyVJXRTXt9hYA?g_st=ic
+Hulubalang, proyek Kasimyn, memadukan musik klub global dan tradisi lokal untuk mengeksplorasi tema personal dan sejarah. Album debutnya Bunyi Bunyi Tumbal (2023, Drowned by Locals) terinspirasi dari arsip perang Indonesia, menjadi refleksi emosional atas korban kolonialisme—sebuah karya yang dipuji The Quietus sebagai ambisius dan penuh emosi.
+
+Tot Onyx adalah proyek solo seniman bunyi dan performer Tommi Tokyo, yang gemar bereksperimen dengan objek logam dan tubuhnya. Ia juga merupakan salah satu dari duo eksperimental asal Jepang, group A.
+
+Emra Grid adalah seniman bunyi yang berkarya di antara ambient, drone, dan minimalisme sinematik. Musiknya padat, lambat, dan dipenuhi ketegangan halus. Album terbarunya Grid Five Cycles Through an Empty Chamber (2020) dibuat di Yogyakarta saat masa isolasi. Seperti gigitan serangga yang selalu mengikutinya, musik Emra Grid pun mengendap dan perlahan terurai.
+
+Palasik Mode adalah proyek dark ambient/ritual industrial yang dioperasikan oleh Tanaya Sompit, memproduksi sinkop hantaman distorsi berat dan feedback suram yang menggambarkan distopia dari ramalan-ramalan ritual kuno Asia.
+
+Tata suara oleh Rekam Bergerak
+
+**Acara ini disokong oleh Uma Yumcha, Rekam Bergerak, Garasi Performance Institute, dan Musik Jogja.**
+
+#yesnoklub
