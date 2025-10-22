@@ -1,20 +1,20 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
 import { getImage } from "astro:assets";
-import background from "../content/images/Pespor-day-2-sony-64.jpg";
+import background from "../content/images/YNK-5-Juli-2025-KKF-57.jpg";
 
 const bg = await getImage({ src: background, format: "avif" });
 ---
 
 <BaseLayout>
-  <section
-    class="flex items-center justify-center bg-center bg-cover"
-    style={`background-image: url(${bg.src});`}
-  >
-    <h1
-      class="w-full leading-[3rem] lg:leading-[7rem] tracking-[-.1em] break-words text-center text-[90px] lg:text-[200px]"
+    <section
+        class="flex items-center justify-center bg-center bg-cover"
+        style={`background-image: url(${bg.src});`}
     >
-      Experimental etc.
-    </h1>
-  </section>
+        <h1
+            class="w-full leading-[3rem] lg:leading-[7rem] tracking-[-.1em] break-words text-center text-[90px] lg:text-[200px]"
+        >
+            Experimental etc.
+        </h1>
+    </section>
 </BaseLayout>
