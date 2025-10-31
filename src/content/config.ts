@@ -24,7 +24,6 @@ export const collections = {
         info: z.string(),
         flyer: z
           .object({
-            // TEMP FIX: width set to 1 for troubleshooting image reading failure
             src: image(),
             alt: z.string().optional(),
           })
