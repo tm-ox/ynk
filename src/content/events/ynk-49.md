@@ -9,31 +9,31 @@ info: "IDR 50.000"
 flyer: { src: ../flyers/IMG_0278.PNG, alt: YNK#49 }
 images:
   - src: ../images/YNK_Garasi_20260212_-11.jpg
-    alt: YNK#40
+    alt: YNK#49
     id: ynk49-02
   - src: ../images/YNK_Garasi_20260212_-19.jpg
-    alt: YNK#40
+    alt: YNK#49
     id: ynk49-03
   - src: ../images/YNK_Garasi_20260212_-23.jpg
-    alt: YNK#40
+    alt: YNK#49
     id: ynk49-04
   - src: ../images/YNK_Garasi_20260212_-24.jpg
-    alt: YNK#40
+    alt: YNK#49
     id: ynk49-05
   - src: ../images/YNK_Garasi_20260212_-26.jpg
-    alt: YNK#40
+    alt: YNK#49
     id: ynk49-06
   - src: ../images/YNK_Garasi_20260212_-30.jpg
-    alt: YNK#40
+    alt: YNK#49
     id: ynk49-07
   - src: ../images/YNK_Garasi_20260212_-54.jpg
-    alt: YNK#40
+    alt: YNK#49
     id: ynk49-08
   - src: ../images/YNK_Garasi_20260212_-57.jpg
-    alt: YNK#40
+    alt: YNK#49
     id: ynk49-09
   - src: ../images/YNK_Garasi_20260212_-60.jpg
-    alt: YNK#40
+    alt: YNK#49
     id: ynk49-10
 ---
 
