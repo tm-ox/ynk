@@ -7,49 +7,34 @@ venue: { name: Teater Garasi, url: https://teatergarasi.org/ }
 with: Lyra Pramuk, Rani Jambak, Raja Kirik & Lucy Freia
 info: "IDR 50.000"
 flyer: { src: ../flyers/IMG_0278.PNG, alt: YNK#49 }
-# images:
-# - src: ../images/YNK 20251029_Garasi_-009.jpg
-#   alt: YNK#48
-#   id: ynk48-01
-# - src: ../images/YNK 20251029_Garasi_-011.jpg
-#   alt: YNK#48
-#   id: ynk48-02
-# - src: ../images/YNK 20251029_Garasi_-033.jpg
-#   alt: YNK#48
-#   id: ynk48-03
-# - src: ../images/YNK 20251029_Garasi_-040.jpg
-#   alt: YNK#48
-#   id: ynk48-04
-# - src: ../images/YNK 20251029_Garasi_-056.jpg
-#   alt: YNK#48
-#   id: ynk48-05
-# - src: ../images/YNK 20251029_Garasi_-061.jpg
-#   alt: YNK#48
-#   id: ynk48-06
-# - src: ../images/YNK 20251029_Garasi_-075.jpg
-#   alt: YNK#48
-#   id: ynk48-07
-# - src: ../images/YNK 20251029_Garasi_-078.jpg
-#   alt: YNK#48
-#   id: ynk48-08
-# - src: ../images/YNK 20251029_Garasi_-080.jpg
-#   alt: YNK#48
-#   id: ynk48-09
-# - src: ../images/YNK 20251029_Garasi_-086.jpg
-#   alt: YNK#48
-#   id: ynk48-10
-# - src: ../images/YNK 20251029_Garasi_-101.jpg
-#   alt: YNK#48
-#   id: ynk48-11
-# - src: ../images/YNK 20251029_Garasi_-106.jpg
-#   alt: YNK#48
-#   id: ynk48-12
-# - src: ../images/YNK 20251029_Garasi_-110.jpg
-#   alt: YNK#48
-#   id: ynk48-13
-# - src: ../images/YNK 20251029_Garasi_-111.jpg
-#   alt: YNK#48
-#   id: ynk48-14
+images:
+  - src: ../images/YNK_Garasi_20260212_-11.jpg
+    alt: YNK#40
+    id: ynk49-02
+  - src: ../images/YNK_Garasi_20260212_-19.jpg
+    alt: YNK#40
+    id: ynk49-03
+  - src: ../images/YNK_Garasi_20260212_-23.jpg
+    alt: YNK#40
+    id: ynk49-04
+  - src: ../images/YNK_Garasi_20260212_-24.jpg
+    alt: YNK#40
+    id: ynk49-05
+  - src: ../images/YNK_Garasi_20260212_-26.jpg
+    alt: YNK#40
+    id: ynk49-06
+  - src: ../images/YNK_Garasi_20260212_-30.jpg
+    alt: YNK#40
+    id: ynk49-07
+  - src: ../images/YNK_Garasi_20260212_-54.jpg
+    alt: YNK#40
+    id: ynk49-08
+  - src: ../images/YNK_Garasi_20260212_-57.jpg
+    alt: YNK#40
+    id: ynk49-09
+  - src: ../images/YNK_Garasi_20260212_-60.jpg
+    alt: YNK#40
+    id: ynk49-10
 ---
 
 — Lyra Pramuk. Seniman multidisiplin asal Amerika yang berbasis di Berlin ini menciptakan bentuk unik dari musik devotional yang menyelaraskan potensi tak terbatas dari suara manusia dengan keajaiban teknologi yang terus berkembang pesat. Dan hal ini menjadi akar dari album terbarunya 'Hymnal' yang mengeksplorasi asal-usul ekstatik dari praktik ritual sakral.
