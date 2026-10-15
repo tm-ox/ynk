@@ -73,7 +73,7 @@
     h3,
     h4,
     h5 {
-        @apply font-bold leading-none text-primary font-display;
+        @apply font-bold text-primary font-display;
     }
     h1 {
         @apply text-center sm:text-left mb-2 text-5xl font-black uppercase sm:text-5xl md:text-6xl xl:text-7xl;
