@@ -8,7 +8,7 @@
     --color-fg: rgb(var(--rgb-fg));
     --color-accent: rgb(var(--rgb-accent));
     --color-accent-hover: rgb(var(--rgb-accent-hover));
-    --color-accent-muted: rgb(var(--rgb-accent) / 0.6);
+    --color-accent-muted: rgb(var(--rgb-accent-muted));
     --color-border: rgb(var(--rgb-accent));
     --color-scrim: rgb(var(--rgb-bg) / 0.8);
     --color-scrim-heavy: rgb(var(--rgb-bg) / 0.9);
@@ -24,22 +24,25 @@
     [data-theme="dark"] {
         color-scheme: dark;
         --rgb-accent: 3 201 29;
-        --rgb-accent-hover: 0 141 20;
+        --rgb-accent-hover: 105 226 40;
+        --rgb-accent-muted: 3 149 28;
         --rgb-fg: 213 215 213;
         --rgb-bg: 4 27 27;
     }
     [data-theme="light"] {
         color-scheme: light;
-        --rgb-accent: 0 141 20;
-        --rgb-accent-hover: 3 201 29;
+        --rgb-accent: 0 100 14;
+        --rgb-accent-hover: 0 70 10;
+        --rgb-accent-muted: 0 128 18;
         --rgb-fg: 35 40 47;
         --rgb-bg: 249 251 251;
     }
     @media (prefers-color-scheme: light) {
         :root:not([data-theme]) {
             color-scheme: light;
-            --rgb-accent: 0 141 20;
-            --rgb-accent-hover: 3 201 29;
+            --rgb-accent: 0 100 14;
+            --rgb-accent-hover: 0 70 10;
+            --rgb-accent-muted: 0 128 18;
             --rgb-fg: 35 40 47;
             --rgb-bg: 249 251 251;
         }
@@ -126,7 +129,25 @@
 
 @layer components {
     .icon {
-        @apply z-(--z-overlay) text-4xl transition cursor-pointer w-7 h-7 text-accent border-border bg-none hover:text-accent-hover;
+        @apply z-(--z-overlay) text-4xl transition cursor-pointer w-7 h-7 text-accent-muted border-border bg-none hover:text-accent;
+    }
+    /* Theme toggle shows the active mode: moon in dark, sun in light. */
+    .theme-sun {
+        display: none;
+    }
+    [data-theme="light"] .theme-sun {
+        display: block;
+    }
+    [data-theme="light"] .theme-moon {
+        display: none;
+    }
+    @media (prefers-color-scheme: light) {
+        :root:not([data-theme]) .theme-sun {
+            display: block;
+        }
+        :root:not([data-theme]) .theme-moon {
+            display: none;
+        }
     }
     .display-hero {
         @apply w-full text-center leading-12 lg:leading-28 -tracking-widest wrap-break-word text-[90px] lg:text-[200px];
