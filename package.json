@@ -22,6 +22,7 @@
     "@iconify-json/ant-design": "^1.2.9",
     "@iconify-json/bx": "^1.2.3",
     "@iconify-json/ion": "^1.2.7",
-    "@iconify-json/tabler": "^1.2.42"
+    "@iconify-json/tabler": "^1.2.42",
+    "typescript": "^6.0.3"
   }
 }
