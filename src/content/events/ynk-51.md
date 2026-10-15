@@ -21,7 +21,7 @@ Joining Sandikala are two respected acts, extending the evening into a shared sp
 
 [Mitch Elliott](https://www.instagram.com/mtchlltt/). A Sydney-based musician who uses a Lyra-8 and Ableton Live for sonic world-building. His forthcoming 2026 album is currently untitled but will be released in October, followed by a tour through Indonesia, Singapore, Malaysia, Vietnam, Taiwan, China and Japan.
 
-As a small-scale, independent initiative, we see everyone involved—organizers, space owners, performers, audiences, and supporters—not simply as participants, but as active agents within a shared ecosystem. Each contributes in their own way, materially and otherwise, to making events possible, sustainable, and meaningful for everyone involved.
+As a small-scale, independent initiative, we see everyone involved—organisers, space owners, performers, audiences, and supporters—not simply as participants, but as active agents within a shared ecosystem. Each contributes in their own way, materially and otherwise, to making events possible, sustainable, and meaningful for everyone involved.
 
 **Supported by [Rekam Bergerak](https://www.instagram.com/rekambergerak/), [Talujala Hub](https://www.instagram.com/amtstudiolab/), [Uma Yumcha](https://www.instagram.com/umayumcha/), [Musik Jogja](https://www.instagram.com/musikjogja/), and [Sudut Kantin Project](https://sudutkantin.com).**
 

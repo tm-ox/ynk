@@ -7,6 +7,8 @@ import Sosmed from "../components/Sosmed.astro";
 const { title, description, image, jsonLd } = Astro.props;
 const pathname = new URL(Astro.request.url).pathname;
 const currentPath = pathname.slice(1); // remove the first "/"
+const isCurrent = (name: string) =>
+    currentPath === name || currentPath.startsWith(`${name}/`);
 ---
 
 <Base title={title} description={description} image={image} jsonLd={jsonLd}>
@@ -14,6 +16,7 @@ const currentPath = pathname.slice(1); // remove the first "/"
         <slot name="subnav" transition:persist />
         <Hamburger />
         <div
+            id="main-nav"
             class="absolute top-0 left-0 ml-auto justify-center hidden w-full h-screen sm:flex sm:w-auto sm:h-auto sm:relative main-nav bg-scrim-heavy sm:bg-transparent"
         >
             <ul
@@ -23,6 +26,7 @@ const currentPath = pathname.slice(1); // remove the first "/"
                     <hr class="sm:hidden" />
                     <a
                         class={currentPath === "" ? "active" : ""}
+                        aria-current={currentPath === "" ? "page" : undefined}
                         href="/"
                         target="_self">Yes No Klub</a
                     >
@@ -30,7 +34,8 @@ const currentPath = pathname.slice(1); // remove the first "/"
                 <li>
                     <hr class="sm:hidden" />
                     <a
-                        class={currentPath === "about" ? "active" : ""}
+                        class={isCurrent("about") ? "active" : ""}
+                        aria-current={currentPath === "about" ? "page" : isCurrent("about") ? "true" : undefined}
                         href="/about"
                         target="_self"
                     >
@@ -40,7 +45,8 @@ const currentPath = pathname.slice(1); // remove the first "/"
                 </li>
                 <li>
                     <a
-                        class={currentPath === "events" ? "active" : ""}
+                        class={isCurrent("events") ? "active" : ""}
+                        aria-current={currentPath === "events" ? "page" : isCurrent("events") ? "true" : undefined}
                         href="/events"
                         target="_self"
                     >
@@ -50,7 +56,8 @@ const currentPath = pathname.slice(1); // remove the first "/"
                 </li>
                 <li>
                     <a
-                        class={currentPath === "images" ? "active" : ""}
+                        class={isCurrent("images") ? "active" : ""}
+                        aria-current={currentPath === "images" ? "page" : isCurrent("images") ? "true" : undefined}
                         href="/images"
                         target="_self"
                     >

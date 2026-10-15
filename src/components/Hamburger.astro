@@ -1,7 +1,13 @@
-<div class="z-(--z-overlay) ml-auto mr-1 cursor-pointer hamburger sm:hidden sm:ml-0">
+<button
+    type="button"
+    class="z-(--z-overlay) ml-auto mr-1 cursor-pointer hamburger sm:hidden sm:ml-0"
+    aria-label="Menu"
+    aria-expanded="false"
+    aria-controls="main-nav"
+>
     <span class="mb-[7px] line"></span>
     <span class="line"></span>
-</div>
+</button>
 
 <style>
     @reference "../styles/global.css";
@@ -14,9 +20,24 @@
 </style>
 
 <script is:inline>
-    document.addEventListener("astro:page-load", () => {
-        document.querySelector(".hamburger").addEventListener("click", () => {
-            document.querySelector(".main-nav").classList.toggle("expanded");
+    // The nav is persisted across page transitions, so bind once and
+    // close the menu whenever a new page loads.
+    if (!window.__menuBound) {
+        window.__menuBound = true;
+        const setOpen = (open) => {
+            document.querySelector(".main-nav")?.classList.toggle("expanded", open);
+            document
+                .querySelector(".hamburger")
+                ?.setAttribute("aria-expanded", String(open));
+        };
+        document.addEventListener("click", (e) => {
+            if (e.target.closest(".hamburger")) {
+                const open = document
+                    .querySelector(".main-nav")
+                    .classList.contains("expanded");
+                setOpen(!open);
+            }
         });
-    });
+        document.addEventListener("astro:page-load", () => setOpen(false));
+    }
 </script>

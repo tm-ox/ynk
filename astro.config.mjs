@@ -1,5 +1,6 @@
 import { defineConfig, fontProviders } from 'astro/config';
 import icon from "astro-icon";
+import sitemap from "@astrojs/sitemap";
 import tailwindcss from "@tailwindcss/vite";
 import { unified } from "@astrojs/markdown-remark";
 import rehypeExternalLinks from "./rehype-external-links.mjs";
@@ -36,7 +37,7 @@ export default defineConfig({
       fallbacks: ["sans-serif"]
     }
   ],
-  integrations: [icon()],
+  integrations: [icon(), sitemap()],
   markdown: {
     processor: unified({
       rehypePlugins: [rehypeExternalLinks]

@@ -84,7 +84,7 @@ const ogImage = new URL(image ?? "/og-default.jpg", Astro.site).href;
                 document.addEventListener("astro:after-swap", syncMeta);
             })();
         </script>
-        <meta name="viewport" content="width=device-width" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
         <meta name="generator" content={Astro.generator} />
         <title>{fullTitle}</title>
         <meta name="title" content={fullTitle} />
@@ -141,6 +141,11 @@ const ogImage = new URL(image ?? "/og-default.jpg", Astro.site).href;
     </script> -->
     </head>
     <body>
+        <a
+            href="#main"
+            class="sr-only focus:not-sr-only focus:absolute focus:top-2 focus:left-2 focus:z-(--z-overlay) focus:bg-bg focus:p-2"
+            >Skip to content</a
+        >
         <header>
             <nav>
                 <Logo />
@@ -148,7 +153,7 @@ const ogImage = new URL(image ?? "/og-default.jpg", Astro.site).href;
                 <Theme />
             </nav>
         </header>
-        <main>
+        <main id="main">
             <slot />
         </main>
     </body>

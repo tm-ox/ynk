@@ -70,7 +70,7 @@ const flyer = event.data.flyer?.src
       direction="forward"
       href={nextEvent.data ? `/events/${nextEvent.id}/` : undefined}
     />
-    <a href="/events">
+    <a href="/events" aria-label="All events">
       <Icon name="ion:close-sharp" class="icon" />
     </a>
   </div>
@@ -109,13 +109,17 @@ const flyer = event.data.flyer?.src
           <div class="w-full">
             <h5>venue:</h5>
             <h4>
-              <a
-                href={event.data.venue.url}
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                {event.data.venue.name}
-              </a>
+              {event.data.venue.url ? (
+                <a
+                  href={event.data.venue.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  {event.data.venue.name}
+                </a>
+              ) : (
+                <span>{event.data.venue.name}</span>
+              )}
             </h4>
           </div>
         </div>
