@@ -1,47 +1,40 @@
-# Astro Starter Kit: Minimal
+# Yes No Klub
+
+Website for Yes No Klub (YNK), a live music and arts night in Yogyakarta, Indonesia. It holds the events archive (flyers, line-ups, venues, photo galleries), an about page and an image gallery. Live at https://www.yesnoklub.net.
+
+## Stack
+
+- Astro 7 (static output, content collections)
+- Tailwind CSS 4 (via `@tailwindcss/vite`)
+- astro-icon (Iconify sets: ant-design, bx, ion, tabler)
+- Fonts via the Astro Fonts API (BioRhyme, BioRhyme Expanded, Pathway Extreme), downloaded at build and self-hosted
+- sharp for image optimisation
+
+## Commands
+
+| Command           | Action                                  |
+| :---------------- | :-------------------------------------- |
+| `npm install`     | Install dependencies                    |
+| `npm run dev`     | Start the dev server (localhost:4321)   |
+| `npm run build`   | Build the site to `./dist/`             |
+| `npm run preview` | Preview the production build locally    |
+
+Node 22 is required (see `.nvmrc`; `nvm use`).
+
+On Arch or any machine with a system libvips, sharp fails to install against it. Install with:
 
 ```
-npm create astro@latest -- --template minimal
+SHARP_IGNORE_GLOBAL_LIBVIPS=1 npm install
 ```
 
-[![Open in StackBlitz](https://developer.stackblitz.com/img/open_in_stackblitz.svg)](https://stackblitz.com/github/withastro/astro/tree/latest/examples/minimal)
-[![Open with CodeSandbox](https://assets.codesandbox.io/github/button-edit-lime.svg)](https://codesandbox.io/p/sandbox/github/withastro/astro/tree/latest/examples/minimal)
-[![Open in GitHub Codespaces](https://github.com/codespaces/badge.svg)](https://codespaces.new/withastro/astro?devcontainer_path=.devcontainer/minimal/devcontainer.json)
+## Adding an event
 
-> 🧑‍🚀 **Seasoned astronaut?** Delete this file. Have fun!
+1. Put the flyer in `src/content/flyers/`.
+2. Create `src/content/events/ynk-NN.md`, modelled on `ynk-50.md`.
+3. Fill in the frontmatter. The schema is in `src/content.config.ts`: `id`, `title`, `date`, `time`, `with`, `info`, an optional `flyer` (`src`, `alt`) and `venue` (`name`, `url`).
+4. Include the venue `url` for every new event. The schema leaves it optional, but the event pages expect it.
+5. Optionally add an `images[]` gallery. Put the photos in `src/content/images/` and list each with `src`, `alt` and a unique `id`.
 
-## 🚀 Project Structure
+## Deployment
 
-Inside of your Astro project, you'll see the following folders and files:
-
-```
-/
-├── public/
-├── src/
-│   └── pages/
-│       └── index.astro
-└── package.json
-```
-
-Astro looks for `.astro` or `.md` files in the `src/pages/` directory. Each page is exposed as a route based on its file name.
-
-There's nothing special about `src/components/`, but that's where we like to put any Astro/React/Vue/Svelte/Preact components.
-
-Any static assets, like images, can be placed in the `public/` directory.
-
-## 🧞 Commands
-
-All commands are run from the root of the project, from a terminal:
-
-| Command                   | Action                                           |
-| :------------------------ | :----------------------------------------------- |
-| `npm install`             | Installs dependencies                            |
-| `npm run dev`             | Starts local dev server at `localhost:3000`      |
-| `npm run build`           | Build your production site to `./dist/`          |
-| `npm run preview`         | Preview your build locally, before deploying     |
-| `npm run astro ...`       | Run CLI commands like `astro add`, `astro check` |
-| `npm run astro -- --help` | Get help using the Astro CLI                     |
-
-## 👀 Want to learn more?
-
-Feel free to check [our documentation](https://docs.astro.build) or jump into our [Discord server](https://astro.build/chat).
+Hosted on Netlify. Pushes to `main` trigger an automatic build and deploy.
