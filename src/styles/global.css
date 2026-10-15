@@ -88,7 +88,7 @@
         @apply flex justify-between items-center gap-2 h-(--header-h) max-w-(--container) mx-auto px-2;
     }
     main {
-        @apply pt-(--header-h) pb-8;
+        @apply pt-(--header-h);
     }
     section {
         @apply flex items-center pt-3 pb-4 border-y border-y-border min-h-[calc(100vh-var(--section-offset))];
