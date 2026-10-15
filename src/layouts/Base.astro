@@ -156,10 +156,12 @@ const ogImage = new URL(image ?? "/og-default.jpg", Astro.site).href;
         <main id="main">
             <slot />
         </main>
-        <footer class="flex items-center justify-center h-8">
-            <a
+        <footer
+            class="flex items-center justify-center h-8 text-xs tracking-wide whitespace-nowrap font-displayCon text-accent-muted"
+        >
+            Visit statistics via Google Analytics&nbsp;·&nbsp;<a
                 href="/privacy"
-                class="text-xs tracking-wide uppercase font-displayCon text-accent-muted hover:text-accent"
+                class="underline text-accent-muted hover:text-accent"
                 >Privacy</a
             >
         </footer>
