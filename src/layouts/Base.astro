@@ -156,5 +156,25 @@ const ogImage = new URL(image ?? "/og-default.jpg", Astro.site).href;
         <main id="main">
             <slot />
         </main>
+    <script>
+            // Arrow keys follow the on-page Previous/Next links (events, images,
+            // paginated lists); Escape follows the close link. Bound once: module
+            // scripts are not re-run by the view-transition router.
+            document.addEventListener("keydown", (e) => {
+                if (e.defaultPrevented || e.altKey || e.ctrlKey || e.metaKey || e.shiftKey) return;
+                const t = e.target as HTMLElement;
+                if (t.closest("input, textarea, select, [contenteditable]")) return;
+                const selector =
+                    e.key === "ArrowLeft" ? 'a[aria-label="Previous"]'
+                    : e.key === "ArrowRight" ? 'a[aria-label="Next"]'
+                    : e.key === "Escape" ? 'a[aria-label="All events"], a[aria-label="All images"]'
+                    : null;
+                const link = selector && document.querySelector<HTMLAnchorElement>(selector);
+                if (link) {
+                    e.preventDefault();
+                    link.click();
+                }
+            });
+        </script>
     </body>
 </html>
