@@ -26,8 +26,8 @@
         :root {
             --rgb-primary: 0 141 20;
             --rgb-primary-hover: 3 201 29;
-            --rgb-secondary: 32 18 1;
-            --rgb-tertiary: 2228 251 251;
+            --rgb-secondary: 35 40 47;
+            --rgb-tertiary: 249 251 251;
         }
     }
     @media (prefers-color-scheme: dark) {

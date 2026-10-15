@@ -7,7 +7,10 @@ const events = await getCollection("events");
 events.sort((b, a) => Date.parse(a.data.date) - Date.parse(b.data.date));
 ---
 
-<BaseLayout>
+<BaseLayout
+  title="Events"
+  description="Archive of Yes No Klub events, gigs and projects from Yogyakarta, Indonesia."
+>
   <section>
     <ul class="eventGrid">
       {

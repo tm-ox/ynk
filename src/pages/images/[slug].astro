@@ -27,7 +27,10 @@ export async function getStaticPaths() {
 const { image, prevImage, nextImage } = Astro.props;
 ---
 
-<BaseLayout>
+<BaseLayout
+  title={`${image.alt} – photo`}
+  description={`Photograph from ${image.alt}, a Yes No Klub event in Yogyakarta, Indonesia.`}
+>
   <div
     slot="subnav"
     class="flex items-center gap-1 px-3 ml-3 mr-auto border-x border-x-primary"

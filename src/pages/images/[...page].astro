@@ -21,7 +21,10 @@ export async function getStaticPaths({ paginate }) {
 const { page } = Astro.props;
 ---
 
-<BaseLayout>
+<BaseLayout
+    title={page.currentPage > 1 ? `Images – page ${page.currentPage}` : "Images"}
+    description="Photographs from Yes No Klub events in Yogyakarta, Indonesia."
+>
     <section class="flex-col">
         <ul class="imageGrid mb-auto">
             {

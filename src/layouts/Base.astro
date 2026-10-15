@@ -4,6 +4,22 @@ import { ClientRouter } from "astro:transitions";
 import Logo from "../components/Logo.astro";
 import Theme from "../components/Theme.astro";
 import { GoogleAnalytics } from "astro-google-analytics";
+
+export interface Props {
+  title?: string;
+  description?: string;
+  image?: string;
+}
+
+const siteName = "Yes No Klub";
+const defaultDescription =
+  "Yes No Klub - Experimental etc. event organiser out of Yogyakarta, Indonesia.";
+const { title, description = defaultDescription, image } = Astro.props;
+const fullTitle = title
+  ? `${title} – ${siteName}`
+  : `${siteName} – Experimental etc., Yogyakarta`;
+const canonical = new URL(Astro.url.pathname, Astro.site).href;
+const ogImage = new URL(image ?? "/android-chrome-512x512.png", Astro.site).href;
 ---
 
 <html lang="en">
@@ -32,36 +48,23 @@ import { GoogleAnalytics } from "astro-google-analytics";
         <meta name="theme-color" content="#ffffff" />
         <meta name="viewport" content="width=device-width" />
         <meta name="generator" content={Astro.generator} />
-        <title>Yes No Klub</title>
-        <meta name="title" content="Yes No Klub" />
-        <meta
-            name="description"
-            content="Yes No Klub - Experimental etc. event organiser out of Yogyakarta, Indonesia."
-        />
+        <title>{fullTitle}</title>
+        <meta name="title" content={fullTitle} />
+        <meta name="description" content={description} />
+        <link rel="canonical" href={canonical} />
         <!-- Open Graph / Facebook -->
         <meta property="og:type" content="website" />
-        <meta property="og:url" content="https://www.yesnoklub.net/" />
-        <meta
-            property="og:title"
-            content="Yes No Klub - Experimental etc. event organiser out of Yogyakarta, Indonesia."
-        />
-        <meta
-            property="og:description"
-            content="Yes No Klub - Experimental etc. event organiser out of Yogyakarta, Indonesia."
-        />
-        <meta property="og:image" content="android-chrome-512x512.png" />
+        <meta property="og:site_name" content={siteName} />
+        <meta property="og:url" content={canonical} />
+        <meta property="og:title" content={fullTitle} />
+        <meta property="og:description" content={description} />
+        <meta property="og:image" content={ogImage} />
         <!-- Twitter -->
         <meta property="twitter:card" content="summary_large_image" />
-        <meta property="twitter:url" content="https://www.yesnoklub.net/" />
-        <meta
-            property="twitter:title"
-            content="Yes No Klub - Experimental etc. event organiser out of Yogyakarta, Indonesia."
-        />
-        <meta
-            property="twitter:description"
-            content="Yes No Klub - Experimental etc. event organiser out of Yogyakarta, Indonesia."
-        />
-        <meta property="twitter:image" content="android-chrome-512x512.png" />
+        <meta property="twitter:url" content={canonical} />
+        <meta property="twitter:title" content={fullTitle} />
+        <meta property="twitter:description" content={description} />
+        <meta property="twitter:image" content={ogImage} />
         <ClientRouter />
         <GoogleAnalytics id="G-T32SXCFCXD" />
         <!-- Google tag (gtag.js) -->

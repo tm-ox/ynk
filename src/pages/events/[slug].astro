@@ -1,6 +1,6 @@
 ---
 import { getCollection, render } from "astro:content";
-import { Image } from "astro:assets";
+import { Image, getImage } from "astro:assets";
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import { Icon } from "astro-icon/components";
 import NavArrow from "../../components/NavArrow.astro";
@@ -23,9 +23,39 @@ export async function getStaticPaths() {
 }
 const { event, prevEvent, nextEvent } = Astro.props;
 const { Content } = await render(event);
+
+const { title, date, venue, with: lineup } = event.data;
+const prettyDate = new Date(date).toLocaleDateString("en-AU", {
+  day: "numeric",
+  month: "long",
+  year: "numeric",
+  timeZone: "UTC",
+});
+const sameTitle = (await getCollection("events")).filter(
+  (e) => e.data.title === title && e.data.venue?.name === venue?.name,
+);
+const baseTitle = venue?.name ? `${title} – ${venue.name}` : title;
+const pageTitle = sameTitle.length > 1 ? `${baseTitle} (${prettyDate})` : baseTitle;
+const rawDescription = [
+  `${title}, ${prettyDate}${venue?.name ? ` at ${venue.name}` : ""}.`,
+  lineup ? `With ${lineup}.` : "",
+]
+  .filter(Boolean)
+  .join(" ");
+const pageDescription =
+  rawDescription.length > 158
+    ? `${rawDescription.slice(0, 155).trimEnd()}…`
+    : rawDescription;
+const flyer = event.data.flyer?.src
+  ? await getImage({ src: event.data.flyer.src, width: 1200, format: "jpg" })
+  : undefined;
 ---
 
-<BaseLayout>
+<BaseLayout
+  title={pageTitle}
+  description={pageDescription}
+  image={flyer?.src}
+>
   <div
     slot="subnav"
     class="flex items-center gap-1 px-3 ml-4 mr-auto border-x border-x-primary"
