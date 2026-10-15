@@ -10,17 +10,18 @@ export interface Props {
   title?: string;
   description?: string;
   image?: string;
+  jsonLd?: object | object[];
 }
 
 const siteName = "Yes No Klub";
 const defaultDescription =
   "Yes No Klub - Experimental etc. event organiser out of Yogyakarta, Indonesia.";
-const { title, description = defaultDescription, image } = Astro.props;
+const { title, description = defaultDescription, image, jsonLd } = Astro.props;
 const fullTitle = title
   ? `${title} – ${siteName}`
   : `${siteName} – Experimental etc., Yogyakarta`;
 const canonical = new URL(Astro.url.pathname, Astro.site).href;
-const ogImage = new URL(image ?? "/android-chrome-512x512.png", Astro.site).href;
+const ogImage = new URL(image ?? "/og-default.jpg", Astro.site).href;
 ---
 
 <html lang="en">
@@ -66,6 +67,14 @@ const ogImage = new URL(image ?? "/android-chrome-512x512.png", Astro.site).href
         <meta property="twitter:title" content={fullTitle} />
         <meta property="twitter:description" content={description} />
         <meta property="twitter:image" content={ogImage} />
+        {
+            jsonLd && (
+                <script
+                    type="application/ld+json"
+                    set:html={JSON.stringify(jsonLd).replace(/</g, "\\u003c")}
+                />
+            )
+        }
         <Font
             cssVariable="--font-biorhyme-expanded"
             preload={[

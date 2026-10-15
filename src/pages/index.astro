@@ -1,9 +1,35 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
 import background from "../content/images/splash2025.jpg";
+
+const organization = {
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  name: "Yes No Klub",
+  alternateName: "YNK",
+  url: "https://www.yesnoklub.net/",
+  logo: "https://www.yesnoklub.net/android-chrome-512x512.png",
+  foundingDate: "2010",
+  description:
+    "Yogyakarta-based DIY collective assisting local and visiting artists with projects in Indonesia and Southeast Asia.",
+  location: {
+    "@type": "Place",
+    address: {
+      "@type": "PostalAddress",
+      addressLocality: "Yogyakarta",
+      addressCountry: "ID",
+    },
+  },
+  sameAs: [
+    "https://www.instagram.com/yes.no.klub/",
+    "https://www.facebook.com/yesnoklubyk",
+    "https://www.youtube.com/@yesnoklub",
+    "https://soundcloud.com/yesnoklub",
+  ],
+};
 ---
 
-<BaseLayout>
+<BaseLayout jsonLd={organization}>
     <section
         class="flex items-center justify-center bg-center bg-cover"
         style={`background-image: url(${background.src});`}

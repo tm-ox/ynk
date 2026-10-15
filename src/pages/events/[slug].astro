@@ -4,6 +4,7 @@ import { Image, getImage } from "astro:assets";
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import { Icon } from "astro-icon/components";
 import NavArrow from "../../components/NavArrow.astro";
+import { eventJsonLd, flyerAlt, prettyDate as formatDate } from "../../utils/events";
 
 export async function getStaticPaths() {
   const events = await getCollection("events");
@@ -25,12 +26,7 @@ const { event, prevEvent, nextEvent } = Astro.props;
 const { Content } = await render(event);
 
 const { title, date, venue, with: lineup } = event.data;
-const prettyDate = new Date(date).toLocaleDateString("en-AU", {
-  day: "numeric",
-  month: "long",
-  year: "numeric",
-  timeZone: "UTC",
-});
+const prettyDate = formatDate(date);
 const sameTitle = (await getCollection("events")).filter(
   (e) => e.data.title === title && e.data.venue?.name === venue?.name,
 );
@@ -55,6 +51,12 @@ const flyer = event.data.flyer?.src
   title={pageTitle}
   description={pageDescription}
   image={flyer?.src}
+  jsonLd={eventJsonLd(
+    event.data,
+    new URL(Astro.url.pathname, Astro.site).href,
+    flyer ? new URL(flyer.src, Astro.site).href : undefined,
+    pageDescription,
+  )}
 >
   <div
     slot="subnav"
@@ -77,7 +79,7 @@ const flyer = event.data.flyer?.src
       <div class="md:w-3/5">
         <Image
           src={event.data.flyer.src}
-          alt={event.data.flyer.alt}
+          alt={flyerAlt(event.data)}
           class="object-contain h-auto my-1 mb-auto"
         />
       </div>

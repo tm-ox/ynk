@@ -1,16 +1,12 @@
 ---
-import { getCollection } from "astro:content";
 import { Image } from "astro:assets";
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import { Icon } from "astro-icon/components";
 import NavArrow from "../../components/NavArrow.astro";
+import { getGalleryImages } from "../../utils/events";
 
 export async function getStaticPaths() {
-  const events = await getCollection("events", ({ data }) => {
-    return data.images && data.images.length > 0;
-  });
-  events.sort((b, a) => Date.parse(a.data.date) - Date.parse(b.data.date));
-  const images = [...new Set(events.map((event) => event.data.images).flat())];
+  const images = await getGalleryImages();
   const numberOfImages = images.length;
   return images.map((image: any, i) => ({
     params: {
@@ -29,7 +25,7 @@ const { image, prevImage, nextImage } = Astro.props;
 
 <BaseLayout
   title={`${image.alt} – photo`}
-  description={`Photograph from ${image.alt}, a Yes No Klub event in Yogyakarta, Indonesia.`}
+  description={`${image.description}.`}
 >
   <div
     slot="subnav"
@@ -56,7 +52,7 @@ const { image, prevImage, nextImage } = Astro.props;
     <h3 class="md:hidden">{image.alt}</h3>
     <Image
       src={image.src}
-      alt={image.alt}
+      alt={image.description}
       width="1600"
       class="object-contain w-full h-full"
     />

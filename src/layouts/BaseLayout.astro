@@ -5,12 +5,12 @@ import Base from "./Base.astro";
 import Sosmed from "../components/Sosmed.astro";
 // import { Link } from "astro-link";
 
-const { title, description, image } = Astro.props;
+const { title, description, image, jsonLd } = Astro.props;
 const pathname = new URL(Astro.request.url).pathname;
 const currentPath = pathname.slice(1); // remove the first "/"
 ---
 
-<Base title={title} description={description} image={image}>
+<Base title={title} description={description} image={image} jsonLd={jsonLd}>
     <div slot="nav" class="flex items-center justify-center w-full">
         <slot name="subnav" transition:persist />
         <Hamburger />
