@@ -3,74 +3,85 @@
 
 @theme inline {
     --color-*: initial;
-    --color-primary: rgb(var(--rgb-primary));
-    --color-hover: rgb(var(--rgb-primary-hover));
-    --color-secondary: rgb(var(--rgb-secondary));
-    --color-tertiary: rgb(var(--rgb-tertiary));
+    /* Roles, not hues. Values per theme live in the --rgb-* blocks below. */
+    --color-bg: rgb(var(--rgb-bg));
+    --color-fg: rgb(var(--rgb-fg));
+    --color-accent: rgb(var(--rgb-accent));
+    --color-accent-hover: rgb(var(--rgb-accent-hover));
+    --color-accent-muted: rgb(var(--rgb-accent) / 0.6);
+    --color-border: rgb(var(--rgb-accent));
+    --color-scrim: rgb(var(--rgb-bg) / 0.8);
+    --color-scrim-heavy: rgb(var(--rgb-bg) / 0.9);
     --font-body: var(--font-pathway-extreme);
     --font-display: var(--font-biorhyme-expanded);
     --font-displayCon: var(--font-biorhyme);
 }
 
 @layer base {
-    :root {
-        --rgb-primary: 3 201 29;
-        --rgb-primary-hover: 0 141 20;
-        --rgb-secondary: 213 215 213;
-        --rgb-tertiary: 4 27 27;
-    }
-    @media (prefers-color-scheme: light) {
-        :root {
-            --rgb-primary: 0 141 20;
-            --rgb-primary-hover: 3 201 29;
-            --rgb-secondary: 35 40 47;
-            --rgb-tertiary: 249 251 251;
-        }
-    }
-    @media (prefers-color-scheme: dark) {
-        :root {
-            --rgb-primary: 3 201 29;
-            --rgb-primary-hover: 0 141 20;
-            --rgb-secondary: 213 215 213;
-            --rgb-tertiary: 4 27 27;
-        }
+    /* Theme values. Dark is the default; light applies via [data-theme] or,
+       with no stored choice, the OS preference. */
+    :root,
+    [data-theme="dark"] {
+        color-scheme: dark;
+        --rgb-accent: 3 201 29;
+        --rgb-accent-hover: 0 141 20;
+        --rgb-fg: 213 215 213;
+        --rgb-bg: 4 27 27;
     }
     [data-theme="light"] {
-        --rgb-primary: 0 141 20;
-        --rgb-primary-hover: 3 201 29;
-        --rgb-secondary: 35 40 47;
-        --rgb-tertiary: 249 251 251;
+        color-scheme: light;
+        --rgb-accent: 0 141 20;
+        --rgb-accent-hover: 3 201 29;
+        --rgb-fg: 35 40 47;
+        --rgb-bg: 249 251 251;
     }
-    [data-theme="dark"] {
-        --rgb-primary: 3 201 29;
-        --rgb-primary-hover: 0 141 20;
-        --rgb-secondary: 213 215 213;
-        --rgb-tertiary: 4 27 27;
+    @media (prefers-color-scheme: light) {
+        :root:not([data-theme]) {
+            color-scheme: light;
+            --rgb-accent: 0 141 20;
+            --rgb-accent-hover: 3 201 29;
+            --rgb-fg: 35 40 47;
+            --rgb-bg: 249 251 251;
+        }
+    }
+
+    /* Layout and stacking tokens. */
+    :root {
+        --container: 1440px;
+        --header-h: 4rem;
+        --section-offset: 106px;
+        --z-header: 50;
+        --z-overlay: 50;
+    }
+    @media (min-width: 40rem) {
+        :root {
+            --section-offset: 96px;
+        }
     }
     html {
-        @apply bg-tertiary;
+        @apply bg-bg;
     }
     body {
-        @apply max-w-[1440px] px-2 lg:mx-auto;
+        @apply max-w-(--container) px-2 lg:mx-auto;
     }
     header {
-        @apply fixed top-0 left-0 z-50 w-full bg-tertiary/80 backdrop-blur-sm;
+        @apply fixed top-0 left-0 z-(--z-header) w-full bg-scrim backdrop-blur-sm;
     }
     nav {
-        @apply flex justify-between items-center gap-2 h-16 max-w-[1440px] mx-auto px-2;
+        @apply flex justify-between items-center gap-2 h-(--header-h) max-w-(--container) mx-auto px-2;
     }
     main {
-        @apply pt-16 pb-8;
+        @apply pt-(--header-h) pb-8;
     }
     section {
-        @apply flex items-center pt-3 pb-4 border-y border-y-primary min-h-[calc(100vh-106px)] sm:min-h-[calc(100vh-96px)];
+        @apply flex items-center pt-3 pb-4 border-y border-y-border min-h-[calc(100vh-var(--section-offset))];
     }
     h1,
     h2,
     h3,
     h4,
     h5 {
-        @apply font-bold text-primary font-display;
+        @apply font-bold text-accent font-display;
     }
     h1 {
         @apply text-center sm:text-left mb-2 text-5xl font-black uppercase sm:text-5xl md:text-6xl xl:text-7xl;
@@ -88,19 +99,19 @@
         @apply text-center sm:text-left text-xs font-displayCon md:text-sm;
     }
     h6 {
-        @apply text-center sm:text-left text-xs font-light font-displayCon md:text-sm text-primary;
+        @apply text-center sm:text-left text-xs font-light font-displayCon md:text-sm text-accent;
     }
     p {
-        @apply text-center sm:text-left mb-2 text-sm font-light tracking-wide font-body text-secondary md:text-base;
+        @apply text-center sm:text-left mb-2 text-sm font-light tracking-wide font-body text-fg md:text-base;
     }
     a {
-        @apply transition text-primary hover:text-hover;
+        @apply transition text-accent hover:text-accent-hover;
     }
     p a {
         @apply font-medium font-displayCon;
     }
     hr {
-        @apply my-2 text-primary;
+        @apply my-2 text-accent;
     }
     ul {
         @apply w-full;
@@ -115,7 +126,10 @@
 
 @layer components {
     .icon {
-        @apply z-50 text-4xl transition cursor-pointer w-7 h-7 text-primary border-primary bg-none hover:text-hover;
+        @apply z-(--z-overlay) text-4xl transition cursor-pointer w-7 h-7 text-accent border-border bg-none hover:text-accent-hover;
+    }
+    .display-hero {
+        @apply w-full text-center leading-12 lg:leading-28 -tracking-widest wrap-break-word text-[90px] lg:text-[200px];
     }
     .eventGrid {
         @apply grid grid-cols-2 gap-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6;
@@ -138,8 +152,8 @@ textarea:-webkit-autofill:focus,
 select:-webkit-autofill,
 select:-webkit-autofill:hover,
 select:-webkit-autofill:focus {
-    -webkit-text-fill-color: #69e228;
-    -webkit-box-shadow: 0 0 0px 1000px #1e293b inset;
+    -webkit-text-fill-color: var(--color-accent);
+    -webkit-box-shadow: 0 0 0px 1000px var(--color-bg) inset;
     transition: background-color 5000s ease-in-out 0s;
 }
 
@@ -149,5 +163,5 @@ select:-webkit-autofill:focus {
 
 ::-webkit-scrollbar-thumb {
     border-radius: 6px;
-    background: linear-gradient(transparent, #03c91d, transparent);
+    background: linear-gradient(transparent, var(--color-accent), transparent);
 }

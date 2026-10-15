@@ -14,7 +14,7 @@ const currentPath = pathname.slice(1); // remove the first "/"
         <slot name="subnav" transition:persist />
         <Hamburger />
         <div
-            class="absolute top-0 left-0 ml-auto justify-center hidden w-full h-screen sm:flex sm:w-auto sm:h-auto sm:relative main-nav bg-tertiary/90 sm:bg-tertiary/0"
+            class="absolute top-0 left-0 ml-auto justify-center hidden w-full h-screen sm:flex sm:w-auto sm:h-auto sm:relative main-nav bg-scrim-heavy sm:bg-transparent"
         >
             <ul
                 class="flex flex-col items-center justify-center text-center sm:flex-row sm:gap-x-3"
@@ -75,8 +75,11 @@ const currentPath = pathname.slice(1); // remove the first "/"
 
 <style>
     @reference "../styles/global.css";
-    .active {
-        @apply text-secondary;
+    .main-nav a {
+        @apply text-accent-muted hover:text-accent;
+    }
+    .main-nav a.active {
+        @apply text-accent;
     }
     .expanded {
         @apply flex;

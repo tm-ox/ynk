@@ -29,7 +29,7 @@ const { image, prevImage, nextImage } = Astro.props;
 >
   <div
     slot="subnav"
-    class="flex items-center gap-1 px-3 ml-3 mr-auto border-x border-x-primary"
+    class="flex items-center gap-1 px-3 ml-3 mr-auto border-x border-x-border"
   >
     
     <div class="flex items-center gap-1">
@@ -48,7 +48,7 @@ const { image, prevImage, nextImage } = Astro.props;
       </a>
     </div>
   </div>
-  <section class="h-[calc(100vh-96px)] flex flex-col" transition:name={image.id}>
+  <section class="h-[calc(100vh-var(--section-offset))] flex flex-col" transition:name={image.id}>
     <h3 class="md:hidden">{image.alt}</h3>
     <Image
       src={image.src}

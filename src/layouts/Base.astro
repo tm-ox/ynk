@@ -45,9 +45,45 @@ const ogImage = new URL(image ?? "/og-default.jpg", Astro.site).href;
             href="/favicon-16x16.png"
         />
         <link rel="manifest" href="/site.webmanifest" />
-        <link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5" />
-        <meta name="msapplication-TileColor" content="#da532c" />
-        <meta name="theme-color" content="#ffffff" />
+        <!-- Meta/manifest colours can't use CSS variables: dark theme values.
+             theme-color is kept in sync with --color-bg by the script below. -->
+        <link rel="mask-icon" href="/safari-pinned-tab.svg" color="#03c91d" />
+        <meta name="msapplication-TileColor" content="#041b1b" />
+        <meta name="theme-color" content="#041b1b" />
+        <script is:inline>
+            (function () {
+                var root = document.documentElement;
+                var stored = function () {
+                    try {
+                        return localStorage.getItem("theme");
+                    } catch (e) {
+                        return null;
+                    }
+                };
+                var syncMeta = function () {
+                    var m = document.querySelector('meta[name="theme-color"]');
+                    if (m) m.content = getComputedStyle(root).backgroundColor;
+                };
+                window.__applyTheme = function (theme, doc) {
+                    (doc || document).documentElement.setAttribute("data-theme", theme);
+                    if (!doc) syncMeta();
+                };
+                window.__currentTheme = function () {
+                    return (
+                        root.getAttribute("data-theme") ||
+                        (matchMedia("(prefers-color-scheme: light)").matches
+                            ? "light"
+                            : "dark")
+                    );
+                };
+                if (stored()) window.__applyTheme(stored());
+                else syncMeta();
+                document.addEventListener("astro:before-swap", function (e) {
+                    if (stored()) window.__applyTheme(stored(), e.newDocument);
+                });
+                document.addEventListener("astro:after-swap", syncMeta);
+            })();
+        </script>
         <meta name="viewport" content="width=device-width" />
         <meta name="generator" content={Astro.generator} />
         <title>{fullTitle}</title>

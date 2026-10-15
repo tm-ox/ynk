@@ -3,7 +3,7 @@ import { Icon } from "astro-icon/components";
 ---
 
 <button
-  class="z-50 h-7 ml-1 pl-3 border-l border-l-primary"
+  class="z-(--z-overlay) h-7 ml-1 pl-3 border-l border-l-border"
   data-theme-toggle
   aria-label="toggle theme"
   transition:persist="theme"
@@ -12,21 +12,13 @@ import { Icon } from "astro-icon/components";
 </button>
 
 <script is:inline>
-const themeToggles = document.querySelectorAll("[data-theme-toggle]");
-
-const getTheme = () => localStorage.getItem("theme") || "dark";
-
-const setTheme = (theme) =>
-    document.documentElement.setAttribute("data-theme", theme);
-
-window.addEventListener("DOMContentLoaded", () => setTheme(getTheme()));
-document.addEventListener("astro:after-swap", () => setTheme(getTheme()));
-
-themeToggles.forEach((toggle) => {
+document.querySelectorAll("[data-theme-toggle]").forEach((toggle) => {
     toggle.addEventListener("click", () => {
-        const nextTheme = getTheme() === "light" ? "dark" : "light";
-        localStorage.setItem("theme", nextTheme);
-        setTheme(nextTheme);
+        const next = window.__currentTheme() === "light" ? "dark" : "light";
+        try {
+            localStorage.setItem("theme", next);
+        } catch (e) {}
+        window.__applyTheme(next);
     });
 });
 </script>
