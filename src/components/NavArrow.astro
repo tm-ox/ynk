@@ -1,0 +1,25 @@
+---
+import { Icon } from "astro-icon/components";
+
+export interface Props {
+  href?: string;
+  direction: "back" | "forward";
+  class?: string;
+}
+
+const { href, direction, class: className = "icon" } = Astro.props;
+const name = `ion:arrow-${direction}-sharp`;
+const label = direction === "back" ? "Previous" : "Next";
+---
+
+{
+  href ? (
+    <a href={href} aria-label={label}>
+      <Icon name={name} class={className} />
+    </a>
+  ) : (
+    <span aria-disabled="true" class="opacity-30 pointer-events-none">
+      <Icon name={name} class={className} />
+    </span>
+  )
+}

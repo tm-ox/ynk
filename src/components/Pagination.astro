@@ -1,24 +1,12 @@
 ---
-import { Icon } from "astro-icon/components";
+import NavArrow from "./NavArrow.astro";
 const { prevUrl, nextUrl, lastPage, currentPage } = Astro.props;
 ---
 
 <nav aria-label="Pagination" class="flex flex-col my-4">
     <div class="flex gap-3">
-        {
-            prevUrl && (
-                <a href={prevUrl}>
-                    <Icon name="ion:arrow-back-sharp" class="icon h-6 w-6" />
-                </a>
-            )
-        }
-        {
-            nextUrl && (
-                <a href={nextUrl}>
-                    <Icon name="ion:arrow-forward-sharp" class="icon h-6 w-6" />
-                </a>
-            )
-        }
+        <NavArrow direction="back" class="icon h-6 w-6" href={prevUrl} />
+        <NavArrow direction="forward" class="icon h-6 w-6" href={nextUrl} />
     </div>
     <div class="flex gap-6">
         {
