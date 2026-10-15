@@ -1,4 +1,6 @@
-import { defineCollection, z } from "astro:content";
+import { defineCollection } from "astro:content";
+import { glob } from "astro/loaders";
+import { z } from "astro/zod";
 
 // Define a basic schema for content you don't need strict validation on
 const basicSchema = z.object({
@@ -7,6 +9,7 @@ const basicSchema = z.object({
 
 export const collections = {
   events: defineCollection({
+    loader: glob({ pattern: "**/*.md", base: "./src/content/events" }),
     // Type the schema function's argument to resolve TS 7031
     schema: ({ image }) =>
       z.object({
@@ -46,7 +49,7 @@ export const collections = {
 
   // Added to clear deprecation warning
   about: defineCollection({
-    type: "content",
+    loader: glob({ pattern: "**/*.md", base: "./src/content/about" }),
     schema: basicSchema,
   }),
 };
