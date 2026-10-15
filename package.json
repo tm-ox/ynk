@@ -17,7 +17,7 @@
     "astro": "^5.18.2",
     "astro-google-analytics": "^1.0.3",
     "astro-icon": "^0.8.2",
-    "sharp": "^0.34.5",
+    "sharp": "^0.35.5",
     "tailwindcss": "^3.4.19"
   }
 }
