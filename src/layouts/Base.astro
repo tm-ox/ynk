@@ -156,11 +156,15 @@ const ogImage = new URL(image ?? "/og-default.jpg", Astro.site).href;
         <main id="main">
             <slot />
         </main>
-        <footer class="flex items-center justify-start h-8">
+        <footer class="flex items-center justify-between h-8">
             <a
                 href="/privacy"
                 class="text-xs tracking-wide uppercase font-displayCon text-accent-muted hover:text-accent"
                 >Privacy</a
+            >
+            <small
+                class="text-xs tracking-wide font-displayCon text-accent-muted"
+                >© 2010–{new Date().getFullYear()} Yes No Klub</small
             >
         </footer>
     <script>
