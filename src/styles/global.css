@@ -2,44 +2,53 @@
 @import url("https://fonts.googleapis.com/css2?family=BioRhyme+Expanded:wght@200;300;400;700;800&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=Pathway+Extreme:wght@300;400;600;700&display=swap");
 
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
+
+@theme {
+    --color-*: initial;
+    --color-primary: rgb(var(--rgb-primary));
+    --color-hover: rgb(var(--rgb-primary-hover));
+    --color-secondary: rgb(var(--rgb-secondary));
+    --color-tertiary: rgb(var(--rgb-tertiary));
+    --font-body: "Pathway Extreme", sans-serif;
+    --font-display: "BioRhyme Expanded", serif;
+    --font-displayCon: "BioRhyme", serif;
+}
 
 @layer base {
     :root {
-        --color-primary: 3 201 29;
-        --color-primary-hover: 0 141 20;
-        --color-secondary: 213 215 213;
-        --color-tertiary: 4 27 27;
+        --rgb-primary: 3 201 29;
+        --rgb-primary-hover: 0 141 20;
+        --rgb-secondary: 213 215 213;
+        --rgb-tertiary: 4 27 27;
     }
     @media (prefers-color-scheme: light) {
         :root {
-            --color-primary: 0 141 20;
-            --color-primary-hover: 3 201 29;
-            --color-secondary: 32 18 1;
-            --color-tertiary: 2228 251 251;
+            --rgb-primary: 0 141 20;
+            --rgb-primary-hover: 3 201 29;
+            --rgb-secondary: 32 18 1;
+            --rgb-tertiary: 2228 251 251;
         }
     }
     @media (prefers-color-scheme: dark) {
         :root {
-            --color-primary: 3 201 29;
-            --color-primary-hover: 0 141 20;
-            --color-secondary: 213 215 213;
-            --color-tertiary: 4 27 27;
+            --rgb-primary: 3 201 29;
+            --rgb-primary-hover: 0 141 20;
+            --rgb-secondary: 213 215 213;
+            --rgb-tertiary: 4 27 27;
         }
     }
     [data-theme="light"] {
-        --color-primary: 0 141 20;
-        --color-primary-hover: 3 201 29;
-        --color-secondary: 35 40 47;
-        --color-tertiary: 249 251 251;
+        --rgb-primary: 0 141 20;
+        --rgb-primary-hover: 3 201 29;
+        --rgb-secondary: 35 40 47;
+        --rgb-tertiary: 249 251 251;
     }
     [data-theme="dark"] {
-        --color-primary: 3 201 29;
-        --color-primary-hover: 0 141 20;
-        --color-secondary: 213 215 213;
-        --color-tertiary: 4 27 27;
+        --rgb-primary: 3 201 29;
+        --rgb-primary-hover: 0 141 20;
+        --rgb-secondary: 213 215 213;
+        --rgb-tertiary: 4 27 27;
     }
     html {
         @apply bg-tertiary;
@@ -48,7 +57,7 @@
         @apply max-w-[1440px] px-2 lg:mx-auto;
     }
     header {
-        @apply fixed top-0 left-0 z-50 w-full bg-tertiary/80 backdrop-blur;
+        @apply fixed top-0 left-0 z-50 w-full bg-tertiary/80 backdrop-blur-sm;
     }
     nav {
         @apply flex justify-between items-center gap-2 h-16 max-w-[1440px] mx-auto px-2;

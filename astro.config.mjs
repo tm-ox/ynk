@@ -1,15 +1,13 @@
 import { defineConfig } from 'astro/config';
-import tailwind from "@astrojs/tailwind";
+import tailwindcss from "@tailwindcss/vite";
 import rehypeExternalLinks from "./rehype-external-links.mjs";
-
-// import alpinejs from "@astrojs/alpinejs";
 
 // https://astro.build/config
 export default defineConfig({
   markdown: {
     rehypePlugins: [rehypeExternalLinks]
   },
-  integrations: [tailwind({
-    applyBaseStyles: false
-  })]
+  vite: {
+    plugins: [tailwindcss()]
+  }
 });
