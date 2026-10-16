@@ -23,28 +23,24 @@ const href = `/events/${featured.id}/`;
     </h2>
     <hr class="w-full" />
     <div
-        class="flex flex-col w-full gap-4 my-auto md:flex-row md:items-center"
+        class="flex flex-col w-full gap-4 md:flex-row md:flex-1 md:min-h-0"
         transition:name={featured.data.id}
     >
-        <a href={href} class="block md:w-3/5">
+        <a href={href} class="block md:h-full md:max-w-[62%] md:shrink-0">
             <Image
                 src={featured.data.flyer.src}
                 alt={flyerAlt(featured.data)}
-                width={800}
-                class="object-contain w-full h-auto"
+                width={1600}
+                class="object-contain w-full h-auto md:h-full md:w-auto"
             />
         </a>
-        <div class="w-full">
-            <EventDetail summary event={featured} headingHref={href}>
-                <div slot="footer" class="py-rule">
-                    <a
-                        href={href}
-                        class="inline-block px-4 py-2 uppercase border border-accent text-accent hover:bg-accent hover:text-bg"
-                    >
-                        Full listing →
-                    </a>
-                </div>
-            </EventDetail>
+        <div
+            data-scroll
+            class="w-full md:flex md:flex-col md:flex-1 md:min-w-0 md:overflow-y-auto md:pr-2"
+        >
+            <div class="md:my-auto">
+                <EventDetail summary event={featured} headingHref={href} />
+            </div>
         </div>
     </div>
     <hr class="w-full" />
