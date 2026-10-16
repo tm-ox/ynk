@@ -63,9 +63,18 @@ const { events } = Astro.props;
             display: flex;
             flex-direction: column;
         }
-        /* Centre a short grid in the space left, without clipping when it scrolls. */
-        .gallery-grid {
-            margin-block: auto;
+        /* The grid sits centred; the slotted page numbers sit halfway between
+           it and the baseline (the spacer above matches the area below). */
+        .gallery-spacer,
+        .gallery-after {
+            flex: 1 1 0;
+            min-height: 0;
+        }
+        .gallery-after {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 2.5rem;
         }
         .gallery-grid {
             grid-template-columns: repeat(6, minmax(0, 1fr));
