@@ -76,7 +76,7 @@ const flyer = event.data.flyer?.src
       <Icon name="ion:close-sharp" class="icon" />
     </a>
   </div>
-  <section transition:name={event.data.id} class="z-10 vt-detail">
+  <section transition:name={event.data.id} class="z-10 vt-detail md:h-section">
     <EventDetail pinned event={event} docsHref={hasPhotos ? `/images/event/${groupSlug(title)}/` : undefined}>
       <Content />
     </EventDetail>
