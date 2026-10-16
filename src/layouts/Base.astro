@@ -197,23 +197,52 @@ const ogImage = new URL(image ?? "/og-default.jpg", Astro.site).href;
                 if (label === "Previous") e.direction = "paging-back";
                 else if (label === "Next") e.direction = "paging-forward";
 
-                // Remember when a detail page was reached from the home panels,
-                // so its close button returns there instead of to the archive.
-                // Paging between details keeps the flag; anything else clears it.
+                // Remember where a detail page was opened from, so its close
+                // button returns there: the home panel for pages reached from
+                // home, otherwise the archive page (and its grid position).
+                // Paging between details keeps it; anything else clears it.
                 const isDetail = (url: URL) =>
                     /^\/(events|images)\/(?!\d+\/?$)[^/]+\/?$/.test(
                         url.pathname,
                     );
-                if (e.from.pathname === "/" && isDetail(e.to)) fromHome = true;
-                else if (!(isDetail(e.from) && isDetail(e.to))) fromHome = false;
+                const isArchive = (url: URL) =>
+                    /^\/(events|images)(\/(event\/[^/]+\/)?(\d+\/?)?)?$/.test(
+                        url.pathname,
+                    );
+                if (isDetail(e.to) && e.from.pathname === "/") closeTo = "home";
+                else if (isDetail(e.to) && isArchive(e.from))
+                    closeTo = e.from.pathname + e.from.search;
+                else if (!(isDetail(e.from) && isDetail(e.to))) closeTo = null;
+
+                homeHash = e.to.pathname === "/" ? e.to.hash : "";
             });
 
-            let fromHome = false;
+            let closeTo: string | null = null;
+            let homeHash = "";
+
             document.addEventListener("astro:page-load", () => {
-                if (!fromHome) return;
+                if (!closeTo) return;
                 document
-                    .querySelectorAll<HTMLAnchorElement>("a[data-home-href]")
-                    .forEach((a) => (a.href = a.dataset.homeHref!));
+                    .querySelectorAll<HTMLAnchorElement>("a[data-close]")
+                    .forEach((a) => {
+                        a.href =
+                            closeTo === "home"
+                                ? a.dataset.homeHref!
+                                : closeTo!;
+                    });
+            });
+
+            // Arriving on the home page with a #section: place the horizontal
+            // track there before the new page is shown, so it does not slide
+            // in from the first panel.
+            document.addEventListener("astro:after-swap", () => {
+                const t = document.querySelector<HTMLElement>("[data-track]");
+                const target = homeHash && document.getElementById(homeHash.slice(1));
+                if (!t || !target || !matchMedia("(min-width: 40rem)").matches)
+                    return;
+                const index = [...t.children].indexOf(target);
+                if (index >= 0)
+                    t.scrollTo({ left: index * t.clientWidth, behavior: "instant" });
             });
         </script>
     </body>
