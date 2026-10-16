@@ -7,7 +7,7 @@ const { lastPage, currentPage, basePath = "/images/" } = Astro.props;
 <nav aria-label="Pagination" transition:name="pagination" class="flex flex-wrap justify-center h-auto max-w-none gap-x-6 mx-auto px-0">
     {
         Array.from({ length: lastPage }, (_, i) => i + 1).map((num) => (
-            <h5>
+            <span class="text-xs md:text-sm font-displayCon font-bold text-accent">
                 <a
                     href={num === 1 ? basePath : `${basePath}${num}/`}
                     class={currentPage === num ? "active" : undefined}
@@ -15,7 +15,7 @@ const { lastPage, currentPage, basePath = "/images/" } = Astro.props;
                 >
                     {num}
                 </a>
-            </h5>
+            </span>
         ))
     }
 </nav>
