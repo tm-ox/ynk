@@ -9,11 +9,6 @@ const RIGHT = ["ArrowRight", "l"];
 const DOWN = ["ArrowDown", "j"];
 const UP = ["ArrowUp", "k"];
 
-// Alt + h/j/k/l mirror the plain letters, for people whose Vim-style browser
-// extension takes the plain ones. Matched by physical key (e.code) because
-// Alt changes the character on some layouts (macOS).
-const ALT_CODES: Record<string, string> = { KeyH: "h", KeyJ: "j", KeyK: "k", KeyL: "l" };
-
 const CLOSE_LINKS =
   'a[aria-label="All events"], a[aria-label="All images"], a[aria-label="Back to home"]';
 
@@ -35,12 +30,10 @@ const scrollAreas = (): Element[] => {
 // Bound once on import: module scripts are not re-run by the view-transition
 // router, so everything is looked up at event time.
 document.addEventListener("keydown", (e) => {
-  if (e.defaultPrevented || e.ctrlKey || e.metaKey || e.shiftKey) return;
+  if (e.defaultPrevented || e.altKey || e.ctrlKey || e.metaKey || e.shiftKey) return;
   const target = e.target as Element;
   if (target.closest("input, textarea, select, [contenteditable]")) return;
-  // With Alt held only the Vim letters apply; Alt+arrows stay the browser's.
-  const key = e.altKey ? ALT_CODES[e.code] : e.key;
-  if (!key) return;
+  const key = e.key;
 
   const dir = RIGHT.includes(key) ? 1 : LEFT.includes(key) ? -1 : 0;
   if (dir) {
