@@ -54,18 +54,9 @@ export const groupSlug = (title: string) =>
     .replace(/[^a-z0-9]+/g, "-")
     .replace(/^-|-$/g, "");
 
-const numericDate = (date: string) =>
-  new Date(date).toLocaleDateString("en-GB", { timeZone: "UTC" });
-
-/** 10–13/10/2018 within a month, 25/07–12/09/2019 across months, full dates across years. */
-const dateRange = (first: string, last: string) => {
-  if (first === last) return numericDate(first);
-  const [fy, fm, fd] = first.split("-");
-  const [ly, lm, ld] = last.split("-");
-  if (fy !== ly) return `${numericDate(first)}–${numericDate(last)}`;
-  if (fm !== lm) return `${fd}/${fm}–${ld}/${lm}/${ly}`;
-  return `${fd}–${ld}/${lm}/${ly}`;
-};
+/** Same ISO format as the event pages; ranges show both ends in full. */
+const dateRange = (first: string, last: string) =>
+  first === last ? first : `${first} – ${last}`;
 
 /** Events with gallery photos grouped for the gallery filter, newest first. */
 export async function getGalleryEvents() {
