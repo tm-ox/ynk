@@ -43,11 +43,34 @@ const { events, current } = Astro.props;
 <script>
     import { navigate } from "astro:transitions/client";
 
+    // Arrowing through the options changes the value, but must not leave the
+    // page (WCAG 3.2.2): after a keyboard step, navigate on Enter or blur only.
+    // Mouse and touch picks navigate straight away.
+    const STEPS = ["ArrowUp", "ArrowDown", "PageUp", "PageDown", "Home", "End"];
+    const sel = "[data-gallery-filter]";
+    let stepped = false;
+
+    const isFilter = (t: EventTarget | null) =>
+        t instanceof HTMLSelectElement && t.matches(sel);
+    const commit = (select: HTMLSelectElement) => {
+        const current = [...select.options].find((o) => o.defaultSelected);
+        stepped = false;
+        if (select.value && select.value !== current?.value) navigate(select.value);
+    };
+
+    document.addEventListener("pointerdown", (e) => {
+        if (isFilter(e.target)) stepped = false;
+    });
+    document.addEventListener("keydown", (e) => {
+        if (!isFilter(e.target)) return;
+        if (STEPS.includes(e.key)) stepped = true;
+        else if (e.key === "Enter") commit(e.target as HTMLSelectElement);
+    });
     document.addEventListener("change", (e) => {
-        const select = e.target as HTMLSelectElement;
-        if (select.matches?.("[data-gallery-filter]")) {
-            navigate(select.value);
-        }
+        if (isFilter(e.target) && !stepped) commit(e.target as HTMLSelectElement);
+    });
+    document.addEventListener("focusout", (e) => {
+        if (isFilter(e.target) && stepped) commit(e.target as HTMLSelectElement);
     });
 </script>
 
