@@ -196,6 +196,15 @@ const ogImage = new URL(image ?? "/og-default.jpg", Astro.site).href;
                     ?.getAttribute("aria-label");
                 if (label === "Previous") e.direction = "paging-back";
                 else if (label === "Next") e.direction = "paging-forward";
+                // Page numbers slide too, by which way the target page lies.
+                if (e.sourceElement?.closest?.('nav[aria-label="Pagination"]')) {
+                    const page = (u: URL) =>
+                        Number(u.pathname.match(/\/(\d+)\/?$/)?.[1] ?? 1);
+                    e.direction =
+                        page(e.to) > page(e.from)
+                            ? "paging-forward"
+                            : "paging-back";
+                }
                 paging = !!e.direction && e.direction.startsWith("paging");
                 // Grid pages slide as a whole; the cards must not be captured
                 // separately or they would crossfade instead.
