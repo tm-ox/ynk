@@ -12,6 +12,8 @@
     --color-border: rgb(var(--rgb-accent));
     --color-scrim: rgb(var(--rgb-bg) / 0.8);
     --color-scrim-heavy: rgb(var(--rgb-bg) / 0.9);
+    /* Space between a rule (hr) and the content next to it, on top of the hr margin. */
+    --spacing-rule: 0.25rem;
     --font-body: var(--font-pathway-extreme);
     --font-display: var(--font-biorhyme-expanded);
     --font-displayCon: var(--font-biorhyme);
