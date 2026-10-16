@@ -17,7 +17,7 @@ const events = await getGalleryEvents();
     title={page.currentPage > 1 ? `Images – page ${page.currentPage}` : "Images"}
     description="Photographs from Yes No Klub events in Yogyakarta, Indonesia."
 >
-    <section class="flex-col">
+    <section class="flex-col pt-0">
         <GalleryFilter events={events} />
         <ul class="imageGrid mb-auto">
             {

@@ -25,7 +25,7 @@ const basePath = `/images/event/${event.id}`;
     title={`Images – ${event.label}${page.currentPage > 1 ? `, page ${page.currentPage}` : ""}`}
     description={`Photographs from ${event.label}, Yes No Klub, Yogyakarta, Indonesia.`}
 >
-    <section class="flex-col">
+    <section class="flex-col pt-0">
         <GalleryFilter events={events} current={event.id} />
         <ul class="imageGrid mb-auto">
             {
