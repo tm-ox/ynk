@@ -36,7 +36,7 @@ const label = "mb-0 text-xs font-bold tracking-normal md:text-sm font-displayCon
     <Image
       src={event.data.flyer.src}
       alt={flyerAlt(event.data)}
-      class="object-contain my-1 h-auto w-full mb-auto"
+      class:list={["object-contain my-1 h-auto w-full mb-auto", capped && "md:max-h-[calc(100vh-var(--section-offset)-38px)]"]}
     />
   </div>
   )}
