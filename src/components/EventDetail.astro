@@ -12,8 +12,11 @@ interface Props {
   /** From md up, fill the available height: the flyer as large as it fits and
    *  the details scrolling on their own. For use inside a fixed-height panel. */
   contained?: boolean;
-  /** From md up, cap the details column to the screen height so it scrolls on
-   *  its own instead of the page, once the text outgrows the screen. */
+  /** From md up: the flyer stays vertically centred whatever the text length
+   *  (the row is as tall as the taller of the two, centred in the screen, and
+   *  the text column is top-aligned in it, so shorter text lines up with the
+   *  flyer's top and longer text is centred). The details column is capped to
+   *  the screen height and scrolls on its own beyond that. */
   capped?: boolean;
 }
 const { event, headingHref, docsHref, contained = false, capped = false } = Astro.props;
@@ -30,7 +33,7 @@ const { event, headingHref, docsHref, contained = false, capped = false } = Astr
     class:list={[
       contained
         ? "md:h-full md:max-w-[62%] md:shrink-0"
-        : "md:w-3/5",
+        : ["md:w-3/5", capped && "md:self-center"],
     ]}
   >
     <Image
