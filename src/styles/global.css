@@ -108,29 +108,6 @@
             scroll-behavior: smooth;
         }
     }
-    a:focus-visible,
-    button:focus-visible {
-        outline: 2px solid var(--color-accent);
-        outline-offset: 3px;
-    }
-    @media (prefers-reduced-motion: reduce) {
-        *,
-        *::before,
-        *::after {
-            transition-duration: 0.01ms !important;
-            animation-duration: 0.01ms !important;
-            scroll-behavior: auto !important;
-        }
-    }
-    html {
-        @apply bg-bg;
-        scroll-padding-top: var(--spacing-header);
-    }
-    @media (prefers-reduced-motion: no-preference) {
-        html {
-            scroll-behavior: smooth;
-        }
-    }
     body {
         @apply max-w-site px-2 lg:mx-auto;
     }
