@@ -6,18 +6,16 @@ import { Content } from "../../content/about/about.md";
 <section id="about" class="home-section">
     <div class="grid text-left lg:gap-6 lg:grid-cols-3">
         <h3
-            class="mt-1 text-sm sm:text-2xl lg:text-right col-span-2 sm:col-span-3 lg:col-span-1"
+            class="mt-1 text-sm sm:text-2xl lg:text-right lg:self-center col-span-2 sm:col-span-3 lg:col-span-1"
         >
             {about.frontmatter.description}
         </h3>
         <div class="col-span-2">
             <hr class="lg:hidden" />
             <h2 class="text-3xl md:text-4xl">{about.frontmatter.title}</h2>
-            <hr />
             <div class="grid py-rule sm:gap-6 sm:grid-cols-2">
                 <Content />
             </div>
-            <hr />
         </div>
     </div>
 </section>
