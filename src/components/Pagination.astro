@@ -1,39 +1,31 @@
 ---
-import NavArrow from "./NavArrow.astro";
-const slash = (url?: string) => (url && !url.endsWith("/") ? `${url}/` : url);
-const { prevUrl: rawPrev, nextUrl: rawNext, lastPage, currentPage, basePath = "/images/" } = Astro.props;
-const prevUrl = slash(rawPrev);
-const nextUrl = slash(rawNext);
+// Page numbers only; the Previous / Next arrows live in the nav (see the
+// archive pages' "subnav" slot).
+const { lastPage, currentPage, basePath = "/images/" } = Astro.props;
 ---
 
-<nav aria-label="Pagination" class="flex flex-col my-4">
-    <div class="flex gap-3">
-        <NavArrow direction="back" class="icon h-6 w-6" href={prevUrl} />
-        <NavArrow direction="forward" class="icon h-6 w-6" href={nextUrl} />
-    </div>
-    <div class="flex gap-6">
-        {
-            Array.from({ length: lastPage }, (_, i) => i + 1).map((num) => (
-                <h5>
-                    <a
-                        href={num === 1 ? basePath : `${basePath}${num}/`}
-                        class={
-                            currentPage === num
-                                ? "active"
-                                : "flex text-center justify-center"
-                        }
-                    >
-                        {num}
-                    </a>
-                </h5>
-            ))
-        }
-    </div>
+<nav aria-label="Pagination" class="flex flex-wrap gap-x-3 shrink-0">
+    {
+        Array.from({ length: lastPage }, (_, i) => i + 1).map((num) => (
+            <h6>
+                <a
+                    href={num === 1 ? basePath : `${basePath}${num}/`}
+                    class={currentPage === num ? "active" : undefined}
+                    aria-current={currentPage === num ? "page" : undefined}
+                >
+                    {num}
+                </a>
+            </h6>
+        ))
+    }
 </nav>
 
 <style>
     @reference "../styles/global.css";
+    a {
+        @apply text-accent-muted hover:text-accent;
+    }
     .active {
-        @apply underline underline-offset-8;
+        @apply underline underline-offset-4 text-accent;
     }
 </style>

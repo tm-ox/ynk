@@ -47,6 +47,12 @@ const { images } = Astro.props;
             margin-bottom: 0;
             overflow-y: auto;
             container-type: size;
+            display: flex;
+            flex-direction: column;
+        }
+        /* Centre a short grid in the space left, without clipping when it scrolls. */
+        .gallery-grid {
+            margin-block: auto;
         }
         .gallery-grid {
             grid-template-columns: repeat(12, minmax(0, 1fr));

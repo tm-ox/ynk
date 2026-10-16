@@ -9,8 +9,8 @@ const { events } = Astro.props;
 ---
 
 <!-- Flyers sit in square cells and the grid always spans the content width.
-     From xl up a page (12 events) is meant to fit one screen: 4, 6 or 12
-     columns (3, 2 or 1 rows) by the shape of the space available, and anything
+     From xl up a page (24 events) is meant to fit one screen: 6, 8 or 12
+     columns (4, 3 or 2 rows) by the shape of the space available, and anything
      that still does not fit scrolls inside the grid. Below xl it flows. -->
 <div class="w-full mb-auto gallery-fit vt-detail" transition:name="gallery-page" data-scroll>
     <ul class="grid gap-2 grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gallery-grid">
@@ -44,6 +44,12 @@ const { events } = Astro.props;
             margin-bottom: 0;
             overflow-y: auto;
             container-type: size;
+            display: flex;
+            flex-direction: column;
+        }
+        /* Centre a short grid in the space left, without clipping when it scrolls. */
+        .gallery-grid {
+            margin-block: auto;
         }
         .gallery-grid {
             grid-template-columns: repeat(12, minmax(0, 1fr));
@@ -53,12 +59,12 @@ const { events } = Astro.props;
         }
         @container (max-aspect-ratio: 20/9) {
             .gallery-grid {
-                grid-template-columns: repeat(6, minmax(0, 1fr));
+                grid-template-columns: repeat(8, minmax(0, 1fr));
             }
         }
         @container (max-aspect-ratio: 10/9) {
             .gallery-grid {
-                grid-template-columns: repeat(4, minmax(0, 1fr));
+                grid-template-columns: repeat(6, minmax(0, 1fr));
             }
         }
     }

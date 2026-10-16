@@ -2,10 +2,11 @@
 import type { GetStaticPaths } from "astro";
 import { Icon } from "astro-icon/components";
 import BaseLayout from "../../layouts/BaseLayout.astro";
+import NavArrow from "../../components/NavArrow.astro";
 import Pagination from "../../components/Pagination.astro";
 import GalleryGrid from "../../components/GalleryGrid.astro";
 import GalleryFilter from "../../components/GalleryFilter.astro";
-import { getGalleryEvents, getGalleryImages } from "../../utils/events";
+import { slash, getGalleryEvents, getGalleryImages } from "../../utils/events";
 
 export const getStaticPaths = (async ({ paginate }) => {
     return paginate(await getGalleryImages(), { pageSize: 24 });
@@ -23,18 +24,19 @@ const events = await getGalleryEvents();
       slot="subnav"
       class="flex items-center gap-1 px-3 ml-4 mr-auto border-x border-x-border"
     >
+      <NavArrow direction="back" href={slash(page.url.prev)} />
+      <NavArrow direction="forward" href={slash(page.url.next)} />
       <a href="/#images" aria-label="Back to home">
         <Icon name="ion:close-sharp" class="icon" />
       </a>
     </div>
     <section class="flex-col pt-0 xl:h-section xl:min-h-0 xl:overflow-hidden">
-        <GalleryFilter events={events} />
-        <GalleryGrid images={page.data} />
-        <Pagination
-            prevUrl={page.url.prev}
-            nextUrl={page.url.next}
+        <GalleryFilter events={events} >
+            <Pagination
             lastPage={page.lastPage}
             currentPage={page.currentPage}
         />
+        </GalleryFilter>
+        <GalleryGrid images={page.data} />
     </section>
 </BaseLayout>

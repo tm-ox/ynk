@@ -3,13 +3,15 @@ import type { GetStaticPaths } from "astro";
 import { getCollection } from "astro:content";
 import { Icon } from "astro-icon/components";
 import BaseLayout from "../../layouts/BaseLayout.astro";
+import { slash } from "../../utils/events";
 import EventGrid from "../../components/EventGrid.astro";
+import NavArrow from "../../components/NavArrow.astro";
 import Pagination from "../../components/Pagination.astro";
 
 export const getStaticPaths = (async ({ paginate }) => {
   const events = await getCollection("events");
   events.sort((b, a) => Date.parse(a.data.date) - Date.parse(b.data.date));
-  return paginate(events, { pageSize: 12 });
+  return paginate(events, { pageSize: 24 });
 }) satisfies GetStaticPaths;
 
 const { page } = Astro.props;
@@ -23,18 +25,23 @@ const { page } = Astro.props;
     slot="subnav"
     class="flex items-center gap-1 px-3 ml-4 mr-auto border-x border-x-border"
   >
+    <NavArrow direction="back" href={slash(page.url.prev)} />
+    <NavArrow direction="forward" href={slash(page.url.next)} />
     <a href="/#events" aria-label="Back to home">
       <Icon name="ion:close-sharp" class="icon" />
     </a>
   </div>
   <section class="flex-col pt-0 xl:h-section xl:min-h-0 xl:overflow-hidden">
+    <div class="w-full pt-1 mb-4">
+      <div class="flex sm:justify-end">
+        <Pagination
+          lastPage={page.lastPage}
+          currentPage={page.currentPage}
+          basePath="/events/"
+        />
+      </div>
+      <hr class="my-1" />
+    </div>
     <EventGrid events={page.data} />
-    <Pagination
-      prevUrl={page.url.prev}
-      nextUrl={page.url.next}
-      lastPage={page.lastPage}
-      currentPage={page.currentPage}
-      basePath="/events/"
-    />
   </section>
 </BaseLayout>

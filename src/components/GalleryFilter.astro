@@ -7,6 +7,7 @@ const { events, current } = Astro.props;
 ---
 
 <div class="gallery-filter">
+  <div class="flex flex-col gap-1 sm:flex-row sm:items-center sm:gap-4">
     <select aria-label="Filter by event" data-gallery-filter>
         <option value="/images/" selected={!current}>All events</option>
         {
@@ -20,6 +21,8 @@ const { events, current } = Astro.props;
             ))
         }
     </select>
+    <slot />
+  </div>
     <noscript>
         <ul>
             <li><a href="/images/">All events</a></li>
@@ -54,7 +57,7 @@ const { events, current } = Astro.props;
         @apply w-full pt-1 mb-4;
     }
     select {
-        @apply w-full bg-bg text-accent-muted py-0 hover:text-accent max-sm:py-2 max-sm:text-base;
+        @apply min-w-0 flex-1 bg-bg text-accent-muted py-0 hover:text-accent max-sm:py-2 max-sm:text-base;
     }
     hr {
         @apply my-1;
