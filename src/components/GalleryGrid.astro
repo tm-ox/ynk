@@ -8,18 +8,13 @@ interface Props {
 const { images } = Astro.props;
 ---
 
-<!-- Thumbnails are always square. From xl up the square size is the largest that
-     lets a whole page (24 images: 4 rows of 6, or 3 rows of 8) fit the height
-     left by the filter and pagination, so a page is a single screen; below
-     that the grid flows and scrolls with fewer columns. --extra is the title
-     and rules above each image. -->
-<div
-    class="w-full mb-auto xl:flex-1 xl:min-h-0 xl:mb-0 xl:[container-type:size] vt-detail"
-    transition:name="gallery-page"
->
-    <ul
-        class="imageGrid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:justify-center xl:[--cols:6] xl:[--rows:4] 2xl:[--cols:8] 2xl:[--rows:3] xl:[--extra:4.5rem] xl:[--cell:min((100cqw-(var(--cols)-1)*0.5rem)/var(--cols),(100cqh-(var(--rows)-1)*0.5rem)/var(--rows)-var(--extra))] xl:grid-cols-[repeat(var(--cols),var(--cell))]"
-    >
+<!-- Thumbnails are always square and the grid always spans the content width.
+     From xl up a page (24 images) is meant to fit one screen: the number of
+     columns follows the shape of the space available (6, 8 or 12, so 4, 3 or
+     2 rows), and anything that still does not fit scrolls inside the grid.
+     Below xl the grid flows with fewer columns. -->
+<div class="w-full mb-auto gallery-fit vt-detail" transition:name="gallery-page" data-scroll>
+    <ul class="imageGrid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gallery-grid">
         {
             images.map((image) => (
                 <li class="min-w-0">
@@ -43,3 +38,28 @@ const { images } = Astro.props;
         }
     </ul>
 </div>
+
+<style>
+    @media (min-width: 80rem) {
+        .gallery-fit {
+            flex: 1;
+            min-height: 0;
+            margin-bottom: 0;
+            overflow-y: auto;
+            container-type: size;
+        }
+        .gallery-grid {
+            grid-template-columns: repeat(12, minmax(0, 1fr));
+        }
+        @container (max-aspect-ratio: 20/11) {
+            .gallery-grid {
+                grid-template-columns: repeat(8, minmax(0, 1fr));
+            }
+        }
+        @container (max-aspect-ratio: 10/9) {
+            .gallery-grid {
+                grid-template-columns: repeat(6, minmax(0, 1fr));
+            }
+        }
+    }
+</style>
