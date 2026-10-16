@@ -39,7 +39,9 @@ const basePath = `/images/event/${event.id}/`;
       </a>
     </div>
     <section class="flex-col pt-0 xl:h-section xl:min-h-0 xl:overflow-hidden">
-        <GalleryFilter events={events} current={event.id} />
+        <GalleryFilter events={events} current={event.id}>
+            <a href="/images/" class="shrink-0 section-action">All images</a>
+        </GalleryFilter>
         <GalleryGrid images={page.data}>
             <Pagination
             lastPage={page.lastPage}

@@ -37,18 +37,6 @@ const isCurrent = (name: string) =>
                             <a href="/" target="_self">Home</a>
                             <hr class="sm:hidden" />
                         </li>
-                        {isCurrent("events") && (
-                            <li>
-                                <a href="/events/" data-section="events" target="_self">Events</a>
-                                <hr class="sm:hidden" />
-                            </li>
-                        )}
-                        {isCurrent("images") && (
-                            <li>
-                                <a href="/images/" data-section="images" target="_self">Images</a>
-                                <hr class="sm:hidden" />
-                            </li>
-                        )}
                         </>
                     )
                 }
@@ -137,18 +125,8 @@ const isCurrent = (name: string) =>
                 .querySelectorAll("main section[id]")
                 .forEach((section) => observer!.observe(section));
         } else {
-            // Detail pages are inside the section, so its link stays a
-            // destination; only the archive pages mark it as current.
-            const isDetail = /^\/(events|images)\/(?!\d+\/?$)(?!event\/)[^/]+\/?$/.test(path);
-            setActive(
-                isDetail
-                    ? null
-                    : path.startsWith("/events")
-                    ? "events"
-                    : path.startsWith("/images")
-                      ? "images"
-                      : null,
-            );
+            // Inner pages carry no section links in the nav.
+            setActive(null);
         }
     });
 </script>
