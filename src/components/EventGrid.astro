@@ -22,7 +22,7 @@ const padding = Math.max(0, pageSize - events.length);
         {
             events.map((event) => (
                 <li class="min-w-0">
-                    <a href={`/events/${event.id}/`} transition:name={event.data.id}>
+                    <a href={`/events/${event.id}/`} title={event.data.title} transition:name={event.data.id}>
                         <h5 class="uppercase xl:truncate">{event.data.title}</h5>
                         <hr />
                         <Image
@@ -101,7 +101,11 @@ const padding = Math.max(0, pageSize - events.length);
         .gallery-grid :global(hr) {
             margin-block: 0.25rem;
         }
-        @container (min-aspect-ratio: 20/11) {
+        /* 6 columns (3 rows) need a height of about 0.5 x width + 150px:
+           3 rows of (cell + 38px chrome), 2 gaps, and 40px for the page
+           numbers. That is 1.62 x wide at 1264px and 1.65 at 1424px, so 6
+           columns only when narrower than 8:5; 9 columns (2 rows) need far less. */
+        @container (min-aspect-ratio: 8/5) {
             .gallery-grid {
                 grid-template-columns: repeat(9, minmax(0, 1fr));
             }
