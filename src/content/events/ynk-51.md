@@ -7,6 +7,61 @@ venue: { name: Talujala Hub, url: https://www.instagram.com/amtstudiolab/ }
 with: Sandikala Ensemble (Epitaph Premiere Concert), Gatot Danar Sulistiyanto & Mitch Elliott
 info: "IDR 50.000"
 flyer: { src: ../flyers/ynk_51.png, alt: YNK#51 }
+images:
+  - src: ../images/ynk51-01.jpg
+    alt: YNK#51
+    id: ynk51-01
+  - src: ../images/ynk51-02.jpg
+    alt: YNK#51
+    id: ynk51-02
+  - src: ../images/ynk51-03.jpg
+    alt: YNK#51
+    id: ynk51-03
+  - src: ../images/ynk51-04.jpg
+    alt: YNK#51
+    id: ynk51-04
+  - src: ../images/ynk51-05.jpg
+    alt: YNK#51
+    id: ynk51-05
+  - src: ../images/ynk51-06.jpg
+    alt: YNK#51
+    id: ynk51-06
+  - src: ../images/ynk51-07.jpg
+    alt: YNK#51
+    id: ynk51-07
+  - src: ../images/ynk51-08.jpg
+    alt: YNK#51
+    id: ynk51-08
+  - src: ../images/ynk51-09.jpg
+    alt: YNK#51
+    id: ynk51-09
+  - src: ../images/ynk51-10.jpg
+    alt: YNK#51
+    id: ynk51-10
+  - src: ../images/ynk51-11.jpg
+    alt: YNK#51
+    id: ynk51-11
+  - src: ../images/ynk51-12.jpg
+    alt: YNK#51
+    id: ynk51-12
+  - src: ../images/ynk51-13.jpg
+    alt: YNK#51
+    id: ynk51-13
+  - src: ../images/ynk51-14.jpg
+    alt: YNK#51
+    id: ynk51-14
+  - src: ../images/ynk51-15.jpg
+    alt: YNK#51
+    id: ynk51-15
+  - src: ../images/ynk51-16.jpg
+    alt: YNK#51
+    id: ynk51-16
+  - src: ../images/ynk51-17.jpg
+    alt: YNK#51
+    id: ynk51-17
+  - src: ../images/ynk51-18.jpg
+    alt: YNK#51
+    id: ynk51-18
 ---
 
 The premiere concert of [Sandikala Ensemble](https://www.instagram.com/sandikalaensemble/)—an expanded gamelan unit exploring experimental techniques, new instrument-making, and unfamiliar possibilities within contemporary gamelan practice.
