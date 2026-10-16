@@ -10,7 +10,7 @@ const DOWN = ["ArrowDown", "j"];
 const UP = ["ArrowUp", "k"];
 
 const CLOSE_LINKS =
-  'a[aria-label="All events"], a[aria-label="All images"], a[aria-label="Back to home"]';
+  'a[data-close], a[aria-label="Back to home"]';
 
 const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
 
