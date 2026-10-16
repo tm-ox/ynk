@@ -39,13 +39,14 @@ const basePath = `/images/event/${event.id}/`;
       </a>
     </div>
     <section class="flex-col pt-0 xl:h-section xl:min-h-0 xl:overflow-hidden">
-        <GalleryFilter events={events} current={event.id} >
+        <div class="w-full py-1">
             <Pagination
             lastPage={page.lastPage}
             currentPage={page.currentPage}
             basePath={basePath}
         />
-        </GalleryFilter>
+        </div>
+        <GalleryFilter events={events} current={event.id} />
         <GalleryGrid images={page.data} />
     </section>
 </BaseLayout>
