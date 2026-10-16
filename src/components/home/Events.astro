@@ -15,11 +15,13 @@ const latest = [...events].sort(
     (a, b) => Date.parse(b.data.date) - Date.parse(a.data.date),
 );
 const featured = upcoming[0] ?? latest[0];
-const href = `/events/${featured.id}/`;
+const href = featured && `/events/${featured.id}/`;
 const label = upcoming[0] ? "Next event" : "Previous event";
+const flyer = featured?.data.flyer;
 ---
 
-<section id="events" class="flex-col items-stretch home-section">
+{featured && (
+<section id="events" class="flex-col items-stretch">
     <SectionBar label={label}>
         <a href="/events/" class="section-action">All events</a>
     </SectionBar>
@@ -27,18 +29,21 @@ const label = upcoming[0] ? "Next event" : "Previous event";
         class="grid w-full gap-4 my-auto lg:gap-6 lg:grid-cols-3 lg:items-center"
         transition:name={featured.data.id}
     >
+        {flyer && (
         <div class="w-full max-w-md mx-auto lg:max-w-none">
             <a href={href} class="block">
                 <Image
-                    src={featured.data.flyer.src}
+                    src={flyer.src}
                     alt={flyerAlt(featured.data)}
                     width={1200}
                     class="object-contain w-full h-auto"
                 />
             </a>
         </div>
-        <div class="lg:col-span-2">
+        )}
+        <div class={flyer ? "lg:col-span-2" : "lg:col-span-3"}>
             <EventDetail summary event={featured} headingHref={href} />
         </div>
     </div>
 </section>
+)}

@@ -1,11 +1,11 @@
 ---
 import { getCollection, render } from "astro:content";
-import { Image, getImage } from "astro:assets";
+import { getImage } from "astro:assets";
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import { Icon } from "astro-icon/components";
 import EventDetail from "../../components/EventDetail.astro";
 import NavArrow from "../../components/NavArrow.astro";
-import { eventJsonLd, flyerAlt, groupSlug, prettyDate as formatDate } from "../../utils/events";
+import { eventJsonLd, groupSlug, prettyDate as formatDate } from "../../utils/events";
 
 export async function getStaticPaths() {
   const events = await getCollection("events");
@@ -72,7 +72,7 @@ const flyer = event.data.flyer?.src
       direction="forward"
       href={nextEvent.data ? `/events/${nextEvent.id}/` : undefined}
     />
-    <a href="/events" data-close data-home-href="/#events" aria-label="All events">
+    <a href="/events/" data-close data-home-href="/#events" aria-label="All events">
       <Icon name="ion:close-sharp" class="icon" />
     </a>
   </div>

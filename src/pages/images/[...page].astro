@@ -18,7 +18,7 @@ const events = await getGalleryEvents();
 
 <BaseLayout
     title={page.currentPage > 1 ? `Images – page ${page.currentPage}` : "Images"}
-    description="Photographs from Yes No Klub events in Yogyakarta, Indonesia."
+    description={`Photographs from Yes No Klub events in Yogyakarta, Indonesia.${page.currentPage > 1 ? ` Page ${page.currentPage}.` : ""}`}
 >
     <div
       slot="subnav"

@@ -26,7 +26,7 @@ const basePath = `/images/event/${event.id}/`;
 
 <BaseLayout
     title={`Images – ${event.label}${page.currentPage > 1 ? `, page ${page.currentPage}` : ""}`}
-    description={`Photographs from ${event.label}, Yes No Klub, Yogyakarta, Indonesia.`}
+    description={`Photographs from ${event.label}, Yes No Klub, Yogyakarta, Indonesia.${page.currentPage > 1 ? ` Page ${page.currentPage}.` : ""}`}
 >
     <div
       slot="subnav"

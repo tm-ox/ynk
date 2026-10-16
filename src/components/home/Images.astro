@@ -6,7 +6,7 @@ import { getGalleryImages } from "../../utils/events";
 // A highlight from the most recent documented event: five photographs spread
 // evenly through the night, the first shown large.
 const all = await getGalleryImages();
-const latestGroup = all[0].groupId;
+const latestGroup = all[0]?.groupId;
 const photos = all.filter((image) => image.groupId === latestGroup);
 const COUNT = 5;
 const picks =
@@ -17,7 +17,8 @@ const picks =
           );
 ---
 
-<section id="images" class="flex-col items-stretch home-section">
+{latestGroup && (
+<section id="images" class="flex-col items-stretch">
     <SectionBar label="Images">
         <a href={`/images/event/${latestGroup}/`} class="section-action">
             Event images
@@ -45,3 +46,4 @@ const picks =
         }
     </ul>
 </section>
+)}
