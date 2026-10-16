@@ -31,7 +31,7 @@ const flyer = featured?.data.flyer;
     >
         {flyer && (
         <div class="w-full max-w-md mx-auto lg:max-w-none">
-            <a href={href} class="block">
+            <a href={href} class="block" tabindex="-1" aria-hidden="true">
                 <Image
                     src={flyer.src}
                     alt={flyerAlt(featured.data)}
