@@ -7,8 +7,8 @@ const { events, current } = Astro.props;
 ---
 
 <div class="gallery-filter">
-    <label for="gallery-event" class="uppercase">Event</label>
-    <select id="gallery-event" data-gallery-filter>
+    <hr />
+    <select aria-label="Filter by event" data-gallery-filter>
         <option value="/images" selected={!current}>All events</option>
         {
             events.map((event) => (
@@ -21,6 +21,7 @@ const { events, current } = Astro.props;
             ))
         }
     </select>
+    <hr />
 </div>
 
 <script>
@@ -35,9 +36,9 @@ const { events, current } = Astro.props;
 <style>
     @reference "../styles/global.css";
     .gallery-filter {
-        @apply flex flex-col gap-1 mb-4 sm:flex-row sm:items-center sm:gap-3;
+        @apply w-full mb-4;
     }
     select {
-        @apply max-w-full bg-bg text-accent-muted border border-border px-2 py-1 hover:text-accent;
+        @apply w-full bg-bg text-accent-muted py-1 hover:text-accent;
     }
 </style>
