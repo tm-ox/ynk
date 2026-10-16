@@ -89,9 +89,11 @@ const isCurrent = (name: string) =>
 
 <script>
     // Marks the nav link for the section in view on the home page, and the
-    // events/images links on their own routes. The nav is persisted across
-    // transitions, so this runs on every page load.
+    // events/images links on their own routes. Only the theme is persisted
+    // across transitions, so this runs on every page load.
     let observer: IntersectionObserver | undefined;
+    // Panels sit side by side from sm up, stacked below it.
+    const wide = matchMedia("(min-width: 40rem)");
 
     const setActive = (id: string | null) => {
         document
@@ -104,8 +106,9 @@ const isCurrent = (name: string) =>
             });
     };
 
-    document.addEventListener("astro:page-load", () => {
+    const observe = () => {
         observer?.disconnect();
+        observer = undefined;
         const path = location.pathname;
         if (path === "/") {
             observer = new IntersectionObserver(
@@ -115,8 +118,7 @@ const isCurrent = (name: string) =>
                     }
                 },
                 {
-                    // Panels sit side by side from sm up, stacked below it.
-                    rootMargin: matchMedia("(min-width: 40rem)").matches
+                    rootMargin: wide.matches
                         ? "0px -45% 0px -45%"
                         : "-45% 0px -45% 0px",
                 },
@@ -128,7 +130,12 @@ const isCurrent = (name: string) =>
             // Inner pages carry no section links in the nav.
             setActive(null);
         }
-    });
+    };
+
+    // Bound once (module scripts are not re-run by the router).
+    document.addEventListener("astro:page-load", observe);
+    // The layout flips when the viewport crosses sm: re-create the observer.
+    wide.addEventListener("change", observe);
 </script>
 
 <style>

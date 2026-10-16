@@ -37,6 +37,11 @@ document.addEventListener("keydown", (e) => {
 
   const dir = RIGHT.includes(key) ? 1 : LEFT.includes(key) ? -1 : 0;
   if (dir) {
+    // A held key must not queue navigations or skip panels.
+    if (e.repeat) {
+      e.preventDefault();
+      return;
+    }
     // The home track pages its panels; elsewhere follow Previous / Next.
     const link = document.querySelector<HTMLAnchorElement>(
       `a[aria-label="${dir > 0 ? "Next" : "Previous"}"]`,

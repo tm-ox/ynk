@@ -20,7 +20,7 @@
 </style>
 
 <script is:inline>
-    // The nav is persisted across page transitions, so bind once and
+    // Inline scripts re-run on each swap, so bind once and
     // close the menu whenever a new page loads.
     if (!window.__menuBound) {
         window.__menuBound = true;

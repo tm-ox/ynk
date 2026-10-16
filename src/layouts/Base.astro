@@ -197,13 +197,15 @@ const ogImage = new URL(image ?? "/og-default.jpg", Astro.site).href;
                 if (label === "Previous") e.direction = "paging-back";
                 else if (label === "Next") e.direction = "paging-forward";
                 // Page numbers slide too, by which way the target page lies.
+                // The page you are already on keeps Astro's default.
                 if (e.sourceElement?.closest?.('nav[aria-label="Pagination"]')) {
                     const page = (u: URL) =>
                         Number(u.pathname.match(/\/(\d+)\/?$/)?.[1] ?? 1);
-                    e.direction =
-                        page(e.to) > page(e.from)
-                            ? "paging-forward"
-                            : "paging-back";
+                    if (page(e.to) !== page(e.from))
+                        e.direction =
+                            page(e.to) > page(e.from)
+                                ? "paging-forward"
+                                : "paging-back";
                 }
                 paging = !!e.direction && e.direction.startsWith("paging");
                 // Grid pages slide as a whole; the cards must not be captured
@@ -218,14 +220,23 @@ const ogImage = new URL(image ?? "/og-default.jpg", Astro.site).href;
                     /^\/(events|images)\/(?!\d+\/?$)[^/]+\/?$/.test(
                         url.pathname,
                     );
+                // Slashless group URLs (typed by hand) count too.
                 const isArchive = (url: URL) =>
-                    /^\/(events|images)(\/(event\/[^/]+\/)?(\d+\/?)?)?$/.test(
-                        url.pathname,
-                    );
-                if (isDetail(e.to) && e.from.pathname === "/") closeTo = "home";
-                else if (isDetail(e.to) && isArchive(e.from))
-                    closeTo = e.from.pathname + e.from.search;
-                else if (!(isDetail(e.from) && isDetail(e.to))) closeTo = null;
+                    /^\/(events|images)(\/(\d+\/?)?)?$/.test(url.pathname) ||
+                    /^\/images\/event\/[^/]+(\/(\d+\/?)?)?$/.test(url.pathname);
+                // Back / forward keeps whatever was remembered.
+                if (e.navigationType !== "traverse") {
+                    if (isDetail(e.to) && e.from.pathname === "/")
+                        closeTo = "home";
+                    else if (isDetail(e.to) && isArchive(e.from))
+                        closeTo = e.from.pathname + e.from.search;
+                    else if (!(isDetail(e.from) && isDetail(e.to)))
+                        closeTo = null;
+                    try {
+                        if (closeTo) sessionStorage.setItem("closeTo", closeTo);
+                        else sessionStorage.removeItem("closeTo");
+                    } catch {}
+                }
 
                 homeHash = e.to.pathname === "/" ? e.to.hash : "";
             });
@@ -239,7 +250,11 @@ const ogImage = new URL(image ?? "/og-default.jpg", Astro.site).href;
                 if (paging) unname(e.newDocument);
             });
 
+            // Kept in sessionStorage so a reload keeps the close destination.
             let closeTo: string | null = null;
+            try {
+                closeTo = sessionStorage.getItem("closeTo");
+            } catch {}
             let homeHash = "";
 
             document.addEventListener("astro:page-load", () => {
