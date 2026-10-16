@@ -25,8 +25,13 @@ const label = upcoming[0] ? "Next event" : "Previous event";
         class="grid w-full gap-4 my-auto lg:gap-6 lg:grid-cols-3 lg:items-center"
         transition:name={featured.data.id}
     >
-        <div class="w-full max-w-md mx-auto lg:max-w-none">
-            <h5 aria-hidden="true" class="mb-1 uppercase text-accent-muted">{label}</h5>
+        <div class="relative w-full max-w-md mx-auto lg:max-w-none">
+            <h5
+                aria-hidden="true"
+                class="absolute left-0 mb-6 text-base font-extrabold tracking-wider text-left uppercase bottom-full font-display"
+            >
+                {label}
+            </h5>
             <a href={href} class="block">
                 <Image
                     src={featured.data.flyer.src}
