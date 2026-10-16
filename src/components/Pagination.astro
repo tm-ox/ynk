@@ -1,6 +1,9 @@
 ---
 import NavArrow from "./NavArrow.astro";
-const { prevUrl, nextUrl, lastPage, currentPage, basePath = "/images/" } = Astro.props;
+const slash = (url?: string) => (url && !url.endsWith("/") ? `${url}/` : url);
+const { prevUrl: rawPrev, nextUrl: rawNext, lastPage, currentPage, basePath = "/images/" } = Astro.props;
+const prevUrl = slash(rawPrev);
+const nextUrl = slash(rawNext);
 ---
 
 <nav aria-label="Pagination" class="flex flex-col my-4">
