@@ -49,7 +49,7 @@ const { image, prevImage, nextImage } = Astro.props;
     </div>
   </div>
   <section class="h-section flex flex-col pb-3 vt-detail" transition:name={image.id}>
-    <h3 class="md:hidden">{image.alt}</h3>
+    <h1 class="mb-2 text-base font-bold normal-case md:text-lg md:sr-only">{image.alt}</h1>
     <Image
       src={image.src}
       alt={image.description}
