@@ -1,0 +1,18 @@
+---
+import GalleryFilter from "../GalleryFilter.astro";
+import GalleryGrid from "../GalleryGrid.astro";
+import { getGalleryEvents, getGalleryImages } from "../../utils/events";
+
+const LATEST = 12;
+const images = (await getGalleryImages()).slice(0, LATEST);
+const events = await getGalleryEvents();
+---
+
+<section id="images" class="flex-col home-section">
+    <h2 class="w-full text-3xl md:text-4xl">Images</h2>
+    <hr class="w-full" />
+    <GalleryFilter events={events} />
+    <GalleryGrid images={images} />
+    <hr class="w-full" />
+    <p class="w-full my-2"><a href="/images/">All images</a></p>
+</section>

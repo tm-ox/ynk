@@ -33,42 +33,31 @@ const isCurrent = (name: string) =>
                 </li>
                 <li>
                     <hr class="sm:hidden" />
-                    <a
-                        class={isCurrent("about") ? "active" : ""}
-                        aria-current={currentPath === "about" ? "page" : isCurrent("about") ? "true" : undefined}
-                        href="/about"
-                        target="_self"
-                    >
-                        About
-                    </a>
+                    <a href="/#about" data-section="about" target="_self">About</a>
                     <hr class="sm:hidden" />
                 </li>
                 <li>
                     <a
                         class={isCurrent("events") ? "active" : ""}
-                        aria-current={currentPath === "events" ? "page" : isCurrent("events") ? "true" : undefined}
-                        href="/events"
-                        target="_self"
+                        aria-current={isCurrent("events") ? "true" : undefined}
+                        href="/#events"
+                        data-section="events"
+                        target="_self">Events</a
                     >
-                        Events
-                    </a>
                     <hr class="sm:hidden" />
                 </li>
                 <li>
                     <a
                         class={isCurrent("images") ? "active" : ""}
-                        aria-current={currentPath === "images" ? "page" : isCurrent("images") ? "true" : undefined}
-                        href="/images"
-                        target="_self"
+                        aria-current={isCurrent("images") ? "true" : undefined}
+                        href="/#images"
+                        data-section="images"
+                        target="_self">Images</a
                     >
-                        Images
-                    </a>
                     <hr class="sm:hidden" />
                 </li>
                 <li>
-                    <a href="mailto:y%65%73noklub@gmail%2E%63om" target="_self"
-                        >&#67;on&#116;act</a
-                    >
+                    <a href="/#contact" data-section="contact" target="_self">Contact</a>
                     <hr class="sm:hidden" />
                 </li>
                 <li>
@@ -79,6 +68,50 @@ const isCurrent = (name: string) =>
     </div>
     <slot />
 </Base>
+
+<script>
+    // Marks the nav link for the section in view on the home page, and the
+    // events/images links on their own routes. The nav is persisted across
+    // transitions, so this runs on every page load.
+    let observer: IntersectionObserver | undefined;
+
+    const setActive = (id: string | null) => {
+        document
+            .querySelectorAll<HTMLAnchorElement>("#main-nav a[data-section]")
+            .forEach((a) => {
+                const on = a.dataset.section === id;
+                a.classList.toggle("active", on);
+                if (on) a.setAttribute("aria-current", "true");
+                else a.removeAttribute("aria-current");
+            });
+    };
+
+    document.addEventListener("astro:page-load", () => {
+        observer?.disconnect();
+        const path = location.pathname;
+        if (path === "/") {
+            observer = new IntersectionObserver(
+                (entries) => {
+                    for (const entry of entries) {
+                        if (entry.isIntersecting) setActive(entry.target.id);
+                    }
+                },
+                { rootMargin: "-45% 0px -45% 0px" },
+            );
+            document
+                .querySelectorAll("main section[id]")
+                .forEach((section) => observer!.observe(section));
+        } else {
+            setActive(
+                path.startsWith("/events")
+                    ? "events"
+                    : path.startsWith("/images")
+                      ? "images"
+                      : null,
+            );
+        }
+    });
+</script>
 
 <style>
     @reference "../styles/global.css";

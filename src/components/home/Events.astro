@@ -1,0 +1,35 @@
+---
+import { getCollection } from "astro:content";
+import { Image } from "astro:assets";
+import { flyerAltShort } from "../../utils/events";
+
+const LATEST = 12;
+const events = (await getCollection("events"))
+    .sort((a, b) => Date.parse(b.data.date) - Date.parse(a.data.date))
+    .slice(0, LATEST);
+---
+
+<section id="events" class="flex-col home-section">
+    <h2 class="w-full text-3xl md:text-4xl">Events</h2>
+    <hr class="w-full" />
+    <ul class="mb-auto eventGrid">
+        {
+            events.map((event) => (
+                <li>
+                    <a href={`/events/${event.id}/`} transition:name={event.data.id}>
+                        <h5 class="uppercase">{event.data.title}</h5>
+                        <hr />
+                        <Image
+                            src={event.data.flyer!.src}
+                            alt={flyerAltShort(event.data)}
+                            height={400}
+                        />
+                        <hr />
+                    </a>
+                </li>
+            ))
+        }
+    </ul>
+    <hr class="w-full" />
+    <p class="w-full my-2"><a href="/events/">All events</a></p>
+</section>

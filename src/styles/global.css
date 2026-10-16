@@ -98,6 +98,21 @@
     }
     html {
         @apply bg-bg;
+        scroll-padding-top: var(--spacing-header);
+    }
+    @media (prefers-reduced-motion: no-preference) {
+        html {
+            scroll-behavior: smooth;
+        }
+    }
+    /* Desktop only: gently settle on section starts; mobile scrolls freely. */
+    @media (min-width: 40rem) {
+        html {
+            scroll-snap-type: y proximity;
+        }
+        .home-section {
+            scroll-snap-align: start;
+        }
     }
     body {
         @apply max-w-site px-2 lg:mx-auto;

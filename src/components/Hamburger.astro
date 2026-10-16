@@ -38,6 +38,9 @@
                 setOpen(!open);
             }
         });
+        document.addEventListener("click", (e) => {
+            if (e.target.closest(".main-nav a")) setOpen(false);
+        });
         document.addEventListener("astro:page-load", () => setOpen(false));
     }
 </script>

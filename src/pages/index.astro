@@ -1,6 +1,10 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
-import background from "../content/images/splash2025.jpg";
+import Hero from "../components/home/Hero.astro";
+import About from "../components/home/About.astro";
+import Events from "../components/home/Events.astro";
+import Images from "../components/home/Images.astro";
+import Contact from "../components/home/Contact.astro";
 
 const organization = {
   "@context": "https://schema.org",
@@ -30,14 +34,9 @@ const organization = {
 ---
 
 <BaseLayout jsonLd={organization}>
-    <section
-        class="flex items-center justify-center bg-center bg-cover"
-        style={`background-image: url(${background.src});`}
-    >
-        <h1
-            class="display-hero"
-        >
-            Experimental etc.
-        </h1>
-    </section>
+    <Hero />
+    <About />
+    <Events />
+    <Images />
+    <Contact />
 </BaseLayout>
