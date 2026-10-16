@@ -13,6 +13,8 @@ const { events } = Astro.props;
      columns (3 or 2 rows) by the shape of the space available, and anything
      that still does not fit scrolls inside the grid. Below xl it flows. -->
 <div class="w-full mb-auto gallery-fit vt-detail" transition:name="gallery-page" data-scroll>
+    <div class="gallery-spacer"></div>
+    <div class="gallery-group">
     <ul class="grid gap-2 grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gallery-grid">
         {
             events.map((event) => (
@@ -34,10 +36,24 @@ const { events } = Astro.props;
             ))
         }
     </ul>
+    </div>
+    <div class="gallery-after"><slot /></div>
 </div>
 
 <style>
+    .gallery-spacer {
+        display: none;
+    }
+    .gallery-after {
+        padding-block: 1rem;
+    }
     @media (min-width: 80rem) {
+        .gallery-spacer {
+            display: block;
+        }
+        .gallery-after {
+            padding-block: 0;
+        }
         .gallery-fit {
             flex: 1;
             min-height: 0;

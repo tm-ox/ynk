@@ -32,13 +32,12 @@ const { page } = Astro.props;
     </a>
   </div>
   <section class="flex-col pt-0 xl:h-section xl:min-h-0 xl:overflow-hidden">
-    <div class="w-full py-1">
+    <EventGrid events={page.data}>
       <Pagination
         lastPage={page.lastPage}
         currentPage={page.currentPage}
         basePath="/events/"
       />
-    </div>
-    <EventGrid events={page.data} />
+    </EventGrid>
   </section>
 </BaseLayout>

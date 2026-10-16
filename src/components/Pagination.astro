@@ -4,7 +4,7 @@
 const { lastPage, currentPage, basePath = "/images/" } = Astro.props;
 ---
 
-<nav aria-label="Pagination" class="flex flex-wrap w-full h-auto max-w-none gap-x-6 mx-0 px-0 justify-between">
+<nav aria-label="Pagination" class="flex flex-wrap justify-center h-auto max-w-none gap-x-6 mx-auto px-0">
     {
         Array.from({ length: lastPage }, (_, i) => i + 1).map((num) => (
             <h5>
