@@ -14,7 +14,7 @@ const isCurrent = (name: string) =>
 
 <Base title={title} description={description} image={image} jsonLd={jsonLd}>
     <div slot="nav" class="flex items-center justify-center w-full">
-        <slot name="subnav" transition:persist />
+        <div class="contents sm:hidden"><slot name="subnav" /></div>
         <Hamburger />
         <div
             id="main-nav"
@@ -74,6 +74,9 @@ const isCurrent = (name: string) =>
                         </>
                     )
                 }
+                <li class="hidden sm:flex w-auto items-center [&>div]:m-0 [&>div]:border-r-0">
+                    <slot name="subnav" />
+                </li>
                 <li>
                     <Sosmed />
                 </li>
