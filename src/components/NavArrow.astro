@@ -14,7 +14,7 @@ const label = direction === "back" ? "Previous" : "Next";
 
 {
   href ? (
-    <a href={href} aria-label={label}>
+    <a href={href} aria-label={label} rel={direction === "back" ? "prev" : "next"}>
       <Icon name={name} class={className} />
     </a>
   ) : (

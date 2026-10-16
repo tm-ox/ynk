@@ -131,15 +131,6 @@
             scroll-behavior: smooth;
         }
     }
-    /* Desktop only: gently settle on section starts; mobile scrolls freely. */
-    @media (min-width: 40rem) {
-        html {
-            scroll-snap-type: y proximity;
-        }
-        .home-section {
-            scroll-snap-align: start;
-        }
-    }
     body {
         @apply max-w-site px-2 lg:mx-auto;
     }
@@ -239,13 +230,11 @@
             @apply flex overflow-x-auto overflow-y-hidden h-section;
             width: 100vw;
             margin-inline: calc(50% - 50vw);
-            scroll-snap-type: x mandatory;
             scrollbar-width: none;
         }
         .home-track > section {
             @apply h-full min-h-0 overflow-y-auto;
             flex: 0 0 100%;
-            scroll-snap-align: start;
             padding-inline: max(
                 calc(var(--spacing) * 2),
                 calc((100vw - var(--container-site)) / 2 + var(--spacing) * 2)
