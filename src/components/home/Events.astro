@@ -20,18 +20,15 @@ const label = upcoming[0] ? "Next event" : "Previous event";
 
 <section id="events" class="flex-col items-stretch home-section">
     <h2 class="sr-only">{label}</h2>
-    <p class="w-full mb-0 text-right"><a href="/events/">All events</a></p>
+    <div class="flex items-baseline justify-between w-full gap-4">
+        <h5 aria-hidden="true" class="uppercase">{label}</h5>
+        <a href="/events/">All events</a>
+    </div>
     <div
         class="grid w-full gap-4 my-auto lg:gap-6 lg:grid-cols-3 lg:items-center"
         transition:name={featured.data.id}
     >
-        <div class="relative w-full max-w-md mx-auto lg:max-w-none">
-            <h5
-                aria-hidden="true"
-                class="absolute left-0 mb-6 text-base font-extrabold tracking-wider text-left uppercase bottom-full font-display"
-            >
-                {label}
-            </h5>
+        <div class="w-full max-w-md mx-auto lg:max-w-none">
             <a href={href} class="block">
                 <Image
                     src={featured.data.flyer.src}
