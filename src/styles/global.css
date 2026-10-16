@@ -12,11 +12,31 @@
     --color-border: rgb(var(--rgb-accent));
     --color-scrim: rgb(var(--rgb-bg) / 0.8);
     --color-scrim-heavy: rgb(var(--rgb-bg) / 0.9);
-    /* Space between a rule (hr) and the content next to it, on top of the hr margin. */
-    --spacing-rule: 0.25rem;
     --font-body: var(--font-pathway-extreme);
     --font-display: var(--font-biorhyme-expanded);
     --font-displayCon: var(--font-biorhyme);
+}
+
+/* Static design tokens. Everything derives from Tailwind's --spacing scale
+   (0.25rem per step) where it can, so a change to the scale carries through. */
+@theme {
+    /* Space between a rule (hr) and the content next to it, on top of the hr margin. */
+    --spacing-rule: calc(var(--spacing) * 1);
+    --spacing-header: calc(var(--spacing) * 16);
+    --spacing-footer: calc(var(--spacing) * 8);
+    --container-site: 90rem;
+    --text-hero: 5.625rem;
+    --text-hero--line-height: calc(var(--spacing) * 12);
+    --text-hero-lg: 12.5rem;
+    --text-hero-lg--line-height: calc(var(--spacing) * 28);
+}
+
+/* Height of a full-viewport section: viewport minus header and footer. */
+@utility min-h-section {
+    min-height: calc(100vh - var(--section-offset));
+}
+@utility h-section {
+    height: calc(100vh - var(--section-offset));
 }
 
 @layer base {
@@ -52,15 +72,14 @@
 
     /* Layout and stacking tokens. */
     :root {
-        --container: 1440px;
-        --header-h: 4rem;
-        --section-offset: 106px;
+        /* Mobile carries 10px more than desktop. */
+        --section-offset: calc(var(--spacing-header) + var(--spacing-footer) + 10px);
         --z-header: 50;
         --z-overlay: 50;
     }
     @media (min-width: 40rem) {
         :root {
-            --section-offset: 96px;
+            --section-offset: calc(var(--spacing-header) + var(--spacing-footer));
         }
     }
     a:focus-visible,
@@ -81,19 +100,19 @@
         @apply bg-bg;
     }
     body {
-        @apply max-w-(--container) px-2 lg:mx-auto;
+        @apply max-w-site px-2 lg:mx-auto;
     }
     header {
         @apply fixed top-0 left-0 z-(--z-header) w-full bg-scrim backdrop-blur-sm;
     }
     nav {
-        @apply flex justify-between items-center gap-2 h-(--header-h) max-w-(--container) mx-auto px-2;
+        @apply flex justify-between items-center gap-2 h-header max-w-site mx-auto px-2;
     }
     main {
-        @apply pt-(--header-h);
+        @apply pt-header;
     }
     section {
-        @apply flex items-center pt-3 pb-4 border-y border-y-border min-h-[calc(100vh-var(--section-offset))];
+        @apply flex items-center pt-3 pb-4 border-y border-y-border min-h-section;
     }
     h1,
     h2,
@@ -169,7 +188,7 @@
         }
     }
     .display-hero {
-        @apply w-full text-center leading-12 lg:leading-28 -tracking-widest wrap-break-word text-[90px] lg:text-[200px];
+        @apply w-full text-center -tracking-widest wrap-break-word text-hero lg:text-hero-lg;
     }
     .eventGrid {
         @apply grid grid-cols-2 gap-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6;

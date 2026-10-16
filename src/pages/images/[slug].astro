@@ -48,7 +48,7 @@ const { image, prevImage, nextImage } = Astro.props;
       </a>
     </div>
   </div>
-  <section class="h-[calc(100vh-var(--section-offset))] flex flex-col" transition:name={image.id}>
+  <section class="h-section flex flex-col" transition:name={image.id}>
     <h3 class="md:hidden">{image.alt}</h3>
     <Image
       src={image.src}
