@@ -25,7 +25,9 @@ const picks =
         </a>
         <a href="/images/" class="section-action">All images</a>
     </SectionBar>
-    <ul class="grid w-full grid-cols-2 gap-2 my-auto md:grid-cols-4">
+    <!-- From md the grid is two rows of squares, W/2 - 4px tall; the width is capped so
+         that fits below the bar (section 30px + bar 20px = 50px). -->
+    <ul class="grid w-full grid-cols-2 gap-2 my-auto md:grid-cols-4 md:max-w-[calc((100vh-var(--section-offset)-50px)*2)] md:mx-auto">
         {
             picks.map((image, i) => (
                 <li class={i === 0 ? "col-span-2 row-span-2 aspect-square" : "aspect-square"}>
