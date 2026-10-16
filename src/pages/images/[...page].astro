@@ -37,7 +37,8 @@ const events = await getGalleryEvents();
             currentPage={page.currentPage}
         />
         </div>
-        <GalleryFilter events={events} />
-        <GalleryGrid images={page.data} />
+        <GalleryGrid images={page.data}>
+            <GalleryFilter events={events} />
+        </GalleryGrid>
     </section>
 </BaseLayout>

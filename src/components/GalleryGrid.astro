@@ -14,6 +14,8 @@ const { images } = Astro.props;
      2 rows; 8 from a height of about 45% of the width), and anything that still does not fit scrolls inside the grid.
      Below xl the grid flows with fewer columns. -->
 <div class="w-full mb-auto gallery-fit vt-detail" transition:name="gallery-page" data-scroll>
+    <div class="gallery-group">
+    <slot />
     <ul class="imageGrid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gallery-grid">
         {
             images.map((image) => (
@@ -37,6 +39,7 @@ const { images } = Astro.props;
             ))
         }
     </ul>
+    </div>
 </div>
 
 <style>
@@ -50,8 +53,8 @@ const { images } = Astro.props;
             display: flex;
             flex-direction: column;
         }
-        /* Centre a short grid in the space left, without clipping when it scrolls. */
-        .gallery-grid {
+        /* Centre a short grid (with the slotted filter) in the space left, without clipping when it scrolls. */
+        .gallery-group {
             margin-block: auto;
         }
         .gallery-grid {

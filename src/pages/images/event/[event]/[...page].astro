@@ -46,7 +46,8 @@ const basePath = `/images/event/${event.id}/`;
             basePath={basePath}
         />
         </div>
-        <GalleryFilter events={events} current={event.id} />
-        <GalleryGrid images={page.data} />
+        <GalleryGrid images={page.data}>
+            <GalleryFilter events={events} current={event.id} />
+        </GalleryGrid>
     </section>
 </BaseLayout>
