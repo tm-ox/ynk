@@ -79,10 +79,16 @@ const padding = Math.max(0, pageSize - events.length);
         }
         /* The grid sits centred; the slotted page numbers sit halfway between
            it and the baseline (the spacer above matches the area below). */
+        /* 4:6 rather than 1:1, so the grid sits a little above centre. */
         .gallery-spacer,
         .gallery-after {
-            flex: 1 1 0;
             min-height: 0;
+        }
+        .gallery-spacer {
+            flex: 4 1 0;
+        }
+        .gallery-after {
+            flex: 6 1 0;
         }
         .gallery-after {
             display: flex;
