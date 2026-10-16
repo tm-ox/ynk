@@ -1,5 +1,6 @@
 ---
 import type { GetStaticPaths } from "astro";
+import { Icon } from "astro-icon/components";
 import BaseLayout from "../../../../layouts/BaseLayout.astro";
 import Pagination from "../../../../components/Pagination.astro";
 import GalleryGrid from "../../../../components/GalleryGrid.astro";
@@ -26,6 +27,14 @@ const basePath = `/images/event/${event.id}/`;
     title={`Images – ${event.label}${page.currentPage > 1 ? `, page ${page.currentPage}` : ""}`}
     description={`Photographs from ${event.label}, Yes No Klub, Yogyakarta, Indonesia.`}
 >
+    <div
+      slot="subnav"
+      class="flex items-center gap-1 px-3 ml-4 mr-auto border-x border-x-border"
+    >
+      <a href="/#images" aria-label="Back to home">
+        <Icon name="ion:close-sharp" class="icon" />
+      </a>
+    </div>
     <section class="flex-col pt-0">
         <GalleryFilter events={events} current={event.id} />
         <GalleryGrid images={page.data} />

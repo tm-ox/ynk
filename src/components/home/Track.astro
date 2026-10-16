@@ -18,6 +18,16 @@
         t.scrollTo({ left: next * t.clientWidth, behavior: "smooth" });
     };
 
+    // Can this element scroll further in the wheel's direction?
+    const canScroll = (el: HTMLElement, dy: number) => {
+        if (el.scrollHeight <= el.clientHeight) return false;
+        const overflow = getComputedStyle(el).overflowY;
+        if (overflow !== "auto" && overflow !== "scroll") return false;
+        return dy > 0
+            ? el.scrollTop + el.clientHeight < el.scrollHeight - 1
+            : el.scrollTop > 0;
+    };
+
     document.addEventListener(
         "wheel",
         (e) => {
@@ -25,17 +35,16 @@
             if (!t || !wide.matches || e.ctrlKey) return;
             if (Math.abs(e.deltaX) > Math.abs(e.deltaY)) return; // native horizontal scroll
             const dy = e.deltaY;
-            const panel = (e.target as Element).closest<HTMLElement>("[data-track] > section");
-            if (panel) {
-                const canDown = panel.scrollTop + panel.clientHeight < panel.scrollHeight - 1;
-                const canUp = panel.scrollTop > 0;
-                if ((dy > 0 && canDown) || (dy < 0 && canUp)) return;
-            }
-            e.preventDefault();
             const now = Date.now();
-            // Treat a continuous stream of wheel events (inertia) as one gesture.
+            // A continuous stream of wheel events (inertia) is one gesture.
             const isNewGesture = now - lastWheel > 120;
             lastWheel = now;
+            // Let any scrollable element under the pointer (the panel, or a
+            // column inside it) use the wheel before it pages the track.
+            for (let el = e.target as HTMLElement | null; el && el !== t; el = el.parentElement) {
+                if (canScroll(el, dy)) return;
+            }
+            e.preventDefault();
             if (!isNewGesture || now < lockUntil) return;
             lockUntil = now + 600;
             go(t, index(t) + (dy > 0 ? 1 : -1));
