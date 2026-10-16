@@ -8,19 +8,20 @@ interface Props {
 const { images } = Astro.props;
 ---
 
-<!-- From sm up the grid fills the height left by the filter and pagination,
-     so a page is a single screen; below that it flows and scrolls. -->
+<!-- From xl up the grid fills the height left by the filter and pagination,
+     so a page is a single screen; below that it flows and scrolls, with fewer
+     columns so the thumbnails keep their height. -->
 <div
-    class="w-full mb-auto sm:flex-1 sm:min-h-0 sm:mb-0 vt-detail"
+    class="w-full mb-auto xl:flex-1 xl:min-h-0 xl:mb-0 vt-detail"
     transition:name="gallery-page"
 >
-    <ul class="imageGrid sm:h-full sm:grid-cols-4 lg:grid-cols-6 xl:grid-cols-8 sm:auto-rows-fr">
+    <ul class="imageGrid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 2xl:grid-cols-8 xl:h-full xl:auto-rows-fr">
         {
             images.map((image) => (
-                <li class="aspect-square sm:aspect-auto sm:min-h-0">
+                <li class="aspect-square xl:aspect-auto xl:min-h-0">
                     <a
                         href={`/images/${image.id}/`}
-                        class="sm:flex sm:flex-col sm:h-full"
+                        class="xl:flex xl:flex-col xl:h-full"
                         transition:name={image.id}
                     >
                         <h5 class="uppercase">{image.alt}</h5>
@@ -30,7 +31,7 @@ const { images } = Astro.props;
                             alt={image.description}
                             width={400}
                             height={400}
-                            class="object-cover w-full h-full sm:flex-1 sm:min-h-0"
+                            class="block object-cover w-full h-full xl:flex-1 xl:min-h-0"
                         />
                         <hr />
                     </a>
