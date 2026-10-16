@@ -4,36 +4,15 @@
 
 <script>
     import { bindWheelPager } from "../../scripts/wheel-pager";
-    import { registerPanelPager } from "../../scripts/keys";
+    import { pageTrack, trackActive } from "../../scripts/track";
 
     // From the sm breakpoint up the home sections are side-by-side panels.
-    // A wheel gesture or arrow key moves one panel; a panel taller than the
-    // screen scrolls itself first. Below sm the page scrolls vertically as normal.
-    const wide = window.matchMedia("(min-width: 40rem)");
-
-    const track = () => document.querySelector<HTMLElement>("[data-track]");
-    const count = (t: HTMLElement) => t.querySelectorAll(":scope > section").length;
-    const index = (t: HTMLElement) => Math.round(t.scrollLeft / t.clientWidth);
-    const go = (t: HTMLElement, i: number) => {
-        const next = Math.min(Math.max(i, 0), count(t) - 1);
-        t.scrollTo({ left: next * t.clientWidth, behavior: "smooth" });
-    };
-
+    // A wheel gesture (or a key, see scripts/keys.ts) moves one panel; a panel
+    // taller than the screen scrolls itself first. Below sm the page scrolls
+    // vertically as normal.
     bindWheelPager({
-        root: () => (wide.matches ? track() : null),
+        root: trackActive,
         canStep: () => true,
-        step: (dir) => {
-            const t = track();
-            if (t) go(t, index(t) + dir);
-        },
-    });
-
-    // Left/right keys (arrows, h, l) are handled in scripts/keys.ts, which asks
-    // this pager first and falls back to Previous / Next links.
-    registerPanelPager((dir) => {
-        const t = track();
-        if (!t || !wide.matches) return false;
-        go(t, index(t) + dir);
-        return true;
+        step: pageTrack,
     });
 </script>

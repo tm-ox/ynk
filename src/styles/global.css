@@ -86,8 +86,7 @@
         }
     }
     a:focus-visible,
-    button:focus-visible,
-    [data-scroll]:focus-visible {
+    button:focus-visible {
         outline: 2px solid var(--color-accent);
         outline-offset: 3px;
     }
@@ -110,8 +109,7 @@
         }
     }
     a:focus-visible,
-    button:focus-visible,
-    [data-scroll]:focus-visible {
+    button:focus-visible {
         outline: 2px solid var(--color-accent);
         outline-offset: 3px;
     }
@@ -235,8 +233,12 @@
     }
     /* From sm up the home sections are horizontal panels (see Track.astro). */
     @media (min-width: 40rem) {
+        /* Full viewport width, so panels travel in from the screen edge; each
+           panel pads back in to the site's content width. */
         .home-track {
             @apply flex overflow-x-auto overflow-y-hidden h-section;
+            width: 100vw;
+            margin-inline: calc(50% - 50vw);
             scroll-snap-type: x mandatory;
             scrollbar-width: none;
         }
@@ -244,6 +246,10 @@
             @apply h-full min-h-0 overflow-y-auto;
             flex: 0 0 100%;
             scroll-snap-align: start;
+            padding-inline: max(
+                calc(var(--spacing) * 2),
+                calc((100vw - var(--container-site)) / 2 + var(--spacing) * 2)
+            );
         }
     }
     @media (min-width: 40rem) and (prefers-reduced-motion: no-preference) {
@@ -297,22 +303,22 @@ select:-webkit-autofill:focus {
 }
 @keyframes slide-out-left {
     to {
-        transform: translateX(-100%);
+        transform: translateX(-100vw);
     }
 }
 @keyframes slide-in-right {
     from {
-        transform: translateX(100%);
+        transform: translateX(100vw);
     }
 }
 @keyframes slide-out-right {
     to {
-        transform: translateX(100%);
+        transform: translateX(100vw);
     }
 }
 @keyframes slide-in-left {
     from {
-        transform: translateX(-100%);
+        transform: translateX(-100vw);
     }
 }
 html[data-astro-transition="paging-forward"]::view-transition-old(.detail) {

@@ -48,9 +48,6 @@ const { event, headingHref, docsHref, contained = false, capped = false } = Astr
   </div>
   <div
     data-scroll={contained || capped ? "" : undefined}
-    tabindex={contained || capped ? 0 : undefined}
-    role={contained || capped ? "region" : undefined}
-    aria-label={contained || capped ? "Event details" : undefined}
     class:list={[
       "w-full",
       contained && "md:min-w-0 md:flex-1 md:h-full md:overflow-y-auto md:pr-2",
