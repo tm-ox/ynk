@@ -1,6 +1,8 @@
 // Paging for the home page's horizontal track of panels (sm and up).
 const wide = window.matchMedia("(min-width: 40rem)");
 
+const reduced = () => window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
 export const track = () => document.querySelector<HTMLElement>("[data-track]");
 export const trackActive = () => (wide.matches ? track() : null);
 
@@ -12,6 +14,6 @@ export function pageTrack(dir: 1 | -1) {
   const t = trackActive();
   if (!t) return false;
   const next = Math.min(Math.max(panelIndex(t) + dir, 0), count(t) - 1);
-  t.scrollTo({ left: next * t.clientWidth, behavior: "smooth" });
+  t.scrollTo({ left: next * t.clientWidth, behavior: reduced() ? "auto" : "smooth" });
   return true;
 }
