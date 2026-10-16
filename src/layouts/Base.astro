@@ -196,6 +196,24 @@ const ogImage = new URL(image ?? "/og-default.jpg", Astro.site).href;
                     ?.getAttribute("aria-label");
                 if (label === "Previous") e.direction = "paging-back";
                 else if (label === "Next") e.direction = "paging-forward";
+
+                // Remember when a detail page was reached from the home panels,
+                // so its close button returns there instead of to the archive.
+                // Paging between details keeps the flag; anything else clears it.
+                const isDetail = (url: URL) =>
+                    /^\/(events|images)\/(?!\d+\/?$)[^/]+\/?$/.test(
+                        url.pathname,
+                    );
+                if (e.from.pathname === "/" && isDetail(e.to)) fromHome = true;
+                else if (!(isDetail(e.from) && isDetail(e.to))) fromHome = false;
+            });
+
+            let fromHome = false;
+            document.addEventListener("astro:page-load", () => {
+                if (!fromHome) return;
+                document
+                    .querySelectorAll<HTMLAnchorElement>("a[data-home-href]")
+                    .forEach((a) => (a.href = a.dataset.homeHref!));
             });
         </script>
     </body>
