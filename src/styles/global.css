@@ -230,11 +230,13 @@
             @apply flex overflow-x-auto overflow-y-hidden h-section;
             width: 100vw;
             margin-inline: calc(50% - 50vw);
+            scroll-snap-type: x mandatory;
             scrollbar-width: none;
         }
         .home-track > section {
             @apply h-full min-h-0 overflow-y-auto;
             flex: 0 0 100%;
+            scroll-snap-align: start;
             padding-inline: max(
                 calc(var(--spacing) * 2),
                 calc((100vw - var(--container-site)) / 2 + var(--spacing) * 2)

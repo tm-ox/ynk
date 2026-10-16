@@ -4,13 +4,12 @@
 
 <script>
     import { bindWheelPager } from "../../scripts/wheel-pager";
-    import { bindTrackSettle, pageTrack, trackActive } from "../../scripts/track";
+    import { pageTrack, trackActive } from "../../scripts/track";
 
     // From the sm breakpoint up the home sections are side-by-side panels.
     // A wheel gesture (or a key, see scripts/keys.ts) moves one panel; a panel
     // taller than the screen scrolls itself first. Below sm the page scrolls
     // vertically as normal.
-    bindTrackSettle();
     bindWheelPager({
         root: trackActive,
         canStep: () => true,
