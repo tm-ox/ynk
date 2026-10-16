@@ -18,9 +18,12 @@ const href = `/events/${featured.id}/`;
 ---
 
 <section id="events" class="flex-col items-stretch home-section">
-    <h2 class="w-full text-3xl md:text-4xl">
-        {upcoming[0] ? "Next event" : "Previous event"}
-    </h2>
+    <div class="flex items-baseline justify-between w-full gap-4">
+        <h2 class="text-3xl md:text-4xl">
+            {upcoming[0] ? "Next event" : "Previous event"}
+        </h2>
+        <a href="/events/">All events</a>
+    </div>
     <hr class="w-full" />
     <div
         class="flex flex-col w-full gap-4 md:flex-row md:flex-1 md:min-h-0"
@@ -43,6 +46,4 @@ const href = `/events/${featured.id}/`;
             </div>
         </div>
     </div>
-    <hr class="w-full" />
-    <p class="w-full my-2"><a href="/events/">All events</a></p>
 </section>
