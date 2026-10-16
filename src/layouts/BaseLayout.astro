@@ -37,14 +37,18 @@ const isCurrent = (name: string) =>
                             <a href="/" target="_self">Home</a>
                             <hr class="sm:hidden" />
                         </li>
-                        <li>
-                            <a href="/events/" data-section="events" target="_self">Events</a>
-                            <hr class="sm:hidden" />
-                        </li>
-                        <li>
-                            <a href="/images/" data-section="images" target="_self">Images</a>
-                            <hr class="sm:hidden" />
-                        </li>
+                        {isCurrent("events") && (
+                            <li>
+                                <a href="/events/" data-section="events" target="_self">Events</a>
+                                <hr class="sm:hidden" />
+                            </li>
+                        )}
+                        {isCurrent("images") && (
+                            <li>
+                                <a href="/images/" data-section="images" target="_self">Images</a>
+                                <hr class="sm:hidden" />
+                            </li>
+                        )}
                         </>
                     )
                 }
