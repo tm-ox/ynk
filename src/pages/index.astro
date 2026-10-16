@@ -1,5 +1,6 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
+import Track from "../components/home/Track.astro";
 import Hero from "../components/home/Hero.astro";
 import About from "../components/home/About.astro";
 import Events from "../components/home/Events.astro";
@@ -34,9 +35,11 @@ const organization = {
 ---
 
 <BaseLayout jsonLd={organization}>
-    <Hero />
-    <About />
-    <Events />
-    <Images />
-    <Contact />
+    <Track>
+        <Hero />
+        <About />
+        <Events />
+        <Images />
+        <Contact />
+    </Track>
 </BaseLayout>

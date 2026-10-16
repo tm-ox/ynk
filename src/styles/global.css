@@ -105,6 +105,29 @@
             scroll-behavior: smooth;
         }
     }
+    a:focus-visible,
+    button:focus-visible {
+        outline: 2px solid var(--color-accent);
+        outline-offset: 3px;
+    }
+    @media (prefers-reduced-motion: reduce) {
+        *,
+        *::before,
+        *::after {
+            transition-duration: 0.01ms !important;
+            animation-duration: 0.01ms !important;
+            scroll-behavior: auto !important;
+        }
+    }
+    html {
+        @apply bg-bg;
+        scroll-padding-top: var(--spacing-header);
+    }
+    @media (prefers-reduced-motion: no-preference) {
+        html {
+            scroll-behavior: smooth;
+        }
+    }
     /* Desktop only: gently settle on section starts; mobile scrolls freely. */
     @media (min-width: 40rem) {
         html {
@@ -204,6 +227,24 @@
     }
     .display-hero {
         @apply w-full text-center -tracking-widest wrap-break-word text-hero lg:text-hero-lg;
+    }
+    /* From sm up the home sections are horizontal panels (see Track.astro). */
+    @media (min-width: 40rem) {
+        .home-track {
+            @apply flex overflow-x-auto overflow-y-hidden h-section;
+            scroll-snap-type: x mandatory;
+            scrollbar-width: none;
+        }
+        .home-track > section {
+            @apply h-full min-h-0 overflow-y-auto;
+            flex: 0 0 100%;
+            scroll-snap-align: start;
+        }
+    }
+    @media (min-width: 40rem) and (prefers-reduced-motion: no-preference) {
+        .home-track {
+            scroll-behavior: smooth;
+        }
     }
     .eventGrid {
         @apply grid grid-cols-2 gap-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6;

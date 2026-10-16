@@ -1,0 +1,56 @@
+<div class="home-track" data-track>
+    <slot />
+</div>
+
+<script>
+    // From the sm breakpoint up the home sections are side-by-side panels.
+    // A wheel gesture or arrow key moves one panel; a panel taller than the
+    // screen scrolls itself first. Below sm the page scrolls vertically as normal.
+    const wide = window.matchMedia("(min-width: 40rem)");
+    let lastWheel = 0;
+    let lockUntil = 0;
+
+    const track = () => document.querySelector<HTMLElement>("[data-track]");
+    const count = (t: HTMLElement) => t.querySelectorAll(":scope > section").length;
+    const index = (t: HTMLElement) => Math.round(t.scrollLeft / t.clientWidth);
+    const go = (t: HTMLElement, i: number) => {
+        const next = Math.min(Math.max(i, 0), count(t) - 1);
+        t.scrollTo({ left: next * t.clientWidth, behavior: "smooth" });
+    };
+
+    document.addEventListener(
+        "wheel",
+        (e) => {
+            const t = track();
+            if (!t || !wide.matches || e.ctrlKey) return;
+            if (Math.abs(e.deltaX) > Math.abs(e.deltaY)) return; // native horizontal scroll
+            const dy = e.deltaY;
+            const panel = (e.target as Element).closest<HTMLElement>("[data-track] > section");
+            if (panel) {
+                const canDown = panel.scrollTop + panel.clientHeight < panel.scrollHeight - 1;
+                const canUp = panel.scrollTop > 0;
+                if ((dy > 0 && canDown) || (dy < 0 && canUp)) return;
+            }
+            e.preventDefault();
+            const now = Date.now();
+            // Treat a continuous stream of wheel events (inertia) as one gesture.
+            const isNewGesture = now - lastWheel > 120;
+            lastWheel = now;
+            if (!isNewGesture || now < lockUntil) return;
+            lockUntil = now + 600;
+            go(t, index(t) + (dy > 0 ? 1 : -1));
+        },
+        { passive: false },
+    );
+
+    document.addEventListener("keydown", (e) => {
+        const t = track();
+        if (!t || !wide.matches || e.defaultPrevented) return;
+        if (e.altKey || e.ctrlKey || e.metaKey || e.shiftKey) return;
+        if ((e.target as HTMLElement).closest("input, textarea, select, [contenteditable]")) return;
+        if (e.key === "ArrowRight") go(t, index(t) + 1);
+        else if (e.key === "ArrowLeft") go(t, index(t) - 1);
+        else return;
+        e.preventDefault();
+    });
+</script>

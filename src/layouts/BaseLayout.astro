@@ -96,7 +96,12 @@ const isCurrent = (name: string) =>
                         if (entry.isIntersecting) setActive(entry.target.id);
                     }
                 },
-                { rootMargin: "-45% 0px -45% 0px" },
+                {
+                    // Panels sit side by side from sm up, stacked below it.
+                    rootMargin: matchMedia("(min-width: 40rem)").matches
+                        ? "0px -45% 0px -45%"
+                        : "-45% 0px -45% 0px",
+                },
             );
             document
                 .querySelectorAll("main section[id]")
