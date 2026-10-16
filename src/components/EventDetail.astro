@@ -15,16 +15,16 @@ interface Props {
    *  flyer's top and longer text is centred). The details column is capped to
    *  the screen height and scrolls on its own beyond that. */
   capped?: boolean;
+  /** Just the core details (title, date, time, venue, with) between rules,
+   *  without the flyer, info, body text or documentation link. A "footer"
+   *  slot follows them. */
+  summary?: boolean;
 }
-const { event, headingHref, docsHref, capped = false } = Astro.props;
+const { event, headingHref, docsHref, capped = false, summary = false } = Astro.props;
 ---
 
-<div
-  class:list={[
-    "flex flex-col gap-4",
-    "md:flex-row",
-  ]}
->
+<div class:list={[!summary && "flex flex-col gap-4 md:flex-row"]}>
+  {!summary && (
   <div
     class:list={["md:w-3/5", capped && "md:self-center"]}
   >
@@ -34,6 +34,7 @@ const { event, headingHref, docsHref, capped = false } = Astro.props;
       class="object-contain my-1 h-auto w-full mb-auto"
     />
   </div>
+  )}
   <div
     data-scroll={capped ? "" : undefined}
     class:list={[
@@ -100,7 +101,7 @@ const { event, headingHref, docsHref, capped = false } = Astro.props;
       )
     }
     {
-      event.data.info !== "" && (
+      !summary && event.data.info !== "" && (
         <>
           <div class="py-rule">
             <h5>info:</h5>
@@ -110,11 +111,17 @@ const { event, headingHref, docsHref, capped = false } = Astro.props;
         </>
       )
     }
-    <div class="py-rule">
-      <slot />
-    </div>
     {
-      docsHref && (
+      summary ? (
+        <slot name="footer" />
+      ) : (
+        <div class="py-rule">
+          <slot />
+        </div>
+      )
+    }
+    {
+      !summary && docsHref && (
         <>
           <hr />
           <div class="py-rule">
