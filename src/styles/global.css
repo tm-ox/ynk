@@ -34,12 +34,20 @@
 /* Height of a full-viewport section: viewport minus header and footer. */
 @utility min-h-section {
     min-height: calc(100vh - var(--section-offset));
+    min-height: calc(100dvh - var(--section-offset));
 }
 @utility max-h-section {
     max-height: calc(100vh - var(--section-offset));
+    max-height: calc(100dvh - var(--section-offset));
+}
+/* Full viewport height; dvh follows the mobile browser bars where supported. */
+@utility h-viewport {
+    height: 100vh;
+    height: 100dvh;
 }
 @utility h-section {
     height: calc(100vh - var(--section-offset));
+    height: calc(100dvh - var(--section-offset));
 }
 
 @layer base {

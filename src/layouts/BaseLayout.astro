@@ -18,10 +18,10 @@ const isCurrent = (name: string) =>
         <Hamburger />
         <div
             id="main-nav"
-            class="absolute top-0 left-0 ml-auto justify-center hidden w-full h-screen sm:flex sm:w-auto sm:h-auto sm:relative main-nav bg-scrim-heavy sm:bg-transparent"
+            class="absolute top-0 left-0 ml-auto justify-center hidden w-full h-viewport overflow-y-auto sm:flex sm:w-auto sm:h-auto sm:overflow-visible sm:relative main-nav bg-scrim-heavy sm:bg-transparent"
         >
             <ul
-                class="flex flex-col items-center justify-center text-center sm:flex-row sm:gap-x-3"
+                class="flex flex-col items-center my-auto text-center sm:flex-row sm:gap-x-3"
             >
                 {
                     isHome ? (
