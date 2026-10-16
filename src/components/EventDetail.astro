@@ -13,8 +13,10 @@ interface Props {
    *  the details scrolling on their own. For use inside a fixed-height panel. */
   contained?: boolean;
   /** From md up, the flyer keeps its usual size and floats vertically centred.
-   *  The details start level with its top and scroll only if they run past the
-   *  bottom of the screen, so the flyer stays put however much text there is. */
+   *  The details start level with its top when shorter than the flyer, and are
+   *  centred with it when taller; they scroll only past the screen height. The
+   *  flyer stays put however much text there is. An invisible spacer the
+   *  flyer's shape sizes the middle grid row so the two share one centre. */
   pinned?: boolean;
 }
 const { event, headingHref, docsHref, contained = false, pinned = false } = Astro.props;
@@ -32,7 +34,7 @@ const { event, headingHref, docsHref, contained = false, pinned = false } = Astr
       contained
         ? "md:h-full md:max-w-[62%] md:shrink-0"
         : pinned
-          ? "md:col-start-1 md:row-start-2"
+          ? "md:col-start-1 md:row-start-1 md:row-span-3 md:self-center"
           : "md:w-3/5",
     ]}
   >
@@ -46,11 +48,20 @@ const { event, headingHref, docsHref, contained = false, pinned = false } = Astr
       ]}
     />
   </div>
+  {
+    pinned && (
+      <div
+        aria-hidden="true"
+        class="hidden md:block md:col-start-1 md:row-start-2"
+        style={`aspect-ratio: ${event.data.flyer!.src.width} / ${event.data.flyer!.src.height}`}
+      />
+    )
+  }
   <div
     class:list={[
       "w-full",
       contained && "md:min-w-0 md:flex-1 md:h-full md:overflow-y-auto md:pr-2",
-      pinned && "md:col-start-2 md:row-start-2 md:row-span-2 md:min-h-0 md:overflow-y-auto md:pr-2",
+      pinned && "md:col-start-2 md:row-start-2 md:self-start md:overflow-y-auto md:pr-2 md:max-h-[calc(100vh-var(--section-offset)-30px)]",
     ]}
   >
 
