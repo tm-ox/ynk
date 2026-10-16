@@ -4,6 +4,7 @@
 
 <script>
     import { bindWheelPager } from "../../scripts/wheel-pager";
+    import { registerPanelPager } from "../../scripts/keys";
 
     // From the sm breakpoint up the home sections are side-by-side panels.
     // A wheel gesture or arrow key moves one panel; a panel taller than the
@@ -27,14 +28,12 @@
         },
     });
 
-    document.addEventListener("keydown", (e) => {
+    // Left/right keys (arrows, h, l) are handled in scripts/keys.ts, which asks
+    // this pager first and falls back to Previous / Next links.
+    registerPanelPager((dir) => {
         const t = track();
-        if (!t || !wide.matches || e.defaultPrevented) return;
-        if (e.altKey || e.ctrlKey || e.metaKey || e.shiftKey) return;
-        if ((e.target as HTMLElement).closest("input, textarea, select, [contenteditable]")) return;
-        if (e.key === "ArrowRight") go(t, index(t) + 1);
-        else if (e.key === "ArrowLeft") go(t, index(t) - 1);
-        else return;
-        e.preventDefault();
+        if (!t || !wide.matches) return false;
+        go(t, index(t) + dir);
+        return true;
     });
 </script>

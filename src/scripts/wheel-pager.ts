@@ -10,7 +10,7 @@ interface PagerOptions {
 }
 
 // Can this element scroll further in the wheel's direction?
-const canScroll = (el: Element, dy: number) => {
+export const canScroll = (el: Element, dy: number) => {
   const isDoc = el === document.documentElement;
   const scroller = isDoc ? document.scrollingElement! : (el as HTMLElement);
   if (scroller.scrollHeight <= scroller.clientHeight) return false;

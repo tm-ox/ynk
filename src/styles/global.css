@@ -86,7 +86,8 @@
         }
     }
     a:focus-visible,
-    button:focus-visible {
+    button:focus-visible,
+    [data-scroll]:focus-visible {
         outline: 2px solid var(--color-accent);
         outline-offset: 3px;
     }
@@ -109,7 +110,8 @@
         }
     }
     a:focus-visible,
-    button:focus-visible {
+    button:focus-visible,
+    [data-scroll]:focus-visible {
         outline: 2px solid var(--color-accent);
         outline-offset: 3px;
     }
