@@ -6,7 +6,7 @@ interface Props {
 const { events, current } = Astro.props;
 ---
 
-<div class="gallery-filter">
+<div class="gallery-filter" transition:name="gallery-filter">
     <hr />
     <select aria-label="Filter by event" data-gallery-filter>
         <option value="/images/" selected={!current}>All events</option>
