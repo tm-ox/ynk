@@ -38,22 +38,54 @@ export async function getGalleryImages() {
     const photos = (event.data.images ?? []).filter(Boolean) as any[];
     return photos.map((image, i) => ({
       ...image,
-      eventId: event.id,
+      eventId: groupSlug(event.data.title),
       description: `Photograph ${i + 1} of ${photos.length} from ${event.data.title}, ${prettyDate(event.data.date)}${place(event.data)}`,
     }));
   });
 }
 
-/** Events that have gallery photos, newest first, with photo counts, for the gallery filter. */
+/** Gallery filter groups sub-events under one title: YNK#38.1, .3 ... become YNK#38. */
+export const groupTitle = (title: string) =>
+  title.replace(/\.\d+$/, "").replace(/ \d$/, "");
+
+export const groupSlug = (title: string) =>
+  groupTitle(title)
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-|-$/g, "");
+
+const numericDate = (date: string) =>
+  new Date(date).toLocaleDateString("en-GB", { timeZone: "UTC" });
+
+/** Events with gallery photos grouped for the gallery filter, newest first. */
 export async function getGalleryEvents() {
   const events = await getCollection("events", ({ data }) => {
     return data.images && data.images.length > 0;
   });
   events.sort((b, a) => Date.parse(a.data.date) - Date.parse(b.data.date));
-  return events.map((event) => ({
-    id: event.id,
-    label: `${event.data.title} · ${prettyDate(event.data.date)}${place(event.data)}`,
-    count: (event.data.images ?? []).filter(Boolean).length,
+  const groups = new Map<
+    string,
+    { id: string; title: string; date: string; venues: Set<string>; count: number }
+  >();
+  for (const event of events) {
+    const id = groupSlug(event.data.title);
+    const group = groups.get(id) ?? {
+      id,
+      title: groupTitle(event.data.title),
+      date: event.data.date,
+      venues: new Set<string>(),
+      count: 0,
+    };
+    if (Date.parse(event.data.date) < Date.parse(group.date))
+      group.date = event.data.date;
+    if (event.data.venue?.name) group.venues.add(event.data.venue.name);
+    group.count += (event.data.images ?? []).filter(Boolean).length;
+    groups.set(id, group);
+  }
+  return [...groups.values()].map((g) => ({
+    id: g.id,
+    label: `${g.title} · ${numericDate(g.date)}${g.venues.size === 1 ? ` · ${[...g.venues][0]}` : ""}`,
+    count: g.count,
   }));
 }
 
