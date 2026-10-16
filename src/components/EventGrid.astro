@@ -1,6 +1,5 @@
 ---
 import { Image } from "astro:assets";
-import { flyerAltShort } from "../utils/events";
 
 interface Props {
     pageSize?: number;
@@ -28,7 +27,7 @@ const padding = Math.max(0, pageSize - events.length);
                         <hr />
                         <Image
                             src={event.data.flyer.src}
-                            alt={flyerAltShort(event.data)}
+                            alt=""
                             width={400}
                             height={400}
                             fit="contain"
