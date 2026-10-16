@@ -8,31 +8,31 @@ with: Lyra Pramuk, Rani Jambak, Raja Kirik & Lucy Freia
 info: "IDR 50.000"
 flyer: { src: ../flyers/IMG_0278.PNG, alt: YNK#49 }
 images:
-  - src: ../images/YNK_Garasi_20260212_-11.jpg
+  - src: ../images/ynk49-02.jpg
     alt: YNK#49
     id: ynk49-02
-  - src: ../images/YNK_Garasi_20260212_-19.jpg
+  - src: ../images/ynk49-03.jpg
     alt: YNK#49
     id: ynk49-03
-  - src: ../images/YNK_Garasi_20260212_-23.jpg
+  - src: ../images/ynk49-04.jpg
     alt: YNK#49
     id: ynk49-04
-  - src: ../images/YNK_Garasi_20260212_-24.jpg
+  - src: ../images/ynk49-05.jpg
     alt: YNK#49
     id: ynk49-05
-  - src: ../images/YNK_Garasi_20260212_-26.jpg
+  - src: ../images/ynk49-06.jpg
     alt: YNK#49
     id: ynk49-06
-  - src: ../images/YNK_Garasi_20260212_-30.jpg
+  - src: ../images/ynk49-07.jpg
     alt: YNK#49
     id: ynk49-07
-  - src: ../images/YNK_Garasi_20260212_-54.jpg
+  - src: ../images/ynk49-08.jpg
     alt: YNK#49
     id: ynk49-08
-  - src: ../images/YNK_Garasi_20260212_-57.jpg
+  - src: ../images/ynk49-09.jpg
     alt: YNK#49
     id: ynk49-09
-  - src: ../images/YNK_Garasi_20260212_-60.jpg
+  - src: ../images/ynk49-10.jpg
     alt: YNK#49
     id: ynk49-10
 ---

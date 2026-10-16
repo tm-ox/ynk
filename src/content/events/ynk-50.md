@@ -8,46 +8,46 @@ with: Passepartout Duo, Soundboutique, Sapiens Jazz Core & DJ Lo-Tek
 info: "IDR 50.000"
 flyer: { src: ../flyers/YNK_50.png, alt: YNK#50 }
 images:
-  - src: ../images/YNK_50-19.jpg
+  - src: ../images/ynk50-01.jpg
     alt: YNK#50
     id: ynk50-01
-  - src: ../images/YNK_50-20.jpg
+  - src: ../images/ynk50-02.jpg
     alt: YNK#50
     id: ynk50-02
-  - src: ../images/YNK_50-24.jpg
+  - src: ../images/ynk50-03.jpg
     alt: YNK#50
     id: ynk50-03
-  - src: ../images/YNK_50-25.jpg
+  - src: ../images/ynk50-04.jpg
     alt: YNK#50
     id: ynk50-04
-  - src: ../images/YNK_50-39.jpg
+  - src: ../images/ynk50-05.jpg
     alt: YNK#50
     id: ynk50-05
-  - src: ../images/YNK_50-46.jpg
+  - src: ../images/ynk50-06.jpg
     alt: YNK#50
     id: ynk50-06
-  - src: ../images/YNK_50-50.jpg
+  - src: ../images/ynk50-07.jpg
     alt: YNK#50
     id: ynk50-07
-  - src: ../images/YNK_50-54.jpg
+  - src: ../images/ynk50-08.jpg
     alt: YNK#50
     id: ynk50-08
-  - src: ../images/YNK_50-65.jpg
+  - src: ../images/ynk50-09.jpg
     alt: YNK#50
     id: ynk50-09
-  - src: ../images/YNK_50-69.jpg
+  - src: ../images/ynk50-10.jpg
     alt: YNK#50
     id: ynk50-10
-  - src: ../images/YNK_50-72.jpg
+  - src: ../images/ynk50-11.jpg
     alt: YNK#50
     id: ynk50-11
-  - src: ../images/YNK_50-78.jpg
+  - src: ../images/ynk50-12.jpg
     alt: YNK#50
     id: ynk50-12
-  - src: ../images/YNK_50-93.jpg
+  - src: ../images/ynk50-13.jpg
     alt: YNK#50
     id: ynk50-13
-  - src: ../images/YNK_50-94.jpg
+  - src: ../images/ynk50-14.jpg
     alt: YNK#50
     id: ynk50-14
 ---

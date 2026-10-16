@@ -13,46 +13,46 @@ with: ""
 info: ""
 flyer: { src: ../flyers/YNK_Pestapora_2023_03.jpg, alt: Pestapora }
 images:
-  - src: ../images/pestapora day 3_8.jpg
+  - src: ../images/pp2023-3-01.jpg
     alt: YNK#pp2023-3
     id: pp2023-3-01
-  - src: ../images/pestapora day 3_9.jpg
+  - src: ../images/pp2023-3-02.jpg
     alt: YNK#pp2023-3
     id: pp2023-3-02
-  - src: ../images/pestapora day 3_12.jpg
+  - src: ../images/pp2023-3-03.jpg
     alt: YNK#pp2023-3
     id: pp2023-3-03
-  - src: ../images/pestapora day 3_16.jpg
+  - src: ../images/pp2023-3-04.jpg
     alt: YNK#pp2023-3
     id: pp2023-3-04
-  - src: ../images/pestapora day 3_19.jpg
+  - src: ../images/pp2023-3-05.jpg
     alt: YNK#pp2023-3
     id: pp2023-3-05
-  - src: ../images/pestapora day 3_27.jpg
+  - src: ../images/pp2023-3-06.jpg
     alt: YNK#pp2023-3
     id: pp2023-3-06
-  - src: ../images/pestapora day 3_38.jpg
+  - src: ../images/pp2023-3-07.jpg
     alt: YNK#pp2023-3
     id: pp2023-3-07
-  - src: ../images/pestapora day 3_40.jpg
+  - src: ../images/pp2023-3-08.jpg
     alt: YNK#pp2023-3
     id: pp2023-3-08
-  - src: ../images/pestapora day 3_42.jpg
+  - src: ../images/pp2023-3-09.jpg
     alt: YNK#pp2023-3
     id: pp2023-3-09
-  - src: ../images/pestapora day 3_47.jpg
+  - src: ../images/pp2023-3-10.jpg
     alt: YNK#pp2023-3
     id: pp2023-3-10
-  - src: ../images/pestapora day 3_51.jpg
+  - src: ../images/pp2023-3-11.jpg
     alt: YNK#pp2023-3
     id: pp2023-3-11
-  - src: ../images/pestapora day 3_112.jpg
+  - src: ../images/pp2023-3-12.jpg
     alt: YNK#pp2023-3
     id: pp2023-3-12
-  - src: ../images/pestapora day 3_115.jpg
+  - src: ../images/pp2023-3-13.jpg
     alt: YNK#pp2023-3
     id: pp2023-3-13
-  - src: ../images/pestapora day 3_116.jpg
+  - src: ../images/pp2023-3-14.jpg
     alt: YNK#pp2023-3
     id: pp2023-3-14
 ---

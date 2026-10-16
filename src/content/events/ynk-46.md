@@ -8,46 +8,46 @@ with: Jules Reidy, Anquan, Lintang Radittya & Rabu
 info: "IDR 50.000"
 flyer: { src: ../flyers/ynk-46.png, alt: YNK#46 }
 images:
-  - src: ../images/YNK_Januari 2025-18.jpg
+  - src: ../images/ynk46-01.jpg
     alt: YNK#46
     id: ynk46-01
-  - src: ../images/YNK_Januari 2025-28.jpg
+  - src: ../images/ynk46-02.jpg
     alt: YNK#46
     id: ynk46-02
-  - src: ../images/YNK_Januari 2025-37.jpg
+  - src: ../images/ynk46-03.jpg
     alt: YNK#46
     id: ynk46-03
-  - src: ../images/YNK_Januari 2025-42.jpg
+  - src: ../images/ynk46-04.jpg
     alt: YNK#46
     id: ynk46-04
-  - src: ../images/YNK_Januari 2025-58.jpg
+  - src: ../images/ynk46-05.jpg
     alt: YNK#46
     id: ynk46-05
-  - src: ../images/YNK_Januari 2025-61.jpg
+  - src: ../images/ynk46-06.jpg
     alt: YNK#46
     id: ynk46-06
-  - src: ../images/YNK_Januari 2025-63.jpg
+  - src: ../images/ynk46-07.jpg
     alt: YNK#46
     id: ynk46-07
-  - src: ../images/YNK_Januari 2025-49.jpg
+  - src: ../images/ynk46-08.jpg
     alt: YNK#46
     id: ynk46-08
-  - src: ../images/YNK_Januari 2025-76.jpg
+  - src: ../images/ynk46-09.jpg
     alt: YNK#46
     id: ynk46-09
-  - src: ../images/YNK_Januari 2025-80.jpg
+  - src: ../images/ynk46-10.jpg
     alt: YNK#46
     id: ynk46-10
-  - src: ../images/YNK_Januari 2025-85.jpg
+  - src: ../images/ynk46-11.jpg
     alt: YNK#46
     id: ynk46-11
-  - src: ../images/YNK_Januari 2025-90.jpg
+  - src: ../images/ynk46-12.jpg
     alt: YNK#46
     id: ynk46-12
-  - src: ../images/YNK_Januari 2025-102.jpg
+  - src: ../images/ynk46-13.jpg
     alt: YNK#46
     id: ynk46-13
-  - src: ../images/YNK_Januari 2025-104.jpg
+  - src: ../images/ynk46-14.jpg
     alt: YNK#46
     id: ynk46-14
 ---

@@ -8,28 +8,28 @@ with: Ora Iso (NYC), Electrocore (YK), Sulfur (YK) & Palasick (YK)
 info: ""
 flyer: { src: ../flyers/YNK26.jpg, alt: YNK#26 }
 images:
-  - src: ../images/YNK26_01.jpg
+  - src: ../images/ynk26-01.jpg
     alt: YNK#26
     id: ynk26-01
-  - src: ../images/YNK26_04.jpg
+  - src: ../images/ynk26-02.jpg
     alt: YNK#26
     id: ynk26-02
-  - src: ../images/YNK26_05.jpg
+  - src: ../images/ynk26-03.jpg
     alt: YNK#26
     id: ynk26-03
-  - src: ../images/YNK26_06.jpg
+  - src: ../images/ynk26-04.jpg
     alt: YNK#26
     id: ynk26-04
-  - src: ../images/YNK26_07.jpg
+  - src: ../images/ynk26-05.jpg
     alt: YNK#26
     id: ynk26-05
-  - src: ../images/YNK26_08.jpg
+  - src: ../images/ynk26-06.jpg
     alt: YNK#26
     id: ynk26-06
-  - src: ../images/YNK26_10.jpg
+  - src: ../images/ynk26-07.jpg
     alt: YNK#26
     id: ynk26-07
-  - src: ../images/YNK26_11.jpg
+  - src: ../images/ynk26-08.jpg
     alt: YNK#26
     id: ynk26-08
 ---

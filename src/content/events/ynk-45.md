@@ -8,46 +8,46 @@ with: Baur @baur_lorong, Officium @officium__, Tzii @tzii_23, Riar Rizaldi @riar
 info: "IDR 50.000"
 flyer: { src: ../flyers/YNK-45.png, alt: YNK#45 }
 images:
-  - src: ../images/YNK45_Garasi-11.jpg
+  - src: ../images/ynk45-01.jpg
     alt: YNK#45
     id: ynk45-01
-  - src: ../images/YNK45_Garasi-31.jpg
+  - src: ../images/ynk45-02.jpg
     alt: YNK#45
     id: ynk45-02
-  - src: ../images/YNK45_Garasi-41.jpg
+  - src: ../images/ynk45-03.jpg
     alt: YNK#45
     id: ynk45-03
-  - src: ../images/YNK45_Garasi-49.jpg
+  - src: ../images/ynk45-04.jpg
     alt: YNK#45
     id: ynk45-04
-  - src: ../images/YNK45_Garasi-70.jpg
+  - src: ../images/ynk45-05.jpg
     alt: YNK#45
     id: ynk45-05
-  - src: ../images/YNK45_Garasi-76.jpg
+  - src: ../images/ynk45-06.jpg
     alt: YNK#45
     id: ynk45-06
-  - src: ../images/YNK45_Garasi-87.jpg
+  - src: ../images/ynk45-07.jpg
     alt: YNK#45
     id: ynk45-07
-  - src: ../images/YNK45_Garasi-94.jpg
+  - src: ../images/ynk45-08.jpg
     alt: YNK#45
     id: ynk45-08
-  - src: ../images/YNK45_Garasi-106.jpg
+  - src: ../images/ynk45-09.jpg
     alt: YNK#45
     id: ynk45-09
-  - src: ../images/YNK45_Garasi-122.jpg
+  - src: ../images/ynk45-10.jpg
     alt: YNK#45
     id: ynk45-10
-  - src: ../images/YNK45_Garasi-125.jpg
+  - src: ../images/ynk45-11.jpg
     alt: YNK#45
     id: ynk45-11
-  - src: ../images/YNK45_Garasi-136.jpg
+  - src: ../images/ynk45-12.jpg
     alt: YNK#45
     id: ynk45-12
-  - src: ../images/YNK45_Garasi-146.jpg
+  - src: ../images/ynk45-13.jpg
     alt: YNK#45
     id: ynk45-13
-  - src: ../images/YNK45_Garasi-171.jpg
+  - src: ../images/ynk45-14.jpg
     alt: YNK#45
     id: ynk45-14
 ---

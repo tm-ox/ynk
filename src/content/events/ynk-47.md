@@ -8,58 +8,58 @@ with: Xhabarabot, Mahamboro, Lydian Dunbar & Gabsav
 info: Kontribusi IDR 50.000 (langsung di lokasi)
 flyer: { src: ../flyers/YNK_47.png, alt: YNK#47 }
 images:
-  - src: ../images/YNK 5 Juli2025_KKF_-57.jpg
+  - src: ../images/ynk47-01.jpg
     alt: YNK#47
     id: ynk47-01
-  - src: ../images/YNK 5 Juli 2025_KKF_-77.jpg
+  - src: ../images/ynk47-02.jpg
     alt: YNK#47
     id: ynk47-02
-  - src: ../images/YNK 5 Juli 2025_KKF_-73.jpg
+  - src: ../images/ynk47-03.jpg
     alt: YNK#47
     id: ynk47-03
-  - src: ../images/YNK 5 Juli 2025_KKF_-68.jpg
+  - src: ../images/ynk47-04.jpg
     alt: YNK#47
     id: ynk47-04
-  - src: ../images/YNK 5 Juli 2025_KKF_-124.jpg
+  - src: ../images/ynk47-05.jpg
     alt: YNK#47
     id: ynk47-05
-  - src: ../images/YNK 5 Juli 2025_KKF_-109.jpg
+  - src: ../images/ynk47-06.jpg
     alt: YNK#47
     id: ynk47-06
-  - src: ../images/YNK 5 Juli 2025_KKF_-106.jpg
+  - src: ../images/ynk47-07.jpg
     alt: YNK#47
     id: ynk47-07
-  - src: ../images/YNK 5 Juli 2025_KKF_-95.jpg
+  - src: ../images/ynk47-08.jpg
     alt: YNK#47
     id: ynk47-08
-  - src: ../images/YNK 5 Juli 2025_KKF_-154.jpg
+  - src: ../images/ynk47-09.jpg
     alt: YNK#47
     id: ynk47-09
-  - src: ../images/YNK 5 Juli 2025_KKF_-145.jpg
+  - src: ../images/ynk47-10.jpg
     alt: YNK#47
     id: ynk47-10
-  - src: ../images/YNK 5 Juli 2025_KKF_-136.jpg
+  - src: ../images/ynk47-11.jpg
     alt: YNK#47
     id: ynk47-11
-  - src: ../images/YNK 5 Juli 2025_KKF_-125.jpg
+  - src: ../images/ynk47-12.jpg
     alt: YNK#47
     id: ynk47-12
-  - src: ../images/YNK 5 Juli 2025_KKF_-162.jpg
+  - src: ../images/ynk47-13.jpg
     alt: YNK#47
     id: ynk47-13
-  - src: ../images/YNK 5 Juli 2025_KKF_-37.jpg
+  - src: ../images/ynk47-14.jpg
     alt: YNK#47
     id: ynk47-14
-  - src: ../images/YNK 5 Juli 2025_KKF_-31.jpg
+  - src: ../images/ynk47-15.jpg
     alt: YNK#47
     id: ynk47-15
-  - src: ../images/YNK 5 Juli 2025_KKF_-29.jpg
+  - src: ../images/ynk47-16.jpg
     alt: YNK#47
     id: ynk47-16
-  - src: ../images/YNK 5 Juli 2025_KKF_-24.jpg
+  - src: ../images/ynk47-17.jpg
     alt: YNK#47
     id: ynk47-17
-  - src: ../images/YNK 5 Juli 2025_KKF_-2.jpg
+  - src: ../images/ynk47-18.jpg
     alt: YNK#47
     id: ynk47-18
 ---

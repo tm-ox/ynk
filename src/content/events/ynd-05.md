@@ -8,49 +8,49 @@ with: Evita Manji, Su Dance110, Scantofia, Proto Animalia Project & Dj Lo-Tek
 info: "IDR 50.000"
 flyer: { src: ../flyers/YND 5.png, alt: YND#05 }
 images:
-  - src: ../images/YNK_Februari 2025-9.jpg
+  - src: ../images/ynd05-01.jpg
     alt: YND#05
     id: ynd05-01
-  - src: ../images/YNK_Februari 2025-13.jpg
+  - src: ../images/ynd05-02.jpg
     alt: YND#05
     id: ynd05-02
-  - src: ../images/YNK_Februari 2025-36.jpg
+  - src: ../images/ynd05-03.jpg
     alt: YND#05
     id: ynd05-03
-  - src: ../images/YNK_Februari 2025-46.jpg
+  - src: ../images/ynd05-04.jpg
     alt: YND#05
     id: ynd05-04
-  - src: ../images/YNK_Februari 2025-58.jpg
+  - src: ../images/ynd05-05.jpg
     alt: YND#05
     id: ynd05-05
-  - src: ../images/YNK_Februari 2025-59.jpg
+  - src: ../images/ynd05-06.jpg
     alt: YND#05
     id: ynd05-06
-  - src: ../images/YNK_Februari 2025-69.jpg
+  - src: ../images/ynd05-07.jpg
     alt: YND#05
     id: ynd05-07
-  - src: ../images/YNK_Februari 2025-81.jpg
+  - src: ../images/ynd05-08.jpg
     alt: YND#05
     id: ynd05-08
-  - src: ../images/YNK_Februari 2025-95.jpg
+  - src: ../images/ynd05-09.jpg
     alt: YND#05
     id: ynd05-09
-  - src: ../images/YNK_Februari 2025-105.jpg
+  - src: ../images/ynd05-10.jpg
     alt: YND#05
     id: ynd05-10
-  - src: ../images/YNK_Februari 2025-114.jpg
+  - src: ../images/ynd05-11.jpg
     alt: YND#05
     id: ynd05-11
-  - src: ../images/YNK_Februari 2025-121.jpg
+  - src: ../images/ynd05-12.jpg
     alt: YND#05
     id: ynd05-12
-  - src: ../images/YNK_Februari 2025-132.jpg
+  - src: ../images/ynd05-13.jpg
     alt: YND#05
     id: ynd05-13
-  - src: ../images/YNK_Februari 2025-140.jpg
+  - src: ../images/ynd05-14.jpg
     alt: YND#05
     id: ynd05-14
-  - src: ../images/YNK_Februari 2025-146.jpg
+  - src: ../images/ynd05-15.jpg
     alt: YND#05
     id: ynd05-15
 ---

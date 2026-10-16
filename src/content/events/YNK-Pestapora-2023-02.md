@@ -13,43 +13,43 @@ with: ""
 info: ""
 flyer: { src: ../flyers/YNK_Pestapora_2023_02.jpg, alt: Pestapora }
 images:
-  - src: ../images/Pespor day 2 sony-24.jpg
+  - src: ../images/pp2023-2-01.jpg
     alt: YNK#pp2023-2
     id: pp2023-2-01
-  - src: ../images/Pespor day 2 sony-26.jpg
+  - src: ../images/pp2023-2-02.jpg
     alt: YNK#pp2023-2
     id: pp2023-2-02
-  - src: ../images/Pespor day 2 sony-29.jpg
+  - src: ../images/pp2023-2-03.jpg
     alt: YNK#pp2023-2
     id: pp2023-2-03
-  - src: ../images/Pespor day 2 sony-31.jpg
+  - src: ../images/pp2023-2-04.jpg
     alt: YNK#pp2023-2
     id: pp2023-2-04
-  - src: ../images/Pespor day 2 sony-37.jpg
+  - src: ../images/pp2023-2-05.jpg
     alt: YNK#pp2023-2
     id: pp2023-2-05
-  - src: ../images/Pespor day 2 sony-42.jpg
+  - src: ../images/pp2023-2-06.jpg
     alt: YNK#pp2023-2
     id: pp2023-2-06
-  - src: ../images/Pespor day 2 sony-58.jpg
+  - src: ../images/pp2023-2-07.jpg
     alt: YNK#pp2023-2
     id: pp2023-2-07
-  - src: ../images/Pespor day 2 sony-62.jpg
+  - src: ../images/pp2023-2-08.jpg
     alt: YNK#pp2023-2
     id: pp2023-2-08
-  - src: ../images/Pespor day 2 sony-63.jpg
+  - src: ../images/pp2023-2-09.jpg
     alt: YNK#pp2023-2
     id: pp2023-2-09
-  - src: ../images/Pespor-day-2-sony-64.jpg
+  - src: ../images/pp2023-2-10.jpg
     alt: YNK#pp2023-2
     id: pp2023-2-10
-  - src: ../images/Pespor day 2 sony-74.jpg
+  - src: ../images/pp2023-2-11.jpg
     alt: YNK#pp2023-2
     id: pp2023-2-11
-  - src: ../images/Pespor day 2-80.jpg
+  - src: ../images/pp2023-2-12.jpg
     alt: YNK#pp2023-2
     id: pp2023-2-12
-  - src: ../images/Pespor day 2-82.jpg
+  - src: ../images/pp2023-2-13.jpg
     alt: YNK#pp2023-2
     id: pp2023-2-13
 ---

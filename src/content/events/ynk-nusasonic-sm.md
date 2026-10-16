@@ -12,25 +12,25 @@ with: Peter Kirn (US/DE), Yennu Ariendra (ID) + J. ‘Mo’ong’ Santoso Pribad
 info: ""
 flyer: { src: ../flyers/YNK_Nusasonic_SM.jpg, alt: YNK#Nusasonic }
 images:
-  - src: ../images/YNKNusasonic_SM_01.jpg
+  - src: ../images/ynknusasonicsm-01.jpg
     alt: Nusasonic
     id: ynknusasonicsm-01
-  - src: ../images/YNKNusasonic_SM_02.jpg
+  - src: ../images/ynknusasonicsm-02.jpg
     alt: Nusasonic
     id: ynknusasonicsm-02
-  - src: ../images/YNKNusasonic_SM_03.jpg
+  - src: ../images/ynknusasonicsm-03.jpg
     alt: Nusasonic
     id: ynknusasonicsm-03
-  - src: ../images/YNKNusasonic_SM_04.jpg
+  - src: ../images/ynknusasonicsm-04.jpg
     alt: Nusasonic
     id: ynknusasonicsm-04
-  - src: ../images/YNKNusasonic_SM_05.jpg
+  - src: ../images/ynknusasonicsm-05.jpg
     alt: Nusasonic
     id: ynknusasonicsm-05
-  - src: ../images/YNKNusasonic_SM_06.jpg
+  - src: ../images/ynknusasonicsm-06.jpg
     alt: Nusasonic
     id: ynknusasonicsm-06
-  - src: ../images/YNKNusasonic_SM_07.jpg
+  - src: ../images/ynknusasonicsm-07.jpg
     alt: Nusasonic
     id: ynknusasonicsm-07
 ---
