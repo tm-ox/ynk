@@ -11,7 +11,7 @@ import Pagination from "../../components/Pagination.astro";
 export const getStaticPaths = (async ({ paginate }) => {
   const events = await getCollection("events");
   events.sort((b, a) => Date.parse(a.data.date) - Date.parse(b.data.date));
-  return paginate(events, { pageSize: 12 });
+  return paginate(events, { pageSize: 18 });
 }) satisfies GetStaticPaths;
 
 const { page } = Astro.props;
@@ -32,15 +32,12 @@ const { page } = Astro.props;
     </a>
   </div>
   <section class="flex-col pt-0 xl:h-section xl:min-h-0 xl:overflow-hidden">
-    <div class="w-full mb-4">
-      <div class="flex sm:justify-end">
-        <Pagination
-          lastPage={page.lastPage}
-          currentPage={page.currentPage}
-          basePath="/events/"
-        />
-      </div>
-      <hr class="my-1" />
+    <div class="flex w-full py-1 sm:justify-end">
+      <Pagination
+        lastPage={page.lastPage}
+        currentPage={page.currentPage}
+        basePath="/events/"
+      />
     </div>
     <EventGrid events={page.data} />
   </section>
