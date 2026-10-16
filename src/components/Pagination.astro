@@ -4,10 +4,10 @@
 const { lastPage, currentPage, basePath = "/images/" } = Astro.props;
 ---
 
-<nav aria-label="Pagination" class="flex flex-wrap gap-x-3 shrink-0">
+<nav aria-label="Pagination" class="flex flex-wrap gap-x-6 shrink-0">
     {
         Array.from({ length: lastPage }, (_, i) => i + 1).map((num) => (
-            <h6>
+            <h5>
                 <a
                     href={num === 1 ? basePath : `${basePath}${num}/`}
                     class={currentPage === num ? "active" : undefined}
@@ -15,7 +15,7 @@ const { lastPage, currentPage, basePath = "/images/" } = Astro.props;
                 >
                     {num}
                 </a>
-            </h6>
+            </h5>
         ))
     }
 </nav>
