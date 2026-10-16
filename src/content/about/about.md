@@ -16,9 +16,7 @@ Through the Nusasonic project YNK organised a five day, multiple venue festival 
 
 In 2020 YNK furthered its international network through a collaboration with HuruHara for the inclusion of four Indonesian artists in the [AsiaTopa Festival](https://www.asiatopa.com.au/) in Melbourne, Australia.
 
-During Covid YNK shifted its focus to the curation of content for external events, most notably [ArtJog](https://artjog.id) and the facilitation of a stage at [Pestapora](https://www.pestapora.com) with artists from Indonesia, Malaysia, Thailand, the Philippines, Vietnam, Cambodia, Myanmar, Singapore, Japan and Uganda.
-
-YNK also participated virtually, on a number of occasions, in [MUTEK Montréal](https://montreal.mutek.org/), the Canadian festival of electronic music and digital creativity.
+During Covid YNK shifted its focus to the curation of content for external events, most notably [ArtJog](https://artjog.id) and the facilitation of a stage at [Pestapora](https://www.pestapora.com) with artists from Indonesia, Malaysia, Thailand, the Philippines, Vietnam, Cambodia, Myanmar, Singapore, Japan and Uganda. YNK also participated virtually, on a number of occasions, in [MUTEK Montréal](https://montreal.mutek.org/), the Canadian festival of electronic music and digital creativity.
 
 Post-covid YNK has returned to semi-regular programming with electronic event Yes No Disko, continued curation for both ArtJog and Pestapora and sporadic Yes No Klub gigs.
 
