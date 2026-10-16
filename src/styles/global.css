@@ -124,6 +124,9 @@
     a {
         @apply transition text-accent hover:text-accent-hover;
     }
+    p:last-child {
+        @apply mb-0;
+    }
     p a {
         @apply font-medium font-displayCon;
     }
