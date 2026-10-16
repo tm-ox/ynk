@@ -168,6 +168,32 @@ const ogImage = new URL(image ?? "/og-default.jpg", Astro.site).href;
             >
         </footer>
     <script>
+            import { bindWheelPager } from "../scripts/wheel-pager";
+
+            const link = (label: string) =>
+                document.querySelector<HTMLAnchorElement>(`a[aria-label="${label}"]`);
+
+            // Detail pages (events, photos): the wheel follows Next / Previous.
+            // Not on the home page, where the panel track pages instead.
+            bindWheelPager({
+                root: () =>
+                    !document.querySelector("[data-track]") &&
+                    (link("Next") || link("Previous"))
+                        ? document.documentElement
+                        : null,
+                canStep: (dir) => !!link(dir > 0 ? "Next" : "Previous"),
+                step: (dir) => link(dir > 0 ? "Next" : "Previous")?.click(),
+            });
+
+            // Slide the way the control points: Previous moves back, Next forward.
+            document.addEventListener("astro:before-preparation", (e: any) => {
+                const label = e.sourceElement
+                    ?.closest?.("a")
+                    ?.getAttribute("aria-label");
+                if (label === "Previous") e.direction = "back";
+                else if (label === "Next") e.direction = "forward";
+            });
+
             // Arrow keys follow the on-page Previous/Next links (events, images,
             // paginated lists); Escape follows the close link. Bound once: module
             // scripts are not re-run by the view-transition router.

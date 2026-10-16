@@ -3,15 +3,12 @@
 </div>
 
 <script>
+    import { bindWheelPager } from "../../scripts/wheel-pager";
+
     // From the sm breakpoint up the home sections are side-by-side panels.
     // A wheel gesture or arrow key moves one panel; a panel taller than the
     // screen scrolls itself first. Below sm the page scrolls vertically as normal.
     const wide = window.matchMedia("(min-width: 40rem)");
-    let lastWheel = 0;
-    let lockUntil = 0;
-    // After an inner area has used the wheel, hold paging until the wheel has
-    // been quiet for a moment, so over-scrolling its end does not flip panels.
-    let holdUntil = 0;
 
     const track = () => document.querySelector<HTMLElement>("[data-track]");
     const count = (t: HTMLElement) => t.querySelectorAll(":scope > section").length;
@@ -21,46 +18,14 @@
         t.scrollTo({ left: next * t.clientWidth, behavior: "smooth" });
     };
 
-    // Can this element scroll further in the wheel's direction?
-    const canScroll = (el: HTMLElement, dy: number) => {
-        if (el.scrollHeight <= el.clientHeight) return false;
-        const overflow = getComputedStyle(el).overflowY;
-        if (overflow !== "auto" && overflow !== "scroll") return false;
-        return dy > 0
-            ? el.scrollTop + el.clientHeight < el.scrollHeight - 1
-            : el.scrollTop > 0;
-    };
-
-    document.addEventListener(
-        "wheel",
-        (e) => {
+    bindWheelPager({
+        root: () => (wide.matches ? track() : null),
+        canStep: () => true,
+        step: (dir) => {
             const t = track();
-            if (!t || !wide.matches || e.ctrlKey) return;
-            if (Math.abs(e.deltaX) > Math.abs(e.deltaY)) return; // native horizontal scroll
-            const dy = e.deltaY;
-            const now = Date.now();
-            // A continuous stream of wheel events (inertia) is one gesture.
-            const isNewGesture = now - lastWheel > 120;
-            lastWheel = now;
-            // Let any scrollable element under the pointer (the panel, or a
-            // column inside it) use the wheel before it pages the track.
-            for (let el = e.target as HTMLElement | null; el && el !== t; el = el.parentElement) {
-                if (canScroll(el, dy)) {
-                    holdUntil = now + 600;
-                    return;
-                }
-            }
-            e.preventDefault();
-            if (now < holdUntil) {
-                holdUntil = now + 600;
-                return;
-            }
-            if (!isNewGesture || now < lockUntil) return;
-            lockUntil = now + 600;
-            go(t, index(t) + (dy > 0 ? 1 : -1));
+            if (t) go(t, index(t) + dir);
         },
-        { passive: false },
-    );
+    });
 
     document.addEventListener("keydown", (e) => {
         const t = track();

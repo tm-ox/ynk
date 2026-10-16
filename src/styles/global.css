@@ -280,3 +280,35 @@ select:-webkit-autofill:focus {
     border-radius: 6px;
     background: linear-gradient(transparent, var(--color-accent), transparent);
 }
+
+/* Slide between detail pages (see utils/transitions.ts for timing). */
+@keyframes slide-out-left {
+    to {
+        transform: translateX(-100%);
+    }
+}
+@keyframes slide-in-right {
+    from {
+        transform: translateX(100%);
+    }
+}
+@keyframes slide-out-right {
+    to {
+        transform: translateX(100%);
+    }
+}
+@keyframes slide-in-left {
+    from {
+        transform: translateX(-100%);
+    }
+}
+::view-transition-group(detail) {
+    overflow: clip;
+}
+@media (prefers-reduced-motion: reduce) {
+    ::view-transition-group(*),
+    ::view-transition-old(*),
+    ::view-transition-new(*) {
+        animation: none !important;
+    }
+}
