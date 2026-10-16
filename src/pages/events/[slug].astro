@@ -77,7 +77,7 @@ const flyer = event.data.flyer?.src
     </a>
   </div>
   <section transition:name={event.data.id} class="z-10 vt-detail">
-    <EventDetail pinned event={event} docsHref={hasPhotos ? `/images/event/${groupSlug(title)}/` : undefined}>
+    <EventDetail capped event={event} docsHref={hasPhotos ? `/images/event/${groupSlug(title)}/` : undefined}>
       <Content />
     </EventDetail>
   </section>
