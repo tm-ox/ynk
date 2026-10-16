@@ -1,4 +1,5 @@
 ---
+import SectionBar from "./SectionBar.astro";
 import { Image } from "astro:assets";
 import { getGalleryImages } from "../../utils/events";
 
@@ -17,15 +18,12 @@ const picks =
 ---
 
 <section id="images" class="flex-col items-stretch home-section">
-    <h2 class="sr-only">Images</h2>
-    <div class="w-full">
-        <p class="flex justify-end gap-6 mb-0">
-            <a href={`/images/event/${latestGroup}/`}>
-                Event images
-            </a>
-            <a href="/images/">All images</a>
-        </p>
-    </div>
+    <SectionBar label="Images">
+        <a href={`/images/event/${latestGroup}/`} class="section-action">
+            Event images
+        </a>
+        <a href="/images/" class="section-action">All images</a>
+    </SectionBar>
     <ul class="grid w-full grid-cols-2 gap-2 mb-auto md:grid-cols-4">
         {
             picks.map((image, i) => (

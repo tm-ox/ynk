@@ -1,17 +1,18 @@
 ---
 import * as about from "../../content/about/about.md";
+import SectionBar from "./SectionBar.astro";
 import { Content } from "../../content/about/about.md";
 ---
 
-<section id="about" class="home-section">
-    <div class="grid text-left lg:gap-6 lg:grid-cols-3">
+<section id="about" class="flex-col items-stretch home-section">
+    <SectionBar label={about.frontmatter.title} />
+    <div class="grid my-auto text-left lg:gap-6 lg:grid-cols-3">
         <h3
             class="mt-1 text-sm sm:text-2xl lg:text-right lg:self-center col-span-2 sm:col-span-3 lg:col-span-1"
         >
             {about.frontmatter.description}
         </h3>
         <div class="col-span-2">
-            <h2 class="sr-only">{about.frontmatter.title}</h2>
             <div class="grid py-rule sm:gap-6 sm:grid-cols-2">
                 <Content />
             </div>

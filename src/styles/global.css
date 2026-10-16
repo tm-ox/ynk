@@ -259,6 +259,9 @@
             scroll-behavior: smooth;
         }
     }
+    .section-action {
+        @apply text-xs uppercase font-displayCon md:text-sm underline-offset-4 hover:underline;
+    }
     .imageGrid {
         @apply grid gap-2;
     }

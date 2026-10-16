@@ -1,0 +1,15 @@
+---
+// Top row of a home panel: the section's label at the left and, optionally,
+// its actions (slot) at the right.
+interface Props {
+    label: string;
+}
+const { label } = Astro.props;
+---
+
+<div class="flex items-baseline justify-between w-full gap-4">
+    <h2 class="mb-0 text-xs font-bold text-left uppercase md:text-sm font-displayCon">
+        {label}
+    </h2>
+    <div class="flex gap-6"><slot /></div>
+</div>
