@@ -17,18 +17,21 @@ const { Content } = await render(featured);
 const hasPhotos = (featured.data.images ?? []).some(Boolean);
 ---
 
-<section id="events" class="flex-col items-stretch home-section">
+<section id="events" class="flex-col items-stretch md:overflow-hidden home-section">
     <h2 class="w-full text-3xl md:text-4xl">
         {upcoming[0] ? "Next event" : "Latest event"}
     </h2>
     <hr class="w-full" />
+    <div class="w-full md:flex-1 md:min-h-0">
     <EventDetail
+        contained
         event={featured}
         headingHref={`/events/${featured.id}/`}
         docsHref={hasPhotos ? `/images/event/${groupSlug(featured.data.title)}/` : undefined}
     >
         <Content />
     </EventDetail>
+    </div>
     <hr class="w-full" />
     <p class="w-full my-2"><a href="/events/">All events</a></p>
 </section>

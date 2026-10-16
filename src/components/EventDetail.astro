@@ -9,19 +9,31 @@ interface Props {
   headingHref?: string;
   /** Adds a Documentation link when the event has photographs. */
   docsHref?: string;
+  /** From md up, fill the available height: the flyer as large as it fits and
+   *  the details scrolling on their own. For use inside a fixed-height panel. */
+  contained?: boolean;
 }
-const { event, headingHref, docsHref } = Astro.props;
+const { event, headingHref, docsHref, contained = false } = Astro.props;
 ---
 
-<div class="flex flex-col gap-4 md:flex-row">
-  <div class="md:w-3/5">
+<div
+  class:list={[
+    "flex flex-col gap-4 md:flex-row",
+    contained && "md:h-full md:min-h-0",
+  ]}
+>
+  <div class:list={[contained ? "md:h-full md:max-w-[62%] md:shrink-0" : "md:w-3/5"]}>
     <Image
       src={event.data.flyer.src}
       alt={flyerAlt(event.data)}
-      class="object-contain h-auto my-1 mb-auto"
+      width={contained ? 1600 : undefined}
+      class:list={[
+        "object-contain my-1",
+        contained ? "md:h-full md:w-auto" : "h-auto mb-auto",
+      ]}
     />
   </div>
-  <div class="w-full">
+  <div class:list={["w-full", contained && "md:min-w-0 md:flex-1 md:h-full md:overflow-y-auto md:pr-2"]}>
     <div class="flex items-center mb-2">
       <h2 class="mb-0 uppercase mx-auto sm:mx-0">
         {
