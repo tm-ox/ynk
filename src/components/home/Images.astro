@@ -23,7 +23,11 @@ const picks =
         {
             picks.map((image, i) => (
                 <li class={i === 0 ? "col-span-2 row-span-2" : ""}>
-                    <a href={`/images/${image.id}/`} class="block h-full">
+                    <a
+                        href={`/images/${image.id}/`}
+                        class="block h-full"
+                        transition:name={image.id}
+                    >
                         <Image
                             src={image.src}
                             alt={image.description}

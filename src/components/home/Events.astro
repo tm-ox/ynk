@@ -22,7 +22,7 @@ const hasPhotos = (featured.data.images ?? []).some(Boolean);
         {upcoming[0] ? "Next event" : "Latest event"}
     </h2>
     <hr class="w-full" />
-    <div class="w-full md:flex-1 md:min-h-0">
+    <div class="w-full md:flex-1 md:min-h-0" transition:name={featured.data.id}>
     <EventDetail
         contained
         event={featured}

@@ -31,11 +31,21 @@ const isCurrent = (name: string) =>
                             <hr class="sm:hidden" />
                         </li>
                     ) : (
+                        <>
                         <li>
                             <hr class="sm:hidden" />
                             <a href="/" target="_self">Home</a>
                             <hr class="sm:hidden" />
                         </li>
+                        <li>
+                            <a href="/events/" data-section="events" target="_self">Events</a>
+                            <hr class="sm:hidden" />
+                        </li>
+                        <li>
+                            <a href="/images/" data-section="images" target="_self">Images</a>
+                            <hr class="sm:hidden" />
+                        </li>
+                        </>
                     )
                 }
                 {
