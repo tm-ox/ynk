@@ -2,7 +2,6 @@
 import { Image } from "astro:assets";
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import { Icon } from "astro-icon/components";
-import { slide } from "../../utils/transitions";
 import NavArrow from "../../components/NavArrow.astro";
 import { getGalleryImages } from "../../utils/events";
 
@@ -49,7 +48,7 @@ const { image, prevImage, nextImage } = Astro.props;
       </a>
     </div>
   </div>
-  <section class="h-section flex flex-col" transition:name="detail" transition:animate={slide}>
+  <section class="h-section flex flex-col vt-detail" transition:name={image.id}>
     <h3 class="md:hidden">{image.alt}</h3>
     <Image
       src={image.src}

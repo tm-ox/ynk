@@ -185,13 +185,15 @@ const ogImage = new URL(image ?? "/og-default.jpg", Astro.site).href;
                 step: (dir) => link(dir > 0 ? "Next" : "Previous")?.click(),
             });
 
-            // Slide the way the control points: Previous moves back, Next forward.
+            // Paging between neighbours (Previous / Next, by click, key or wheel)
+            // slides. Everything else keeps Astro's default morph. The custom
+            // direction value is what global.css keys the slide on.
             document.addEventListener("astro:before-preparation", (e: any) => {
                 const label = e.sourceElement
                     ?.closest?.("a")
                     ?.getAttribute("aria-label");
-                if (label === "Previous") e.direction = "back";
-                else if (label === "Next") e.direction = "forward";
+                if (label === "Previous") e.direction = "paging-back";
+                else if (label === "Next") e.direction = "paging-forward";
             });
 
             // Arrow keys follow the on-page Previous/Next links (events, images,

@@ -4,7 +4,6 @@ import { Image, getImage } from "astro:assets";
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import { Icon } from "astro-icon/components";
 import EventDetail from "../../components/EventDetail.astro";
-import { slide } from "../../utils/transitions";
 import NavArrow from "../../components/NavArrow.astro";
 import { eventJsonLd, flyerAlt, groupSlug, prettyDate as formatDate } from "../../utils/events";
 
@@ -77,8 +76,8 @@ const flyer = event.data.flyer?.src
       <Icon name="ion:close-sharp" class="icon" />
     </a>
   </div>
-  <section transition:name="detail" transition:animate={slide} class="z-10">
-    <EventDetail event={event} docsHref={hasPhotos ? `/images/event/${groupSlug(title)}/` : undefined}>
+  <section transition:name={event.data.id} class="z-10 vt-detail">
+    <EventDetail pinned event={event} docsHref={hasPhotos ? `/images/event/${groupSlug(title)}/` : undefined}>
       <Content />
     </EventDetail>
   </section>

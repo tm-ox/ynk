@@ -12,8 +12,12 @@ interface Props {
   /** From md up, fill the available height: the flyer as large as it fits and
    *  the details scrolling on their own. For use inside a fixed-height panel. */
   contained?: boolean;
+  /** From md up, the flyer sets the height (capped to the screen) and the
+   *  details sit level with its top, scrolling inside that height, so the
+   *  flyer stays put however much text an event has. */
+  pinned?: boolean;
 }
-const { event, headingHref, docsHref, contained = false } = Astro.props;
+const { event, headingHref, docsHref, contained = false, pinned = false } = Astro.props;
 ---
 
 <div
@@ -30,10 +34,18 @@ const { event, headingHref, docsHref, contained = false } = Astro.props;
       class:list={[
         "object-contain my-1",
         contained ? "md:h-full md:w-auto" : "h-auto mb-auto",
+        pinned && "md:w-auto md:max-h-section",
       ]}
     />
   </div>
-  <div class:list={["w-full", contained && "md:min-w-0 md:flex-1 md:h-full md:overflow-y-auto md:pr-2"]}>
+  <div
+    class:list={[
+      "w-full",
+      contained && "md:min-w-0 md:flex-1 md:h-full md:overflow-y-auto md:pr-2",
+      pinned && "md:relative md:min-w-0 md:flex-1 md:self-stretch",
+    ]}
+  >
+  <div class:list={[pinned && "md:absolute md:inset-0 md:overflow-y-auto md:pr-2"]}>
     <div class="flex items-center mb-2">
       <h2 class="mb-0 uppercase mx-auto sm:mx-0">
         {
@@ -117,5 +129,6 @@ const { event, headingHref, docsHref, contained = false } = Astro.props;
         </>
       )
     }
+  </div>
   </div>
 </div>

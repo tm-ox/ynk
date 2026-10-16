@@ -35,6 +35,9 @@
 @utility min-h-section {
     min-height: calc(100vh - var(--section-offset));
 }
+@utility max-h-section {
+    max-height: calc(100vh - var(--section-offset));
+}
 @utility h-section {
     height: calc(100vh - var(--section-offset));
 }
@@ -281,7 +284,15 @@ select:-webkit-autofill:focus {
     background: linear-gradient(transparent, var(--color-accent), transparent);
 }
 
-/* Slide between detail pages (see utils/transitions.ts for timing). */
+/* Slide between neighbouring detail pages (Previous / Next). The direction
+   value is set in Base.astro; everything else keeps the default morph. */
+:root {
+    --slide-duration: 0.35s;
+    --slide-easing: cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+.vt-detail {
+    view-transition-class: detail;
+}
 @keyframes slide-out-left {
     to {
         transform: translateX(-100%);
@@ -302,8 +313,17 @@ select:-webkit-autofill:focus {
         transform: translateX(-100%);
     }
 }
-::view-transition-group(detail) {
-    overflow: clip;
+html[data-astro-transition="paging-forward"]::view-transition-old(.detail) {
+    animation: slide-out-left var(--slide-duration) var(--slide-easing) both;
+}
+html[data-astro-transition="paging-forward"]::view-transition-new(.detail) {
+    animation: slide-in-right var(--slide-duration) var(--slide-easing) both;
+}
+html[data-astro-transition="paging-back"]::view-transition-old(.detail) {
+    animation: slide-out-right var(--slide-duration) var(--slide-easing) both;
+}
+html[data-astro-transition="paging-back"]::view-transition-new(.detail) {
+    animation: slide-in-left var(--slide-duration) var(--slide-easing) both;
 }
 @media (prefers-reduced-motion: reduce) {
     ::view-transition-group(*),
