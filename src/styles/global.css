@@ -237,10 +237,21 @@
             @apply h-full min-h-0 overflow-y-auto;
             flex: 0 0 100%;
             scroll-snap-align: start;
-            padding-inline: max(
+            --bleed: max(
                 calc(var(--spacing) * 2),
                 calc((100vw - var(--container-site)) / 2 + var(--spacing) * 2)
             );
+            padding-inline: var(--bleed);
+            /* Keep the top and bottom rules to the content width, not the
+               full-bleed panel, as on the other pages. */
+            border-image: linear-gradient(
+                    to right,
+                    transparent var(--bleed),
+                    var(--color-border) var(--bleed),
+                    var(--color-border) calc(100% - var(--bleed)),
+                    transparent calc(100% - var(--bleed))
+                )
+                1;
         }
     }
     @media (min-width: 40rem) and (prefers-reduced-motion: no-preference) {
