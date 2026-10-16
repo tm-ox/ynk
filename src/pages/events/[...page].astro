@@ -1,0 +1,40 @@
+---
+import type { GetStaticPaths } from "astro";
+import { getCollection } from "astro:content";
+import { Icon } from "astro-icon/components";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import EventGrid from "../../components/EventGrid.astro";
+import Pagination from "../../components/Pagination.astro";
+
+export const getStaticPaths = (async ({ paginate }) => {
+  const events = await getCollection("events");
+  events.sort((b, a) => Date.parse(a.data.date) - Date.parse(b.data.date));
+  return paginate(events, { pageSize: 12 });
+}) satisfies GetStaticPaths;
+
+const { page } = Astro.props;
+---
+
+<BaseLayout
+  title={page.currentPage > 1 ? `Events – page ${page.currentPage}` : "Events"}
+  description="Archive of Yes No Klub events, gigs and projects from Yogyakarta, Indonesia."
+>
+  <div
+    slot="subnav"
+    class="flex items-center gap-1 px-3 ml-4 mr-auto border-x border-x-border"
+  >
+    <a href="/#events" aria-label="Back to home">
+      <Icon name="ion:close-sharp" class="icon" />
+    </a>
+  </div>
+  <section class="flex-col pt-0 xl:h-section xl:min-h-0 xl:overflow-hidden">
+    <EventGrid events={page.data} />
+    <Pagination
+      prevUrl={page.url.prev}
+      nextUrl={page.url.next}
+      lastPage={page.lastPage}
+      currentPage={page.currentPage}
+      basePath="/events/"
+    />
+  </section>
+</BaseLayout>
