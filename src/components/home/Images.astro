@@ -19,10 +19,10 @@ const picks =
 <section id="images" class="flex-col items-stretch home-section">
     <h2 class="w-full text-3xl md:text-4xl">Images</h2>
     <hr class="w-full" />
-    <ul class="grid w-full grid-cols-2 gap-2 mb-auto md:grid-cols-4 md:grid-rows-2">
+    <ul class="grid w-full grid-cols-2 gap-2 mb-auto md:grid-cols-4">
         {
             picks.map((image, i) => (
-                <li class={i === 0 ? "col-span-2 row-span-2" : ""}>
+                <li class={i === 0 ? "col-span-2 row-span-2 aspect-square" : "aspect-square"}>
                     <a
                         href={`/images/${image.id}/`}
                         class="block h-full"
@@ -32,7 +32,7 @@ const picks =
                             src={image.src}
                             alt={image.description}
                             width={i === 0 ? 1200 : 600}
-                            class="object-cover w-full h-full"
+                            class="block object-cover w-full h-full"
                         />
                     </a>
                 </li>

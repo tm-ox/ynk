@@ -8,30 +8,33 @@ interface Props {
 const { images } = Astro.props;
 ---
 
-<!-- From xl up the grid fills the height left by the filter and pagination,
-     so a page is a single screen; below that it flows and scrolls, with fewer
-     columns so the thumbnails keep their height. -->
+<!-- Thumbnails are always square. From xl up the square size is the largest that
+     lets a whole page (24 images: 4 rows of 6, or 3 rows of 8) fit the height
+     left by the filter and pagination, so a page is a single screen; below
+     that the grid flows and scrolls with fewer columns. --extra is the title
+     and rules above each image. -->
 <div
-    class="w-full mb-auto xl:flex-1 xl:min-h-0 xl:mb-0 vt-detail"
+    class="w-full mb-auto xl:flex-1 xl:min-h-0 xl:mb-0 xl:[container-type:size] vt-detail"
     transition:name="gallery-page"
 >
-    <ul class="imageGrid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 2xl:grid-cols-8 xl:h-full xl:auto-rows-fr">
+    <ul
+        class="imageGrid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:justify-center xl:[--cols:6] xl:[--rows:4] 2xl:[--cols:8] 2xl:[--rows:3] xl:[--extra:4.5rem] xl:[--cell:min((100cqw-(var(--cols)-1)*0.5rem)/var(--cols),(100cqh-(var(--rows)-1)*0.5rem)/var(--rows)-var(--extra))] xl:grid-cols-[repeat(var(--cols),var(--cell))]"
+    >
         {
             images.map((image) => (
-                <li class="aspect-square xl:aspect-auto xl:min-h-0">
+                <li class="min-w-0">
                     <a
                         href={`/images/${image.id}/`}
-                        class="xl:flex xl:flex-col xl:h-full"
                         transition:name={image.id}
                     >
-                        <h5 class="uppercase">{image.alt}</h5>
+                        <h5 class="uppercase xl:truncate">{image.alt}</h5>
                         <hr />
                         <Image
                             src={image.src}
                             alt={image.description}
                             width={400}
                             height={400}
-                            class="block object-cover w-full h-full xl:flex-1 xl:min-h-0"
+                            class="block object-cover w-full aspect-square"
                         />
                         <hr />
                     </a>
