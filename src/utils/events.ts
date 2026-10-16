@@ -57,6 +57,16 @@ export const groupSlug = (title: string) =>
 const numericDate = (date: string) =>
   new Date(date).toLocaleDateString("en-GB", { timeZone: "UTC" });
 
+/** 10–13/10/2018 within a month, 25/07–12/09/2019 across months, full dates across years. */
+const dateRange = (first: string, last: string) => {
+  if (first === last) return numericDate(first);
+  const [fy, fm, fd] = first.split("-");
+  const [ly, lm, ld] = last.split("-");
+  if (fy !== ly) return `${numericDate(first)}–${numericDate(last)}`;
+  if (fm !== lm) return `${fd}/${fm}–${ld}/${lm}/${ly}`;
+  return `${fd}–${ld}/${lm}/${ly}`;
+};
+
 /** Events with gallery photos grouped for the gallery filter, newest first. */
 export async function getGalleryEvents() {
   const events = await getCollection("events", ({ data }) => {
@@ -65,7 +75,7 @@ export async function getGalleryEvents() {
   events.sort((b, a) => Date.parse(a.data.date) - Date.parse(b.data.date));
   const groups = new Map<
     string,
-    { id: string; title: string; date: string; venues: Set<string>; count: number }
+    { id: string; title: string; date: string; last: string; venues: Set<string>; count: number }
   >();
   for (const event of events) {
     const id = groupSlug(event.data.title);
@@ -73,18 +83,21 @@ export async function getGalleryEvents() {
       id,
       title: groupTitle(event.data.title),
       date: event.data.date,
+      last: event.data.date,
       venues: new Set<string>(),
       count: 0,
     };
     if (Date.parse(event.data.date) < Date.parse(group.date))
       group.date = event.data.date;
+    if (Date.parse(event.data.date) > Date.parse(group.last))
+      group.last = event.data.date;
     if (event.data.venue?.name) group.venues.add(event.data.venue.name);
     group.count += (event.data.images ?? []).filter(Boolean).length;
     groups.set(id, group);
   }
   return [...groups.values()].map((g) => ({
     id: g.id,
-    label: `${g.title} · ${numericDate(g.date)}${g.venues.size === 1 ? ` · ${[...g.venues][0]}` : ""}`,
+    label: `${g.title} · ${dateRange(g.date, g.last)}${g.venues.size === 1 ? ` · ${[...g.venues][0]}` : ""}`,
     count: g.count,
   }));
 }
