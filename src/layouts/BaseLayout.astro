@@ -137,8 +137,13 @@ const isCurrent = (name: string) =>
                 .querySelectorAll("main section[id]")
                 .forEach((section) => observer!.observe(section));
         } else {
+            // Detail pages are inside the section, so its link stays a
+            // destination; only the archive pages mark it as current.
+            const isDetail = /^\/(events|images)\/(?!\d+\/?$)(?!event\/)[^/]+\/?$/.test(path);
             setActive(
-                path.startsWith("/events")
+                isDetail
+                    ? null
+                    : path.startsWith("/events")
                     ? "events"
                     : path.startsWith("/images")
                       ? "images"
