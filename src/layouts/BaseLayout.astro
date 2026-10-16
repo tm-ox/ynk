@@ -25,11 +25,10 @@ const isCurrent = (name: string) =>
             >
                 {
                     isHome ? (
-                        <li class="sm:hidden">
+                        <li>
                             <hr class="sm:hidden" />
-                            <a class="active" aria-current="page" href="/" target="_self">
-                                Yes No Klub
-                            </a>
+                            <a href="/#top" data-section="top" target="_self">Home</a>
+                            <hr class="sm:hidden" />
                         </li>
                     ) : (
                         <li>
