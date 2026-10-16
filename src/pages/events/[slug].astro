@@ -4,7 +4,7 @@ import { Image, getImage } from "astro:assets";
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import { Icon } from "astro-icon/components";
 import NavArrow from "../../components/NavArrow.astro";
-import { eventJsonLd, flyerAlt, prettyDate as formatDate } from "../../utils/events";
+import { eventJsonLd, flyerAlt, groupSlug, prettyDate as formatDate } from "../../utils/events";
 
 export async function getStaticPaths() {
   const events = await getCollection("events");
@@ -42,6 +42,7 @@ const pageDescription =
   rawDescription.length > 158
     ? `${rawDescription.slice(0, 155).trimEnd()}…`
     : rawDescription;
+const hasPhotos = (event.data.images ?? []).some(Boolean);
 const flyer = event.data.flyer?.src
   ? await getImage({ src: event.data.flyer.src, width: 1200, format: "jpg" })
   : undefined;
@@ -149,6 +150,19 @@ const flyer = event.data.flyer?.src
         <div class="py-rule">
           <Content />
         </div>
+        {
+          hasPhotos && (
+            <>
+              <hr />
+              <div class="py-rule">
+                <h5>documentation:</h5>
+                <h4>
+                  <a href={`/images/event/${groupSlug(title)}`}>Photographs</a>
+                </h4>
+              </div>
+            </>
+          )
+        }
       </div>
     </div>
   </section>
