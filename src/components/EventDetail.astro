@@ -9,9 +9,6 @@ interface Props {
   headingHref?: string;
   /** Adds a Documentation link when the event has photographs. */
   docsHref?: string;
-  /** From md up, fill the available height: the flyer as large as it fits and
-   *  the details scrolling on their own. For use inside a fixed-height panel. */
-  contained?: boolean;
   /** From md up: the flyer stays vertically centred whatever the text length
    *  (the row is as tall as the taller of the two, centred in the screen, and
    *  the text column is top-aligned in it, so shorter text lines up with the
@@ -19,38 +16,28 @@ interface Props {
    *  the screen height and scrolls on its own beyond that. */
   capped?: boolean;
 }
-const { event, headingHref, docsHref, contained = false, capped = false } = Astro.props;
+const { event, headingHref, docsHref, capped = false } = Astro.props;
 ---
 
 <div
   class:list={[
     "flex flex-col gap-4",
     "md:flex-row",
-    contained && "md:h-full md:min-h-0",
   ]}
 >
   <div
-    class:list={[
-      contained
-        ? "md:h-full md:max-w-[62%] md:shrink-0"
-        : ["md:w-3/5", capped && "md:self-center"],
-    ]}
+    class:list={["md:w-3/5", capped && "md:self-center"]}
   >
     <Image
       src={event.data.flyer.src}
       alt={flyerAlt(event.data)}
-      width={contained ? 1600 : undefined}
-      class:list={[
-        "object-contain my-1",
-        contained ? "md:h-full md:w-auto" : "h-auto w-full mb-auto",
-      ]}
+      class="object-contain my-1 h-auto w-full mb-auto"
     />
   </div>
   <div
-    data-scroll={contained || capped ? "" : undefined}
+    data-scroll={capped ? "" : undefined}
     class:list={[
       "w-full",
-      contained && "md:min-w-0 md:flex-1 md:h-full md:overflow-y-auto md:pr-2",
       capped && "md:max-h-[calc(100vh-var(--section-offset)-30px)] md:overflow-y-auto md:pr-2",
     ]}
   >
