@@ -11,7 +11,7 @@ const { images } = Astro.props;
 <!-- Thumbnails are always square and the grid always spans the content width.
      From xl up a page (24 images) is meant to fit one screen: the number of
      columns follows the shape of the space available (6, 8 or 12, so 4, 3 or
-     2 rows), and anything that still does not fit scrolls inside the grid.
+     2 rows; 8 from a height of about 45% of the width), and anything that still does not fit scrolls inside the grid.
      Below xl the grid flows with fewer columns. -->
 <div class="w-full mb-auto gallery-fit vt-detail" transition:name="gallery-page" data-scroll>
     <ul class="imageGrid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gallery-grid">
@@ -51,7 +51,10 @@ const { images } = Astro.props;
         .gallery-grid {
             grid-template-columns: repeat(12, minmax(0, 1fr));
         }
-        @container (max-aspect-ratio: 20/11) {
+        .gallery-grid :global(hr) {
+            margin-block: 0.25rem;
+        }
+        @container (max-aspect-ratio: 20/9) {
             .gallery-grid {
                 grid-template-columns: repeat(8, minmax(0, 1fr));
             }
