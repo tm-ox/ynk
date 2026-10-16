@@ -1,24 +1,25 @@
 ---
-import { Image } from "astro:assets";
+import type { GetStaticPaths } from "astro";
 import BaseLayout from "../../../../layouts/BaseLayout.astro";
 import Pagination from "../../../../components/Pagination.astro";
+import GalleryGrid from "../../../../components/GalleryGrid.astro";
 import GalleryFilter from "../../../../components/GalleryFilter.astro";
 import { getGalleryEvents, getGalleryImages } from "../../../../utils/events";
 
-export async function getStaticPaths({ paginate }) {
+export const getStaticPaths = (async ({ paginate }) => {
     const images = await getGalleryImages();
     const events = await getGalleryEvents();
     return events.flatMap((event) =>
         paginate(
-            images.filter((image: any) => image.eventId === event.id),
+            images.filter((image) => image.groupId === event.id),
             { pageSize: 24, params: { event: event.id }, props: { event } },
         ),
     );
-}
+}) satisfies GetStaticPaths;
 
 const { page, event } = Astro.props;
 const events = await getGalleryEvents();
-const basePath = `/images/event/${event.id}`;
+const basePath = `/images/event/${event.id}/`;
 ---
 
 <BaseLayout
@@ -27,28 +28,7 @@ const basePath = `/images/event/${event.id}`;
 >
     <section class="flex-col pt-0">
         <GalleryFilter events={events} current={event.id} />
-        <ul class="imageGrid mb-auto">
-            {
-                page.data.map((image: any) => (
-                    <li class="aspect-square">
-                        <a
-                            href={`/images/${image.id}/`}
-                            transition:name={image.id}
-                        >
-                            <h5 class="uppercase">{image.alt}</h5>
-                            <hr />
-                            <Image
-                                src={image.src}
-                                alt={image.description}
-                                class="object-none h-full"
-                                height={200}
-                            />
-                            <hr />
-                        </a>
-                    </li>
-                ))
-            }
-        </ul>
+        <GalleryGrid images={page.data} />
         <Pagination
             prevUrl={page.url.prev}
             nextUrl={page.url.next}

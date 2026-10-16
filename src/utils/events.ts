@@ -38,7 +38,7 @@ export async function getGalleryImages() {
     const photos = (event.data.images ?? []).filter(Boolean) as any[];
     return photos.map((image, i) => ({
       ...image,
-      eventId: groupSlug(event.data.title),
+      groupId: groupSlug(event.data.title),
       description: `Photograph ${i + 1} of ${photos.length} from ${event.data.title}, ${prettyDate(event.data.date)}${place(event.data)}`,
     }));
   });
@@ -124,3 +124,5 @@ export function eventJsonLd(
     organizer: { "@type": "Organization", name: "Yes No Klub", url: "https://www.yesnoklub.net/" },
   };
 }
+
+export type GalleryImage = Awaited<ReturnType<typeof getGalleryImages>>[number];

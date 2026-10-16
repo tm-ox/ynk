@@ -8,11 +8,11 @@ const { events, current } = Astro.props;
 
 <div class="gallery-filter">
     <select aria-label="Filter by event" data-gallery-filter>
-        <option value="/images" selected={!current}>All events</option>
+        <option value="/images/" selected={!current}>All events</option>
         {
             events.map((event) => (
                 <option
-                    value={`/images/event/${event.id}`}
+                    value={`/images/event/${event.id}/`}
                     selected={event.id === current}
                 >
                     {event.label} ({event.count})
@@ -20,14 +20,30 @@ const { events, current } = Astro.props;
             ))
         }
     </select>
+    <noscript>
+        <ul>
+            <li><a href="/images/">All events</a></li>
+            {
+                events.map((event) => (
+                    <li>
+                        <a href={`/images/event/${event.id}/`}>
+                            {event.label} ({event.count})
+                        </a>
+                    </li>
+                ))
+            }
+        </ul>
+    </noscript>
     <hr />
 </div>
 
 <script>
+    import { navigate } from "astro:transitions/client";
+
     document.addEventListener("change", (e) => {
         const select = e.target as HTMLSelectElement;
         if (select.matches?.("[data-gallery-filter]")) {
-            window.location.assign(select.value);
+            navigate(select.value);
         }
     });
 </script>

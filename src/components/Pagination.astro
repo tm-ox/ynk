@@ -1,6 +1,6 @@
 ---
 import NavArrow from "./NavArrow.astro";
-const { prevUrl, nextUrl, lastPage, currentPage, basePath = "/images" } = Astro.props;
+const { prevUrl, nextUrl, lastPage, currentPage, basePath = "/images/" } = Astro.props;
 ---
 
 <nav aria-label="Pagination" class="flex flex-col my-4">
@@ -13,7 +13,7 @@ const { prevUrl, nextUrl, lastPage, currentPage, basePath = "/images" } = Astro.
             Array.from({ length: lastPage }, (_, i) => i + 1).map((num) => (
                 <h5>
                     <a
-                        href={num === 1 ? basePath : `${basePath}/${num}`}
+                        href={num === 1 ? basePath : `${basePath}${num}/`}
                         class={
                             currentPage === num
                                 ? "active"

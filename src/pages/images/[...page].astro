@@ -1,13 +1,14 @@
 ---
-import { Image } from "astro:assets";
+import type { GetStaticPaths } from "astro";
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import Pagination from "../../components/Pagination.astro";
+import GalleryGrid from "../../components/GalleryGrid.astro";
 import GalleryFilter from "../../components/GalleryFilter.astro";
 import { getGalleryEvents, getGalleryImages } from "../../utils/events";
 
-export async function getStaticPaths({ paginate }) {
+export const getStaticPaths = (async ({ paginate }) => {
     return paginate(await getGalleryImages(), { pageSize: 24 });
-}
+}) satisfies GetStaticPaths;
 
 const { page } = Astro.props;
 const events = await getGalleryEvents();
@@ -19,28 +20,7 @@ const events = await getGalleryEvents();
 >
     <section class="flex-col pt-0">
         <GalleryFilter events={events} />
-        <ul class="imageGrid mb-auto">
-            {
-                page.data.map((image: any) => (
-                    <li class="aspect-square">
-                        <a
-                            href={`/images/${image.id}/`}
-                            transition:name={image.id}
-                        >
-                            <h5 class="uppercase">{image.alt}</h5>
-                            <hr />
-                            <Image
-                                src={image.src}
-                                alt={image.description}
-                                class="object-none h-full"
-                                height={200}
-                            />
-                            <hr />
-                        </a>
-                    </li>
-                ))
-            }
-        </ul>
+        <GalleryGrid images={page.data} />
         <Pagination
             prevUrl={page.url.prev}
             nextUrl={page.url.next}

@@ -1,0 +1,29 @@
+---
+import { Image } from "astro:assets";
+import type { GalleryImage } from "../utils/events";
+
+interface Props {
+    images: GalleryImage[];
+}
+const { images } = Astro.props;
+---
+
+<ul class="imageGrid mb-auto">
+    {
+        images.map((image) => (
+            <li class="aspect-square">
+                <a href={`/images/${image.id}/`} transition:name={image.id}>
+                    <h5 class="uppercase">{image.alt}</h5>
+                    <hr />
+                    <Image
+                        src={image.src}
+                        alt={image.description}
+                        class="object-none h-full"
+                        height={200}
+                    />
+                    <hr />
+                </a>
+            </li>
+        ))
+    }
+</ul>
