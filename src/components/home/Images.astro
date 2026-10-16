@@ -17,16 +17,15 @@ const picks =
 ---
 
 <section id="images" class="flex-col items-stretch home-section">
-    <div class="flex flex-wrap items-baseline justify-between w-full gap-x-6">
-        <h2 class="text-3xl md:text-4xl">Images</h2>
-        <p class="flex gap-6 mb-0">
+    <h2 class="sr-only">Images</h2>
+    <div class="w-full">
+        <p class="flex justify-end gap-6 mb-0">
             <a href={`/images/event/${latestGroup}/`}>
                 Event images
             </a>
             <a href="/images/">All images</a>
         </p>
     </div>
-    <hr class="w-full" />
     <ul class="grid w-full grid-cols-2 gap-2 mb-auto md:grid-cols-4">
         {
             picks.map((image, i) => (

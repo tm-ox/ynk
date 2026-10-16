@@ -18,13 +18,8 @@ const href = `/events/${featured.id}/`;
 ---
 
 <section id="events" class="flex-col items-stretch home-section">
-    <div class="flex items-baseline justify-between w-full gap-4">
-        <h2 class="text-3xl md:text-4xl">
-            {upcoming[0] ? "Next event" : "Previous event"}
-        </h2>
-        <a href="/events/">All events</a>
-    </div>
-    <hr class="w-full" />
+    <h2 class="sr-only">{upcoming[0] ? "Next event" : "Previous event"}</h2>
+    <p class="w-full mb-0 text-right"><a href="/events/">All events</a></p>
     <div
         class="grid w-full gap-4 my-auto lg:gap-6 lg:grid-cols-3 lg:items-center"
         transition:name={featured.data.id}

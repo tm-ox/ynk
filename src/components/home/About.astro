@@ -11,8 +11,7 @@ import { Content } from "../../content/about/about.md";
             {about.frontmatter.description}
         </h3>
         <div class="col-span-2">
-            <hr class="lg:hidden" />
-            <h2 class="text-3xl md:text-4xl">{about.frontmatter.title}</h2>
+            <h2 class="sr-only">{about.frontmatter.title}</h2>
             <div class="grid py-rule sm:gap-6 sm:grid-cols-2">
                 <Content />
             </div>
