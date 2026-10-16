@@ -3,9 +3,13 @@ import { Image } from "astro:assets";
 import { flyerAltShort } from "../utils/events";
 
 interface Props {
+    pageSize?: number;
     events: any[];
 }
-const { events } = Astro.props;
+const { events, pageSize = 18 } = Astro.props;
+// From xl up the last page is padded with invisible cells so it keeps the same
+// height, and the page numbers stay where they are.
+const padding = Math.max(0, pageSize - events.length);
 ---
 
 <!-- Flyers sit in square cells and the grid always spans the content width.
@@ -32,6 +36,16 @@ const { events } = Astro.props;
                         />
                         <hr />
                     </a>
+                </li>
+            ))
+        }
+        {
+            Array.from({ length: padding }).map(() => (
+                <li class="hidden invisible xl:block" aria-hidden="true">
+                    <h5>&nbsp;</h5>
+                    <hr />
+                    <div class="aspect-square" />
+                    <hr />
                 </li>
             ))
         }

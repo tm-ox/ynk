@@ -3,9 +3,13 @@ import { Image } from "astro:assets";
 import type { GalleryImage } from "../utils/events";
 
 interface Props {
+    pageSize?: number;
     images: GalleryImage[];
 }
-const { images } = Astro.props;
+const { images, pageSize = 24 } = Astro.props;
+// From xl up the last page is padded with invisible cells so it keeps the same
+// height, and the page numbers stay where they are.
+const padding = Math.max(0, pageSize - images.length);
 ---
 
 <!-- Thumbnails are always square and the grid always spans the content width.
@@ -35,6 +39,16 @@ const { images } = Astro.props;
                         />
                         <hr />
                     </a>
+                </li>
+            ))
+        }
+        {
+            Array.from({ length: padding }).map(() => (
+                <li class="hidden invisible xl:block" aria-hidden="true">
+                    <h5>&nbsp;</h5>
+                    <hr />
+                    <div class="aspect-square" />
+                    <hr />
                 </li>
             ))
         }
