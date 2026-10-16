@@ -35,7 +35,7 @@ const basePath = `/images/event/${event.id}/`;
         <Icon name="ion:close-sharp" class="icon" />
       </a>
     </div>
-    <section class="flex-col pt-0">
+    <section class="flex-col pt-0 sm:h-section sm:min-h-0 sm:overflow-hidden">
         <GalleryFilter events={events} current={event.id} />
         <GalleryGrid images={page.data} />
         <Pagination

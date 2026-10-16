@@ -196,6 +196,10 @@ const ogImage = new URL(image ?? "/og-default.jpg", Astro.site).href;
                     ?.getAttribute("aria-label");
                 if (label === "Previous") e.direction = "paging-back";
                 else if (label === "Next") e.direction = "paging-forward";
+                paging = !!e.direction && e.direction.startsWith("paging");
+                // Grid pages slide as a whole; the cards must not be captured
+                // separately or they would crossfade instead.
+                if (paging) unname(document);
 
                 // Remember where a detail page was opened from, so its close
                 // button returns there: the home panel for pages reached from
@@ -215,6 +219,15 @@ const ogImage = new URL(image ?? "/og-default.jpg", Astro.site).href;
                 else if (!(isDetail(e.from) && isDetail(e.to))) closeTo = null;
 
                 homeHash = e.to.pathname === "/" ? e.to.hash : "";
+            });
+
+            let paging = false;
+            const unname = (root: ParentNode) =>
+                root
+                    .querySelectorAll<HTMLElement>(".imageGrid a")
+                    .forEach((a) => (a.style.viewTransitionName = "none"));
+            document.addEventListener("astro:before-swap", (e: any) => {
+                if (paging) unname(e.newDocument);
             });
 
             let closeTo: string | null = null;

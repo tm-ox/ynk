@@ -8,22 +8,34 @@ interface Props {
 const { images } = Astro.props;
 ---
 
-<ul class="imageGrid mb-auto">
-    {
-        images.map((image) => (
-            <li class="aspect-square">
-                <a href={`/images/${image.id}/`} transition:name={image.id}>
-                    <h5 class="uppercase">{image.alt}</h5>
-                    <hr />
-                    <Image
-                        src={image.src}
-                        alt={image.description}
-                        class="object-none h-full"
-                        height={200}
-                    />
-                    <hr />
-                </a>
-            </li>
-        ))
-    }
-</ul>
+<!-- From sm up the grid fills the height left by the filter and pagination,
+     so a page is a single screen; below that it flows and scrolls. -->
+<div
+    class="w-full mb-auto sm:flex-1 sm:min-h-0 sm:mb-0 vt-detail"
+    transition:name="gallery-page"
+>
+    <ul class="imageGrid sm:h-full sm:grid-cols-4 lg:grid-cols-6 xl:grid-cols-8 sm:auto-rows-fr">
+        {
+            images.map((image) => (
+                <li class="aspect-square sm:aspect-auto sm:min-h-0">
+                    <a
+                        href={`/images/${image.id}/`}
+                        class="sm:flex sm:flex-col sm:h-full"
+                        transition:name={image.id}
+                    >
+                        <h5 class="uppercase">{image.alt}</h5>
+                        <hr />
+                        <Image
+                            src={image.src}
+                            alt={image.description}
+                            width={400}
+                            height={400}
+                            class="object-cover w-full h-full sm:flex-1 sm:min-h-0"
+                        />
+                        <hr />
+                    </a>
+                </li>
+            ))
+        }
+    </ul>
+</div>
