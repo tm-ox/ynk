@@ -15,8 +15,9 @@ interface Props {
   /** From md up, the flyer keeps its usual size and floats vertically centred.
    *  The details start level with its top when shorter than the flyer, and are
    *  centred with it when taller; they scroll only past the screen height. The
-   *  flyer stays put however much text there is. An invisible spacer the
-   *  flyer's shape sizes the middle grid row so the two share one centre. */
+   *  flyer stays put however much text there is. The flyer is taken out of
+   *  the grid's sizing (absolute, centred); an invisible spacer the flyer's
+   *  shape sizes the middle row, so the two share one centre. */
   pinned?: boolean;
 }
 const { event, headingHref, docsHref, contained = false, pinned = false } = Astro.props;
@@ -34,10 +35,11 @@ const { event, headingHref, docsHref, contained = false, pinned = false } = Astr
       contained
         ? "md:h-full md:max-w-[62%] md:shrink-0"
         : pinned
-          ? "md:col-start-1 md:row-start-1 md:row-span-3 md:self-center"
+          ? "md:relative md:col-start-1 md:row-start-1 md:row-span-3"
           : "md:w-3/5",
     ]}
   >
+    <div class:list={[pinned && "md:absolute md:inset-x-0 md:top-1/2 md:-translate-y-1/2"]}>
     <Image
       src={event.data.flyer.src}
       alt={flyerAlt(event.data)}
@@ -47,6 +49,7 @@ const { event, headingHref, docsHref, contained = false, pinned = false } = Astr
         contained ? "md:h-full md:w-auto" : "h-auto mb-auto",
       ]}
     />
+    </div>
   </div>
   {
     pinned && (
