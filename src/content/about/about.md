@@ -9,7 +9,7 @@ Established in 2010 as a monthly experimental whatever event at Jogja National M
 
 From 2018 to 2019 YNK co-managed [Nusasonic](https://www.goethe.de/prj/nus/en/), a project with the German cultural centre [Goethe-Institut](https://www.goethe.de/ins/id/en/), Germany's [CTM Festival](https://www.ctm-festival.de/) for Adventurous Music and Art, Singapore's [Playfreely / Blackkaji](https://theobservatory.com.sg/BlackKaji) and Manila's [WSK Festival](https://www.instagram.com/wsk.io/).
 
-Through the Nusasonic project YNK organised a five day, multiple venue festival in Yogyakarta with participants from throughout Southeast Asia and Europe in 2018, a two month Nusasonic residency for [Nadah El Shazly](https://www.nadahelshazly.com) (Cairo) and [Jessica Ekomane](https://www.jessicaekomane.com/) (Berlin) in 2019 and participated in Nusasonic events throughout Southeast Asia and Europe. YNK has also previously acted as an official host organisation in Indonesia for [AsiaLink](https://asialink.unimelb.edu.au/) (Australia).
+Through the project YNK organised a five-day, multi-venue festival in Yogyakarta in 2018 with participants from Southeast Asia and Europe, and a two-month residency in 2019 for [Nadah El Shazly](https://www.nadahelshazly.com) (Cairo) and [Jessica Ekomane](https://www.jessicaekomane.com/) (Berlin). YNK also took part in events across both regions. YNK has also previously acted as an official host organisation in Indonesia for [AsiaLink](https://asialink.unimelb.edu.au/) (Australia).
 
 </div>
 <div>
