@@ -147,7 +147,7 @@ const ogImage = new URL(image ?? "/og-default.jpg", Astro.site).href;
             >Skip to content</a
         >
         <header>
-            <nav>
+            <nav aria-label="Main">
                 <Logo />
                 <slot name="nav" transition:persist />
                 <Theme />
