@@ -9,6 +9,9 @@
     const wide = window.matchMedia("(min-width: 40rem)");
     let lastWheel = 0;
     let lockUntil = 0;
+    // After an inner area has used the wheel, hold paging until the wheel has
+    // been quiet for a moment, so over-scrolling its end does not flip panels.
+    let holdUntil = 0;
 
     const track = () => document.querySelector<HTMLElement>("[data-track]");
     const count = (t: HTMLElement) => t.querySelectorAll(":scope > section").length;
@@ -42,9 +45,16 @@
             // Let any scrollable element under the pointer (the panel, or a
             // column inside it) use the wheel before it pages the track.
             for (let el = e.target as HTMLElement | null; el && el !== t; el = el.parentElement) {
-                if (canScroll(el, dy)) return;
+                if (canScroll(el, dy)) {
+                    holdUntil = now + 600;
+                    return;
+                }
             }
             e.preventDefault();
+            if (now < holdUntil) {
+                holdUntil = now + 600;
+                return;
+            }
             if (!isNewGesture || now < lockUntil) return;
             lockUntil = now + 600;
             go(t, index(t) + (dy > 0 ? 1 : -1));
