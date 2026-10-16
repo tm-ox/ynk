@@ -2,13 +2,15 @@
 import { Image } from "astro:assets";
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import Pagination from "../../components/Pagination.astro";
-import { getGalleryImages } from "../../utils/events";
+import GalleryFilter from "../../components/GalleryFilter.astro";
+import { getGalleryEvents, getGalleryImages } from "../../utils/events";
 
 export async function getStaticPaths({ paginate }) {
     return paginate(await getGalleryImages(), { pageSize: 24 });
 }
 
 const { page } = Astro.props;
+const events = await getGalleryEvents();
 ---
 
 <BaseLayout
@@ -16,6 +18,7 @@ const { page } = Astro.props;
     description="Photographs from Yes No Klub events in Yogyakarta, Indonesia."
 >
     <section class="flex-col">
+        <GalleryFilter events={events} />
         <ul class="imageGrid mb-auto">
             {
                 page.data.map((image: any) => (

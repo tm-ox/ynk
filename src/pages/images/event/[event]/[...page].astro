@@ -1,0 +1,60 @@
+---
+import { Image } from "astro:assets";
+import BaseLayout from "../../../../layouts/BaseLayout.astro";
+import Pagination from "../../../../components/Pagination.astro";
+import GalleryFilter from "../../../../components/GalleryFilter.astro";
+import { getGalleryEvents, getGalleryImages } from "../../../../utils/events";
+
+export async function getStaticPaths({ paginate }) {
+    const images = await getGalleryImages();
+    const events = await getGalleryEvents();
+    return events.flatMap((event) =>
+        paginate(
+            images.filter((image: any) => image.eventId === event.id),
+            { pageSize: 24, params: { event: event.id }, props: { event } },
+        ),
+    );
+}
+
+const { page, event } = Astro.props;
+const events = await getGalleryEvents();
+const basePath = `/images/event/${event.id}`;
+---
+
+<BaseLayout
+    title={`Images – ${event.label}${page.currentPage > 1 ? `, page ${page.currentPage}` : ""}`}
+    description={`Photographs from ${event.label}, Yes No Klub, Yogyakarta, Indonesia.`}
+>
+    <section class="flex-col">
+        <GalleryFilter events={events} current={event.id} />
+        <ul class="imageGrid mb-auto">
+            {
+                page.data.map((image: any) => (
+                    <li class="aspect-square">
+                        <a
+                            href={`/images/${image.id}/`}
+                            transition:name={image.id}
+                        >
+                            <h5 class="uppercase">{image.alt}</h5>
+                            <hr />
+                            <Image
+                                src={image.src}
+                                alt={image.description}
+                                class="object-none h-full"
+                                height={200}
+                            />
+                            <hr />
+                        </a>
+                    </li>
+                ))
+            }
+        </ul>
+        <Pagination
+            prevUrl={page.url.prev}
+            nextUrl={page.url.next}
+            lastPage={page.lastPage}
+            currentPage={page.currentPage}
+            basePath={basePath}
+        />
+    </section>
+</BaseLayout>

@@ -1,0 +1,43 @@
+---
+interface Props {
+    events: { id: string; label: string; count: number }[];
+    current?: string;
+}
+const { events, current } = Astro.props;
+---
+
+<div class="gallery-filter">
+    <label for="gallery-event" class="uppercase">Event</label>
+    <select id="gallery-event" data-gallery-filter>
+        <option value="/images" selected={!current}>All events</option>
+        {
+            events.map((event) => (
+                <option
+                    value={`/images/event/${event.id}`}
+                    selected={event.id === current}
+                >
+                    {event.label} ({event.count})
+                </option>
+            ))
+        }
+    </select>
+</div>
+
+<script>
+    document.addEventListener("change", (e) => {
+        const select = e.target as HTMLSelectElement;
+        if (select.matches?.("[data-gallery-filter]")) {
+            window.location.assign(select.value);
+        }
+    });
+</script>
+
+<style>
+    @reference "../styles/global.css";
+    .gallery-filter {
+        @apply flex flex-col gap-1 mb-4 sm:flex-row sm:items-center sm:gap-3;
+    }
+    select {
+        @apply max-w-full bg-bg text-accent-muted border border-border px-2 py-1 hover:text-accent;
+    }
+</style>

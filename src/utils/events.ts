@@ -38,9 +38,23 @@ export async function getGalleryImages() {
     const photos = (event.data.images ?? []).filter(Boolean) as any[];
     return photos.map((image, i) => ({
       ...image,
+      eventId: event.id,
       description: `Photograph ${i + 1} of ${photos.length} from ${event.data.title}, ${prettyDate(event.data.date)}${place(event.data)}`,
     }));
   });
+}
+
+/** Events that have gallery photos, newest first, with photo counts, for the gallery filter. */
+export async function getGalleryEvents() {
+  const events = await getCollection("events", ({ data }) => {
+    return data.images && data.images.length > 0;
+  });
+  events.sort((b, a) => Date.parse(a.data.date) - Date.parse(b.data.date));
+  return events.map((event) => ({
+    id: event.id,
+    label: `${event.data.title} · ${prettyDate(event.data.date)}${place(event.data)}`,
+    count: (event.data.images ?? []).filter(Boolean).length,
+  }));
 }
 
 /** schema.org Event for an event page. Indonesian events, so UTC+7. */
