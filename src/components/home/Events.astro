@@ -35,7 +35,7 @@ const picks = photos.slice(0, 36);
             </a>
         </div>
         )}
-        <div class:list={["md:flex md:flex-col md:self-stretch md:min-h-0", !flyer && "md:col-span-2"]}>
+        <div data-featured-column class:list={["md:flex md:flex-col md:self-stretch md:min-h-0", picks.length === 0 && "md:justify-center", !flyer && "md:col-span-2"]}>
             <EventDetail summary event={featured} headingHref={href}>
                 {photos.length > 0 && (
                 <a slot="title-action" href={`/images/event/${groupId}/`} class="section-action">
@@ -72,6 +72,36 @@ const picks = photos.slice(0, 36);
     <div class="invisible" aria-hidden="true"><SectionBar label={label} /></div>
 </section>
 )}
+
+<script>
+    // The photo grid shows whole rows only, so the height left over sits under
+    // the last row. Move the column down by half of it, so the listing and its
+    // photographs are centred as a block, level with the flyer.
+    const wide = window.matchMedia("(min-width: 48rem)");
+    const fit = () => {
+        document.querySelectorAll<HTMLElement>("[data-featured-column]").forEach((column) => {
+            const area = column.querySelector<HTMLElement>(".photo-area");
+            if (!area) return;
+            column.style.translate = "";
+            if (!wide.matches) return;
+            const bottoms = [...area.querySelectorAll("li")]
+                .map((li) => li.getBoundingClientRect())
+                .filter((rect) => rect.height > 1)
+                .map((rect) => rect.bottom);
+            if (!bottoms.length) return;
+            const spare = area.getBoundingClientRect().bottom - Math.max(...bottoms);
+            if (spare > 0) column.style.translate = `0 ${Math.round(spare / 2)}px`;
+        });
+    };
+    document.addEventListener("astro:after-swap", fit);
+    // The area also resizes when fonts load and the listing rewraps.
+    const watch = new ResizeObserver(fit);
+    document.addEventListener("astro:page-load", () => {
+        fit();
+        document.querySelectorAll(".photo-area").forEach((area) => watch.observe(area));
+    });
+    window.addEventListener("resize", fit);
+</script>
 
 <style>
     /* Phones: the first nine (a feature and eight), four across. */
