@@ -61,6 +61,17 @@ const { events, current } = Astro.props;
         if (select.value && select.value !== current?.value) navigate(select.value);
     };
 
+    // Focus is marked only when it arrived by keyboard.
+    let byKey = false;
+    document.addEventListener("pointerdown", () => (byKey = false), true);
+    document.addEventListener("keydown", () => (byKey = true), true);
+    document.addEventListener("focusin", (e) => {
+        if (isFilter(e.target)) e.target.toggleAttribute("data-kb", byKey);
+    });
+    document.addEventListener("focusout", (e) => {
+        if (isFilter(e.target)) e.target.removeAttribute("data-kb");
+    });
+
     document.addEventListener("pointerdown", (e) => {
         if (isFilter(e.target)) stepped = false;
     });
@@ -94,16 +105,14 @@ const { events, current } = Astro.props;
         @apply absolute w-[0.45rem] h-[0.45rem] border-b border-r pointer-events-none right-1.5 top-1/2 border-accent-muted;
         transform: translateY(calc(-70% - 3px)) rotate(45deg);
     }
-    /* No ring around the text. Keyboard focus is still shown: the text brightens
-       and the rule beneath thickens (the transparent outline keeps a visible
-       indicator in forced-colours mode). */
+    /* No ring, and nothing left behind after a mouse click. Only keyboard focus
+       is marked (data-kb, set in the script): the text brightens. The transparent
+       outline keeps an indicator in forced-colours mode. */
     select:focus-visible {
         outline: 2px solid transparent;
-        @apply text-accent-hover;
     }
-    .select-wrap:focus-within ~ hr {
-        border-color: rgb(var(--rgb-accent-hover));
-        box-shadow: 0 1px 0 rgb(var(--rgb-accent-hover));
+    select[data-kb] {
+        @apply text-accent-hover;
     }
     select:hover + .chevron {
         @apply border-accent;
