@@ -245,22 +245,6 @@
             transition-delay: calc(var(--i, 0) * 80ms);
         }
     }
-    /* Event page text rises in on arrival. The flyer is left to its morph, and
-       Previous/Next already slide the whole page, so no rise on top of that. */
-    @media (prefers-reduced-motion: no-preference) {
-        @keyframes rise-in {
-            from {
-                opacity: 0;
-                translate: 0 0.75rem;
-            }
-        }
-        [data-rise] {
-            animation: rise-in 0.6s ease-out 0.1s both;
-        }
-        html[data-astro-transition^="paging"] [data-rise] {
-            animation: none;
-        }
-    }
     /* Archive thumbnails rise in, a little after one another (--i is the
        cell's index). Titles stay put. Previous/Next and page-number jumps
        already slide the grid, so no rise on top of that. */
