@@ -264,16 +264,33 @@ const ogImage = new URL(image ?? "/og-default.jpg", Astro.site).href;
                 // (close or back): the grid was already seen, so its thumbnails
                 // do not rise in again (global.css keys on data-returning).
                 returning = isDetail(e.from) && isArchive(e.to);
+                // Opening a picture or event from a grid (archive or home), or
+                // closing back to it: only its own thumbnail and title travel.
+                // The others are left to fade with the page beneath it, rather
+                // than captured on their own and painted over it.
+                focus = isDetail(e.to) ? e.to.pathname : isDetail(e.from) ? e.from.pathname : null;
+                if (!paging && focus) unname(document, focus);
             });
 
             let paging = false;
             let returning = false;
-            const unname = (root: ParentNode) =>
+            let focus: string | null = null;
+            const bare = (path: string) => path.replace(/\/$/, "");
+            // The named parts of grid thumbnails (the link itself, or the title
+            // and picture inside it), except those of the link to `keep`.
+            const unname = (root: ParentNode, keep?: string) =>
                 root
-                    .querySelectorAll<HTMLElement>(".imageGrid a, .gallery-grid a, .gallery-grid a [data-astro-transition-scope]")
-                    .forEach((a) => (a.style.viewTransitionName = "none"));
+                    .querySelectorAll<HTMLElement>(
+                        ":is(.gallery-grid, .photo-grid) a, :is(.gallery-grid, .photo-grid) a [data-astro-transition-scope]",
+                    )
+                    .forEach((el) => {
+                        const href = el.closest("a")?.getAttribute("href");
+                        if (keep && href && bare(href) === bare(keep)) return;
+                        el.style.viewTransitionName = "none";
+                    });
             document.addEventListener("astro:before-swap", (e: any) => {
                 if (paging) unname(e.newDocument);
+                else if (focus) unname(e.newDocument, focus);
                 // The new page's root attributes replace the current ones, so
                 // this lasts until the next navigation.
                 if (returning) e.newDocument.documentElement.dataset.returning = "";

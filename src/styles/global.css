@@ -357,10 +357,11 @@ select:-webkit-autofill:focus {
 .vt-detail {
     view-transition-class: detail;
 }
-/* A flyer is part of the detail (it slides with it) and also lands on its own
-   timing in the morph below. */
-.vt-flyer {
-    view-transition-class: detail flyer;
+/* A picture that travels between a grid and its page (a flyer or a
+   photograph) is part of the detail (it slides with it) and also lands on its
+   own timing, above everything else, in the morph below. */
+.vt-picture {
+    view-transition-class: detail picture;
 }
 /* An event title travels on its own (card or listing title to page title),
    so the outgoing card never carries a second, scaled-up copy of it. */
@@ -384,7 +385,7 @@ select:-webkit-autofill:focus {
    Knobs: --morph-duration and --morph-easing set the tempo (an expo ease-out:
    quick to commit, long soft landing); the crossfade inside a morph uses
    --morph-fade-easing; the rest of the page (root) crossfades in
-   --page-fade-duration; --flyer-lead is the flyer's share of the morph time,
+   --page-fade-duration; --picture-lead is a travelling picture's share of the morph time,
    so it lands first and the text settles after it. --fade-out is the share
    of the morph in which the outgoing picture of a .vt-swap pair clears (and in which a title
    swaps old text for new), so old and new never show side by side for long. */
@@ -393,7 +394,7 @@ select:-webkit-autofill:focus {
     --morph-easing: cubic-bezier(0.16, 1, 0.3, 1);
     --morph-fade-easing: ease-in-out;
     --page-fade-duration: 0.3s;
-    --flyer-lead: 0.75;
+    --picture-lead: 0.75;
     --fade-out: 0.35;
 }
 ::view-transition-group(*) {
@@ -413,12 +414,20 @@ select:-webkit-autofill:focus {
 ::view-transition-new(root) {
     animation-duration: var(--page-fade-duration);
 }
-::view-transition-group(.flyer),
-::view-transition-old(.flyer),
-::view-transition-new(.flyer) {
-    animation-duration: calc(var(--morph-duration) * var(--flyer-lead));
+::view-transition-group(.picture),
+::view-transition-old(.picture),
+::view-transition-new(.picture) {
+    animation-duration: calc(var(--morph-duration) * var(--picture-lead));
 }
-/* The flyer is the same picture at both ends, so its old and new fade over the
+/* The travelling picture and title paint over the rest of the transition: the
+   grid fading out beneath them, or fading in under them on the way back.
+   (Otherwise they keep the order the pages were captured in, and on the way
+   back the incoming grid would cover the picture.) */
+::view-transition-group(.picture),
+::view-transition-group(.title) {
+    z-index: 1;
+}
+/* A picture is the same at both ends, so its old and new fade over the
    same time (above) and it never dims. A title is different text at each end:
    it swaps early, then travels. */
 ::view-transition-old(.title),
