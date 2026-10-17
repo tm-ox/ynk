@@ -31,13 +31,11 @@ const links = [
             class="absolute top-0 left-0 ml-auto justify-center hidden w-full h-viewport overflow-y-auto sm:flex sm:w-auto sm:h-auto sm:overflow-visible sm:relative main-nav bg-scrim-heavy sm:bg-transparent"
         >
             <ul
-                class="flex flex-col items-center my-auto text-center sm:flex-row sm:items-baseline sm:gap-x-3"
+                class="flex flex-col items-center my-auto text-center sm:flex-row sm:gap-x-3"
             >
                 {
                     links.map((link, i) => (
-                        <>
-                        {link.divided && <li class="self-stretch hidden w-px sm:block bg-border" aria-hidden="true"></li>}
-                        <li transition:name={`nav-${link.section}`}>
+                        <li class:list={[link.divided && "sm:border-l sm:border-l-border sm:pl-3"]} transition:name={`nav-${link.section}`}>
                             {i === 0 && <hr class="sm:hidden" />}
                             <a
                                 class={link.current ? "active" : ""}
@@ -47,22 +45,20 @@ const links = [
                                 aria-label={link.icon ? link.label : undefined}
                                 target="_self"
                                 >{link.icon ? (
-                                    <Icon name={link.icon} class="inline-block w-7 h-7 sm:w-5 sm:h-5" />
+                                    <Icon name={link.icon} class="relative inline-block w-7 h-7 sm:w-5 sm:h-5 align-middle sm:-top-[1.5px]" />
                                 ) : (
                                     link.label
                                 )}</a
                             >
                             <hr class="sm:hidden" />
                         </li>
-                        </>
                     ))
                 }
                 {Astro.slots.has("subnav") && (
-                <li class="hidden sm:flex w-auto items-center self-center [&>div]:m-0 [&>div]:border-r-0 [&>div]:pr-0" transition:name="nav-subnav">
+                <li class="hidden sm:flex w-auto items-center [&>div]:m-0 [&>div]:border-r-0 [&>div]:pr-0" transition:name="nav-subnav">
                     <slot name="subnav" />
                 </li>
                 )}
-                <li class="self-stretch hidden w-px sm:block bg-border" aria-hidden="true"></li>
                 <li transition:name="nav-social">
                     <Sosmed />
                 </li>
