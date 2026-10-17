@@ -76,16 +76,26 @@ const { events, current } = Astro.props;
         if (isFilter(e.target)) stepped = false;
     });
     document.addEventListener("keydown", (e) => {
-        if (!isFilter(e.target)) return;
-        // Vim keys step like the arrows (commit on Enter or blur, as above).
+        // Vim keys step like the arrows. With the open list (Chrome's styleable
+        // picker) focus sits on an option, otherwise on the select itself.
         if ((e.key === "j" || e.key === "k") && !e.altKey && !e.ctrlKey && !e.metaKey) {
-            const select = e.target as HTMLSelectElement;
-            const next = select.selectedIndex + (e.key === "j" ? 1 : -1);
-            e.preventDefault();
-            stepped = true;
-            if (next >= 0 && next < select.options.length) select.selectedIndex = next;
-            return;
+            const dir = e.key === "j" ? 1 : -1;
+            if (e.target instanceof HTMLOptionElement && e.target.closest(sel)) {
+                const options = [...(e.target.closest(sel) as HTMLSelectElement).options];
+                e.preventDefault();
+                options[options.indexOf(e.target) + dir]?.focus();
+                return;
+            }
+            if (isFilter(e.target)) {
+                const select = e.target as HTMLSelectElement;
+                const next = select.selectedIndex + dir;
+                e.preventDefault();
+                stepped = true;
+                if (next >= 0 && next < select.options.length) select.selectedIndex = next;
+                return;
+            }
         }
+        if (!isFilter(e.target)) return;
         if (STEPS.includes(e.key)) stepped = true;
         else if (e.key === "Enter") commit(e.target as HTMLSelectElement);
     });
@@ -142,8 +152,10 @@ const { events, current } = Astro.props;
         }
         option {
             @apply px-0 py-1 text-accent-muted;
+            outline: none;
         }
         option:hover,
+        option:focus,
         option:focus-visible {
             @apply text-accent;
             background: transparent;
