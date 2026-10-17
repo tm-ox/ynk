@@ -18,7 +18,7 @@ const picks = photos.slice(0, 36);
 
 {featured && (
 <section id="events" class="flex-col items-stretch">
-    <SectionBar label={label} />
+    <div transition:name="featured-label" class="vt-detail"><SectionBar label={label} /></div>
     <div
         class="grid w-full gap-4 my-auto md:my-0 md:flex-1 md:min-h-0 md:grid-cols-[minmax(0,3fr)_minmax(0,5fr)] md:items-center"
         transition:name={featured.data.id}

@@ -82,7 +82,7 @@ const flyer = event.data.flyer?.src
   </div>
   <section transition:name={event.data.id} class="relative z-10 vt-detail">
     {featuredLabel && (
-      <div class="absolute inset-x-0 top-3"><SectionBar label={featuredLabel} /></div>
+      <div class="absolute inset-x-0 top-3 vt-detail" transition:name="featured-label"><SectionBar label={featuredLabel} /></div>
     )}
     <EventDetail capped event={event} docsHref={hasPhotos ? `/images/event/${groupSlug(title)}/` : undefined}>
       <Content />
