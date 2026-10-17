@@ -30,22 +30,24 @@ const jolt = (list: string[], i: number) => list[i % list.length];
 
 // One slot is a word's 1/N of the cycle. Keyframes are hard cuts (steps), as a
 // signal breaking up: flicker and slice in, settle, a brief twitch mid-way, then
-// slice and flicker out. Colour fringes echo the photograph's blue and pink.
+// slice and flicker out. The slices leave room (-0.3em) on the sides they do not
+// cut, because the capitals are taller than the tight line box; settled is no clip.
+// Colour fringes echo the photograph's blue and pink.
 const slot = 100 / words.length;
 const split = (e: number) =>
     `text-shadow: ${e}em 0 rgb(255 40 140 / 0.75), -${e}em 0 rgb(0 210 255 / 0.75)`;
 const frames: [number, string][] = [
     [0, "opacity: 0"],
-    [0.005, `opacity: 1; translate: var(--dx) var(--dy); rotate: var(--dr); clip-path: inset(0 0 55% 0); ${split(0.05)}`],
+    [0.005, `opacity: 1; translate: var(--dx) var(--dy); rotate: var(--dr); clip-path: inset(-0.3em -0.3em 55% -0.3em); ${split(0.05)}`],
     [0.03, "opacity: 0"],
-    [0.05, `opacity: 1; translate: calc(var(--dx) * -0.6) calc(var(--dy) * -1); rotate: calc(var(--dr) * -0.5); clip-path: inset(38% 0 0 0); ${split(0.04)}`],
-    [0.08, `translate: calc(var(--dx) * 0.3) 0; rotate: 0deg; clip-path: inset(0 0 20% 0); ${split(0.02)}`],
-    [0.11, "translate: 0 0; rotate: 0deg; clip-path: inset(0); text-shadow: none"],
+    [0.05, `opacity: 1; translate: calc(var(--dx) * -0.6) calc(var(--dy) * -1); rotate: calc(var(--dr) * -0.5); clip-path: inset(38% -0.3em -0.3em -0.3em); ${split(0.04)}`],
+    [0.08, `translate: calc(var(--dx) * 0.3) 0; rotate: 0deg; clip-path: inset(-0.3em -0.3em 20% -0.3em); ${split(0.02)}`],
+    [0.11, "translate: 0 0; rotate: 0deg; clip-path: none; text-shadow: none"],
     [0.5, `translate: calc(var(--dx) * 0.4) 0; ${split(0.03)}`],
     [0.52, "translate: 0 0; text-shadow: none"],
-    [0.84, `translate: calc(var(--dx) * -1) calc(var(--dy) * 0.5); rotate: calc(var(--dr) * 0.7); clip-path: inset(20% 0 40% 0); ${split(0.05)}`],
+    [0.84, `translate: calc(var(--dx) * -1) calc(var(--dy) * 0.5); rotate: calc(var(--dr) * 0.7); clip-path: inset(20% -0.3em 40% -0.3em); ${split(0.05)}`],
     [0.88, "opacity: 0"],
-    [0.91, `opacity: 1; translate: calc(var(--dx) * 0.5) 0; rotate: 0deg; clip-path: inset(55% 0 0 0); ${split(0.03)}`],
+    [0.91, `opacity: 1; translate: calc(var(--dx) * 0.5) 0; rotate: 0deg; clip-path: inset(55% -0.3em -0.3em -0.3em); ${split(0.03)}`],
     [0.95, "opacity: 0"],
 ];
 const wordKeyframes = `@keyframes hero-word {
@@ -78,7 +80,7 @@ ${frames
             <div class="hero-glow"></div>
         </div>
         <h1 class="relative display-hero hero-title">
-            <span class="block">Experimental</span>
+            <span class="block hero-lead">Experimental</span>
             <!-- The words are for the eye; the heading reads "Experimental etc." -->
             <span class="sr-only"> etc.</span>
             <span
@@ -183,6 +185,11 @@ ${frames
         opacity: 1;
     }
     @media (prefers-reduced-motion: no-preference) {
+        /* "Experimental" sways very slowly, the calm against the glitching word.
+           Movement only, no change of size or spacing, so it never reflows. */
+        .hero-lead {
+            animation: hero-sway 18s ease-in-out infinite alternate;
+        }
         .hero-word {
             animation: hero-word var(--cycle) linear infinite both;
             animation-delay: calc(var(--i) * var(--step));
@@ -197,6 +204,16 @@ ${frames
             animation:
                 hero-neon 9s ease-in-out infinite,
                 hero-swell 6s ease-in-out infinite;
+        }
+    }
+    @keyframes hero-sway {
+        from {
+            translate: -0.025em 0;
+            rotate: -0.5deg;
+        }
+        to {
+            translate: 0.025em 0;
+            rotate: 0.5deg;
         }
     }
     @keyframes hero-drift {
