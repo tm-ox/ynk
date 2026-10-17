@@ -1,14 +1,6 @@
 import type { ImageMetadata } from "astro";
 import { getCollection } from "astro:content";
 
-export const prettyDate = (date: string) =>
-  new Date(date).toLocaleDateString("en-GB", {
-    day: "numeric",
-    month: "long",
-    year: "numeric",
-    timeZone: "UTC",
-  });
-
 type EventData = {
   title: string;
   date: string;
@@ -21,11 +13,11 @@ const place = (data: EventData) =>
 
 /** Short alt for flyer thumbnails in listings. */
 export const flyerAltShort = (data: EventData) =>
-  `Flyer for ${data.title}, ${prettyDate(data.date)}`;
+  `Flyer for ${data.title}, ${data.date}`;
 
 /** Fuller alt for a flyer on its own event page. */
 export const flyerAlt = (data: EventData) =>
-  `Flyer for ${data.title}, ${prettyDate(data.date)}${place(data)}${
+  `Flyer for ${data.title}, ${data.date}${place(data)}${
     data.with ? `, featuring ${data.with}` : ""
   }`;
 
@@ -73,7 +65,7 @@ export async function getGalleryImages(): Promise<GalleryImage[]> {
         kind: "photo" as const,
         groupId,
         event: info,
-        description: `Photograph ${i + 1} of ${photos.length} from ${event.data.title}, ${prettyDate(event.data.date)}${place(event.data)}`,
+        description: `Photograph ${i + 1} of ${photos.length} from ${event.data.title}, ${event.data.date}${place(event.data)}`,
       })),
     ];
   });
