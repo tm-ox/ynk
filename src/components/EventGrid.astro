@@ -119,17 +119,17 @@ const padding = Math.max(0, pageSize - events.length);
             grid-template-columns: repeat(6, minmax(0, 1fr));
         }
         /* Six columns (3 rows of 18) need a height of about 0.5 x width + 125px.
-           Where the space is shorter than that, eight columns, so a page still
+           Where the space is shorter than that, seven columns, so a page still
            fits without scrolling. The aspect ratio that means is about 17:10 at
            the widest (1423px) and 33:20 below 1380px. */
         @container (min-aspect-ratio: 33/20) and (max-width: 1379px) {
             .gallery-grid {
-                grid-template-columns: repeat(8, minmax(0, 1fr));
+                grid-template-columns: repeat(7, minmax(0, 1fr));
             }
         }
         @container (min-aspect-ratio: 17/10) and (min-width: 1380px) {
             .gallery-grid {
-                grid-template-columns: repeat(8, minmax(0, 1fr));
+                grid-template-columns: repeat(7, minmax(0, 1fr));
             }
         }
     }
