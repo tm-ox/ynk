@@ -6,6 +6,11 @@ import background from "../../content/images/splash2025.jpg";
 // it, as fractions of its width and height.
 const ratio = background.width / background.height;
 const sign = { x: 0.561, y: 0.358 };
+// The crop: how far in to zoom (1 = the photograph just covers the stage) and
+// the point of the photograph kept at the stage's centre. The source is 2048px
+// wide, so up to about 1.5 times a 1300px stage is still at full sharpness.
+const zoom = 1.7;
+const focus = { x: 0.58, y: 0.47 };
 ---
 
 <section id="top">
@@ -15,14 +20,14 @@ const sign = { x: 0.561, y: 0.358 };
              whatever the stage's shape. -->
         <div
             class="hero-art"
-            style={`--ratio:${ratio}; --sign-x:${sign.x * 100}%; --sign-y:${sign.y * 100}%;`}
+            style={`--ratio:${ratio}; --zoom:${zoom}; --sign-x:${sign.x * 100}%; --sign-y:${sign.y * 100}%; --focus-x:${focus.x}; --focus-y:${focus.y};`}
             aria-hidden="true"
         >
             <Image
                 src={background}
                 alt=""
                 widths={[1024, 1600, 2048]}
-                sizes="100vw"
+                sizes={`${Math.ceil(zoom * 100)}vw`}
                 loading="eager"
                 fetchpriority="high"
                 class="block w-full h-full"
@@ -37,13 +42,16 @@ const sign = { x: 0.561, y: 0.358 };
     .hero-stage {
         container-type: size;
     }
+    /* The box is the photograph at its zoom, positioned so the focus point is
+       at the stage's centre, but never so far that an edge shows. */
     .hero-art {
+        --w: calc(max(100cqw, 100cqh * var(--ratio)) * var(--zoom));
+        --h: calc(var(--w) / var(--ratio));
         position: absolute;
-        left: 50%;
-        top: 50%;
-        width: max(100cqw, calc(100cqh * var(--ratio)));
-        height: max(100cqh, calc(100cqw / var(--ratio)));
-        translate: -50% -50%;
+        width: var(--w);
+        height: var(--h);
+        left: clamp(calc(100cqw - var(--w)), calc(50cqw - var(--focus-x) * var(--w)), 0px);
+        top: clamp(calc(100cqh - var(--h)), calc(50cqh - var(--focus-y) * var(--h)), 0px);
         transform-origin: var(--sign-x) var(--sign-y);
     }
     /* A soft cyan light over the sign; screen blending only ever adds light. */
