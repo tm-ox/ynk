@@ -53,8 +53,16 @@ const wordKeyframes = `@keyframes hero-word {
             <span class="block">Experimental</span>
             <!-- The words are for the eye; the heading reads "Experimental etc." -->
             <span class="sr-only"> etc.</span>
-            <span class="hero-words" aria-hidden="true" style={`--cycle:${cycle}s; --step:${wordSeconds}s;`}>
-                {words.map((word, i) => <span class="hero-word" style={`--i:${i}`}>{word}</span>)}
+            <span
+                class="hero-words"
+                aria-hidden="true"
+                style={`--cycle:${cycle}s; --step:${wordSeconds}s;`}
+            >
+                {words.map((word, i) => (
+                    <span class="hero-word" style={`--i:${i}`}>
+                        {word}
+                    </span>
+                ))}
             </span>
         </h1>
     </div>
@@ -74,8 +82,16 @@ const wordKeyframes = `@keyframes hero-word {
         position: absolute;
         width: var(--w);
         height: var(--h);
-        left: clamp(calc(100cqw - var(--w)), calc(50cqw - var(--focus-x) * var(--w)), 0px);
-        top: clamp(calc(100cqh - var(--h)), calc(50cqh - var(--focus-y) * var(--h)), 0px);
+        left: clamp(
+            calc(100cqw - var(--w)),
+            calc(50cqw - var(--focus-x) * var(--w)),
+            0px
+        );
+        top: clamp(
+            calc(100cqh - var(--h)),
+            calc(50cqh - var(--focus-y) * var(--h)),
+            0px
+        );
         transform-origin: var(--sign-x) var(--sign-y);
     }
     /* A soft cyan light over the sign; screen blending only ever adds light. */
@@ -106,7 +122,8 @@ const wordKeyframes = `@keyframes hero-word {
     .hero-title {
         --strip: 62cqw;
         --size: clamp(2.25rem, 7cqw, 6.5rem);
-        --cap-lh: 0.6;
+        --word-pull: 0.012em; /* moves the changing word up toward "Experimental" */
+        --cap-lh: 0.57;
         display: flex;
         flex-direction: column;
         align-items: center;
@@ -122,6 +139,7 @@ const wordKeyframes = `@keyframes hero-word {
        with reduced motion, only the last shows. */
     .hero-words {
         display: inline-grid;
+        margin-top: calc(var(--word-pull) * -1);
         width: 100%;
         text-align: center;
     }
