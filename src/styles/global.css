@@ -356,6 +356,46 @@ select:-webkit-autofill:focus {
 .vt-detail {
     view-transition-class: detail;
 }
+/* A flyer is part of the detail (it slides with it) and also lands on its own
+   timing in the morph below. */
+.vt-flyer {
+    view-transition-class: detail flyer;
+}
+
+/* The morph between pages (everything that is not a Previous/Next slide).
+   Astro's own fade sits in @layer astro, so these unlayered rules win over
+   it; the slide rules further down are more specific and win over these.
+   Knobs: --morph-duration and --morph-easing set the tempo (an expo ease-out:
+   quick to commit, long soft landing); the crossfade inside a morph uses
+   --morph-fade-easing; the rest of the page (root) crossfades in
+   --page-fade-duration; --flyer-lead is the flyer's share of the morph time,
+   so it lands first and the text settles after it. */
+:root {
+    --morph-duration: 0.5s;
+    --morph-easing: cubic-bezier(0.16, 1, 0.3, 1);
+    --morph-fade-easing: ease-in-out;
+    --page-fade-duration: 0.3s;
+    --flyer-lead: 0.75;
+}
+::view-transition-group(*) {
+    animation-duration: var(--morph-duration);
+    animation-timing-function: var(--morph-easing);
+}
+::view-transition-old(*),
+::view-transition-new(*) {
+    animation-duration: var(--morph-duration);
+    animation-timing-function: var(--morph-fade-easing);
+}
+::view-transition-group(root),
+::view-transition-old(root),
+::view-transition-new(root) {
+    animation-duration: var(--page-fade-duration);
+}
+::view-transition-group(.flyer),
+::view-transition-old(.flyer),
+::view-transition-new(.flyer) {
+    animation-duration: calc(var(--morph-duration) * var(--flyer-lead));
+}
 @keyframes slide-out-left {
     to {
         transform: translateX(-100vw);

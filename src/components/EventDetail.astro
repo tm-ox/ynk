@@ -33,7 +33,7 @@ const label = "mb-0 text-xs font-bold tracking-normal md:text-sm font-displayCon
 <div class:list={[!summary && "flex flex-col gap-4 md:grid md:grid-cols-[minmax(0,3fr)_minmax(0,5fr)]", summary && headingHref && "relative group listing-link"]}>
   {!summary && event.data.flyer && (
   <div
-    class:list={["vt-detail", capped && "md:self-center"]}
+    class:list={["vt-flyer", capped && "md:self-center"]}
     transition:name={`${event.data.id}-flyer`}
   >
     <Image

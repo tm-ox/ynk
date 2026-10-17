@@ -24,7 +24,7 @@ const picks = photos.slice(0, 36);
         transition:name={featured.data.id}
     >
         {flyer && (
-        <div class="w-full max-w-md mx-auto md:max-w-none md:self-center vt-detail" transition:name={`${featured.data.id}-flyer`}>
+        <div class="w-full max-w-md mx-auto md:max-w-none md:self-center vt-flyer" transition:name={`${featured.data.id}-flyer`}>
             <a href={href} class="block thumb" tabindex="-1">
                 <Image
                     src={flyer.src}

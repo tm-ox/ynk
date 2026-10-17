@@ -24,7 +24,7 @@ const padding = Math.max(0, pageSize - events.length);
                     <a href={`/events/${event.id}/`} title={event.data.title} transition:name={event.data.id}>
                         <h5 class="uppercase xl:truncate">{event.data.title}</h5>
                         <hr />
-                        <div class="thumb">
+                        <div class="thumb vt-flyer" transition:name={`${event.data.id}-flyer`}>
                             <Image
                                 src={event.data.flyer.src}
                                 alt=""
