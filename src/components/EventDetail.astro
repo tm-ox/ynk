@@ -31,7 +31,7 @@ const label = "mb-0 text-xs font-bold tracking-normal md:text-sm font-displayCon
 ---
 
 <div class:list={[!summary && "flex flex-col gap-4 md:grid md:grid-cols-[minmax(0,3fr)_minmax(0,5fr)]", summary && headingHref && "relative group listing-link"]}>
-  {!summary && (
+  {!summary && event.data.flyer && (
   <div
     class:list={["vt-detail", capped && "md:self-center"]}
     transition:name={`${event.data.id}-flyer`}
@@ -89,17 +89,17 @@ const label = "mb-0 text-xs font-bold tracking-normal md:text-sm font-displayCon
       <div class="w-full">
         <p class={label}>venue:</p>
         <h4>
-          {event.data.venue.url ? (
+          {event.data.venue?.url ? (
             <a
-              href={event.data.venue.url}
+              href={event.data.venue?.url}
               target="_blank"
               rel="noopener noreferrer"
               class="relative z-10"
             >
-              {event.data.venue.name}
+              {event.data.venue?.name}
             </a>
           ) : (
-            <span>{event.data.venue.name}</span>
+            <span>{event.data.venue?.name}</span>
           )}
         </h4>
       </div>

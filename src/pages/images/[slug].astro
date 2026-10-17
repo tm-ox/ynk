@@ -7,15 +7,14 @@ import { getGalleryImages } from "../../utils/events";
 
 export async function getStaticPaths() {
   const images = await getGalleryImages();
-  const numberOfImages = images.length;
-  return images.map((image: any, i) => ({
+  return images.map((image, i) => ({
     params: {
       slug: image.id,
     },
     props: {
       image,
-      nextImage: i + 1 === numberOfImages ? { data: "" } : images[i + 1],
-      prevImage: i === 0 ? { data: "" } : images[i - 1],
+      nextImage: images[i + 1],
+      prevImage: images[i - 1],
     },
   }));
 }
@@ -43,12 +42,12 @@ const pageTitle = image.kind === "flyer"
       <NavArrow
         direction="back"
         class="icon h-6 w-6"
-        href={prevImage.id ? `/images/${prevImage.id}/` : undefined}
+        href={prevImage ? `/images/${prevImage.id}/` : undefined}
       />
       <NavArrow
         direction="forward"
         class="icon h-6 w-6"
-        href={nextImage.id ? `/images/${nextImage.id}/` : undefined}
+        href={nextImage ? `/images/${nextImage.id}/` : undefined}
       />
       <a href="/images/" data-close aria-label="Close" title="All images">
         <Icon name="ion:close-sharp" class="icon" />

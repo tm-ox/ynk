@@ -55,7 +55,8 @@ const ogImage = new URL(image ?? "/og-default.jpg", Astro.site).href;
                 var root = document.documentElement;
                 var stored = function () {
                     try {
-                        return localStorage.getItem("theme");
+                        var t = localStorage.getItem("theme");
+                        return t === "light" || t === "dark" ? t : null;
                     } catch (e) {
                         return null;
                     }
@@ -79,16 +80,7 @@ const ogImage = new URL(image ?? "/og-default.jpg", Astro.site).href;
                     syncMeta();
                 };
                 window.__storedTheme = function () {
-                    var s = stored();
-                    return s === "light" || s === "dark" ? s : "system";
-                };
-                window.__currentTheme = function () {
-                    return (
-                        root.getAttribute("data-theme") ||
-                        (matchMedia("(prefers-color-scheme: light)").matches
-                            ? "light"
-                            : "dark")
-                    );
+                    return stored() || "system";
                 };
                 if (stored()) window.__applyTheme(stored());
                 window.addEventListener("load", syncMeta);

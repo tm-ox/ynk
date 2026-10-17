@@ -150,7 +150,6 @@ export function eventJsonLd(
   };
 }
 
-
 /** Paginated URLs from Astro may lack the trailing slash the site uses. */
 export const slash = (url?: string) =>
     url && !url.endsWith("/") ? `${url}/` : url;

@@ -19,8 +19,8 @@ export async function getStaticPaths() {
       },
       props: {
         event,
-        prevEvent: i + 1 === numberOfEvents ? { data: "" } : events[i + 1],
-        nextEvent: i === 0 ? { data: "" } : events[i - 1],
+        prevEvent: events[i + 1],
+        nextEvent: events[i - 1],
       },
     }));
 }
@@ -70,11 +70,11 @@ const flyer = event.data.flyer?.src
   >
     <NavArrow
       direction="back"
-      href={prevEvent.data ? `/events/${prevEvent.id}/` : undefined}
+      href={prevEvent ? `/events/${prevEvent.id}/` : undefined}
     />
     <NavArrow
       direction="forward"
-      href={nextEvent.data ? `/events/${nextEvent.id}/` : undefined}
+      href={nextEvent ? `/events/${nextEvent.id}/` : undefined}
     />
     <a href="/events/" data-close aria-label="Close" title="All events">
       <Icon name="ion:close-sharp" class="icon" />
