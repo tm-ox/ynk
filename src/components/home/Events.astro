@@ -44,7 +44,7 @@ const picks =
         <a href="/events/" class="section-action">All events</a>
     </SectionBar>
     <div
-        class="grid w-full gap-4 my-auto md:gap-4 md:grid-cols-[3fr_5fr] md:items-center"
+        class="grid w-full gap-4 my-auto md:gap-4 md:grid-cols-[minmax(0,3fr)_minmax(0,5fr)] md:items-center"
         transition:name={featured.data.id}
     >
         {flyer && (
