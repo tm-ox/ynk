@@ -247,7 +247,8 @@
     }
     /* Archive thumbnails rise in, a little after one another (--i is the
        cell's index). Titles stay put. Previous/Next and page-number jumps
-       already slide the grid, so no rise on top of that. */
+       already slide the grid, so no rise on top of that (the grid gets
+       data-still, see Base.astro). */
     @media (prefers-reduced-motion: no-preference) {
         @keyframes rise-in {
             from {
@@ -258,7 +259,7 @@
         .gallery-grid .thumb {
             animation: rise-in 0.6s ease-out calc(var(--i, 0) * 25ms) both;
         }
-        html[data-astro-transition^="paging"] .gallery-grid .thumb {
+        .gallery-grid[data-still] .thumb {
             animation: none;
         }
     }
