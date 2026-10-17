@@ -1,5 +1,6 @@
 ---
 import { Image } from "astro:assets";
+import { Icon } from "astro-icon/components";
 import background from "../../content/images/splash2025.jpg";
 
 // The photograph's own proportions (2048x1366) and where the neon sign sits in
@@ -59,7 +60,7 @@ ${frames
 ---
 
 <section id="top">
-    <div class="relative flex items-center justify-center self-stretch w-full -mt-3 -mb-4 overflow-hidden hero-stage">
+    <div class="relative grid grid-rows-[1fr_auto_1fr] justify-items-center self-stretch w-full -mt-3 -mb-4 overflow-hidden hero-stage">
         <!-- The picture and the glow share one box with the photograph's
              proportions, sized to cover the stage, so the glow stays on the sign
              whatever the stage's shape. -->
@@ -79,7 +80,7 @@ ${frames
             />
             <div class="hero-glow"></div>
         </div>
-        <h1 class="relative display-hero hero-title">
+        <h1 class="relative row-start-2 display-hero hero-title">
             <span class="block hero-lead">Experimental</span>
             <!-- The words are for the eye; the heading reads "Experimental etc." -->
             <span class="sr-only"> etc.</span>
@@ -98,6 +99,11 @@ ${frames
                 ))}
             </span>
         </h1>
+        <!-- Rows are 1fr / text / 1fr, so the text stays centred and this sits
+             halfway between the text and the bottom edge. -->
+        <a href="/#events" target="_self" aria-label="Next section" class="relative self-center row-start-3 hero-next">
+            <Icon name="ion:arrow-forward-sharp" class="icon hero-next-icon" />
+        </a>
     </div>
 </section>
 
@@ -184,7 +190,16 @@ ${frames
     .hero-word:last-child {
         opacity: 1;
     }
+    .hero-next-icon {
+        width: 2.5rem;
+        height: 2.5rem;
+        filter: drop-shadow(0 0 0.4rem rgb(0 0 0 / 0.7));
+    }
     @media (prefers-reduced-motion: no-preference) {
+        /* A small nudge to the right, repeating, to say which way to go. */
+        .hero-next-icon {
+            animation: hero-nudge 2.4s ease-in-out infinite;
+        }
         /* "Experimental" sways very slowly, the calm against the glitching word.
            Movement only, no change of size or spacing, so it never reflows. */
         .hero-lead {
@@ -206,6 +221,11 @@ ${frames
             animation:
                 hero-neon 9s ease-in-out infinite,
                 hero-swell 6s ease-in-out infinite;
+        }
+    }
+    @keyframes hero-nudge {
+        50% {
+            translate: 0.4rem 0;
         }
     }
     @keyframes hero-sway {
