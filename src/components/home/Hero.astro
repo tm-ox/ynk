@@ -60,7 +60,7 @@ ${frames
 ---
 
 <section id="top">
-    <div class="relative grid grid-rows-[1fr_auto_1fr] justify-items-center self-stretch w-full -mt-3 -mb-4 overflow-hidden hero-stage">
+    <div class="relative grid grid-cols-[minmax(0,1fr)] grid-rows-[1fr_auto_1fr] justify-items-center self-stretch w-full -mt-3 -mb-4 overflow-hidden hero-stage">
         <!-- The picture and the glow share one box with the photograph's
              proportions, sized to cover the stage, so the glow stays on the sign
              whatever the stage's shape. -->
@@ -99,10 +99,10 @@ ${frames
                 ))}
             </span>
         </h1>
-        <!-- Vertically centred on the stage and right-aligned (spans all three
-             rows, so it does not affect the headline). Size and inset: see
-             .hero-next in the styles. -->
-        <a href="/#events" target="_self" aria-label="Next section" class="relative self-center justify-self-end row-span-3 row-start-1 hero-next">
+        <!-- Out of the grid flow altogether (absolute), vertically centred on the
+             stage at its right edge, so it cannot move the headline. Size and
+             inset: see .hero-next in the styles. -->
+        <a href="/#events" target="_self" aria-label="Next section" class="absolute hero-next">
             <Icon name="ion:arrow-forward-sharp" class="icon hero-next-icon" />
         </a>
     </div>
@@ -194,7 +194,9 @@ ${frames
     .hero-next {
         --next-size: clamp(3.5rem, 9cqw, 8rem);
         --next-inset: clamp(0.75rem, 2.5cqw, 3rem);
-        margin-right: var(--next-inset);
+        right: var(--next-inset);
+        top: 50%;
+        translate: 0 -50%;
     }
     .hero-next-icon {
         width: var(--next-size);
