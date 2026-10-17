@@ -49,10 +49,10 @@ const wordKeyframes = `@keyframes hero-word {
             />
             <div class="hero-glow"></div>
         </div>
-        <h1 class="relative display-hero">
-            Experimental
+        <h1 class="relative display-hero hero-title">
+            <span class="block">Experimental</span>
             <!-- The words are for the eye; the heading reads "Experimental etc." -->
-            <span class="sr-only">etc.</span>
+            <span class="sr-only"> etc.</span>
             <span class="hero-words" aria-hidden="true" style={`--cycle:${cycle}s; --step:${wordSeconds}s;`}>
                 {words.map((word, i) => <span class="hero-word" style={`--i:${i}`}>{word}</span>)}
             </span>
@@ -98,12 +98,26 @@ const wordKeyframes = `@keyframes hero-word {
         opacity: 0.85;
         pointer-events: none;
     }
+    /* Two centred lines, drawn in from the edges: "Experimental" over the
+       changing word. Words never break mid-word; the size follows the width so
+       "Experimental" always fits. */
+    .hero-title {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        overflow-wrap: normal;
+        word-break: normal;
+        font-size: clamp(2.25rem, 9.5vw, 6.5rem);
+        line-height: 1.1;
+        padding-block: clamp(2rem, 14cqh, 6rem);
+        padding-inline: 1rem;
+    }
     /* The words share one cell, so the line is as wide as the longest. Still, or
        with reduced motion, only the last shows. */
     .hero-words {
         display: inline-grid;
-        text-align: left;
-        vertical-align: bottom;
+        text-align: center;
     }
     .hero-word {
         grid-area: 1 / 1;
