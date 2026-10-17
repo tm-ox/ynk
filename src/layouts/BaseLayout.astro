@@ -37,7 +37,7 @@ const links = [
                         <li class:list={[link.divided && "sm:border-l sm:border-l-border sm:pl-3"]} transition:name={`nav-${link.section}`}>
                             {i === 0 && <hr class="sm:hidden" />}
                             <a
-                                class={link.current ? "active" : ""}
+                                class:list={["sm:relative sm:top-[2px]", link.current && "active"]}
                                 aria-current={link.current ? "true" : undefined}
                                 href={link.href}
                                 data-section={link.section}
