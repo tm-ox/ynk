@@ -1,3 +1,4 @@
+import { navigate } from "astro:transitions/client";
 import { canScroll } from "./wheel-pager";
 import { pageTrack, panelIndex, track, trackActive } from "./track";
 
@@ -11,6 +12,19 @@ const UP = ["ArrowUp", "k"];
 
 const CLOSE_LINKS =
   'a[data-close], a[aria-label="Back to home"]';
+
+// Past the end of a section the arrows carry on into the neighbouring one:
+// home panels (Contact is last) -> Events archive -> Images archive, and back.
+const archive = (name: string) => new RegExp(`^/${name}/(\\d+/)?$`).test(location.pathname);
+const beyond = (dir: 1 | -1): string | undefined => {
+  if (dir > 0) {
+    if (location.pathname === "/" && trackActive()) return "/events/";
+    if (archive("events")) return "/images/";
+  } else {
+    if (archive("events")) return "/#contact";
+    if (archive("images")) return "/events/";
+  }
+};
 
 const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
 
@@ -46,10 +60,24 @@ document.addEventListener("keydown", (e) => {
     const link = document.querySelector<HTMLAnchorElement>(
       `a[aria-label="${dir > 0 ? "Next" : "Previous"}"]`,
     );
-    if (pageTrack(dir)) e.preventDefault();
+    const t = trackActive();
+    const edge = t && panelIndex(t) === (dir > 0 ? t.querySelectorAll(":scope > section").length - 1 : 0);
+    if (t && edge) {
+      const to = beyond(dir);
+      if (to) {
+        e.preventDefault();
+        navigate(to);
+      }
+    } else if (pageTrack(dir)) e.preventDefault();
     else if (link) {
       e.preventDefault();
       link.click();
+    } else {
+      const to = beyond(dir);
+      if (to) {
+        e.preventDefault();
+        navigate(to);
+      }
     }
     return;
   }
