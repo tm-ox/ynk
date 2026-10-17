@@ -45,7 +45,7 @@ const links = [
                                 aria-label={link.icon ? link.label : undefined}
                                 target="_self"
                                 >{link.icon ? (
-                                    <Icon name={link.icon} class="inline-block w-7 h-7 sm:w-5 sm:h-5 align-middle" />
+                                    <Icon name={link.icon} class="relative inline-block w-7 h-7 sm:w-5 sm:h-5 align-middle sm:-top-[1.5px]" />
                                 ) : (
                                     link.label
                                 )}</a
