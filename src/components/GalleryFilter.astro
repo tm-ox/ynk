@@ -10,7 +10,7 @@ const { events, current } = Astro.props;
     <div class="flex-1 min-w-0">
     <div class="select-wrap">
     <select aria-label="Filter by event" data-gallery-filter>
-        <option value="/images/" selected={!current}>All events</option>
+        <option value="/images/" selected={!current}>ALL IMAGES</option>
         {
             events.map((event) => (
                 <option
@@ -27,7 +27,7 @@ const { events, current } = Astro.props;
     <hr />
     <noscript>
         <ul>
-            <li><a href="/images/">All events</a></li>
+            <li><a href="/images/">All images</a></li>
             {
                 events.map((event) => (
                     <li>
