@@ -19,24 +19,19 @@ const href = featured && `/events/${featured.id}/`;
 const label = upcoming[0] ? "Next event" : "Previous event";
 const flyer = featured?.data.flyer;
 
-// Photographs from the featured event (all its sub-events), four spread evenly
-// through the night. None for an upcoming event.
+// Photographs from the featured event (all its sub-events), in gallery order.
+// The grid below shows as many whole rows as the panel's height leaves room for
+// and hides the rest. None for an upcoming event.
 const groupId = featured && groupSlug(featured.data.title);
 const photos = (await getGalleryImages()).filter((image) => image.groupId === groupId);
-const COUNT = 4;
-const picks =
-    photos.length <= COUNT
-        ? photos
-        : Array.from({ length: COUNT }, (_, i) =>
-              photos[Math.round((i * (photos.length - 1)) / (COUNT - 1))],
-          );
+const picks = photos.slice(0, 36);
 ---
 
 {featured && (
 <section id="events" class="flex-col items-stretch">
     <SectionBar label={label} />
     <div
-        class="grid w-full gap-4 my-auto md:gap-4 md:grid-cols-[minmax(0,3fr)_minmax(0,5fr)] md:items-center"
+        class="grid w-full gap-4 my-auto md:my-0 md:flex-1 md:min-h-0 md:grid-cols-[minmax(0,3fr)_minmax(0,5fr)] md:items-center"
         transition:name={featured.data.id}
     >
         {flyer && (
@@ -51,7 +46,7 @@ const picks =
             </a>
         </div>
         )}
-        <div class={flyer ? "" : "md:col-span-2"}>
+        <div class:list={["md:flex md:flex-col md:self-stretch md:min-h-0", !flyer && "md:col-span-2"]}>
             <EventDetail summary event={featured} headingHref={href}>
                 {photos.length > 0 && (
                 <a slot="title-action" href={`/images/event/${groupId}/`} class="section-action">
@@ -60,24 +55,26 @@ const picks =
                 )}
             </EventDetail>
             {picks.length > 0 && (
-            <ul class="grid grid-cols-2 gap-2 mt-4 sm:grid-cols-4">
-                {picks.map((image) => (
-                    <li class="aspect-square">
-                        <a
-                            href={`/images/${image.id}/`}
-                            class="block h-full"
-                            transition:name={image.id}
-                        >
-                            <Image
-                                src={image.src}
-                                alt={image.description}
-                                width={600}
-                                class="block object-cover w-full h-full"
-                            />
-                        </a>
-                    </li>
-                ))}
-            </ul>
+            <div class="photo-area">
+                <ul class="photo-grid">
+                    {picks.map((image) => (
+                        <li>
+                            <a
+                                href={`/images/${image.id}/`}
+                                class="block h-full"
+                                transition:name={image.id}
+                            >
+                                <Image
+                                    src={image.src}
+                                    alt={image.description}
+                                    width={400}
+                                    class="block object-cover w-full h-full"
+                                />
+                            </a>
+                        </li>
+                    ))}
+                </ul>
+            </div>
             )}
         </div>
     </div>
@@ -86,3 +83,50 @@ const picks =
     <div class="invisible" aria-hidden="true"><SectionBar label={label} /></div>
 </section>
 )}
+
+<style>
+    /* Phones: the first eight, four across. */
+    .photo-area {
+        margin-top: 1rem;
+    }
+    .photo-grid {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 0.5rem;
+    }
+    .photo-grid > li {
+        aspect-ratio: 1;
+    }
+    .photo-grid > li:nth-child(n + 9) {
+        display: none;
+    }
+    /* From md: six columns of squares, filling the height left under the
+       listing. The rows are exactly one cell tall, so a row that does not fit
+       is dropped (extra rows collapse to nothing and are clipped). */
+    @media (min-width: 48rem) {
+        .photo-area {
+            flex: 1 1 0;
+            min-height: 0;
+            container-type: size;
+        }
+        .photo-grid {
+            --cols: 6;
+            --gap: 0.5rem;
+            --cell: calc((100cqw - (var(--cols) - 1) * var(--gap)) / var(--cols));
+            grid-template-columns: repeat(var(--cols), var(--cell));
+            grid-template-rows: repeat(auto-fill, var(--cell));
+            grid-auto-rows: 0;
+            gap: var(--gap);
+            height: 100cqh;
+            overflow: hidden;
+        }
+        .photo-grid > li {
+            aspect-ratio: auto;
+            min-height: 0;
+            overflow: hidden;
+        }
+        .photo-grid > li:nth-child(n + 9) {
+            display: block;
+        }
+    }
+</style>
