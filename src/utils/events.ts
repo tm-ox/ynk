@@ -1,3 +1,4 @@
+import type { ImageMetadata } from "astro";
 import { getCollection } from "astro:content";
 
 export const prettyDate = (date: string) =>
@@ -28,8 +29,18 @@ export const flyerAlt = (data: EventData) =>
     data.with ? `, featuring ${data.with}` : ""
   }`;
 
+/** One entry of the gallery: an event's flyer (first) or one of its photographs. */
+export interface GalleryImage {
+  id: string;
+  src: ImageMetadata;
+  alt?: string;
+  kind: "flyer" | "photo";
+  groupId: string;
+  description: string;
+}
+
 /** Every gallery photo, in event order, with a descriptive alt. */
-export async function getGalleryImages() {
+export async function getGalleryImages(): Promise<GalleryImage[]> {
   const events = await getCollection("events", ({ data }) => {
     return data.images && data.images.length > 0;
   });
@@ -139,7 +150,6 @@ export function eventJsonLd(
   };
 }
 
-export type GalleryImage = Awaited<ReturnType<typeof getGalleryImages>>[number];
 
 /** Paginated URLs from Astro may lack the trailing slash the site uses. */
 export const slash = (url?: string) =>
