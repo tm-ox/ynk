@@ -247,6 +247,36 @@
             scroll-behavior: smooth;
         }
     }
+    /* Thumbnails that link somewhere: the picture eases in a little and takes a
+       wash of the accent colour while the link is hovered or focused. The
+       thumb is either inside the link or is the link itself. */
+    .thumb {
+        position: relative;
+        overflow: hidden;
+    }
+    .thumb img {
+        transition: transform 0.4s ease;
+    }
+    .thumb::after {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: rgb(var(--rgb-accent) / 0.18);
+        opacity: 0;
+        transition: opacity 0.25s ease;
+        pointer-events: none;
+    }
+    :is(a:hover, a:focus-visible) > .thumb img,
+    a.thumb:is(:hover, :focus-visible) img {
+        transform: scale(1.05);
+    }
+    :is(a:hover, a:focus-visible) > .thumb::after,
+    a.thumb:is(:hover, :focus-visible)::after {
+        opacity: 1;
+    }
+    .gallery-grid a:hover h5 {
+        color: var(--color-accent-hover);
+    }
     .section-action {
         @apply text-xs uppercase font-displayCon md:text-sm text-accent-muted hover:text-accent;
     }

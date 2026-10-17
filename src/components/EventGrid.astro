@@ -24,14 +24,16 @@ const padding = Math.max(0, pageSize - events.length);
                     <a href={`/events/${event.id}/`} title={event.data.title} transition:name={event.data.id}>
                         <h5 class="uppercase xl:truncate">{event.data.title}</h5>
                         <hr />
-                        <Image
-                            src={event.data.flyer.src}
-                            alt=""
-                            width={400}
-                            height={400}
-                            fit="contain"
-                            class="block object-contain w-full aspect-square"
-                        />
+                        <div class="thumb">
+                            <Image
+                                src={event.data.flyer.src}
+                                alt=""
+                                width={400}
+                                height={400}
+                                fit="contain"
+                                class="block object-contain w-full aspect-square"
+                            />
+                        </div>
                         <hr />
                     </a>
                 </li>

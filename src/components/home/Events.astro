@@ -12,7 +12,7 @@ const flyer = featured?.data.flyer;
 // The grid below shows as many whole rows as the panel's height leaves room for
 // and hides the rest. None for an upcoming event.
 const groupId = featured && groupSlug(featured.data.title);
-const photos = (await getGalleryImages()).filter((image) => image.groupId === groupId);
+const photos = (await getGalleryImages()).filter((image) => image.groupId === groupId && image.kind === "photo");
 const picks = photos.slice(0, 36);
 ---
 
@@ -50,7 +50,7 @@ const picks = photos.slice(0, 36);
                         <li>
                             <a
                                 href={`/images/${image.id}/`}
-                                class="block h-full"
+                                class="block h-full thumb"
                                 transition:name={image.id}
                             >
                                 <Image
@@ -117,6 +117,7 @@ const picks = photos.slice(0, 36);
     }
     .photo-grid > li {
         aspect-ratio: 1;
+        overflow: hidden;
     }
     .photo-grid > li:first-child {
         grid-column: span 2;

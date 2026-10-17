@@ -31,13 +31,16 @@ const padding = Math.max(0, pageSize - images.length);
                     >
                         <h5 class="uppercase xl:truncate">{image.alt}</h5>
                         <hr />
-                        <Image
-                            src={image.src}
-                            alt={image.description}
-                            width={400}
-                            height={400}
-                            class="block object-cover w-full aspect-square"
-                        />
+                        <div class="thumb">
+                            <Image
+                                src={image.src}
+                                alt={image.description}
+                                width={400}
+                                height={400}
+                                fit={image.kind === "flyer" ? "contain" : "cover"}
+                                class:list={["block w-full aspect-square", image.kind === "flyer" ? "object-contain" : "object-cover"]}
+                            />
+                        </div>
                         <hr />
                     </a>
                 </li>

@@ -36,11 +36,25 @@ export async function getGalleryImages() {
   events.sort((b, a) => Date.parse(a.data.date) - Date.parse(b.data.date));
   return events.flatMap((event) => {
     const photos = (event.data.images ?? []).filter(Boolean) as any[];
-    return photos.map((image, i) => ({
-      ...image,
-      groupId: groupSlug(event.data.title),
-      description: `Photograph ${i + 1} of ${photos.length} from ${event.data.title}, ${prettyDate(event.data.date)}${place(event.data)}`,
-    }));
+    const groupId = groupSlug(event.data.title);
+    // The flyer leads the event's photographs (only events that have some).
+    const flyer = event.data.flyer && {
+      src: event.data.flyer.src,
+      alt: event.data.title,
+      id: `${event.data.id}-flyer`,
+      kind: "flyer" as const,
+      groupId,
+      description: flyerAlt(event.data),
+    };
+    return [
+      ...(flyer ? [flyer] : []),
+      ...photos.map((image, i) => ({
+        ...image,
+        kind: "photo" as const,
+        groupId,
+        description: `Photograph ${i + 1} of ${photos.length} from ${event.data.title}, ${prettyDate(event.data.date)}${place(event.data)}`,
+      })),
+    ];
   });
 }
 
@@ -83,7 +97,7 @@ export async function getGalleryEvents() {
     if (Date.parse(event.data.date) > Date.parse(group.last))
       group.last = event.data.date;
     if (event.data.venue?.name) group.venues.add(event.data.venue.name);
-    group.count += (event.data.images ?? []).filter(Boolean).length;
+    group.count += (event.data.images ?? []).filter(Boolean).length + (event.data.flyer ? 1 : 0);
     groups.set(id, group);
   }
   return [...groups.values()].map((g) => ({

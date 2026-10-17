@@ -23,7 +23,9 @@ export async function getStaticPaths() {
 const { image, prevImage, nextImage } = Astro.props;
 // "Photograph 3 of 24 from ..." is built in getGalleryImages.
 const position = image.description.match(/^Photograph (\d+) of (\d+)/);
-const pageTitle = position
+const pageTitle = image.kind === "flyer"
+  ? `${image.alt} – flyer`
+  : position
   ? `${image.alt} – photo ${position[1]} of ${position[2]}`
   : `${image.alt} – photo`;
 ---
