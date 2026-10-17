@@ -52,7 +52,7 @@ const label = "mb-0 text-xs font-bold tracking-normal uppercase md:text-sm font-
         {themes.map(([value, text]) => (
           <label class="settings-choice">
             <input type="radio" name="theme" value={value} class="sr-only peer" data-theme-choice />
-            <span class="peer-checked:text-accent peer-checked:bg-accent-muted/10 peer-focus-visible:outline peer-focus-visible:outline-2 peer-focus-visible:-outline-offset-2 peer-focus-visible:outline-accent">{text}</span>
+            <span class="font-displayCon peer-checked:text-accent peer-checked:bg-accent-muted/10 peer-focus-visible:outline peer-focus-visible:outline-2 peer-focus-visible:-outline-offset-2 peer-focus-visible:outline-accent">{text}</span>
           </label>
         ))}
       </div>
@@ -95,13 +95,11 @@ const label = "mb-0 text-xs font-bold tracking-normal uppercase md:text-sm font-
   /* Theme choices share the row equally; the chosen one carries a tint. */
   .settings-choice span {
     display: block;
-    padding: 0.625rem 0;
+    padding: 0.75rem 0 0.625rem;
     text-align: center;
     text-transform: uppercase;
-    font-family: var(--font-displayCon);
     font-size: 0.875rem;
-    /* BioRhyme's capitals sit within 0.01em of the middle of the line box, so
-       equal padding above and below centres the words. */
+    /* A little more room above than below optically centres the capitals. */
     line-height: 1;
     cursor: pointer;
     color: var(--color-accent-muted);
