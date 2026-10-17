@@ -261,6 +261,23 @@
             animation: none;
         }
     }
+    /* Archive thumbnails rise in, a little after one another (--i is the
+       cell's index). Titles stay put. Previous/Next and page-number jumps
+       already slide the grid, so no rise on top of that. */
+    @media (prefers-reduced-motion: no-preference) {
+        @keyframes rise-in {
+            from {
+                opacity: 0;
+                translate: 0 0.75rem;
+            }
+        }
+        .gallery-grid .thumb {
+            animation: rise-in 0.6s ease-out calc(var(--i, 0) * 25ms) both;
+        }
+        html[data-astro-transition^="paging"] .gallery-grid .thumb {
+            animation: none;
+        }
+    }
     /* Thumbnails that link somewhere: while the link is hovered or focused the
        picture is filtered (--thumb-filter) and takes a wash of the accent colour.
        The thumb is either inside the link or is the link itself. */
