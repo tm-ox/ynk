@@ -11,6 +11,7 @@
   "dependencies": {
     "@astrojs/markdown-remark": "^7.3.2",
     "@astrojs/sitemap": "^3.7.4",
+    "@iconify-json/mingcute": "^1.2.8",
     "@tailwindcss/vite": "^4.3.3",
     "astro": "^7.3.8",
     "astro-google-analytics": "^1.0.3",
