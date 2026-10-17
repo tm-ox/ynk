@@ -10,6 +10,14 @@ const currentPath = pathname.slice(1); // remove the first "/"
 const isHome = currentPath === "";
 const isCurrent = (name: string) =>
     currentPath === name || currentPath.startsWith(`${name}/`);
+const links = [
+    { label: "Home", href: isHome ? "/#top" : "/", section: "top", current: false },
+    { label: "About", href: "/#about", section: "about", current: false },
+    { label: "Featured", href: "/#events", section: "events", current: false },
+    { label: "Events", href: "/events/", section: "events-page", current: isCurrent("events") },
+    { label: "Images", href: "/images/", section: "images-page", current: isCurrent("images") },
+    { label: "Contact", href: "/#contact", section: "contact", current: false },
+];
 ---
 
 <Base title={title} description={description} image={image} jsonLd={jsonLd}>
@@ -24,46 +32,19 @@ const isCurrent = (name: string) =>
                 class="flex flex-col items-center my-auto text-center sm:flex-row sm:gap-x-3"
             >
                 {
-                    isHome ? (
+                    links.map((link, i) => (
                         <li>
-                            <hr class="sm:hidden" />
-                            <a href="/#top" data-section="top" target="_self">Home</a>
+                            {i === 0 && <hr class="sm:hidden" />}
+                            <a
+                                class={link.current ? "active" : ""}
+                                aria-current={link.current ? "true" : undefined}
+                                href={link.href}
+                                data-section={link.section}
+                                target="_self">{link.label}</a
+                            >
                             <hr class="sm:hidden" />
                         </li>
-                    ) : (
-                        <>
-                        <li>
-                            <hr class="sm:hidden" />
-                            <a href="/" target="_self">Home</a>
-                            <hr class="sm:hidden" />
-                        </li>
-                        </>
-                    )
-                }
-                {
-                    isHome && (
-                        <>
-                <li>
-                    <hr class="sm:hidden" />
-                    <a href="/#about" data-section="about" target="_self">About</a>
-                    <hr class="sm:hidden" />
-                </li>
-                <li>
-                    <a
-                        class={isCurrent("events") ? "active" : ""}
-                        aria-current={isCurrent("events") ? "true" : undefined}
-                        href="/#events"
-                        data-section="events"
-                        target="_self">Featured</a
-                    >
-                    <hr class="sm:hidden" />
-                </li>
-                <li>
-                    <a href="/#contact" data-section="contact" target="_self">Contact</a>
-                    <hr class="sm:hidden" />
-                </li>
-                        </>
-                    )
+                    ))
                 }
                 <li class="hidden sm:flex w-auto items-center [&>div]:m-0 [&>div]:border-r-0 [&>div]:pr-0">
                     <slot name="subnav" />
@@ -79,7 +60,7 @@ const isCurrent = (name: string) =>
 
 <script>
     // Marks the nav link for the section in view on the home page, and the
-    // events/images links on their own routes. Only the theme is persisted
+    // events/images links on their own routes (archives and detail pages). Only the theme is persisted
     // across transitions, so this runs on every page load.
     let observer: IntersectionObserver | undefined;
     // Panels sit side by side from sm up, stacked below it.
@@ -117,8 +98,12 @@ const isCurrent = (name: string) =>
                 .querySelectorAll("main section[id]")
                 .forEach((section) => observer!.observe(section));
         } else {
-            // Inner pages carry no section links in the nav.
-            setActive(null);
+            // Inner pages: the archive (or detail page) the route belongs to.
+            setActive(
+                path.startsWith("/events") ? "events-page"
+                : path.startsWith("/images") ? "images-page"
+                : null,
+            );
         }
     };
 
