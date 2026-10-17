@@ -196,7 +196,9 @@ ${frames
         }
         /* A very slow push-in towards the sign and back. */
         .hero-art {
-            animation: hero-drift 40s ease-in-out infinite alternate;
+            animation:
+                hero-drift 40s ease-in-out infinite alternate,
+                hero-parallax 18s ease-in-out infinite alternate;
             will-change: transform;
         }
         /* The light swells and fades, and its tube flickers faintly once a cycle. */
@@ -208,12 +210,22 @@ ${frames
     }
     @keyframes hero-sway {
         from {
-            translate: -0.025em 0;
-            rotate: -0.5deg;
+            translate: -0.07em 0;
+            rotate: -1.2deg;
         }
         to {
-            translate: 0.025em 0;
-            rotate: 0.5deg;
+            translate: 0.07em 0;
+            rotate: 1.2deg;
+        }
+    }
+    /* The picture shifts against the sway above (same 18s, opposite way), so the
+       two move as layers. The picture is zoomed in, so there is room at its edges. */
+    @keyframes hero-parallax {
+        from {
+            translate: 1.5% 0.4%;
+        }
+        to {
+            translate: -1.5% -0.4%;
         }
     }
     @keyframes hero-drift {
