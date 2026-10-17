@@ -57,6 +57,10 @@ const padding = Math.max(0, pageSize - events.length);
     .gallery-grid :global(hr) {
         margin-block: 0;
     }
+    /* The title keeps the room above its rule that the rule's margin gave it. */
+    .gallery-grid :global(h5) {
+        padding-bottom: 0.5rem;
+    }
     .gallery-spacer {
         display: none;
     }
@@ -64,6 +68,9 @@ const padding = Math.max(0, pageSize - events.length);
         padding-block: 1rem;
     }
     @media (min-width: 80rem) {
+        .gallery-grid :global(h5) {
+            padding-bottom: 0.25rem;
+        }
         .gallery-spacer {
             display: block;
         }
