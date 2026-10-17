@@ -98,31 +98,36 @@ const wordKeyframes = `@keyframes hero-word {
         opacity: 0.85;
         pointer-events: none;
     }
-    /* A compact centred block of two lines: "Experimental" over the changing
-       word. BioRhyme Expanded's capitals are about 0.72em tall and
-       "Experimental" is about 14.4em wide, so a line-height of --cap-lh makes the
-       lines meet (serifs on serifs; a little less overlaps them) and 4.3cqw makes
-       the block about 62% of the stage's width. Words never break mid-word. */
+    /* A strip down the middle of the stage (--strip wide), with the headline
+       large enough to break inside it: "Experimental" over the changing word,
+       each wrapping within the strip, lines butted by a cap-height line-height
+       (BioRhyme Expanded's capitals are about 0.72em tall; lower --cap-lh to
+       overlap them). Tune --strip, --size and --cap-lh. */
     .hero-title {
+        --strip: 62cqw;
+        --size: clamp(2.25rem, 7cqw, 6.5rem);
         --cap-lh: 0.7;
         display: flex;
         flex-direction: column;
         align-items: center;
+        width: var(--strip);
         text-align: center;
-        overflow-wrap: normal;
+        overflow-wrap: anywhere;
         word-break: normal;
-        font-size: clamp(1.4rem, 4.3cqw, 4.75rem);
+        font-size: var(--size);
         line-height: var(--cap-lh);
-        padding: 1rem;
+        padding-block: 1rem;
     }
     /* The words share one cell, so the line is as wide as the longest. Still, or
        with reduced motion, only the last shows. */
     .hero-words {
         display: inline-grid;
+        width: 100%;
         text-align: center;
     }
     .hero-word {
         grid-area: 1 / 1;
+        min-width: 0;
         opacity: 0;
     }
     .hero-word:last-child {
