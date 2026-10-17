@@ -33,7 +33,7 @@ const label = "mb-0 text-xs font-bold tracking-normal uppercase md:text-sm font-
 <dialog
   data-settings
   aria-labelledby="settings-title"
-  class="m-auto w-[min(92vw,44rem)] max-h-[85dvh] p-0 overflow-y-auto border border-border bg-bg text-fg backdrop:bg-scrim-heavy backdrop:backdrop-blur-sm"
+  class="m-auto w-[min(92vw,44rem)] max-h-[85dvh] p-0 overflow-y-auto border-y border-border bg-bg text-fg backdrop:bg-scrim-heavy backdrop:backdrop-blur-sm"
 >
   <div class="flex flex-col gap-6 p-4 sm:p-6">
     <div class="flex items-center justify-between gap-4">
@@ -47,11 +47,11 @@ const label = "mb-0 text-xs font-bold tracking-normal uppercase md:text-sm font-
       <hr class="mt-0" />
       <h3 id="settings-theme" class={`${label} sm:text-left`}>Theme</h3>
       <hr class="mb-0" />
-      <div class="flex gap-6 py-3" role="radiogroup" aria-labelledby="settings-theme">
+      <div class="grid grid-cols-3 py-3" role="radiogroup" aria-labelledby="settings-theme">
         {themes.map(([value, text]) => (
           <label class="settings-choice">
             <input type="radio" name="theme" value={value} class="sr-only peer" data-theme-choice />
-            <span class="peer-checked:text-accent peer-checked:border-accent peer-focus-visible:outline peer-focus-visible:outline-2 peer-focus-visible:outline-offset-2 peer-focus-visible:outline-accent">{text}</span>
+            <span class="peer-checked:text-accent peer-checked:bg-accent-muted/10 peer-focus-visible:outline peer-focus-visible:outline-2 peer-focus-visible:-outline-offset-2 peer-focus-visible:outline-accent">{text}</span>
           </label>
         ))}
       </div>
@@ -83,20 +83,25 @@ const label = "mb-0 text-xs font-bold tracking-normal uppercase md:text-sm font-
         <li class="normal-case"><a href="/privacy" class="font-medium normal-case font-displayCon">Privacy</a>: what this site collects.</li>
       </ul>
     </div>
+
+    <div>
+      <hr class="mt-0" />
+      <p class="mb-0 text-xs text-center sm:text-left font-displayCon text-accent-muted">© 2010–{new Date().getFullYear()} Yes No Klub</p>
+    </div>
   </div>
 </dialog>
 
 <style>
-  /* Theme choices read as text with a rule under the chosen one. */
+  /* Theme choices share the row equally; the chosen one carries a tint. */
   .settings-choice span {
-    display: inline-block;
-    padding-bottom: 0.125rem;
-    border-bottom: 1px solid transparent;
+    display: block;
+    padding: 0.5rem 0;
+    text-align: center;
     text-transform: uppercase;
     font-size: 0.875rem;
     cursor: pointer;
     color: var(--color-accent-muted);
-    transition: color 0.2s ease;
+    transition: color 0.2s ease, background-color 0.2s ease;
   }
   .settings-choice:hover span {
     color: var(--color-accent);
