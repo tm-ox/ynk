@@ -34,7 +34,7 @@ const links = [
             >
                 {
                     links.map((link, i) => (
-                        <li class:list={[link.divided && "sm:border-l sm:border-l-border sm:pl-3"]}>
+                        <li class:list={[link.divided && "sm:border-l sm:border-l-border sm:pl-3"]} transition:name={`nav-${link.section}`}>
                             {i === 0 && <hr class="sm:hidden" />}
                             <a
                                 class={link.current ? "active" : ""}
@@ -48,11 +48,11 @@ const links = [
                     ))
                 }
                 {Astro.slots.has("subnav") && (
-                <li class="hidden sm:flex w-auto items-center [&>div]:m-0 [&>div]:border-r-0 [&>div]:pr-0">
+                <li class="hidden sm:flex w-auto items-center [&>div]:m-0 [&>div]:border-r-0 [&>div]:pr-0" transition:name="nav-subnav">
                     <slot name="subnav" />
                 </li>
                 )}
-                <li>
+                <li transition:name="nav-social">
                     <Sosmed />
                 </li>
             </ul>
