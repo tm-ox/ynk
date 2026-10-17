@@ -66,10 +66,10 @@ const { events, current } = Astro.props;
     document.addEventListener("pointerdown", () => (byKey = false), true);
     document.addEventListener("keydown", () => (byKey = true), true);
     document.addEventListener("focusin", (e) => {
-        if (isFilter(e.target)) e.target.toggleAttribute("data-kb", byKey);
+        if (isFilter(e.target)) (e.target as HTMLSelectElement).toggleAttribute("data-kb", byKey);
     });
     document.addEventListener("focusout", (e) => {
-        if (isFilter(e.target)) e.target.removeAttribute("data-kb");
+        if (isFilter(e.target)) (e.target as HTMLSelectElement).removeAttribute("data-kb");
     });
 
     document.addEventListener("pointerdown", (e) => {
