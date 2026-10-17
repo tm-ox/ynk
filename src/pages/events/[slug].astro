@@ -6,7 +6,7 @@ import { Icon } from "astro-icon/components";
 import EventDetail from "../../components/EventDetail.astro";
 import NavArrow from "../../components/NavArrow.astro";
 import SectionBar from "../../components/home/SectionBar.astro";
-import { eventJsonLd, getFeaturedEvent, groupSlug, prettyDate as formatDate } from "../../utils/events";
+import { eventJsonLd, getFeaturedEvent, groupSlug } from "../../utils/events";
 
 export async function getStaticPaths() {
   const events = await getCollection("events");
@@ -28,14 +28,13 @@ const { event, prevEvent, nextEvent } = Astro.props;
 const { Content } = await render(event);
 
 const { title, date, venue, with: lineup } = event.data;
-const prettyDate = formatDate(date);
 const sameTitle = (await getCollection("events")).filter(
   (e) => e.data.title === title && e.data.venue?.name === venue?.name,
 );
 const baseTitle = venue?.name ? `${title} – ${venue.name}` : title;
-const pageTitle = sameTitle.length > 1 ? `${baseTitle} (${prettyDate})` : baseTitle;
+const pageTitle = sameTitle.length > 1 ? `${baseTitle} (${date})` : baseTitle;
 const rawDescription = [
-  `${title}, ${prettyDate}${venue?.name ? ` at ${venue.name}` : ""}.`,
+  `${title}, ${date}${venue?.name ? ` at ${venue.name}` : ""}.`,
   lineup ? `With ${lineup}.` : "",
 ]
   .filter(Boolean)
