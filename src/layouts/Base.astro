@@ -234,6 +234,19 @@ const ogImage = new URL(image ?? "/og-default.jpg", Astro.site).href;
                 const isArchive = (url: URL) =>
                     /^\/(events|images)(\/(\d+\/?)?)?$/.test(url.pathname) ||
                     /^\/images\/event\/[^/]+(\/(\d+\/?)?)?$/.test(url.pathname);
+                // Leaving the home page remembers the panel in view, so closing
+                // out of an archive or detail page lands back on it.
+                if (e.from.pathname === "/" && e.to.pathname !== "/") {
+                    const panel = document.querySelector<HTMLElement>(
+                        "#main-nav a.active[data-section]",
+                    )?.dataset.section;
+                    if (panel) {
+                        homePanel = panel;
+                        try {
+                            sessionStorage.setItem("homePanel", panel);
+                        } catch {}
+                    }
+                }
                 // Back / forward keeps whatever was remembered.
                 if (e.navigationType !== "traverse") {
                     if (isDetail(e.to) && e.from.pathname === "/")
@@ -266,16 +279,23 @@ const ogImage = new URL(image ?? "/og-default.jpg", Astro.site).href;
                 closeTo = sessionStorage.getItem("closeTo");
             } catch {}
             let homeHash = "";
+            // The home panel last in view; "Back to home" and the close
+            // buttons return to it.
+            let homePanel: string | null = null;
+            try {
+                homePanel = sessionStorage.getItem("homePanel");
+            } catch {}
 
             document.addEventListener("astro:page-load", () => {
+                const home = `/#${homePanel ?? "events"}`;
+                document
+                    .querySelectorAll<HTMLAnchorElement>('a[aria-label="Back to home"]')
+                    .forEach((a) => (a.href = home));
                 if (!closeTo) return;
                 document
                     .querySelectorAll<HTMLAnchorElement>("a[data-close]")
                     .forEach((a) => {
-                        a.href =
-                            closeTo === "home"
-                                ? a.dataset.homeHref!
-                                : closeTo!;
+                        a.href = closeTo === "home" ? home : closeTo!;
                     });
             });
 
