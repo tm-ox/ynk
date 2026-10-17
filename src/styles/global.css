@@ -247,14 +247,17 @@
             scroll-behavior: smooth;
         }
     }
-    /* Thumbnails that link somewhere the picture drops to
-       grayscale and takes a wash of the accent colour while the link is hovered or focused. The
-       thumb is either inside the link or is the link itself. */
+    /* Thumbnails that link somewhere: while the link is hovered or focused the
+       picture takes a wash of the accent colour and, for .thumb-gray, comes back
+       from grayscale. The thumb is either inside the link or is the link itself. */
     .thumb {
         position: relative;
     }
     .thumb img {
         transition: filter 0.2s ease;
+    }
+    .thumb-gray img {
+        filter: grayscale(1);
     }
     .thumb::after {
         content: "";
@@ -267,7 +270,7 @@
     }
     :is(a:hover, a:focus-visible) > .thumb img,
     a.thumb:is(:hover, :focus-visible) img {
-        filter: grayscale(1);
+        filter: none;
     }
     :is(a:hover, a:focus-visible) > .thumb::after,
     a.thumb:is(:hover, :focus-visible)::after {
