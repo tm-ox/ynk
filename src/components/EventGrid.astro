@@ -12,9 +12,8 @@ const padding = Math.max(0, pageSize - events.length);
 ---
 
 <!-- Flyers sit in square cells and the grid always spans the content width.
-     From xl up a page (18 events) is meant to fit one screen: 6 or 9
-     columns (3 or 2 rows) by the shape of the space available, and anything
-     that still does not fit scrolls inside the grid. Below xl it flows. -->
+     From xl up a page (18 events) is 6 columns by 3 rows; a screen too short
+     for that scrolls inside the grid. Below xl it flows. -->
 <div class="w-full mb-auto gallery-fit vt-detail" transition:name="gallery-page" data-scroll>
     <div class="gallery-spacer"></div>
     <div class="gallery-group">
@@ -100,29 +99,6 @@ const padding = Math.max(0, pageSize - events.length);
         }
         .gallery-grid :global(hr) {
             margin-block: 0.25rem;
-        }
-        /* 6 columns (3 rows) need a height of about 0.5 x width + 150px:
-           3 rows of (cell + 38px chrome), 2 gaps, and 40px for the page
-           numbers. As an aspect ratio (width / height) that is 1.62 at 1264px,
-           1.625 at 1300px, 1.657 at 1450px and rising with the width, so the
-           9-column layout (2 rows, far less height) is used above a threshold
-           that follows the width, rounded down so the 6 columns always fit.
-           (One fixed 8:5 threshold flipped to 9 columns on wide screens whose
-           shape sat close to it.) */
-        @container (max-width: 1299px) and (min-aspect-ratio: 8/5) {
-            .gallery-grid {
-                grid-template-columns: repeat(9, minmax(0, 1fr));
-            }
-        }
-        @container (min-width: 1300px) and (max-width: 1449px) and (min-aspect-ratio: 162/100) {
-            .gallery-grid {
-                grid-template-columns: repeat(9, minmax(0, 1fr));
-            }
-        }
-        @container (min-width: 1450px) and (min-aspect-ratio: 165/100) {
-            .gallery-grid {
-                grid-template-columns: repeat(9, minmax(0, 1fr));
-            }
         }
     }
 </style>
