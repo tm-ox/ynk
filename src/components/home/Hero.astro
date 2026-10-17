@@ -198,7 +198,7 @@ ${frames
         .hero-art {
             animation:
                 hero-drift 40s ease-in-out infinite alternate,
-                hero-parallax 18s ease-in-out infinite alternate;
+                hero-parallax 6s ease-in-out infinite;
             will-change: transform;
         }
         /* The light swells and fades, and its tube flickers faintly once a cycle. */
@@ -218,14 +218,25 @@ ${frames
             rotate: 1.2deg;
         }
     }
-    /* The picture shifts against the sway above (same 18s, opposite way), so the
-       two move as layers. The picture is zoomed in, so there is room at its edges. */
+    /* The picture shifts a little, quickly and unevenly: a short, restless
+       movement (about 0.5% of its width) behind the words. It is zoomed in, so
+       there is room at its edges. */
     @keyframes hero-parallax {
-        from {
-            translate: 1.5% 0.4%;
+        0%,
+        100% {
+            translate: 0.5% 0.15%;
         }
-        to {
-            translate: -1.5% -0.4%;
+        22% {
+            translate: -0.3% -0.1%;
+        }
+        41% {
+            translate: 0.15% 0.2%;
+        }
+        63% {
+            translate: -0.5% -0.15%;
+        }
+        80% {
+            translate: 0.3% 0;
         }
     }
     @keyframes hero-drift {
