@@ -252,8 +252,8 @@
        The thumb is either inside the link or is the link itself. */
     .thumb {
         position: relative;
-        /* Picture filter on hover. Alternatives: grayscale(1), invert(1). */
-        --thumb-filter: contrast(1.3) saturate(1.6);
+        /* Picture filter on hover. Alternatives: grayscale(1), invert(1), contrast(1.3) saturate(1.6); `none` for the wash alone. */
+        --thumb-filter: grayscale(0.6);
     }
     .thumb img {
         transition: filter 0.2s ease;
