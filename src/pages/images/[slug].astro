@@ -55,13 +55,14 @@ const positionLabel = image.kind === "flyer" ? "Flyer" : position ? `${position.
       </a>
     </div>
   </div>
-  <section class="h-section flex flex-col pb-3 vt-detail" transition:name={image.id}>
+  <section class="h-section flex flex-col pb-3">
     <ImageInfo image={image} position={positionLabel} />
     <Image
       src={image.src}
       alt={image.description}
       width="1600"
-      class="object-contain w-full h-full min-h-0 flex-1 mt-3"
+      class="object-contain w-full h-full min-h-0 flex-1 mt-3 vt-detail"
+      transition:name={image.id}
     />
   </section>
 </BaseLayout>

@@ -367,7 +367,7 @@ select:-webkit-autofill:focus {
 .vt-title {
     view-transition-class: detail title;
 }
-/* A pair whose two ends hold different content (event card or featured row to
+/* A pair whose two ends hold different content (the home featured row to
    the event page): the outgoing picture clears early (see --fade-out below).
    Pairs that look the same at both ends (nav items, bars) keep an even
    crossfade, so they never dim. */

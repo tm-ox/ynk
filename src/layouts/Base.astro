@@ -211,7 +211,7 @@ const ogImage = new URL(image ?? "/og-default.jpg", Astro.site).href;
                                 : "paging-back";
                 }
                 paging = !!e.direction && e.direction.startsWith("paging");
-                // Grid pages slide as a whole; the cards (and the titles and flyers inside them) must not be captured
+                // Grid pages slide as a whole; the titles and thumbnails in the cards must not be captured
                 // separately or they would crossfade instead.
                 if (paging) unname(document);
 

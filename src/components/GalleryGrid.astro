@@ -31,11 +31,10 @@ const padding = Math.max(0, pageSize - images.length);
                     <a
                         href={`/images/${image.id}/`}
                         title={image.alt}
-                        transition:name={image.id}
                     >
                         <h5 class="uppercase xl:truncate">{image.alt}</h5>
                         <hr />
-                        <div class="thumb">
+                        <div class="thumb" transition:name={image.id}>
                             <Image
                                 src={image.src}
                                 alt={image.description}
