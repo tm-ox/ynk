@@ -74,8 +74,11 @@ const padding = Math.max(0, pageSize - images.length);
     .gallery-grid :global(h5) {
         padding-bottom: 0.5rem;
     }
+    /* One grid gap between the bar above and the first titles, the same as
+       between one row of thumbnails and the next. From xl up it also centres
+       the grid (see below). */
     .gallery-spacer {
-        display: none;
+        height: 0.5rem;
     }
     .gallery-after {
         padding-block: 1rem;
