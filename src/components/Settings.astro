@@ -95,10 +95,14 @@ const label = "mb-0 text-xs font-bold tracking-normal uppercase md:text-sm font-
   /* Theme choices share the row equally; the chosen one carries a tint. */
   .settings-choice span {
     display: block;
-    padding: 0.5rem 0;
+    padding: 0.625rem 0;
     text-align: center;
     text-transform: uppercase;
+    font-family: var(--font-displayCon);
     font-size: 0.875rem;
+    /* BioRhyme's capitals sit within 0.01em of the middle of the line box, so
+       equal padding above and below centres the words. */
+    line-height: 1;
     cursor: pointer;
     color: var(--color-accent-muted);
     transition: color 0.2s ease, background-color 0.2s ease;
