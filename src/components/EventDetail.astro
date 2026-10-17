@@ -39,7 +39,7 @@ const label = "mb-0 text-xs font-bold tracking-normal md:text-sm font-displayCon
     <Image
       src={event.data.flyer.src}
       alt={flyerAlt(event.data)}
-      class:list={["object-contain my-1 h-auto w-full mb-auto", capped && "md:max-h-[calc(100vh-var(--section-offset)-38px)]"]}
+      class:list={["object-contain h-auto w-full mb-auto", capped && "md:max-h-[calc(100vh-var(--section-offset)-30px)]"]}
     />
   </div>
   )}
@@ -51,7 +51,7 @@ const label = "mb-0 text-xs font-bold tracking-normal md:text-sm font-displayCon
     ]}
   >
 
-    <div class="flex items-center mb-2">
+    <div class="flex items-center pb-rule">
       <Title class:list={["mb-0 uppercase mx-auto sm:mx-0", titleClass]}>
         {
           headingHref ? (
