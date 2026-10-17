@@ -211,6 +211,9 @@ const ogImage = new URL(image ?? "/og-default.jpg", Astro.site).href;
                                 : "paging-back";
                 }
                 paging = !!e.direction && e.direction.startsWith("paging");
+                // Names taken off grid thumbnails for the last transition (see
+                // unname) come back first, so any of them can travel this time.
+                gridNamed(document).forEach((el) => (el.style.viewTransitionName = ""));
                 // Grid pages slide as a whole; the titles and thumbnails in the cards must not be captured
                 // separately or they would crossfade instead.
                 if (paging) unname(document);
@@ -277,17 +280,19 @@ const ogImage = new URL(image ?? "/og-default.jpg", Astro.site).href;
             let focus: string | null = null;
             const bare = (path: string) => path.replace(/\/$/, "");
             // The named parts of grid thumbnails (the link itself, or the title
-            // and picture inside it), except those of the link to `keep`.
+            // and picture inside it).
+            const gridNamed = (root: ParentNode) =>
+                root.querySelectorAll<HTMLElement>(
+                    ":is(.gallery-grid, .photo-grid) a, :is(.gallery-grid, .photo-grid) a [data-astro-transition-scope]",
+                );
+            // Takes the names off them for one transition, except those of the
+            // link to `keep`.
             const unname = (root: ParentNode, keep?: string) =>
-                root
-                    .querySelectorAll<HTMLElement>(
-                        ":is(.gallery-grid, .photo-grid) a, :is(.gallery-grid, .photo-grid) a [data-astro-transition-scope]",
-                    )
-                    .forEach((el) => {
-                        const href = el.closest("a")?.getAttribute("href");
-                        if (keep && href && bare(href) === bare(keep)) return;
-                        el.style.viewTransitionName = "none";
-                    });
+                gridNamed(root).forEach((el) => {
+                    const href = el.closest("a")?.getAttribute("href");
+                    if (keep && href && bare(href) === bare(keep)) return;
+                    el.style.viewTransitionName = "none";
+                });
             document.addEventListener("astro:before-swap", (e: any) => {
                 if (paging) unname(e.newDocument);
                 else if (focus) unname(e.newDocument, focus);
