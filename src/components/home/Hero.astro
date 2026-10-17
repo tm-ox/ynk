@@ -15,16 +15,44 @@ const focus = { x: 0.58, y: 0.47 };
 // The headline: "Experimental" and a word that changes. The founding event
 // was "a monthly experimental whatever event" (see About); the last word is the
 // one shown when nothing moves. Edit the list to change the cycle.
-const words = ["music", "sound", "film", "performance", "whatever", "etc."];
-const wordSeconds = 2.6;
+const words = ["music", "sound", "performance", "people", "etc.", "whatever"];
+const wordSeconds = 1.8;
 const cycle = words.length * wordSeconds;
-// Each word fades up, holds, then fades away within its own 1/N of the cycle.
+
+// How each word glitches in and out. Every word gets its own jolt (sideways,
+// up/down, tilt) from these lists, used in turn, so no two entrances are alike.
+const jolts = {
+    x: ["0.06em", "-0.09em", "0.11em", "-0.05em", "0.08em", "-0.1em"],
+    y: ["-0.03em", "0.04em", "0.02em", "-0.05em", "-0.02em", "0.04em"],
+    r: ["-3deg", "2.5deg", "-1.5deg", "3.5deg", "-2deg", "1.5deg"],
+};
+const jolt = (list: string[], i: number) => list[i % list.length];
+
+// One slot is a word's 1/N of the cycle. Keyframes are hard cuts (steps), as a
+// signal breaking up: flicker and slice in, settle, a brief twitch mid-way, then
+// slice and flicker out. Colour fringes echo the photograph's blue and pink.
 const slot = 100 / words.length;
+const split = (e: number) =>
+    `text-shadow: ${e}em 0 rgb(255 40 140 / 0.75), -${e}em 0 rgb(0 210 255 / 0.75)`;
+const frames: [number, string][] = [
+    [0, "opacity: 0"],
+    [0.005, `opacity: 1; translate: var(--dx) var(--dy); rotate: var(--dr); clip-path: inset(0 0 55% 0); ${split(0.05)}`],
+    [0.03, "opacity: 0"],
+    [0.05, `opacity: 1; translate: calc(var(--dx) * -0.6) calc(var(--dy) * -1); rotate: calc(var(--dr) * -0.5); clip-path: inset(38% 0 0 0); ${split(0.04)}`],
+    [0.08, `translate: calc(var(--dx) * 0.3) 0; rotate: 0deg; clip-path: inset(0 0 20% 0); ${split(0.02)}`],
+    [0.11, "translate: 0 0; rotate: 0deg; clip-path: inset(0); text-shadow: none"],
+    [0.5, `translate: calc(var(--dx) * 0.4) 0; ${split(0.03)}`],
+    [0.52, "translate: 0 0; text-shadow: none"],
+    [0.84, `translate: calc(var(--dx) * -1) calc(var(--dy) * 0.5); rotate: calc(var(--dr) * 0.7); clip-path: inset(20% 0 40% 0); ${split(0.05)}`],
+    [0.88, "opacity: 0"],
+    [0.91, `opacity: 1; translate: calc(var(--dx) * 0.5) 0; rotate: 0deg; clip-path: inset(55% 0 0 0); ${split(0.03)}`],
+    [0.95, "opacity: 0"],
+];
 const wordKeyframes = `@keyframes hero-word {
-    0% { opacity: 0; translate: 0 0.2em; }
-    ${(slot * 0.12).toFixed(2)}% { opacity: 1; translate: 0 0; }
-    ${(slot * 0.88).toFixed(2)}% { opacity: 1; translate: 0 0; }
-    ${slot.toFixed(2)}%, 100% { opacity: 0; translate: 0 -0.2em; }
+${frames
+    .map(([at, css]) => `    ${(slot * at).toFixed(3)}% { ${css}; animation-timing-function: steps(1, end); }`)
+    .join("\n")}
+    ${slot.toFixed(3)}%, 100% { opacity: 0; }
 }`;
 ---
 
@@ -59,7 +87,10 @@ const wordKeyframes = `@keyframes hero-word {
                 style={`--cycle:${cycle}s; --step:${wordSeconds}s;`}
             >
                 {words.map((word, i) => (
-                    <span class="hero-word" style={`--i:${i}`}>
+                    <span
+                        class="hero-word"
+                        style={`--i:${i}; --dx:${jolt(jolts.x, i)}; --dy:${jolt(jolts.y, i)}; --dr:${jolt(jolts.r, i)};`}
+                    >
                         {word}
                     </span>
                 ))}
