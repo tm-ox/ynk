@@ -260,15 +260,23 @@ const ogImage = new URL(image ?? "/og-default.jpg", Astro.site).href;
                 }
 
                 homeHash = e.to.pathname === "/" ? e.to.hash : "";
+                // Coming back to an archive from one of its pictures or events
+                // (close or back): the grid was already seen, so its thumbnails
+                // do not rise in again (global.css keys on data-returning).
+                returning = isDetail(e.from) && isArchive(e.to);
             });
 
             let paging = false;
+            let returning = false;
             const unname = (root: ParentNode) =>
                 root
                     .querySelectorAll<HTMLElement>(".imageGrid a, .gallery-grid a, .gallery-grid a [data-astro-transition-scope]")
                     .forEach((a) => (a.style.viewTransitionName = "none"));
             document.addEventListener("astro:before-swap", (e: any) => {
                 if (paging) unname(e.newDocument);
+                // The new page's root attributes replace the current ones, so
+                // this lasts until the next navigation.
+                if (returning) e.newDocument.documentElement.dataset.returning = "";
             });
 
             // Kept in sessionStorage so a reload keeps the close destination.
