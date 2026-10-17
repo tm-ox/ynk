@@ -268,7 +268,7 @@
     }
     :is(a:hover, a:focus-visible) > .thumb img,
     a.thumb:is(:hover, :focus-visible) img {
-        transform: scale(1.05);
+        transform: scale(1.02);
     }
     :is(a:hover, a:focus-visible) > .thumb::after,
     a.thumb:is(:hover, :focus-visible)::after {
