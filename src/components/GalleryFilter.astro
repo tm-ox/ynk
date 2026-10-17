@@ -77,6 +77,15 @@ const { events, current } = Astro.props;
     });
     document.addEventListener("keydown", (e) => {
         if (!isFilter(e.target)) return;
+        // Vim keys step like the arrows (commit on Enter or blur, as above).
+        if ((e.key === "j" || e.key === "k") && !e.altKey && !e.ctrlKey && !e.metaKey) {
+            const select = e.target as HTMLSelectElement;
+            const next = select.selectedIndex + (e.key === "j" ? 1 : -1);
+            e.preventDefault();
+            stepped = true;
+            if (next >= 0 && next < select.options.length) select.selectedIndex = next;
+            return;
+        }
         if (STEPS.includes(e.key)) stepped = true;
         else if (e.key === "Enter") commit(e.target as HTMLSelectElement);
     });
@@ -113,6 +122,38 @@ const { events, current } = Astro.props;
     }
     select[data-kb] {
         @apply text-accent-hover;
+    }
+    /* Where the browser allows styling the open list (Chrome 135+), drop its
+       border and use the page's own colours and the site's typeface; elsewhere
+       the browser's list is left as it is. */
+    @supports (appearance: base-select) {
+        select,
+        select::picker(select) {
+            appearance: base-select;
+        }
+        select::picker-icon {
+            display: none;
+        }
+        select::picker(select) {
+            border: 0;
+            padding: 0;
+            box-shadow: none;
+            background: rgb(var(--rgb-bg));
+        }
+        option {
+            @apply px-0 py-1 text-accent-muted;
+        }
+        option:hover,
+        option:focus-visible {
+            @apply text-accent;
+            background: transparent;
+        }
+        option:checked {
+            @apply text-accent;
+        }
+        option::checkmark {
+            display: none;
+        }
     }
     select:hover + .chevron {
         @apply border-accent;
