@@ -246,7 +246,7 @@
         }
     }
     /* Archive thumbnails rise in, a little after one another (--i is the
-       cell's index). Titles stay put. Plays on every arrival, page turns
+       cell's index). Titles and rules stay put. Plays on every arrival, page turns
        included (where it follows the grid's slide). */
     @media (prefers-reduced-motion: no-preference) {
         @keyframes rise-in {
@@ -255,7 +255,12 @@
                 translate: 0 0.75rem;
             }
         }
+        /* The picture moves inside its square, which stays put (clipped), so the
+           rules above and below are never covered or faded. */
         .gallery-grid .thumb {
+            overflow: hidden;
+        }
+        .gallery-grid .thumb img {
             animation: rise-in 0.6s ease-out calc(var(--i, 0) * 25ms) both;
         }
     }
