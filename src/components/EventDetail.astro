@@ -31,7 +31,8 @@ const label = "mb-0 text-xs font-bold tracking-normal md:text-sm font-displayCon
 <div class:list={[!summary && "flex flex-col gap-4 md:flex-row"]}>
   {!summary && (
   <div
-    class:list={["md:w-3/5", capped && "md:self-center"]}
+    class:list={["md:w-3/5 vt-detail", capped && "md:self-center"]}
+    transition:name={`${event.data.id}-flyer`}
   >
     <Image
       src={event.data.flyer.src}
