@@ -10,13 +10,14 @@ const currentPath = pathname.slice(1); // remove the first "/"
 const isHome = currentPath === "";
 const isCurrent = (name: string) =>
     currentPath === name || currentPath.startsWith(`${name}/`);
+// Sections of the home page first, then the archives (divided by a rule from sm).
 const links = [
     { label: "Home", href: isHome ? "/#top" : "/", section: "top", current: false },
-    { label: "About", href: "/#about", section: "about", current: false },
     { label: "Featured", href: "/#events", section: "events", current: false },
-    { label: "Events", href: "/events/", section: "events-page", current: isCurrent("events") },
-    { label: "Images", href: "/images/", section: "images-page", current: isCurrent("images") },
+    { label: "About", href: "/#about", section: "about", current: false },
     { label: "Contact", href: "/#contact", section: "contact", current: false },
+    { label: "Events", href: "/events/", section: "events-page", current: isCurrent("events"), divided: true },
+    { label: "Images", href: "/images/", section: "images-page", current: isCurrent("images") },
 ];
 ---
 
@@ -33,7 +34,7 @@ const links = [
             >
                 {
                     links.map((link, i) => (
-                        <li>
+                        <li class:list={[link.divided && "sm:border-l sm:border-l-border sm:pl-3"]}>
                             {i === 0 && <hr class="sm:hidden" />}
                             <a
                                 class={link.current ? "active" : ""}
