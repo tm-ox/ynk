@@ -56,7 +56,7 @@ const picks = photos.slice(0, 36);
                                 <Image
                                     src={image.src}
                                     alt={image.description}
-                                    width={i === 0 ? 800 : 400}
+                                    width={i === 0 ? 1200 : 400}
                                     class="block object-cover w-full h-full"
                                 />
                             </a>
@@ -94,7 +94,7 @@ const picks = photos.slice(0, 36);
         display: none;
     }
     /* From md: six columns of squares, filling the height left under the
-       listing, the first photograph twice the size (2 x 2 cells). The rows are
+       listing, the first photograph 3 x 3 cells when three rows fit, otherwise 2 x 2. The rows are
        exactly one cell tall, so a row that does not fit is dropped (extra rows
        collapse to nothing and are clipped); with room for one row only, the
        feature shows cropped. */
@@ -122,6 +122,14 @@ const picks = photos.slice(0, 36);
         }
         .photo-grid > li:nth-child(n + 10) {
             display: block;
+        }
+        /* Three rows fit when the area is no wider than twice its height (cell
+           = about a sixth of the width): then the feature is 3 x 3. */
+        @container (max-aspect-ratio: 2/1) {
+            .photo-grid > li:first-child {
+                grid-column: span 3;
+                grid-row: span 3;
+            }
         }
     }
 </style>
