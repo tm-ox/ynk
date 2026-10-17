@@ -53,6 +53,10 @@ const padding = Math.max(0, pageSize - events.length);
 </div>
 
 <style>
+    /* The rules above and below a flyer sit flush with it. */
+    .gallery-grid :global(hr) {
+        margin-block: 0;
+    }
     .gallery-spacer {
         display: none;
     }
@@ -96,9 +100,6 @@ const padding = Math.max(0, pageSize - events.length);
         }
         .gallery-grid {
             grid-template-columns: repeat(6, minmax(0, 1fr));
-        }
-        .gallery-grid :global(hr) {
-            margin-block: 0.25rem;
         }
     }
 </style>
