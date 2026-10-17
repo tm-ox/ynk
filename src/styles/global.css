@@ -247,7 +247,7 @@
             scroll-behavior: smooth;
         }
     }
-    /* Thumbnails that link somewhere (slow to ease in, quick to let go): the picture takes a
+    /* Thumbnails that link somewhere the picture takes a
        wash of the accent colour while the link is hovered or focused. The
        thumb is either inside the link or is the link itself. */
     .thumb {
@@ -266,7 +266,6 @@
     :is(a:hover, a:focus-visible) > .thumb::after,
     a.thumb:is(:hover, :focus-visible)::after {
         opacity: 1;
-        transition-duration: 0.7s;
     }
     .gallery-grid a:hover h5 {
         color: var(--color-accent-hover);
