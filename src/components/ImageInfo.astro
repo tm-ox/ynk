@@ -1,5 +1,5 @@
 ---
-import { groupSlug, prettyDate, type GalleryImage } from "../utils/events";
+import { groupSlug, type GalleryImage } from "../utils/events";
 
 interface Props {
     image: GalleryImage;
@@ -21,7 +21,7 @@ const { event } = image;
         <h1 class="min-w-0 m-0 text-xs font-bold leading-[inherit] truncate md:text-sm max-sm:text-base text-accent">
             <a href={`/events/${event.id}/`} class="hover:text-accent-hover">{event.title}</a>
         </h1>
-        <span class="text-accent-muted shrink-0">{prettyDate(event.date)}</span>
+        <span class="text-accent-muted shrink-0">{event.date}</span>
         {
             event.venue?.name && (
                 <span class="min-w-0 truncate text-accent-muted">
