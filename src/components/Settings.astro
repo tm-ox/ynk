@@ -105,6 +105,10 @@ const label = "mb-0 text-xs font-bold tracking-normal uppercase md:text-sm font-
     color: var(--color-accent-muted);
     transition: color 0.2s ease, background-color 0.2s ease;
   }
+  /* A divider between the options only, as the nav and social icons have. */
+  .settings-choice + .settings-choice {
+    border-left: 1px solid var(--color-border);
+  }
   .settings-choice:hover span {
     color: var(--color-accent);
   }
