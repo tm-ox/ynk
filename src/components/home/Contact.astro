@@ -1,27 +1,83 @@
 ---
 import SectionBar from "./SectionBar.astro";
-import Sosmed from "../Sosmed.astro";
 
-const supporters = [
-    "AsiaLink",
-    "Goethe-Institut",
-    "CTM Festival",
-    "ARTJOG",
-    "Pestapora",
-    "AsiaTopa",
-    "Nusasonic",
-];
+const field =
+    "w-full px-0 py-2 text-base font-light tracking-wide bg-transparent border-0 border-b rounded-none font-body text-fg border-accent-muted placeholder:text-accent-muted focus:border-accent focus:outline-none";
+const label = "text-xs uppercase font-displayCon md:text-sm text-accent-muted";
 ---
 
-<section id="contact" class="flex-col">
+<section id="contact" class="flex-col items-stretch">
     <SectionBar label="Contact" />
-    <p class="w-full my-2">
-        <a href="mailto:y%65%73noklub@gmail%2E%63om">&#121;&#101;&#115;&#110;&#111;&#107;&#108;&#117;&#98;&#64;&#103;&#109;&#97;&#105;&#108;&#46;&#99;&#111;&#109;</a>
-    </p>
-    <Sosmed />
-    <hr class="w-full" />
-    <h3 class="w-full p-0 mb-0 text-base font-normal tracking-wide md:text-base">Supporters and partners</h3>
-    <ul class="flex flex-wrap w-full gap-x-6 gap-y-1 mb-auto">
-        {supporters.map((name) => <li class="w-auto text-xs font-bold text-center md:text-sm font-displayCon text-accent sm:text-left">{name}</li>)}
-    </ul>
+    <div class="flex flex-col w-full max-w-xl gap-8 mx-auto my-auto">
+        <h3 class="mb-0 text-base text-center md:text-lg">
+            Bookings, collaborations, press, or just a hello.
+        </h3>
+        <!-- Netlify Forms: detected at build, spam-filtered, forwarded to the
+             notification address set in the Netlify dashboard. The honeypot
+             field is hidden from people and filled in by bots. -->
+        <form
+            name="contact"
+            method="POST"
+            action="/"
+            data-netlify="true"
+            netlify-honeypot="bot-field"
+            data-contact
+            class="flex flex-col gap-6"
+        >
+            <input type="hidden" name="form-name" value="contact" />
+            <p class="hidden" aria-hidden="true">
+                <label>Leave this empty: <input name="bot-field" tabindex="-1" autocomplete="off" /></label>
+            </p>
+            <div class="flex flex-col gap-1">
+                <label for="contact-name" class={label}>Name</label>
+                <input id="contact-name" name="name" type="text" required autocomplete="name" class={field} />
+            </div>
+            <div class="flex flex-col gap-1">
+                <label for="contact-email" class={label}>Email</label>
+                <input id="contact-email" name="email" type="email" required autocomplete="email" class={field} />
+            </div>
+            <div class="flex flex-col gap-1">
+                <label for="contact-message" class={label}>Message</label>
+                <textarea id="contact-message" name="message" rows="5" required class={`${field} resize-y`}></textarea>
+            </div>
+            <div class="flex items-baseline justify-between gap-4">
+                <p class="mb-0 text-xs md:text-sm" role="status" aria-live="polite" data-contact-status></p>
+                <button
+                    type="submit"
+                    class="px-4 py-1 text-xs uppercase transition border cursor-pointer md:text-sm font-displayCon text-accent-muted border-accent-muted hover:text-accent hover:border-accent disabled:opacity-50"
+                >
+                    Send
+                </button>
+            </div>
+        </form>
+    </div>
 </section>
+
+<script>
+    // Submit in place so the panel keeps its place; without JS the form posts
+    // normally and Netlify shows its own confirmation page.
+    document.addEventListener("submit", async (e) => {
+        const form = e.target;
+        if (!(form instanceof HTMLFormElement) || !form.matches("[data-contact]")) return;
+        e.preventDefault();
+        const status = form.querySelector<HTMLElement>("[data-contact-status]");
+        const button = form.querySelector<HTMLButtonElement>("button[type=submit]");
+        if (button) button.disabled = true;
+        if (status) status.textContent = "Sending…";
+        try {
+            const body = new URLSearchParams(new FormData(form) as unknown as Record<string, string>);
+            const res = await fetch(form.action, {
+                method: "POST",
+                headers: { "Content-Type": "application/x-www-form-urlencoded" },
+                body,
+            });
+            if (!res.ok) throw new Error(String(res.status));
+            form.reset();
+            if (status) status.textContent = "Sent. Thank you, we will reply soon.";
+        } catch {
+            if (status) status.textContent = "Could not send. Please try again in a moment.";
+        } finally {
+            if (button) button.disabled = false;
+        }
+    });
+</script>
