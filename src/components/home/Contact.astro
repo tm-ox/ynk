@@ -2,14 +2,14 @@
 import SectionBar from "./SectionBar.astro";
 
 const field =
-    "w-full px-2 py-2 text-base font-light tracking-wide border-0 rounded-none bg-accent-muted/10 font-body text-fg focus:bg-accent-muted/20 focus:outline-none [&:not(:placeholder-shown)]:bg-transparent!";
+    "w-full px-2 py-2 text-base font-light tracking-wide border-0 rounded-none bg-accent-muted/10 font-body text-fg focus:bg-accent-muted/20 focus:outline focus:outline-1 focus:-outline-offset-1 focus:outline-accent-muted [&:not(:placeholder-shown)]:bg-transparent!";
 const label = "text-xs uppercase font-displayCon md:text-sm text-accent-muted";
 ---
 
 <section id="contact" class="flex-col items-stretch">
     <SectionBar label="Contact" />
     <div class="grid grid-cols-1 my-auto lg:gap-6 lg:grid-cols-2">
-        <h3 class="mt-1 mb-4 text-sm sm:text-2xl lg:mb-0 lg:self-center lg:text-right col-span-full lg:col-span-1">
+        <p class="mt-1 mb-4 font-bold tracking-normal text-accent font-display text-sm sm:text-2xl lg:mb-0 lg:self-center lg:text-right col-span-full lg:col-span-1">
             <span class="block">
                 Yes No Klub is a DIY collective working with regional and
                 international artists, organisations and funders.
@@ -17,7 +17,7 @@ const label = "text-xs uppercase font-displayCon md:text-sm text-accent-muted";
             <span class="block mt-4">
                 If you'd like to collaborate or partner with us, get in touch.
             </span>
-        </h3>
+        </p>
         <!-- Netlify Forms: detected at build, spam-filtered, forwarded to the
              notification address set in the Netlify dashboard. The honeypot
              field is hidden from people and filled in by bots. -->
@@ -28,6 +28,7 @@ const label = "text-xs uppercase font-displayCon md:text-sm text-accent-muted";
             data-netlify="true"
             netlify-honeypot="bot-field"
             data-contact
+            data-astro-reload
             class="flex flex-col gap-0 col-span-full lg:col-span-1"
         >
             <input type="hidden" name="form-name" value="contact" />
@@ -124,9 +125,14 @@ const label = "text-xs uppercase font-displayCon md:text-sm text-accent-muted";
             if (status)
                 status.textContent = "Sent. Thank you, we will reply soon.";
         } catch {
-            if (status)
-                status.textContent =
-                    "Could not send. Please try again in a moment.";
+            if (status) {
+                // Built here so the address is not in the page markup.
+                const address = ["yesnoklub", "gmail.com"].join("@");
+                const mail = document.createElement("a");
+                mail.href = `mailto:${address}`;
+                mail.textContent = address;
+                status.replaceChildren("Could not send. Try again, or write to ", mail, ".");
+            }
         } finally {
             if (button) button.disabled = false;
         }

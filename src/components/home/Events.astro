@@ -25,12 +25,12 @@ const picks = photos.slice(0, 36);
     >
         {flyer && (
         <div class="w-full max-w-md mx-auto md:max-w-none md:self-center vt-detail" transition:name={`${featured.data.id}-flyer`}>
-            <a href={href} class="block thumb" tabindex="-1" aria-hidden="true">
+            <a href={href} class="block thumb" tabindex="-1">
                 <Image
                     src={flyer.src}
                     alt={flyerAlt(featured.data)}
                     width={1200}
-                    class="object-contain h-auto w-full mb-auto md:max-h-[calc(100vh-var(--section-offset)-30px)]"
+                    class="object-contain h-auto w-full mb-auto md:max-h-[calc(100vh-var(--section-offset)-var(--spacing-section-inset))]"
                 />
             </a>
         </div>
@@ -55,7 +55,7 @@ const picks = photos.slice(0, 36);
                             >
                                 <Image
                                     src={image.src}
-                                    alt={image.description}
+                                    alt={image.description.split(" from ")[0]}
                                     width={i === 0 ? 1200 : 400}
                                     class="block object-cover w-full h-full"
                                 />
@@ -78,26 +78,29 @@ const picks = photos.slice(0, 36);
     // the last row. Pad the top of the column by half of it, so the listing and
     // its photographs are centred as a block, level with the flyer. (Padding
     // rather than a transform: a shifted column overflows the panel and brings
-    // in its scrollbar, which narrows the whole panel.)
+    // in its scrollbar, which narrows the whole panel.) Photographs in rows that
+    // are clipped are made inert, so Tab and screen readers skip them.
     const wide = window.matchMedia("(min-width: 48rem)");
+    const watch = new ResizeObserver(() => fit());
     const fit = () => {
         document.querySelectorAll<HTMLElement>("[data-featured-column]").forEach((column) => {
             const area = column.querySelector<HTMLElement>(".photo-area");
             if (!area) return;
             column.style.paddingTop = "";
+            const items = [...area.querySelectorAll("li")];
+            const rects = items.map((li) => li.getBoundingClientRect());
+            // Phones show the first nine and hide the rest with display:none.
+            items.forEach((li, i) => (li.inert = wide.matches && rects[i].height <= 1 && li.offsetParent !== null));
             if (!wide.matches) return;
-            const bottoms = [...area.querySelectorAll("li")]
-                .map((li) => li.getBoundingClientRect())
-                .filter((rect) => rect.height > 1)
-                .map((rect) => rect.bottom);
+            const bottoms = rects.filter((rect) => rect.height > 1).map((rect) => rect.bottom);
             if (!bottoms.length) return;
             const spare = area.getBoundingClientRect().bottom - Math.max(...bottoms);
             if (spare > 0) column.style.paddingTop = `${Math.round(spare / 2)}px`;
         });
     };
     document.addEventListener("astro:after-swap", fit);
+    document.addEventListener("astro:before-swap", () => watch.disconnect());
     // The area also resizes when fonts load and the listing rewraps.
-    const watch = new ResizeObserver(fit);
     document.addEventListener("astro:page-load", () => {
         fit();
         document.querySelectorAll(".photo-area").forEach((area) => watch.observe(area));

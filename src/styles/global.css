@@ -24,6 +24,8 @@
     --spacing-rule: calc(var(--spacing) * 1);
     --spacing-header: calc(var(--spacing) * 16);
     --spacing-footer: calc(var(--spacing) * 8);
+    /* What a section's padding and the flyer's frame take from the screen height. */
+    --spacing-section-inset: calc(var(--spacing) * 7.5);
     --container-site: 90rem;
     --text-hero: 5.625rem;
     --text-hero--line-height: calc(var(--spacing) * 12);
@@ -267,16 +269,31 @@
         transition: opacity 0.2s ease;
         pointer-events: none;
     }
-    :is(a:hover, a:focus-visible) > .thumb img,
-    a.thumb:is(:hover, :focus-visible) img {
+    /* Keyboard focus always shows the effect; hover only where there is a
+       real pointer, so it does not stick after a tap. */
+    a:focus-visible > .thumb img,
+    a.thumb:focus-visible img {
         filter: var(--thumb-filter);
     }
-    :is(a:hover, a:focus-visible) > .thumb::after,
-    a.thumb:is(:hover, :focus-visible)::after {
+    a:focus-visible > .thumb::after,
+    a.thumb:focus-visible::after {
         opacity: 1;
     }
-    .gallery-grid a:hover h5 {
+    .gallery-grid a:focus-visible h5 {
         color: var(--color-accent-hover);
+    }
+    @media (hover: hover) {
+        a:hover > .thumb img,
+        a.thumb:hover img {
+            filter: var(--thumb-filter);
+        }
+        a:hover > .thumb::after,
+        a.thumb:hover::after {
+            opacity: 1;
+        }
+        .gallery-grid a:hover h5 {
+            color: var(--color-accent-hover);
+        }
     }
     .section-action {
         @apply text-xs uppercase font-displayCon md:text-sm text-accent-muted hover:text-accent;
