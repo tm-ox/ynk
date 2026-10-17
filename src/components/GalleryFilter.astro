@@ -94,6 +94,17 @@ const { events, current } = Astro.props;
         @apply absolute w-[0.45rem] h-[0.45rem] border-b border-r pointer-events-none right-1.5 top-1/2 border-accent-muted;
         transform: translateY(calc(-70% - 3px)) rotate(45deg);
     }
+    /* No ring around the text. Keyboard focus is still shown: the text brightens
+       and the rule beneath thickens (the transparent outline keeps a visible
+       indicator in forced-colours mode). */
+    select:focus-visible {
+        outline: 2px solid transparent;
+        @apply text-accent-hover;
+    }
+    .select-wrap:focus-within ~ hr {
+        border-color: rgb(var(--rgb-accent-hover));
+        box-shadow: 0 1px 0 rgb(var(--rgb-accent-hover));
+    }
     select:hover + .chevron {
         @apply border-accent;
     }
