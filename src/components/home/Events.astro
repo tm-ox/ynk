@@ -75,14 +75,16 @@ const picks = photos.slice(0, 36);
 
 <script>
     // The photo grid shows whole rows only, so the height left over sits under
-    // the last row. Move the column down by half of it, so the listing and its
-    // photographs are centred as a block, level with the flyer.
+    // the last row. Pad the top of the column by half of it, so the listing and
+    // its photographs are centred as a block, level with the flyer. (Padding
+    // rather than a transform: a shifted column overflows the panel and brings
+    // in its scrollbar, which narrows the whole panel.)
     const wide = window.matchMedia("(min-width: 48rem)");
     const fit = () => {
         document.querySelectorAll<HTMLElement>("[data-featured-column]").forEach((column) => {
             const area = column.querySelector<HTMLElement>(".photo-area");
             if (!area) return;
-            column.style.translate = "";
+            column.style.paddingTop = "";
             if (!wide.matches) return;
             const bottoms = [...area.querySelectorAll("li")]
                 .map((li) => li.getBoundingClientRect())
@@ -90,7 +92,7 @@ const picks = photos.slice(0, 36);
                 .map((rect) => rect.bottom);
             if (!bottoms.length) return;
             const spare = area.getBoundingClientRect().bottom - Math.max(...bottoms);
-            if (spare > 0) column.style.translate = `0 ${Math.round(spare / 2)}px`;
+            if (spare > 0) column.style.paddingTop = `${Math.round(spare / 2)}px`;
         });
     };
     document.addEventListener("astro:after-swap", fit);
