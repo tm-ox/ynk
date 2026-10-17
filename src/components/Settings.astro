@@ -3,9 +3,9 @@ import { Icon } from "astro-icon/components";
 
 // Reference for the Keyboard group: [keys, what they do].
 const keyboard: [string[], string][] = [
-  [["←", "→", "h", "l"], "Move between sections, events and photographs. On the home page they page through the panels, then carry on into Events and Images."],
-  [["↑", "↓", "j", "k"], "Scroll. In the image filter they step through the list."],
-  [["Esc"], "Close an event or photograph and go back to where you were."],
+  [["←", "→", "h", "l"], "Previous and next. On the home page they move between the panels, then carry on into Events and Images. On an event or a photograph they go to the previous or next one, and in the archives to the previous or next page."],
+  [["↑", "↓", "j", "k"], "Scroll whatever on screen scrolls: the panel you are in, a long event description, or the page itself. In the image filter list they step through the options."],
+  [["Esc"], "Close an event, a photograph or an archive and go back to where you came from."],
   [["?"], "Open this panel."],
 ];
 const themes = [
@@ -80,7 +80,8 @@ const label = "mb-0 text-xs font-bold tracking-normal uppercase md:text-sm font-
       <h3 class={`${label} sm:text-left`}>Good to know</h3>
       <hr class="mb-0" />
       <ul class="flex flex-col py-3 text-sm font-light tracking-wide list-none font-body md:text-base">
-        <li class="normal-case">On a touch screen, swipe sideways to move between the home panels.</li>
+        <li class="normal-case">On the home page the mouse wheel moves between panels once the one in view has scrolled to its end. On a touch screen, swipe sideways.</li>
+        <li class="normal-case">Keyboard shortcuts pause while you are typing in a form.</li>
         <li class="normal-case">Animations are kept to a minimum if your device is set to reduce motion.</li>
       </ul>
     </div>
