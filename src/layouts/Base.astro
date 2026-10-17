@@ -234,7 +234,7 @@ const ogImage = new URL(image ?? "/og-default.jpg", Astro.site).href;
                     const track = document.querySelector<HTMLElement>("[data-track]");
                     const panel =
                         (track && matchMedia("(min-width: 40rem)").matches
-                            ? track.children[Math.round(track.scrollLeft / track.clientWidth)]?.id
+                            ? track.querySelectorAll<HTMLElement>(":scope > section")[Math.round(track.scrollLeft / track.clientWidth)]?.id
                             : undefined) ||
                         document.querySelector<HTMLElement>("#main-nav a.active[data-section]")?.dataset.section;
                     if (panel) {
@@ -304,7 +304,8 @@ const ogImage = new URL(image ?? "/og-default.jpg", Astro.site).href;
                 const target = homeHash && document.getElementById(homeHash.slice(1));
                 if (!t || !target || !matchMedia("(min-width: 40rem)").matches)
                     return;
-                const index = [...t.children].indexOf(target);
+                // Panels only: the track also holds stray <style>/<script> elements.
+                const index = [...t.querySelectorAll(":scope > section")].indexOf(target);
                 if (index >= 0)
                     t.scrollTo({ left: index * t.clientWidth, behavior: "instant" });
             });
