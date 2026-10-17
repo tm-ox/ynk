@@ -193,8 +193,11 @@ ${frames
     }
     .hero-next {
         --next-size: clamp(3.5rem, 9cqw, 8rem);
-        --next-inset: clamp(0.75rem, 2.5cqw, 3rem);
-        right: var(--next-inset);
+        /* The icon's own box has empty space beyond the arrow tip (about 13% of its
+           width), so the box is pulled out by that much to put the tip on the edge.
+           Raise --next-inset to bring the arrow back in from the edge. */
+        --next-inset: 0px;
+        right: calc(var(--next-inset) - var(--next-size) * 0.13);
         top: 50%;
         translate: 0 -50%;
     }
