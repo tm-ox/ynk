@@ -28,12 +28,15 @@ const label = "mb-0 text-xs font-bold tracking-normal uppercase md:text-sm font-
 </button>
 
 <!-- A native modal dialog: centred on screen, the page behind is inert, focus
-     stays inside, and Esc closes it. The padding lives on the inner div so a
+     stays inside, and Esc closes it. Focus starts on the dialog itself (autofocus),
+     not on the close button, so no ring shows until the keyboard user tabs. The padding lives on the inner div so a
      click on the dialog element itself can only be a click on the backdrop. -->
 <dialog
   data-settings
   aria-labelledby="settings-title"
-  class="m-auto w-[min(92vw,44rem)] max-h-[85dvh] p-0 overflow-y-auto border-y border-border bg-bg text-fg backdrop:bg-scrim-heavy backdrop:backdrop-blur-sm"
+  tabindex="-1"
+  autofocus
+  class="focus:outline-none m-auto w-[min(92vw,44rem)] max-h-[85dvh] p-0 overflow-y-auto border-y border-border bg-bg text-fg backdrop:bg-scrim-heavy backdrop:backdrop-blur-sm"
 >
   <div class="flex flex-col gap-6 p-4 sm:p-6">
     <div class="flex items-center justify-between gap-4">
