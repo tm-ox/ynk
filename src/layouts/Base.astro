@@ -229,9 +229,14 @@ const ogImage = new URL(image ?? "/og-default.jpg", Astro.site).href;
                 // Leaving the home page remembers the panel in view, so closing
                 // out of an archive or detail page lands back on it.
                 if (e.from.pathname === "/" && e.to.pathname !== "/") {
-                    const panel = document.querySelector<HTMLElement>(
-                        "#main-nav a.active[data-section]",
-                    )?.dataset.section;
+                    // From the track's own scroll position where the panels are
+                    // side by side (exact); otherwise the nav's active link.
+                    const track = document.querySelector<HTMLElement>("[data-track]");
+                    const panel =
+                        (track && matchMedia("(min-width: 40rem)").matches
+                            ? track.children[Math.round(track.scrollLeft / track.clientWidth)]?.id
+                            : undefined) ||
+                        document.querySelector<HTMLElement>("#main-nav a.active[data-section]")?.dataset.section;
                     if (panel) {
                         homePanel = panel;
                         try {
