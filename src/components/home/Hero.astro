@@ -99,9 +99,10 @@ ${frames
                 ))}
             </span>
         </h1>
-        <!-- Rows are 1fr / text / 1fr, so the text stays centred and this sits
-             halfway between the text and the bottom edge. -->
-        <a href="/#events" target="_self" aria-label="Next section" class="relative self-center row-start-3 hero-next">
+        <!-- Vertically centred on the stage and right-aligned (spans all three
+             rows, so it does not affect the headline). Size and inset: see
+             .hero-next in the styles. -->
+        <a href="/#events" target="_self" aria-label="Next section" class="relative self-center justify-self-end row-span-3 row-start-1 hero-next">
             <Icon name="ion:arrow-forward-sharp" class="icon hero-next-icon" />
         </a>
     </div>
@@ -190,9 +191,14 @@ ${frames
     .hero-word:last-child {
         opacity: 1;
     }
+    .hero-next {
+        --next-size: clamp(3.5rem, 9cqw, 8rem);
+        --next-inset: clamp(0.75rem, 2.5cqw, 3rem);
+        margin-right: var(--next-inset);
+    }
     .hero-next-icon {
-        width: 2.5rem;
-        height: 2.5rem;
+        width: var(--next-size);
+        height: var(--next-size);
         filter: drop-shadow(0 0 0.4rem rgb(0 0 0 / 0.7));
     }
     @media (prefers-reduced-motion: no-preference) {
