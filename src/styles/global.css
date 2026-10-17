@@ -247,7 +247,7 @@
             scroll-behavior: smooth;
         }
     }
-    /* Thumbnails that link somewhere: the picture eases in a little and takes a
+    /* Thumbnails that link somewhere (slow to ease in, quick to let go): the picture eases in a little and takes a
        wash of the accent colour while the link is hovered or focused. The
        thumb is either inside the link or is the link itself. */
     .thumb {
@@ -255,7 +255,7 @@
         overflow: hidden;
     }
     .thumb img {
-        transition: transform 0.4s ease;
+        transition: transform 0.2s ease;
     }
     .thumb::after {
         content: "";
@@ -263,16 +263,18 @@
         inset: 0;
         background: rgb(var(--rgb-accent) / 0.18);
         opacity: 0;
-        transition: opacity 0.25s ease;
+        transition: opacity 0.2s ease;
         pointer-events: none;
     }
     :is(a:hover, a:focus-visible) > .thumb img,
     a.thumb:is(:hover, :focus-visible) img {
         transform: scale(1.02);
+        transition-duration: 0.9s;
     }
     :is(a:hover, a:focus-visible) > .thumb::after,
     a.thumb:is(:hover, :focus-visible)::after {
         opacity: 1;
+        transition-duration: 0.7s;
     }
     .gallery-grid a:hover h5 {
         color: var(--color-accent-hover);
