@@ -247,11 +247,14 @@
             scroll-behavior: smooth;
         }
     }
-    /* Thumbnails that link somewhere the picture takes a
-       wash of the accent colour while the link is hovered or focused. The
+    /* Thumbnails that link somewhere the picture drops to
+       grayscale and takes a wash of the accent colour while the link is hovered or focused. The
        thumb is either inside the link or is the link itself. */
     .thumb {
         position: relative;
+    }
+    .thumb img {
+        transition: filter 0.2s ease;
     }
     .thumb::after {
         content: "";
@@ -261,6 +264,10 @@
         opacity: 0;
         transition: opacity 0.2s ease;
         pointer-events: none;
+    }
+    :is(a:hover, a:focus-visible) > .thumb img,
+    a.thumb:is(:hover, :focus-visible) img {
+        filter: grayscale(1);
     }
     :is(a:hover, a:focus-visible) > .thumb::after,
     a.thumb:is(:hover, :focus-visible)::after {
