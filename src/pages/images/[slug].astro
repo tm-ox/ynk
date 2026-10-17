@@ -3,6 +3,7 @@ import { Image } from "astro:assets";
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import { Icon } from "astro-icon/components";
 import NavArrow from "../../components/NavArrow.astro";
+import ImageInfo from "../../components/ImageInfo.astro";
 import { getGalleryImages } from "../../utils/events";
 
 export async function getStaticPaths() {
@@ -27,6 +28,7 @@ const pageTitle = image.kind === "flyer"
   : position
   ? `${image.alt} – photo ${position[1]} of ${position[2]}`
   : `${image.alt} – photo`;
+const positionLabel = image.kind === "flyer" ? "Flyer" : position ? `${position[1]} of ${position[2]}` : undefined;
 ---
 
 <BaseLayout
@@ -55,12 +57,12 @@ const pageTitle = image.kind === "flyer"
     </div>
   </div>
   <section class="h-section flex flex-col pb-3 vt-detail" transition:name={image.id}>
-    <h1 class="mb-2 text-base font-bold normal-case md:text-lg md:sr-only">{image.alt}</h1>
+    <ImageInfo image={image} position={positionLabel} />
     <Image
       src={image.src}
       alt={image.description}
       width="1600"
-      class="object-contain w-full h-full"
+      class="object-contain w-full h-full min-h-0 flex-1 mt-3"
     />
   </section>
 </BaseLayout>

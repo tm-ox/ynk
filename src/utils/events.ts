@@ -37,6 +37,8 @@ export interface GalleryImage {
   kind: "flyer" | "photo";
   groupId: string;
   description: string;
+  /** The event the picture belongs to, for the info strip on its own page. */
+  event: { id: string; title: string; date: string; venue?: { name?: string; url?: string } };
 }
 
 /** Every gallery photo, in event order, with a descriptive alt. */
@@ -48,6 +50,12 @@ export async function getGalleryImages(): Promise<GalleryImage[]> {
   return events.flatMap((event) => {
     const photos = (event.data.images ?? []).filter(Boolean) as any[];
     const groupId = groupSlug(event.data.title);
+    const info = {
+      id: event.id,
+      title: event.data.title,
+      date: event.data.date,
+      venue: event.data.venue,
+    };
     // The flyer leads the event's photographs (only events that have some).
     const flyer = event.data.flyer && {
       src: event.data.flyer.src,
@@ -56,6 +64,7 @@ export async function getGalleryImages(): Promise<GalleryImage[]> {
       kind: "flyer" as const,
       groupId,
       description: flyerAlt(event.data),
+      event: info,
     };
     return [
       ...(flyer ? [flyer] : []),
@@ -63,6 +72,7 @@ export async function getGalleryImages(): Promise<GalleryImage[]> {
         ...image,
         kind: "photo" as const,
         groupId,
+        event: info,
         description: `Photograph ${i + 1} of ${photos.length} from ${event.data.title}, ${prettyDate(event.data.date)}${place(event.data)}`,
       })),
     ];

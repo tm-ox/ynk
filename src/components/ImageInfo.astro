@@ -1,0 +1,42 @@
+---
+import { groupSlug, prettyDate, type GalleryImage } from "../utils/events";
+
+interface Props {
+    image: GalleryImage;
+    /** "3 of 14" for a photograph, "Flyer" for a flyer. */
+    position?: string;
+}
+const { image, position } = Astro.props;
+const { event } = image;
+---
+
+<!-- Info strip for a single picture. It takes the place of the gallery filter
+     (same transition name, so the bar stays put between the archive and a
+     picture) and is the page's h1. Credits for who is in the photograph can
+     join it later. -->
+<div class="image-info" transition:name="gallery-bar">
+    <div class="flex flex-wrap items-baseline w-full gap-x-6 gap-y-1 text-xs uppercase font-displayCon md:text-sm">
+        <h1 class="mb-0 text-xs font-bold md:text-sm text-accent">
+            <a href={`/events/${event.id}/`} class="hover:text-accent-hover">{event.title}</a>
+        </h1>
+        <span class="text-accent-muted">{prettyDate(event.date)}</span>
+        {
+            event.venue?.name && (
+                <span class="text-accent-muted">
+                    {event.venue.url ? (
+                        <a href={event.venue.url} target="_blank" rel="noopener noreferrer" class="hover:text-accent">
+                            {event.venue.name}
+                        </a>
+                    ) : (
+                        event.venue.name
+                    )}
+                </span>
+            )
+        }
+        <span class="flex items-baseline gap-6 ml-auto">
+            {position && <span class="text-accent-muted">{position}</span>}
+            <a href={`/images/event/${groupSlug(event.title)}/`} class="section-action">Event images</a>
+        </span>
+    </div>
+    <hr class="mb-0" />
+</div>
