@@ -112,6 +112,11 @@ const label = "mb-0 text-xs font-bold tracking-normal uppercase md:text-sm font-
   // looked up when the event happens.
   const dialog = () => document.querySelector<HTMLDialogElement>("dialog[data-settings]");
 
+  // The browser hands focus back to the cog when the dialog closes and, for a
+  // dialog opened with the mouse, can draw the keyboard ring on it. Only keep
+  // focus there if it was opened from the keyboard.
+  let openedByKeyboard = false;
+
   document.addEventListener("click", (e) => {
     const target = e.target as Element;
     const d = dialog();
@@ -121,11 +126,23 @@ const label = "mb-0 text-xs font-bold tracking-normal uppercase md:text-sm font-
       d.querySelectorAll<HTMLInputElement>("[data-theme-choice]").forEach((input) => {
         input.checked = input.value === current;
       });
+      openedByKeyboard = e.detail === 0;
       d.showModal();
     } else if (target.closest("[data-settings-close]") || target === d) {
       d.close();
     }
   });
+
+  // "close" does not bubble, so listen in the capture phase.
+  document.addEventListener(
+    "close",
+    (e) => {
+      if (!openedByKeyboard && (e.target as Element).matches("dialog[data-settings]")) {
+        document.querySelector<HTMLElement>("[data-settings-open]")?.blur();
+      }
+    },
+    true,
+  );
 
   document.addEventListener("change", (e) => {
     const input = e.target as HTMLInputElement;
