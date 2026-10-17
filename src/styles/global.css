@@ -245,6 +245,22 @@
             transition-delay: calc(var(--i, 0) * 80ms);
         }
     }
+    /* Event page text rises in on arrival. The flyer is left to its morph, and
+       Previous/Next already slide the whole page, so no rise on top of that. */
+    @media (prefers-reduced-motion: no-preference) {
+        @keyframes rise-in {
+            from {
+                opacity: 0;
+                translate: 0 0.75rem;
+            }
+        }
+        [data-rise] {
+            animation: rise-in 0.6s ease-out 0.1s both;
+        }
+        html[data-astro-transition^="paging"] [data-rise] {
+            animation: none;
+        }
+    }
     /* Thumbnails that link somewhere: while the link is hovered or focused the
        picture is filtered (--thumb-filter) and takes a wash of the accent colour.
        The thumb is either inside the link or is the link itself. */
