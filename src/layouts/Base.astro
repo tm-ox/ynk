@@ -211,7 +211,7 @@ const ogImage = new URL(image ?? "/og-default.jpg", Astro.site).href;
                                 : "paging-back";
                 }
                 paging = !!e.direction && e.direction.startsWith("paging");
-                // Grid pages slide as a whole; the cards (and the flyer thumbnails inside them) must not be captured
+                // Grid pages slide as a whole; the cards (and the titles and flyers inside them) must not be captured
                 // separately or they would crossfade instead.
                 if (paging) unname(document);
 
@@ -265,7 +265,7 @@ const ogImage = new URL(image ?? "/og-default.jpg", Astro.site).href;
             let paging = false;
             const unname = (root: ParentNode) =>
                 root
-                    .querySelectorAll<HTMLElement>(".imageGrid a, .gallery-grid a, .gallery-grid .thumb")
+                    .querySelectorAll<HTMLElement>(".imageGrid a, .gallery-grid a, .gallery-grid a [data-astro-transition-scope]")
                     .forEach((a) => (a.style.viewTransitionName = "none"));
             document.addEventListener("astro:before-swap", (e: any) => {
                 if (paging) unname(e.newDocument);
