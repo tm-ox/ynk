@@ -44,11 +44,11 @@ const picks =
         <a href="/events/" class="section-action">All events</a>
     </SectionBar>
     <div
-        class="grid w-full gap-4 my-auto lg:gap-6 lg:grid-cols-3 lg:items-center"
+        class="grid w-full gap-4 my-auto md:gap-4 md:grid-cols-[3fr_5fr] md:items-center"
         transition:name={featured.data.id}
     >
         {flyer && (
-        <div class="w-full max-w-md mx-auto lg:max-w-none">
+        <div class="w-full max-w-md mx-auto md:max-w-none">
             <a href={href} class="block" tabindex="-1" aria-hidden="true">
                 <Image
                     src={flyer.src}
@@ -59,7 +59,7 @@ const picks =
             </a>
         </div>
         )}
-        <div class={flyer ? "lg:col-span-2" : "lg:col-span-3"}>
+        <div class={flyer ? "" : "md:col-span-2"}>
             <EventDetail summary event={featured} headingHref={href} />
             {picks.length > 0 && (
             <ul class="grid grid-cols-2 gap-2 mt-4 sm:grid-cols-4">
