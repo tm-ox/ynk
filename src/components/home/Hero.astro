@@ -1,12 +1,108 @@
 ---
+import { Image } from "astro:assets";
 import background from "../../content/images/splash2025.jpg";
+
+// The photograph's own proportions (2048x1366) and where the neon sign sits in
+// it, as fractions of its width and height.
+const ratio = background.width / background.height;
+const sign = { x: 0.561, y: 0.358 };
 ---
 
 <section id="top">
-    <div
-        class="flex items-center justify-center self-stretch w-full -mt-3 -mb-4 bg-center bg-cover"
-        style={`background-image: url(${background.src});`}
-    >
-        <h1 class="display-hero">Experimental etc.</h1>
+    <div class="relative flex items-center justify-center self-stretch w-full -mt-3 -mb-4 overflow-hidden hero-stage">
+        <!-- The picture and the glow share one box with the photograph's
+             proportions, sized to cover the stage, so the glow stays on the sign
+             whatever the stage's shape. -->
+        <div
+            class="hero-art"
+            style={`--ratio:${ratio}; --sign-x:${sign.x * 100}%; --sign-y:${sign.y * 100}%;`}
+            aria-hidden="true"
+        >
+            <Image
+                src={background}
+                alt=""
+                widths={[1024, 1600, 2048]}
+                sizes="100vw"
+                loading="eager"
+                fetchpriority="high"
+                class="block w-full h-full"
+            />
+            <div class="hero-glow"></div>
+        </div>
+        <h1 class="relative display-hero">Experimental etc.</h1>
     </div>
 </section>
+
+<style>
+    .hero-stage {
+        container-type: size;
+    }
+    .hero-art {
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        width: max(100cqw, calc(100cqh * var(--ratio)));
+        height: max(100cqh, calc(100cqw / var(--ratio)));
+        translate: -50% -50%;
+        transform-origin: var(--sign-x) var(--sign-y);
+    }
+    /* A soft cyan light over the sign; screen blending only ever adds light. */
+    .hero-glow {
+        position: absolute;
+        left: var(--sign-x);
+        top: var(--sign-y);
+        width: 30%;
+        aspect-ratio: 1;
+        translate: -50% -50%;
+        border-radius: 50%;
+        background: radial-gradient(
+            circle,
+            rgb(90 210 255 / 0.55) 0%,
+            rgb(40 130 255 / 0.28) 28%,
+            transparent 65%
+        );
+        mix-blend-mode: screen;
+        opacity: 0.7;
+        pointer-events: none;
+    }
+    @media (prefers-reduced-motion: no-preference) {
+        /* A very slow push-in towards the sign and back. */
+        .hero-art {
+            animation: hero-drift 40s ease-in-out infinite alternate;
+            will-change: transform;
+        }
+        /* The tube breathes, with a brief flicker once a cycle. */
+        .hero-glow {
+            animation: hero-neon 9s ease-in-out infinite;
+        }
+    }
+    @keyframes hero-drift {
+        to {
+            transform: scale(1.07);
+        }
+    }
+    @keyframes hero-neon {
+        0%,
+        100% {
+            opacity: 0.6;
+        }
+        45% {
+            opacity: 0.9;
+        }
+        70% {
+            opacity: 0.9;
+        }
+        71% {
+            opacity: 0.45;
+        }
+        72% {
+            opacity: 0.85;
+        }
+        73% {
+            opacity: 0.5;
+        }
+        75% {
+            opacity: 0.9;
+        }
+    }
+</style>
