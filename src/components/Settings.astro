@@ -3,10 +3,10 @@ import { Icon } from "astro-icon/components";
 
 // Reference for the Keyboard group: [keys, what they do].
 const keyboard: [string[], string][] = [
-  [["←", "→", "h", "l"], "Previous and next. On the home page they move between the panels, then carry on into Events and Images. On an event or a photograph they go to the previous or next one, and in the archives to the previous or next page."],
-  [["↑", "↓", "j", "k"], "Scroll whatever on screen scrolls: the panel you are in, a long event description, or the page itself. In the image filter list they step through the options."],
-  [["Esc"], "Close an event, a photograph or an archive and go back to where you came from."],
-  [["?"], "Open this panel."],
+  [["←", "→", "h", "l"], "Move between panels, events, photographs and pages."],
+  [["↑", "↓", "j", "k"], "Scroll the panel, event or page. Steps through the image filter."],
+  [["Esc"], "Close and go back."],
+  [["?"], "Open settings."],
 ];
 const themes = [
   ["system", "System"],
@@ -36,16 +36,15 @@ const label = "mb-0 text-xs font-bold tracking-normal uppercase md:text-sm font-
   aria-labelledby="settings-title"
   class="m-auto w-[min(92vw,44rem)] max-h-[85dvh] p-0 overflow-y-auto border-y border-border bg-bg text-fg backdrop:bg-scrim-heavy backdrop:backdrop-blur-sm"
 >
-  <div class="flex flex-col gap-6 p-4 sm:p-6">
-    <div class="flex items-center justify-between gap-4">
+  <div class="flex flex-col p-4 sm:p-6">
+    <div class="flex items-center justify-between gap-4 pb-3">
       <h2 id="settings-title" tabindex="-1" autofocus class="focus:outline-none mb-0 text-xs font-bold text-left uppercase md:text-sm font-displayCon">Settings</h2>
       <button type="button" data-settings-close aria-label="Close settings" class="cursor-pointer">
         <Icon name="ion:close-sharp" class="icon" />
       </button>
     </div>
 
-    <!-- -mb-6 cancels the gap to the next group, so its rule sits on the options. -->
-    <div class="-mb-6">
+    <div>
       <hr class="mt-0" />
       <h3 id="settings-theme" class={`${label} sm:text-left`}>Theme</h3>
       <hr class="mb-0" />
@@ -80,15 +79,15 @@ const label = "mb-0 text-xs font-bold tracking-normal uppercase md:text-sm font-
       <h3 class={`${label} sm:text-left`}>Good to know</h3>
       <hr class="mb-0" />
       <ul class="flex flex-col py-3 text-sm font-light tracking-wide list-none font-body md:text-base">
-        <li class="normal-case">On the home page the mouse wheel moves between panels once the one in view has scrolled to its end. On a touch screen, swipe sideways.</li>
-        <li class="normal-case">Keyboard shortcuts pause while you are typing in a form.</li>
-        <li class="normal-case">Animations are kept to a minimum if your device is set to reduce motion.</li>
+        <li class="normal-case">The mouse wheel and swiping also move between home panels.</li>
+        <li class="normal-case">Shortcuts pause while you type in a form.</li>
+        <li class="normal-case">Animations are reduced if your device asks.</li>
       </ul>
     </div>
 
     <div>
       <hr class="mt-0" />
-      <p class="mb-0 text-xs text-center sm:text-left font-displayCon text-accent-muted">© 2010–{new Date().getFullYear()} Yes No Klub</p>
+      <p class="mt-3 mb-0 text-xs text-center sm:text-left font-displayCon text-accent-muted">© 2010–{new Date().getFullYear()} Yes No Klub</p>
     </div>
   </div>
 </dialog>
