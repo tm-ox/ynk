@@ -11,6 +11,21 @@ const sign = { x: 0.561, y: 0.358 };
 // wide, so up to about 1.5 times a 1300px stage is still at full sharpness.
 const zoom = 1.7;
 const focus = { x: 0.58, y: 0.47 };
+
+// The headline: "Experimental" and a word that changes. The founding event
+// was "a monthly experimental whatever event" (see About); the last word is the
+// one shown when nothing moves. Edit the list to change the cycle.
+const words = ["music", "sound", "film", "performance", "whatever", "etc."];
+const wordSeconds = 2.6;
+const cycle = words.length * wordSeconds;
+// Each word fades up, holds, then fades away within its own 1/N of the cycle.
+const slot = 100 / words.length;
+const wordKeyframes = `@keyframes hero-word {
+    0% { opacity: 0; translate: 0 0.2em; }
+    ${(slot * 0.12).toFixed(2)}% { opacity: 1; translate: 0 0; }
+    ${(slot * 0.88).toFixed(2)}% { opacity: 1; translate: 0 0; }
+    ${slot.toFixed(2)}%, 100% { opacity: 0; translate: 0 -0.2em; }
+}`;
 ---
 
 <section id="top">
@@ -34,9 +49,18 @@ const focus = { x: 0.58, y: 0.47 };
             />
             <div class="hero-glow"></div>
         </div>
-        <h1 class="relative display-hero">Experimental etc.</h1>
+        <h1 class="relative display-hero">
+            Experimental
+            <!-- The words are for the eye; the heading reads "Experimental etc." -->
+            <span class="sr-only">etc.</span>
+            <span class="hero-words" aria-hidden="true" style={`--cycle:${cycle}s; --step:${wordSeconds}s;`}>
+                {words.map((word, i) => <span class="hero-word" style={`--i:${i}`}>{word}</span>)}
+            </span>
+        </h1>
     </div>
 </section>
+
+<style set:html={wordKeyframes}></style>
 
 <style>
     .hero-stage {
@@ -74,7 +98,25 @@ const focus = { x: 0.58, y: 0.47 };
         opacity: 0.85;
         pointer-events: none;
     }
+    /* The words share one cell, so the line is as wide as the longest. Still, or
+       with reduced motion, only the last shows. */
+    .hero-words {
+        display: inline-grid;
+        text-align: left;
+        vertical-align: bottom;
+    }
+    .hero-word {
+        grid-area: 1 / 1;
+        opacity: 0;
+    }
+    .hero-word:last-child {
+        opacity: 1;
+    }
     @media (prefers-reduced-motion: no-preference) {
+        .hero-word {
+            animation: hero-word var(--cycle) linear infinite both;
+            animation-delay: calc(var(--i) * var(--step));
+        }
         /* A very slow push-in towards the sign and back. */
         .hero-art {
             animation: hero-drift 40s ease-in-out infinite alternate;

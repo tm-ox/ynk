@@ -30,10 +30,10 @@
     /* What a section's padding and the flyer's frame take from the screen height. */
     --spacing-section-inset: calc(var(--spacing) * 7.5);
     --container-site: 90rem;
-    --text-hero: 5.625rem;
-    --text-hero--line-height: calc(var(--spacing) * 12);
-    --text-hero-lg: 12.5rem;
-    --text-hero-lg--line-height: calc(var(--spacing) * 28);
+    --text-hero: 3.25rem;
+    --text-hero--line-height: calc(var(--spacing) * 10);
+    --text-hero-lg: 6.5rem;
+    --text-hero-lg--line-height: calc(var(--spacing) * 20);
 }
 
 /* Height of a full-viewport section: viewport minus header and footer. */
