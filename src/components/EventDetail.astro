@@ -5,7 +5,9 @@ import { flyerAlt } from "../utils/events";
 
 interface Props {
   event: CollectionEntry<"events">;
-  /** Makes the title a link (used where this sits on another page). */
+  /** Makes the title a link (used where this sits on another page). In the
+   *  summary the link stretches over the whole listing; the venue link and
+   *  the title-action slot sit above it. */
   headingHref?: string;
   /** Adds an Event images link beside the title when the event has photographs. */
   docsHref?: string;
@@ -28,7 +30,7 @@ const titleClass = summary ? "" : "text-xl md:text-3xl font-bold";
 const label = "mb-0 text-xs font-bold tracking-normal md:text-sm font-displayCon text-accent";
 ---
 
-<div class:list={[!summary && "flex flex-col gap-4 md:grid md:grid-cols-[minmax(0,3fr)_minmax(0,5fr)]"]}>
+<div class:list={[!summary && "flex flex-col gap-4 md:grid md:grid-cols-[minmax(0,3fr)_minmax(0,5fr)]", summary && headingHref && "relative group"]}>
   {!summary && (
   <div
     class:list={["vt-detail", capped && "md:self-center"]}
@@ -53,14 +55,14 @@ const label = "mb-0 text-xs font-bold tracking-normal md:text-sm font-displayCon
       <Title class:list={["mb-0 uppercase mx-auto sm:mx-0", titleClass]}>
         {
           headingHref ? (
-            <a href={headingHref}>{event.data.title}</a>
+            <a href={headingHref} class="after:absolute after:inset-0 group-hover:text-accent-hover">{event.data.title}</a>
           ) : (
             event.data.title
           )
         }
       </Title>
       {summary ? (
-        <div class="ml-auto"><slot name="title-action" /></div>
+        <div class="relative z-10 ml-auto"><slot name="title-action" /></div>
       ) : (
         docsHref && (
           <a href={docsHref} class="ml-auto section-action">Event images</a>
@@ -92,6 +94,7 @@ const label = "mb-0 text-xs font-bold tracking-normal md:text-sm font-displayCon
               href={event.data.venue.url}
               target="_blank"
               rel="noopener noreferrer"
+              class="relative z-10"
             >
               {event.data.venue.name}
             </a>
