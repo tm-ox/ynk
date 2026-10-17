@@ -9,19 +9,22 @@ const ratio = background.width / background.height;
 const sign = { x: 0.561, y: 0.358 };
 // The crop: how far in to zoom (1 = the photograph just covers the stage) and
 // the point of the photograph kept at the stage's centre. The source is 2048px
-// wide, so up to about 1.5 times a 1300px stage is still at full sharpness.
+// wide: up to about 1.5 times a 1300px stage is at full sharpness, and 1.7 (with
+// the 1.07 drift) upscales by about 10 to 20%, accepted for this dark, grainy photo.
 const zoom = 1.7;
 const focus = { x: 0.58, y: 0.47 };
 
 // The headline: "Experimental" and a word that changes. The founding event
 // was "a monthly experimental whatever event" (see About); the last word is the
-// one shown when nothing moves. Edit the list to change the cycle.
+// one shown when nothing moves. Edit the list to change the cycle (two words at
+// least).
 const words = ["music", "sound", "performance", "people", "etc.", "whatever"];
+if (words.length < 2) throw new Error("Hero.astro: the cycling headline needs at least two words.");
 const wordSeconds = 1.8;
 const cycle = words.length * wordSeconds;
 
 // How each word glitches in and out. Every word gets its own jolt (sideways,
-// up/down, tilt) from these lists, used in turn, so no two entrances are alike.
+// up/down, tilt) from these lists, used in turn, so entrances differ (the lists have six entries and repeat beyond that).
 const jolts = {
     x: ["0.06em", "-0.09em", "0.11em", "-0.05em", "0.08em", "-0.1em"],
     y: ["-0.03em", "0.04em", "0.02em", "-0.05em", "-0.02em", "0.04em"],
@@ -133,6 +136,9 @@ ${frames
             0px
         );
         transform-origin: var(--sign-x) var(--sign-y);
+        /* A little overscan, so the parallax never shows a sliver of the stage
+           where the crop is clamped to the photograph's edge. */
+        scale: 1.01;
     }
     /* A soft cyan light over the sign; screen blending only ever adds light. */
     .hero-glow {
@@ -156,9 +162,11 @@ ${frames
     }
     /* A strip down the middle of the stage (--strip wide), with the headline
        large enough to break inside it: "Experimental" over the changing word,
-       each wrapping within the strip, lines butted by a cap-height line-height
-       (BioRhyme Expanded's capitals are about 0.72em tall; lower --cap-lh to
-       overlap them). Tune --strip, --size and --cap-lh. */
+       each wrapping within the strip. BioRhyme Expanded's capitals are about
+       0.72em tall, so a line-height of 0.72 would just touch; --cap-lh is tuned
+       lower so the lines overlap. This overrides the --text-hero tokens in
+       global.css, which now serve only the 404 page's .display-hero. Tune
+       --strip, --size and --cap-lh. */
     .hero-title {
         --strip: 62cqw;
         --size: clamp(2.25rem, 7cqw, 6.5rem);
@@ -193,17 +201,21 @@ ${frames
     }
     .hero-next {
         --next-size: clamp(3.5rem, 9cqw, 8rem);
-        /* The icon's own box has empty space beyond the arrow tip (about 13% of its
-           width), so the box is pulled out by that much to put the tip on the edge.
-           Raise --next-inset to bring the arrow back in from the edge. */
+        /* Raise --next-inset to bring the arrow back in from the edge. */
         --next-inset: 0px;
-        right: calc(var(--next-inset) - var(--next-size) * 0.13);
+        right: var(--next-inset);
         top: 50%;
         translate: 0 -50%;
+    }
+    .hero-next:focus-visible {
+        outline-offset: -2px;
     }
     .hero-next-icon {
         width: var(--next-size);
         height: var(--next-size);
+        /* Pulled out by the empty 13% beside the tip, so the tip meets the edge
+           while the link's own box (and its focus ring) stays inside the stage. */
+        margin-right: calc(var(--next-size) * -0.13);
         filter: drop-shadow(0 0 0.4rem rgb(0 0 0 / 0.7));
     }
     @media (prefers-reduced-motion: no-preference) {
@@ -241,8 +253,8 @@ ${frames
         }
     }
     /* The picture shifts a little, quickly and unevenly: a short, restless
-       movement (about 0.12% of its width) behind the words. It is zoomed in, so
-       there is room at its edges. */
+       movement (about 0.12% of its width) behind the words. The 1% overscan on
+       .hero-art covers its edges. */
     @keyframes hero-parallax {
         0%,
         100% {

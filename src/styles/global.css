@@ -236,7 +236,8 @@
             scroll-behavior: smooth;
         }
     }
-    /* Panels fade in as they come into view (columns alternately rise and fall) (scripts/reveal.ts sets data-reveal).
+    /* Panels fade in as they come into view, columns alternately rising and falling
+       (scripts/reveal.ts sets data-reveal).
        Without the script, or with reduced motion, panels are plain. */
     @media (min-width: 40rem) and (prefers-reduced-motion: no-preference) {
         .home-track > section[data-reveal="out"] [data-reveal-item] {

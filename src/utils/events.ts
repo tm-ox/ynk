@@ -29,6 +29,8 @@ export interface GalleryImage {
   kind: "flyer" | "photo";
   groupId: string;
   description: string;
+  /** Photographs only: this one's place among the event's photographs. */
+  position?: { n: number; of: number };
   /** The event the picture belongs to, for the info strip on its own page. */
   event: { id: string; title: string; date: string; venue?: { name?: string; url?: string } };
 }
@@ -65,6 +67,7 @@ export async function getGalleryImages(): Promise<GalleryImage[]> {
         kind: "photo" as const,
         groupId,
         event: info,
+        position: { n: i + 1, of: photos.length },
         description: `Photograph ${i + 1} of ${photos.length} from ${event.data.title}, ${event.data.date}${place(event.data)}`,
       })),
     ];

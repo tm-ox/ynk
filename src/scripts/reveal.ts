@@ -5,8 +5,11 @@
 // State is derived from the track's scroll position on every scroll, so it does
 // not depend on the route taken: a panel is "in" once half of it is in view and
 // resets to "out" when (almost) none of it is, and so plays again on each visit.
-// (An IntersectionObserver was tried first: it never reports a panel that merely
-// touches the viewport edge, so panels stuck.)
+// (An IntersectionObserver cannot do this: it never reports a panel that merely
+// touches the viewport edge.)
+import { panelsOf } from "./track";
+
+const wide = matchMedia("(min-width: 40rem)");
 let teardown: (() => void) | null = null;
 
 function mark(el: HTMLElement | undefined, order: number, dir: number) {
@@ -21,9 +24,9 @@ function arm() {
   teardown = null;
 
   const track = document.querySelector<HTMLElement>("[data-track]");
-  if (!track || !matchMedia("(min-width: 40rem)").matches) return;
+  if (!track || !wide.matches || !track.clientWidth) return;
 
-  const panels = [...track.querySelectorAll<HTMLElement>(":scope > section")];
+  const panels = panelsOf(track);
   const animated = panels.filter((s) => s.id !== "top");
   for (const s of animated) {
     // The label bar only fades. The content below it is a row of columns: the
@@ -68,3 +71,5 @@ function arm() {
 }
 
 document.addEventListener("astro:page-load", arm);
+// Crossing the sm breakpoint switches between side-by-side and stacked panels.
+wide.addEventListener("change", arm);

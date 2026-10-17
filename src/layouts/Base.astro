@@ -173,6 +173,7 @@ const ogImage = new URL(image ?? "/og-default.jpg", Astro.site).href;
             import { bindWheelPager } from "../scripts/wheel-pager";
             // Keyboard paging, scrolling and Escape (binds itself once on import).
             import "../scripts/keys";
+            import { panelsOf } from "../scripts/track";
 
             const link = (label: string) =>
                 document.querySelector<HTMLAnchorElement>(`a[aria-label="${label}"]`);
@@ -234,7 +235,7 @@ const ogImage = new URL(image ?? "/og-default.jpg", Astro.site).href;
                     const track = document.querySelector<HTMLElement>("[data-track]");
                     const panel =
                         (track && matchMedia("(min-width: 40rem)").matches
-                            ? track.querySelectorAll<HTMLElement>(":scope > section")[Math.round(track.scrollLeft / track.clientWidth)]?.id
+                            ? panelsOf(track)[Math.round(track.scrollLeft / track.clientWidth)]?.id
                             : undefined) ||
                         document.querySelector<HTMLElement>("#main-nav a.active[data-section]")?.dataset.section;
                     if (panel) {
@@ -304,8 +305,7 @@ const ogImage = new URL(image ?? "/og-default.jpg", Astro.site).href;
                 const target = homeHash && document.getElementById(homeHash.slice(1));
                 if (!t || !target || !matchMedia("(min-width: 40rem)").matches)
                     return;
-                // Panels only: the track also holds stray <style>/<script> elements.
-                const index = [...t.querySelectorAll(":scope > section")].indexOf(target);
+                const index = panelsOf(t).indexOf(target as HTMLElement);
                 if (index >= 0)
                     t.scrollTo({ left: index * t.clientWidth, behavior: "instant" });
             });

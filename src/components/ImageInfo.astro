@@ -19,14 +19,14 @@ const { event } = image;
 <div class="w-full image-info" transition:name="gallery-bar">
     <div class="flex flex-wrap items-baseline w-full gap-x-6 text-xs uppercase font-displayCon md:text-sm max-sm:py-2 max-sm:text-base sm:flex-nowrap sm:items-center sm:h-(--bar-row) sm:leading-none">
         <h1 class="min-w-0 m-0 text-xs font-bold leading-[inherit] truncate md:text-sm max-sm:text-base text-accent">
-            <a href={`/events/${event.id}/`} class="hover:text-accent-hover">{event.title}</a>
+            <a href={`/events/${event.id}/`} title={event.title} class="hover:text-accent-hover">{event.title}</a>
         </h1>
         <span class="text-accent-muted shrink-0">{event.date}</span>
         {
             event.venue?.name && (
                 <span class="min-w-0 truncate text-accent-muted">
                     {event.venue.url ? (
-                        <a href={event.venue.url} target="_blank" rel="noopener noreferrer" class="hover:text-accent">
+                        <a href={event.venue.url} title={event.venue.name} target="_blank" rel="noopener noreferrer" class="hover:text-accent">
                             {event.venue.name}
                         </a>
                     ) : (
@@ -42,3 +42,11 @@ const { event } = image;
     </div>
     <hr class="mb-0" />
 </div>
+
+<style>
+    /* The title and venue truncate (overflow hidden), which would clip the usual
+       outside focus ring, so it is drawn inside. */
+    .image-info a:focus-visible {
+        outline-offset: -2px;
+    }
+</style>

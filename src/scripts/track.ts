@@ -6,7 +6,9 @@ const reduced = () => window.matchMedia("(prefers-reduced-motion: reduce)").matc
 export const track = () => document.querySelector<HTMLElement>("[data-track]");
 export const trackActive = () => (wide.matches ? track() : null);
 
-const count = (t: HTMLElement) => t.querySelectorAll(":scope > section").length;
+/** The panels of the track. The track also holds stray <style> elements, so never index its raw children. */
+export const panelsOf = (t: HTMLElement) => [...t.querySelectorAll<HTMLElement>(":scope > section")];
+const count = (t: HTMLElement) => panelsOf(t).length;
 export const panelIndex = (t: HTMLElement) => Math.round(t.scrollLeft / t.clientWidth);
 
 /** Scrolls the track one panel; returns false when there is no active track. */
