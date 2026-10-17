@@ -3,6 +3,7 @@ import Hamburger from "../components/Hamburger.astro";
 import "../styles/global.css";
 import Base from "./Base.astro";
 import Sosmed from "../components/Sosmed.astro";
+import { Icon } from "astro-icon/components";
 
 const { title, description, image, jsonLd } = Astro.props;
 const pathname = new URL(Astro.request.url).pathname;
@@ -12,7 +13,7 @@ const isCurrent = (name: string) =>
     currentPath === name || currentPath.startsWith(`${name}/`);
 // Sections of the home page first, then the archives (divided by a rule from sm).
 const links = [
-    { label: "Home", href: isHome ? "/#top" : "/", section: "top", current: false },
+    { label: "Home", href: isHome ? "/#top" : "/", section: "top", current: false, icon: "ion:home-sharp" },
     { label: "Featured", href: "/#events", section: "events", current: false },
     { label: "About", href: "/#about", section: "about", current: false },
     { label: "Contact", href: "/#contact", section: "contact", current: false },
@@ -41,7 +42,13 @@ const links = [
                                 aria-current={link.current ? "true" : undefined}
                                 href={link.href}
                                 data-section={link.section}
-                                target="_self">{link.label}</a
+                                aria-label={link.icon ? link.label : undefined}
+                                target="_self"
+                                >{link.icon ? (
+                                    <Icon name={link.icon} class="inline-block h-[1.15em] w-[1.15em] align-[-0.2em]" />
+                                ) : (
+                                    link.label
+                                )}</a
                             >
                             <hr class="sm:hidden" />
                         </li>
