@@ -139,6 +139,8 @@
     main::after {
         content: "";
         @apply absolute inset-x-0 h-px bg-border pointer-events-none;
+        /* Above the positioned layers inside a section (the hero picture). */
+        z-index: 1;
     }
     main::before {
         top: var(--spacing-header);
