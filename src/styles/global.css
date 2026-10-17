@@ -231,6 +231,20 @@
             scroll-behavior: smooth;
         }
     }
+    /* Panels fade up as they come into view (scripts/reveal.ts sets data-reveal).
+       Without the script, or with reduced motion, panels are plain. */
+    @media (min-width: 40rem) and (prefers-reduced-motion: no-preference) {
+        .home-track > section[data-reveal="out"] > * {
+            opacity: 0;
+            translate: 0 0.75rem;
+        }
+        .home-track > section[data-reveal="in"] > * {
+            transition:
+                opacity 0.6s ease-out,
+                translate 0.6s ease-out;
+            transition-delay: calc(var(--i, 0) * 80ms);
+        }
+    }
     /* Thumbnails that link somewhere: while the link is hovered or focused the
        picture is filtered (--thumb-filter) and takes a wash of the accent colour.
        The thumb is either inside the link or is the link itself. */
