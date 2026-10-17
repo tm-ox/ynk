@@ -1,6 +1,10 @@
 ---
 import { Image } from "astro:assets";
-import type { GalleryImage } from "../utils/events";
+import type { getGalleryImages } from "../utils/events";
+
+// Taken from the function's return type: Zed's language server fails to see the
+// module's `GalleryImage` export here (astro check and the build are fine).
+type GalleryImage = Awaited<ReturnType<typeof getGalleryImages>>[number];
 
 interface Props {
     pageSize?: number;
