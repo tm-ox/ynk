@@ -291,16 +291,6 @@ const ogImage = new URL(image ?? "/og-default.jpg", Astro.site).href;
                     });
             });
 
-            // Previous/Next and page-number jumps slide the archive grid, so its
-            // thumbnails must not also rise in. The html[data-astro-transition]
-            // flag is removed when the slide ends, which would restart the rise
-            // (CSS keyed on it made thumbnails vanish and fade back in), so the
-            // grid is marked once, here.
-            document.addEventListener("astro:after-swap", () => {
-                if (document.documentElement.dataset.astroTransition?.startsWith("paging"))
-                    document.querySelector(".gallery-grid")?.setAttribute("data-still", "");
-            });
-
             // Arriving on the home page with a #section: place the horizontal
             // track there before the new page is shown, so it does not slide
             // in from the first panel.
