@@ -7,7 +7,7 @@ interface Props {
   event: CollectionEntry<"events">;
   /** Makes the title a link (used where this sits on another page). */
   headingHref?: string;
-  /** Adds a Documentation link when the event has photographs. */
+  /** Adds an Event images link beside the title when the event has photographs. */
   docsHref?: string;
   /** From md up: the flyer stays vertically centred whatever the text length
    *  (the row is as tall as the taller of the two, centred in the screen, and
@@ -59,7 +59,13 @@ const label = "mb-0 text-xs font-bold tracking-normal md:text-sm font-displayCon
           )
         }
       </Title>
-      {summary && <div class="ml-auto"><slot name="title-action" /></div>}
+      {summary ? (
+        <div class="ml-auto"><slot name="title-action" /></div>
+      ) : (
+        docsHref && (
+          <a href={docsHref} class="ml-auto section-action">Event images</a>
+        )
+      )}
     </div>
     <hr />
     <div class="flex flex-col sm:flex-row justify-between py-rule">
@@ -125,18 +131,6 @@ const label = "mb-0 text-xs font-bold tracking-normal md:text-sm font-displayCon
         <div class="py-rule">
           <slot />
         </div>
-      )
-    }
-    {
-      !summary && docsHref && (
-        <>
-          <hr />
-          <div class="py-rule">
-            <h4>
-              <a href={docsHref}>Documentation</a>
-            </h4>
-          </div>
-        </>
       )
     }
   </div>
