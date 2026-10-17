@@ -48,13 +48,13 @@ const picks =
         transition:name={featured.data.id}
     >
         {flyer && (
-        <div class="w-full max-w-md mx-auto md:max-w-none pt-1 vt-detail" transition:name={`${featured.data.id}-flyer`}>
+        <div class="w-full max-w-md mx-auto md:max-w-none md:self-center vt-detail" transition:name={`${featured.data.id}-flyer`}>
             <a href={href} class="block" tabindex="-1" aria-hidden="true">
                 <Image
                     src={flyer.src}
                     alt={flyerAlt(featured.data)}
                     width={1200}
-                    class="object-contain w-full h-auto"
+                    class="object-contain my-1 h-auto w-full mb-auto md:max-h-[calc(100vh-var(--section-offset)-38px)]"
                 />
             </a>
         </div>
