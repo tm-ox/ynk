@@ -30,7 +30,7 @@ const titleClass = summary ? "" : "text-xl md:text-3xl font-bold";
 const label = "mb-0 text-xs font-bold tracking-normal md:text-sm font-displayCon text-accent";
 ---
 
-<div class:list={[!summary && "flex flex-col gap-4 md:grid md:grid-cols-[minmax(0,3fr)_minmax(0,5fr)]", summary && headingHref && "relative group"]}>
+<div class:list={[!summary && "flex flex-col gap-4 md:grid md:grid-cols-[minmax(0,3fr)_minmax(0,5fr)]", summary && headingHref && "relative group listing-link"]}>
   {!summary && (
   <div
     class:list={["vt-detail", capped && "md:self-center"]}
@@ -138,3 +138,11 @@ const label = "mb-0 text-xs font-bold tracking-normal md:text-sm font-displayCon
     }
   </div>
 </div>
+
+<style>
+  /* The listing is one link (see headingHref): hovering anywhere on it
+     brightens all of its text, except the action link in the title row. */
+  .listing-link:hover :is(h2, h3, h4, p, a):not(.section-action) {
+    color: rgb(var(--rgb-accent-hover));
+  }
+</style>
