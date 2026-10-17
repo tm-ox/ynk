@@ -36,9 +36,9 @@ const label = "mb-0 text-xs font-bold tracking-normal uppercase md:text-sm font-
   aria-labelledby="settings-title"
   class="m-auto w-[min(92vw,44rem)] max-h-[85dvh] p-0 overflow-y-auto border-y border-border bg-bg text-fg backdrop:bg-scrim-heavy backdrop:backdrop-blur-sm"
 >
-  <div class="flex flex-col p-4 sm:p-6">
+  <div class="flex flex-col p-4 pb-0 sm:p-6 sm:pb-0">
     <div class="flex items-center justify-between gap-4 pb-3">
-      <h2 id="settings-title" tabindex="-1" autofocus class="focus:outline-none mb-0 text-xs font-bold text-left uppercase md:text-sm font-displayCon">Settings</h2>
+      <h2 id="settings-title" tabindex="-1" autofocus class="focus:outline-none mb-0 text-xl uppercase sm:text-left md:text-3xl">Settings</h2>
       <button type="button" data-settings-close aria-label="Close settings" class="cursor-pointer">
         <Icon name="ion:close-sharp" class="icon" />
       </button>
@@ -87,7 +87,7 @@ const label = "mb-0 text-xs font-bold tracking-normal uppercase md:text-sm font-
 
     <div>
       <hr class="mt-0" />
-      <p class="mt-3 mb-0 text-xs text-center sm:text-left font-displayCon text-accent-muted">© 2010–{new Date().getFullYear()} Yes No Klub</p>
+      <p class="flex items-center justify-center mb-0 text-xs h-footer font-displayCon text-accent-muted">© 2010–{new Date().getFullYear()} Yes No Klub</p>
     </div>
   </div>
 </dialog>
