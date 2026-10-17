@@ -366,6 +366,16 @@ select:-webkit-autofill:focus {
 .vt-title {
     view-transition-class: detail title;
 }
+/* A pair whose two ends hold different content (event card or featured row to
+   the event page): the outgoing picture clears early (see --fade-out below).
+   Pairs that look the same at both ends (nav items, bars) keep an even
+   crossfade, so they never dim. */
+.vt-swap {
+    view-transition-class: swap;
+}
+.vt-detail.vt-swap {
+    view-transition-class: detail swap;
+}
 
 /* The morph between pages (everything that is not a Previous/Next slide).
    Astro's own fade sits in @layer astro, so these unlayered rules win over
@@ -375,7 +385,7 @@ select:-webkit-autofill:focus {
    --morph-fade-easing; the rest of the page (root) crossfades in
    --page-fade-duration; --flyer-lead is the flyer's share of the morph time,
    so it lands first and the text settles after it. --fade-out is the share
-   of the morph in which the outgoing picture clears (and in which a title
+   of the morph in which the outgoing picture of a .vt-swap pair clears (and in which a title
    swaps old text for new), so old and new never show side by side for long. */
 :root {
     --morph-duration: 0.5s;
@@ -394,7 +404,7 @@ select:-webkit-autofill:focus {
     animation-duration: var(--morph-duration);
     animation-timing-function: var(--morph-fade-easing);
 }
-::view-transition-old(*) {
+::view-transition-old(.swap) {
     animation-duration: calc(var(--morph-duration) * var(--fade-out));
 }
 ::view-transition-group(root),

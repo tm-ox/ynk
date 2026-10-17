@@ -20,7 +20,7 @@ const picks = photos.slice(0, 36);
 <section id="events" class="flex-col items-stretch">
     <div transition:name="featured-label" class="vt-detail"><SectionBar label={label} /></div>
     <div
-        class="grid w-full gap-4 my-auto md:my-0 md:flex-1 md:min-h-0 md:grid-cols-[minmax(0,3fr)_minmax(0,5fr)] md:items-center"
+        class="grid w-full gap-4 my-auto md:my-0 md:flex-1 md:min-h-0 md:grid-cols-[minmax(0,3fr)_minmax(0,5fr)] md:items-center vt-swap"
         transition:name={featured.data.id}
     >
         {flyer && (

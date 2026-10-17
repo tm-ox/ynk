@@ -21,7 +21,7 @@ const padding = Math.max(0, pageSize - events.length);
         {
             events.map((event, i) => (
                 <li class="min-w-0" style={`--i:${i}`}>
-                    <a href={`/events/${event.id}/`} title={event.data.title} transition:name={event.data.id}>
+                    <a href={`/events/${event.id}/`} title={event.data.title} transition:name={event.data.id} class="vt-swap">
                         <h5 class="uppercase xl:truncate vt-title" transition:name={`${event.data.id}-title`}>{event.data.title}</h5>
                         <hr />
                         <div class="thumb vt-flyer" transition:name={`${event.data.id}-flyer`}>

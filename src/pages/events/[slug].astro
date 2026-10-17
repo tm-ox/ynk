@@ -79,7 +79,7 @@ const flyer = event.data.flyer?.src
       <Icon name="ion:close-sharp" class="icon" />
     </a>
   </div>
-  <section transition:name={event.data.id} class="relative z-10 vt-detail">
+  <section transition:name={event.data.id} class="relative z-10 vt-detail vt-swap">
     {featuredLabel && (
       <div class="absolute inset-x-0 top-3 vt-detail" transition:name="featured-label"><SectionBar label={featuredLabel} /></div>
     )}
