@@ -2,7 +2,7 @@
 import SectionBar from "./SectionBar.astro";
 
 const field =
-    "w-full px-2 py-2 text-base font-light tracking-wide border-0 rounded-none bg-accent-muted/10 font-body text-accent focus:bg-accent-muted/20 focus:outline-none [&:not(:placeholder-shown)]:bg-transparent!";
+    "w-full px-2 py-2 text-base font-light tracking-wide border-0 rounded-none bg-accent-muted/10 font-body text-fg focus:bg-accent-muted/20 focus:outline-none [&:not(:placeholder-shown)]:bg-transparent!";
 const label = "text-xs uppercase font-displayCon md:text-sm text-accent-muted";
 ---
 
@@ -136,3 +136,11 @@ const label = "text-xs uppercase font-displayCon md:text-sm text-accent-muted";
         }
     });
 </script>
+
+<style>
+    /* Entered text stays the body colour, autofilled or typed, so it reads
+       apart from the labels. */
+    [data-contact] :global(:is(input, textarea):-webkit-autofill) {
+        -webkit-text-fill-color: var(--color-fg);
+    }
+</style>
