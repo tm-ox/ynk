@@ -4,7 +4,7 @@
 // on arrival is shown as is, so nothing fights the page-to-page morphs.
 // State is derived from the track's scroll position on every scroll, so it does
 // not depend on the route taken: a panel is "in" once half of it is in view and
-// resets to "out" when none of it is, and so plays again on each visit.
+// resets to "out" when (almost) none of it is, and so plays again on each visit.
 // (An IntersectionObserver was tried first: it never reports a panel that merely
 // touches the viewport edge, so panels stuck.)
 let teardown: (() => void) | null = null;
@@ -39,7 +39,9 @@ function arm() {
     for (const s of animated) {
       const visible = 1 - Math.abs(track.scrollLeft - panels.indexOf(s) * w) / w;
       if (visible >= 0.5) s.dataset.reveal = "in";
-      else if (visible <= 0) s.dataset.reveal = "out";
+      // Not "<= 0": at fractional zoom or pixel ratios scrollLeft settles a
+      // fraction of a pixel off, so a panel next door never reaches exactly 0.
+      else if (visible < 0.1) s.dataset.reveal = "out";
     }
   };
 
