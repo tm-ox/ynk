@@ -253,7 +253,7 @@
     .thumb {
         position: relative;
         /* Picture filter on hover. Alternatives: grayscale(1), invert(1), contrast(1.3) saturate(1.6); `none` for the wash alone. */
-        --thumb-filter: grayscale(0.6);
+        --thumb-filter: grayscale(0.25);
     }
     .thumb img {
         transition: filter 0.2s ease;
