@@ -59,6 +59,10 @@ const padding = Math.max(0, pageSize - images.length);
 </div>
 
 <style>
+    /* The rules above and below a thumbnail sit flush with it. */
+    .gallery-grid :global(hr) {
+        margin-block: 0;
+    }
     .gallery-spacer {
         display: none;
     }
@@ -102,9 +106,6 @@ const padding = Math.max(0, pageSize - images.length);
         }
         .gallery-grid {
             grid-template-columns: repeat(12, minmax(0, 1fr));
-        }
-        .gallery-grid :global(hr) {
-            margin-block: 0.25rem;
         }
         /* 8 columns (3 rows) need a height of about 0.375 x width + 149px
            (2.03 x wide at 1264px, 2.08 at 1424px), so 8 from 2:1 and
