@@ -44,9 +44,17 @@ const scrollAreas = (): Element[] => {
 // Bound once on import: module scripts are not re-run by the view-transition
 // router, so everything is looked up at event time.
 document.addEventListener("keydown", (e) => {
-  if (e.defaultPrevented || e.altKey || e.ctrlKey || e.metaKey || e.shiftKey) return;
+  if (e.defaultPrevented || e.altKey || e.ctrlKey || e.metaKey) return;
   const target = e.target as Element;
   if (target.closest("input, textarea, select, [contenteditable]")) return;
+  // An open modal (Settings) handles its own keys, Esc included.
+  if (document.querySelector("dialog[open]")) return;
+  if (e.key === "?") {
+    e.preventDefault();
+    document.querySelector<HTMLElement>("[data-settings-open]")?.click();
+    return;
+  }
+  if (e.shiftKey) return;
   const key = e.key;
 
   const dir = RIGHT.includes(key) ? 1 : LEFT.includes(key) ? -1 : 0;

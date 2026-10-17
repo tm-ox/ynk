@@ -3,7 +3,7 @@ import "../styles/global.css";
 import { ClientRouter } from "astro:transitions";
 import { Font } from "astro:assets";
 import Logo from "../components/Logo.astro";
-import Theme from "../components/Theme.astro";
+import Settings from "../components/Settings.astro";
 import { GoogleAnalytics } from "astro-google-analytics";
 
 export interface Props {
@@ -67,6 +67,20 @@ const ogImage = new URL(image ?? "/og-default.jpg", Astro.site).href;
                 window.__applyTheme = function (theme, doc) {
                     (doc || document).documentElement.setAttribute("data-theme", theme);
                     if (!doc && document.readyState === "complete") syncMeta();
+                };
+                // choice: "system" (follow the device), "light" or "dark".
+                window.__setTheme = function (choice) {
+                    try {
+                        if (choice === "system") localStorage.removeItem("theme");
+                        else localStorage.setItem("theme", choice);
+                    } catch (e) {}
+                    if (choice === "system") root.removeAttribute("data-theme");
+                    else root.setAttribute("data-theme", choice);
+                    syncMeta();
+                };
+                window.__storedTheme = function () {
+                    var s = stored();
+                    return s === "light" || s === "dark" ? s : "system";
                 };
                 window.__currentTheme = function () {
                     return (
@@ -150,7 +164,7 @@ const ogImage = new URL(image ?? "/og-default.jpg", Astro.site).href;
             <nav aria-label="Main">
                 <Logo />
                 <slot name="nav" transition:persist />
-                <Theme />
+                <Settings />
             </nav>
         </header>
         <main id="main">

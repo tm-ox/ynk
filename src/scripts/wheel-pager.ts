@@ -39,7 +39,7 @@ export function bindWheelPager({ root, canStep, step }: PagerOptions) {
     "wheel",
     (e) => {
       const container = root();
-      if (!container || e.ctrlKey) return;
+      if (!container || e.ctrlKey || document.querySelector("dialog[open]")) return;
       if (Math.abs(e.deltaX) > Math.abs(e.deltaY)) return; // native horizontal
       const dir = e.deltaY > 0 ? 1 : -1;
       const now = Date.now();

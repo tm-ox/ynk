@@ -201,24 +201,6 @@
     .icon {
         @apply z-(--z-overlay) text-4xl transition cursor-pointer w-7 h-7 text-accent-muted border-border bg-none hover:text-accent;
     }
-    /* Theme toggle shows the active mode: moon in dark, sun in light. */
-    .theme-sun {
-        display: none;
-    }
-    [data-theme="light"] .theme-sun {
-        display: block;
-    }
-    [data-theme="light"] .theme-moon {
-        display: none;
-    }
-    @media (prefers-color-scheme: light) {
-        :root:not([data-theme]) .theme-sun {
-            display: block;
-        }
-        :root:not([data-theme]) .theme-moon {
-            display: none;
-        }
-    }
     .display-hero {
         @apply w-full text-center -tracking-widest wrap-break-word text-hero lg:text-hero-lg;
     }

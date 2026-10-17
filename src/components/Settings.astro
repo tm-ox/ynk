@@ -1,0 +1,130 @@
+---
+import { Icon } from "astro-icon/components";
+
+// Reference for the Keyboard group: [keys, what they do].
+const keyboard: [string[], string][] = [
+  [["←", "→", "h", "l"], "Move between sections, events and photographs. On the home page they page through the panels, then carry on into Events and Images."],
+  [["↑", "↓", "j", "k"], "Scroll. In the image filter they step through the list."],
+  [["Esc"], "Close an event or photograph and go back to where you were."],
+  [["?"], "Open this panel."],
+];
+const themes = [
+  ["system", "System"],
+  ["light", "Light"],
+  ["dark", "Dark"],
+];
+const label = "mb-0 text-xs font-bold tracking-normal uppercase md:text-sm font-displayCon text-accent";
+---
+
+<button
+  type="button"
+  class="z-(--z-overlay) h-7 ml-1 pl-3 border-l border-l-border cursor-pointer"
+  data-settings-open
+  aria-label="Settings"
+  aria-haspopup="dialog"
+  transition:persist="settings"
+>
+  <Icon name="bx:bxs-cog" class="w-6 sm:h-6 icon" />
+</button>
+
+<!-- A native modal dialog: centred on screen, the page behind is inert, focus
+     stays inside, and Esc closes it. The padding lives on the inner div so a
+     click on the dialog element itself can only be a click on the backdrop. -->
+<dialog
+  data-settings
+  aria-labelledby="settings-title"
+  class="m-auto w-[min(92vw,44rem)] max-h-[85dvh] p-0 overflow-y-auto border border-border bg-bg text-fg backdrop:bg-scrim-heavy backdrop:backdrop-blur-sm"
+>
+  <div class="flex flex-col gap-6 p-4 sm:p-6">
+    <div class="flex items-center justify-between gap-4">
+      <h2 id="settings-title" class="mb-0 text-xl uppercase sm:text-left md:text-3xl">Settings</h2>
+      <button type="button" data-settings-close aria-label="Close settings" class="cursor-pointer">
+        <Icon name="ion:close-sharp" class="icon" />
+      </button>
+    </div>
+
+    <div>
+      <hr class="mt-0" />
+      <h3 id="settings-theme" class={`${label} sm:text-left`}>Theme</h3>
+      <hr class="mb-0" />
+      <div class="flex gap-6 py-3" role="radiogroup" aria-labelledby="settings-theme">
+        {themes.map(([value, text]) => (
+          <label class="settings-choice">
+            <input type="radio" name="theme" value={value} class="sr-only peer" data-theme-choice />
+            <span class="peer-checked:text-accent peer-checked:border-accent peer-focus-visible:outline peer-focus-visible:outline-2 peer-focus-visible:outline-offset-2 peer-focus-visible:outline-accent">{text}</span>
+          </label>
+        ))}
+      </div>
+    </div>
+
+    <div>
+      <hr class="mt-0" />
+      <h3 class={`${label} sm:text-left`}>Keyboard</h3>
+      <hr class="mb-0" />
+      <dl class="grid items-baseline gap-x-6 gap-y-3 py-3 sm:grid-cols-[auto_1fr]">
+        {keyboard.map(([keys, text]) => (
+          <>
+            <dt class="flex flex-wrap gap-1">
+              {keys.map((key) => <kbd class="inline-block min-w-6 px-1.5 text-xs text-center border font-displayCon text-accent border-accent-muted">{key}</kbd>)}
+            </dt>
+            <dd class="m-0 text-sm font-light tracking-wide font-body md:text-base">{text}</dd>
+          </>
+        ))}
+      </dl>
+    </div>
+
+    <div>
+      <hr class="mt-0" />
+      <h3 class={`${label} sm:text-left`}>Good to know</h3>
+      <hr class="mb-0" />
+      <ul class="flex flex-col gap-2 py-3 text-sm font-light tracking-wide list-none font-body md:text-base">
+        <li class="normal-case">On a touch screen, swipe sideways to move between the home panels.</li>
+        <li class="normal-case">Animations are kept to a minimum if your device is set to reduce motion.</li>
+        <li class="normal-case"><a href="/privacy" class="font-medium normal-case font-displayCon">Privacy</a>: what this site collects.</li>
+      </ul>
+    </div>
+  </div>
+</dialog>
+
+<style>
+  /* Theme choices read as text with a rule under the chosen one. */
+  .settings-choice span {
+    display: inline-block;
+    padding-bottom: 0.125rem;
+    border-bottom: 1px solid transparent;
+    text-transform: uppercase;
+    font-size: 0.875rem;
+    cursor: pointer;
+    color: var(--color-accent-muted);
+    transition: color 0.2s ease;
+  }
+  .settings-choice:hover span {
+    color: var(--color-accent);
+  }
+</style>
+
+<script>
+  // Bound once (module scripts are not re-run by the router), so everything is
+  // looked up when the event happens.
+  const dialog = () => document.querySelector<HTMLDialogElement>("dialog[data-settings]");
+
+  document.addEventListener("click", (e) => {
+    const target = e.target as Element;
+    const d = dialog();
+    if (!d) return;
+    if (target.closest("[data-settings-open]")) {
+      const current = window.__storedTheme();
+      d.querySelectorAll<HTMLInputElement>("[data-theme-choice]").forEach((input) => {
+        input.checked = input.value === current;
+      });
+      d.showModal();
+    } else if (target.closest("[data-settings-close]") || target === d) {
+      d.close();
+    }
+  });
+
+  document.addEventListener("change", (e) => {
+    const input = e.target as HTMLInputElement;
+    if (input.matches("[data-theme-choice]")) window.__setTheme(input.value);
+  });
+</script>
