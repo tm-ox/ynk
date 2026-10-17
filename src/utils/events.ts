@@ -130,3 +130,18 @@ export type GalleryImage = Awaited<ReturnType<typeof getGalleryImages>>[number];
 /** Paginated URLs from Astro may lack the trailing slash the site uses. */
 export const slash = (url?: string) =>
     url && !url.endsWith("/") ? `${url}/` : url;
+
+/** The home page's featured event: the nearest upcoming one, otherwise the most
+ *  recent (decided at build time), with the label the home panel gives it. */
+export async function getFeaturedEvent() {
+  const today = new Date().toISOString().slice(0, 10);
+  const events = await getCollection("events");
+  const upcoming = events
+    .filter((e) => e.data.date >= today)
+    .sort((a, b) => Date.parse(a.data.date) - Date.parse(b.data.date));
+  const latest = [...events].sort(
+    (a, b) => Date.parse(b.data.date) - Date.parse(a.data.date),
+  );
+  const event = upcoming[0] ?? latest[0];
+  return { event, label: upcoming[0] ? "Next event" : "Previous event" };
+}

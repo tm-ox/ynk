@@ -5,7 +5,8 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
 import { Icon } from "astro-icon/components";
 import EventDetail from "../../components/EventDetail.astro";
 import NavArrow from "../../components/NavArrow.astro";
-import { eventJsonLd, groupSlug, prettyDate as formatDate } from "../../utils/events";
+import SectionBar from "../../components/home/SectionBar.astro";
+import { eventJsonLd, getFeaturedEvent, groupSlug, prettyDate as formatDate } from "../../utils/events";
 
 export async function getStaticPaths() {
   const events = await getCollection("events");
@@ -43,6 +44,9 @@ const pageDescription =
   rawDescription.length > 158
     ? `${rawDescription.slice(0, 155).trimEnd()}…`
     : rawDescription;
+// The featured event keeps its home panel label (top left) when opened.
+const featured = await getFeaturedEvent();
+const featuredLabel = featured.event?.id === event.id ? featured.label : undefined;
 const hasPhotos = (event.data.images ?? []).some(Boolean);
 const flyer = event.data.flyer?.src
   ? await getImage({ src: event.data.flyer.src, width: 1200, format: "jpg" })
@@ -76,7 +80,10 @@ const flyer = event.data.flyer?.src
       <Icon name="ion:close-sharp" class="icon" />
     </a>
   </div>
-  <section transition:name={event.data.id} class="z-10 vt-detail">
+  <section transition:name={event.data.id} class="relative z-10 vt-detail">
+    {featuredLabel && (
+      <div class="absolute inset-x-0 top-3"><SectionBar label={featuredLabel} /></div>
+    )}
     <EventDetail capped event={event} docsHref={hasPhotos ? `/images/event/${groupSlug(title)}/` : undefined}>
       <Content />
     </EventDetail>

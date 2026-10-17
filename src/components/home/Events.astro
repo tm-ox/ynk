@@ -1,22 +1,11 @@
 ---
-import { getCollection } from "astro:content";
 import { Image } from "astro:assets";
 import SectionBar from "./SectionBar.astro";
 import EventDetail from "../EventDetail.astro";
-import { flyerAlt, getGalleryImages, groupSlug } from "../../utils/events";
+import { flyerAlt, getFeaturedEvent, getGalleryImages, groupSlug } from "../../utils/events";
 
-// The nearest upcoming event, otherwise the most recent one (decided at build time).
-const today = new Date().toISOString().slice(0, 10);
-const events = await getCollection("events");
-const upcoming = events
-    .filter((e) => e.data.date >= today)
-    .sort((a, b) => Date.parse(a.data.date) - Date.parse(b.data.date));
-const latest = [...events].sort(
-    (a, b) => Date.parse(b.data.date) - Date.parse(a.data.date),
-);
-const featured = upcoming[0] ?? latest[0];
+const { event: featured, label } = await getFeaturedEvent();
 const href = featured && `/events/${featured.id}/`;
-const label = upcoming[0] ? "Next event" : "Previous event";
 const flyer = featured?.data.flyer;
 
 // Photographs from the featured event (all its sub-events), in gallery order.
