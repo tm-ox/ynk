@@ -317,6 +317,19 @@
             color: var(--color-accent-hover);
         }
     }
+    /* Not while a page transition runs (Astro marks the root from just before
+       the outgoing page is captured until the animation ends): the wash covers
+       the whole square, letterbox included, so on a travelling flyer it would
+       grow past the picture. Off at once, not faded, so it is not captured.
+       (.thumb.thumb: outranks the a:hover > .thumb rules above.) */
+    html[data-astro-transition] .thumb.thumb img {
+        filter: none;
+        transition: none;
+    }
+    html[data-astro-transition] .thumb.thumb::after {
+        opacity: 0;
+        transition: none;
+    }
     .section-action {
         @apply text-xs uppercase font-displayCon md:text-sm text-accent-muted hover:text-accent;
     }
