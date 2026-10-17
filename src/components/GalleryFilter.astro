@@ -8,6 +8,7 @@ const { events, current } = Astro.props;
 
 <div class="gallery-filter">
     <div class="flex-1 min-w-0">
+    <div class="select-wrap">
     <select aria-label="Filter by event" data-gallery-filter>
         <option value="/images/" selected={!current}>All events</option>
         {
@@ -21,6 +22,8 @@ const { events, current } = Astro.props;
             ))
         }
     </select>
+    <span class="chevron" aria-hidden="true"></span>
+    </div>
     <hr />
     <noscript>
         <ul>
@@ -79,8 +82,20 @@ const { events, current } = Astro.props;
     .gallery-filter {
         @apply flex items-start w-full gap-6;
     }
+    /* The text is lifted on its own; the chevron is drawn here (not the browser's
+       arrow) so it stays centred in the row's box. */
+    .select-wrap {
+        @apply relative;
+    }
     select {
-        @apply w-full bg-bg text-accent-muted py-0 hover:text-accent sm:h-5 sm:leading-5 sm:-translate-y-[3px] max-sm:py-2 max-sm:text-base;
+        @apply w-full pr-6 appearance-none bg-bg text-accent-muted py-0 hover:text-accent sm:h-5 sm:leading-5 sm:-translate-y-[3px] max-sm:py-2 max-sm:text-base;
+    }
+    .chevron {
+        @apply absolute w-[0.45rem] h-[0.45rem] border-b border-r pointer-events-none right-1.5 top-1/2 border-accent-muted;
+        transform: translateY(-70%) rotate(45deg);
+    }
+    select:hover + .chevron {
+        @apply border-accent;
     }
     /* Rule under the dropdown only; the slotted action sits free beside it. */
     hr {
