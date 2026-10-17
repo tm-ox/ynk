@@ -96,6 +96,9 @@ const padding = Math.max(0, pageSize - events.length);
         }
         .gallery-spacer {
             flex: 4 1 0;
+            /* When the grid overflows and scrolls, keep one grid gap between the
+               bar above and the first titles. */
+            min-height: 0.5rem;
         }
         .gallery-after {
             flex: 6 1 0;

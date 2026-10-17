@@ -118,11 +118,22 @@ const { events, current } = Astro.props;
         @apply relative;
     }
     select {
-        @apply w-full pr-6 appearance-none font-displayCon text-xs md:text-sm bg-bg text-accent-muted py-0 hover:text-accent sm:h-5 sm:leading-5 sm:-translate-y-0.75 max-sm:py-2 max-sm:text-base;
+        @apply w-full pr-6 appearance-none font-displayCon text-xs md:text-sm bg-bg text-accent-muted py-0 hover:text-accent max-sm:py-2 max-sm:text-base;
+    }
+    /* A fixed row (--bar-row), shared with the picture's info strip. */
+    @media (min-width: 40rem) {
+        .select-wrap {
+            height: var(--bar-row);
+        }
+        select {
+            height: 100%;
+            min-height: 0;
+            line-height: 1;
+        }
     }
     .chevron {
         @apply absolute w-[0.45rem] h-[0.45rem] border-b border-r pointer-events-none right-1.5 top-1/2 border-accent-muted;
-        transform: translateY(calc(-70% - 3px)) rotate(45deg);
+        transform: translateY(-70%) rotate(45deg);
     }
     /* No ring, and nothing left behind after a mouse click. Only keyboard focus
        is marked (data-kb, set in the script): the text brightens. The transparent

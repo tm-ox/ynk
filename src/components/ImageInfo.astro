@@ -13,11 +13,11 @@ const { event } = image;
 <!-- Info strip for a single picture. It takes the place of the gallery filter
      (same transition name, so the bar stays put between the archive and a
      picture) and is the page's h1. From sm up its row is exactly the filter's
-     (h-5, text lifted 3px) so the rule below does not move when one becomes
+     (--bar-row high, text centred) so the rule below does not move when one becomes
      the other; keep the two in step. Credits for who is in the photograph can
      join it later. -->
 <div class="w-full image-info" transition:name="gallery-bar">
-    <div class="flex flex-wrap items-baseline w-full gap-x-6 text-xs uppercase font-displayCon md:text-sm max-sm:py-2 max-sm:text-base sm:flex-nowrap sm:h-5 sm:leading-5 sm:-translate-y-0.75">
+    <div class="flex flex-wrap items-baseline w-full gap-x-6 text-xs uppercase font-displayCon md:text-sm max-sm:py-2 max-sm:text-base sm:flex-nowrap sm:items-center sm:h-(--bar-row) sm:leading-none">
         <h1 class="min-w-0 m-0 text-xs font-bold leading-[inherit] truncate md:text-sm max-sm:text-base text-accent">
             <a href={`/events/${event.id}/`} class="hover:text-accent-hover">{event.title}</a>
         </h1>

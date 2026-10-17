@@ -22,6 +22,9 @@
 @theme {
     /* Space between a rule (hr) and the content next to it, on top of the hr margin. */
     --spacing-rule: calc(var(--spacing) * 1);
+    /* Height of the bar above a gallery: the filter on an archive, the info strip
+       on a picture. Both are this tall from sm up, so the rule below does not move. */
+    --bar-row: calc(var(--spacing) * 7);
     --spacing-header: calc(var(--spacing) * 16);
     --spacing-footer: calc(var(--spacing) * 8);
     /* What a section's padding and the flyer's frame take from the screen height. */
