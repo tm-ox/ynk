@@ -43,11 +43,12 @@ const label = "mb-0 text-xs font-bold tracking-normal uppercase md:text-sm font-
       </button>
     </div>
 
-    <div>
+    <!-- -mb-6 cancels the gap to the next group, so its rule sits on the options. -->
+    <div class="-mb-6">
       <hr class="mt-0" />
       <h3 id="settings-theme" class={`${label} sm:text-left`}>Theme</h3>
       <hr class="mb-0" />
-      <div class="grid grid-cols-3 py-3" role="radiogroup" aria-labelledby="settings-theme">
+      <div class="grid grid-cols-3" role="radiogroup" aria-labelledby="settings-theme">
         {themes.map(([value, text]) => (
           <label class="settings-choice">
             <input type="radio" name="theme" value={value} class="sr-only peer" data-theme-choice />
