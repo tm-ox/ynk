@@ -36,10 +36,12 @@ function arm() {
 
   observer = new IntersectionObserver(
     (entries) => {
-      for (const { target, intersectionRatio, isIntersecting } of entries) {
+      for (const { target, intersectionRatio } of entries) {
         const s = target as HTMLElement;
         if (intersectionRatio >= 0.5) s.dataset.reveal = "in";
-        else if (!isIntersecting && s.dataset.reveal === "in") out(s);
+        // Ratio 0, not isIntersecting: a neighbouring panel touching the edge
+        // still counts as intersecting, so it would never reset.
+        else if (intersectionRatio === 0 && s.dataset.reveal === "in") out(s);
       }
     },
     { root: track, threshold: [0, 0.5] },
