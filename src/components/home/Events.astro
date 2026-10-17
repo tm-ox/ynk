@@ -48,7 +48,7 @@ const picks =
         transition:name={featured.data.id}
     >
         {flyer && (
-        <div class="w-full max-w-md mx-auto md:max-w-none vt-detail" transition:name={`${featured.data.id}-flyer`}>
+        <div class="w-full max-w-md mx-auto md:max-w-none pt-1 vt-detail" transition:name={`${featured.data.id}-flyer`}>
             <a href={href} class="block" tabindex="-1" aria-hidden="true">
                 <Image
                     src={flyer.src}
@@ -83,5 +83,8 @@ const picks =
             )}
         </div>
     </div>
+    <!-- Mirrors the bar so the row is centred in the whole panel, as on the event
+         page, and the flyer holds still between the two. -->
+    <div class="invisible" aria-hidden="true"><SectionBar label={label} /></div>
 </section>
 )}
