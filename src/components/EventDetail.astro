@@ -59,6 +59,7 @@ const label = "mb-0 text-xs font-bold tracking-normal md:text-sm font-displayCon
           )
         }
       </Title>
+      {summary && <div class="ml-auto"><slot name="title-action" /></div>}
     </div>
     <hr />
     <div class="flex flex-col sm:flex-row justify-between py-rule">

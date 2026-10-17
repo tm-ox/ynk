@@ -34,15 +34,7 @@ const picks =
 
 {featured && (
 <section id="events" class="flex-col items-stretch">
-    <SectionBar label={label}>
-        {photos.length > 0 && (
-        <a href={`/images/event/${groupId}/`} class="section-action">
-            Event images
-        </a>
-        )}
-        <a href="/images/" class="section-action">All images</a>
-        <a href="/events/" class="section-action">All events</a>
-    </SectionBar>
+    <SectionBar label={label} />
     <div
         class="grid w-full gap-4 my-auto md:gap-4 md:grid-cols-[minmax(0,3fr)_minmax(0,5fr)] md:items-center"
         transition:name={featured.data.id}
@@ -60,7 +52,13 @@ const picks =
         </div>
         )}
         <div class={flyer ? "" : "md:col-span-2"}>
-            <EventDetail summary event={featured} headingHref={href} />
+            <EventDetail summary event={featured} headingHref={href}>
+                {photos.length > 0 && (
+                <a slot="title-action" href={`/images/event/${groupId}/`} class="section-action">
+                    Event images
+                </a>
+                )}
+            </EventDetail>
             {picks.length > 0 && (
             <ul class="grid grid-cols-2 gap-2 mt-4 sm:grid-cols-4">
                 {picks.map((image) => (
