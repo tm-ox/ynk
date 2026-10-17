@@ -67,7 +67,7 @@ const label = "mb-0 text-xs font-bold tracking-normal uppercase md:text-sm font-
         {keyboard.map(([keys, text]) => (
           <>
             <dt class="flex flex-wrap gap-1">
-              {keys.map((key) => <kbd class="inline-block min-w-6 px-1.5 text-xs text-center border font-displayCon text-accent border-accent-muted">{key}</kbd>)}
+              {keys.map((key) => <kbd class="inline-flex items-center justify-center h-7 px-1.5 text-sm leading-none border min-w-7 font-displayCon text-accent border-accent-muted">{key}</kbd>)}
             </dt>
             <dd class="m-0 text-sm font-light tracking-wide font-body md:text-base">{text}</dd>
           </>
@@ -79,7 +79,7 @@ const label = "mb-0 text-xs font-bold tracking-normal uppercase md:text-sm font-
       <hr class="mt-0" />
       <h3 class={`${label} sm:text-left`}>Good to know</h3>
       <hr class="mb-0" />
-      <ul class="flex flex-col gap-2 py-3 text-sm font-light tracking-wide list-none font-body md:text-base">
+      <ul class="flex flex-col py-3 text-sm font-light tracking-wide list-none font-body md:text-base">
         <li class="normal-case">On a touch screen, swipe sideways to move between the home panels.</li>
         <li class="normal-case">Animations are kept to a minimum if your device is set to reduce motion.</li>
       </ul>
