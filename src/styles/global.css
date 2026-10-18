@@ -89,15 +89,6 @@
     min-height: calc(100vh - var(--section-offset));
     min-height: calc(100dvh - var(--section-offset));
 }
-@utility max-h-section {
-    max-height: calc(100vh - var(--section-offset));
-    max-height: calc(100dvh - var(--section-offset));
-}
-/* Full viewport height; dvh follows the mobile browser bars where supported. */
-@utility h-viewport {
-    height: 100vh;
-    height: 100dvh;
-}
 @utility h-section {
     height: calc(100vh - var(--section-offset));
     height: calc(100dvh - var(--section-offset));
@@ -960,8 +951,8 @@ html[data-astro-transition^="paging"]::view-transition-new(gallery-bar):only-chi
        -(W/2 + R), W being the screen's width (100vw); back, the reverse.
      --slide-x: how far the target is moved, exactly as the slide moves its
        snapshot (same keyframes, duration and easing): the outgoing one from 0
-       to -W going forward (to W going back), the incoming one from W to 0
-       (from -W going back).
+       to -D going forward (to D going back), the incoming one from D to 0
+       (from -D going back), D being --page-slide-distance.
    --edge, the seam's distance right of the box's own centre (see its
    @property at the top), is then
      --seam - --slide-x + the box's shift.

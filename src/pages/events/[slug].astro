@@ -9,7 +9,6 @@ import { eventJsonLd, getFeaturedEvent, groupSlug } from "../../utils/events";
 
 export async function getStaticPaths() {
   const events = await getCollection("events");
-  const numberOfEvents = events.length;
   return events
     .sort((b, a) => Date.parse(b.data.date) - Date.parse(a.data.date))
     .map((event, i) => ({

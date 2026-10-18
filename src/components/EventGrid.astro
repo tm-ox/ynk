@@ -1,13 +1,14 @@
 ---
 import { Image } from "astro:assets";
+import { EVENTS_PER_PAGE } from "../utils/events";
 
 interface Props {
     pageSize?: number;
     events: any[];
 }
-const { events, pageSize = 18 } = Astro.props;
+const { events, pageSize = EVENTS_PER_PAGE } = Astro.props;
 // From xl up the last page is padded with invisible cells so it keeps the same
-// height, and the page numbers stay where they are.
+// height, and the grid sits where it does on the full pages.
 const padding = Math.max(0, pageSize - events.length);
 ---
 
@@ -51,7 +52,7 @@ const padding = Math.max(0, pageSize - events.length);
         }
     </ul>
     </div>
-    <div class="gallery-after"><slot /></div>
+    <div class="gallery-after"></div>
 </div>
 
 <style>
@@ -91,9 +92,9 @@ const padding = Math.max(0, pageSize - events.length);
             display: flex;
             flex-direction: column;
         }
-        /* The grid sits centred; the slotted page numbers sit halfway between
-           it and the baseline (the spacer above matches the area below). */
-        /* 4:6 rather than 1:1, so the grid sits a little above centre. */
+        /* The grid sits between the spacer above and the empty area below
+           (.gallery-after), which share the space left 4:6 rather than 1:1,
+           so it sits a little above centre. */
         .gallery-spacer,
         .gallery-after {
             min-height: 0;

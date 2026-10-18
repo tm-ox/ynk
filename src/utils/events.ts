@@ -163,11 +163,13 @@ export function eventJsonLd(
   };
 }
 
-/** Paginated URLs from Astro may lack the trailing slash the site uses. */
-/** Events per page in the events archive. */
+/** Events per page in the events archive (6 columns by 3 rows from xl up:
+ *  EventGrid.astro). */
 export const EVENTS_PER_PAGE = 18;
+/** Pictures per page in the images archive (7 by 3: GalleryGrid.astro). */
 export const IMAGES_PER_PAGE = 21;
 
+/** Paginated URLs from Astro may lack the trailing slash the site uses. */
 export const slash = (url?: string) =>
     url && !url.endsWith("/") ? `${url}/` : url;
 

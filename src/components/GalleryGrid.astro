@@ -13,7 +13,7 @@ interface Props {
 }
 const { images, pageSize = IMAGES_PER_PAGE } = Astro.props;
 // From xl up the last page is padded with invisible cells so it keeps the same
-// height, and the page numbers stay where they are.
+// height, and the grid sits where it does on the full pages.
 const padding = Math.max(0, pageSize - images.length);
 ---
 
@@ -61,7 +61,7 @@ const padding = Math.max(0, pageSize - images.length);
         }
     </ul>
     </div>
-    <div class="gallery-after"><slot /></div>
+    <div class="gallery-after"></div>
 </div>
 
 <style>
@@ -101,9 +101,9 @@ const padding = Math.max(0, pageSize - images.length);
             display: flex;
             flex-direction: column;
         }
-        /* The grid sits centred; the slotted page numbers sit halfway between
-           it and the baseline (the spacer above matches the area below). */
-        /* 4:6 rather than 1:1, so the grid sits a little above centre. */
+        /* The grid sits between the spacer above and the empty area below
+           (.gallery-after), which share the space left 4:6 rather than 1:1,
+           so it sits a little above centre. */
         .gallery-spacer,
         .gallery-after {
             min-height: 0;
@@ -132,8 +132,6 @@ const padding = Math.max(0, pageSize - images.length);
         .gallery-grid {
             grid-template-columns: repeat(7, minmax(0, 1fr));
             width: min(100%, calc((100cqh - 149px) * 7 / 3));
-        }
-    }
         }
     }
 </style>
