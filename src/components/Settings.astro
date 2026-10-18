@@ -91,9 +91,51 @@ const label = "mb-0 text-xs font-bold tracking-normal uppercase md:text-sm font-
       <p class="flex items-center justify-center pt-1.5 pb-1 mb-0 text-xs h-footer font-displayCon text-accent-muted">© 2010–{new Date().getFullYear()} Yes No Klub</p>
     </div>
   </div>
+  <!-- The line that rides the edge as the panel opens and closes. -->
+  <span class="settings-seam" aria-hidden="true" hidden data-settings-seam></span>
 </dialog>
 
 <style>
+  /* Opening and closing, the panel turns like a page: the page turn's edge
+     and line (see the page turn rules in global.css) cross its own box, right
+     to left to show it and back to hide it, with --page-seam-easing. The panel
+     is small, so the edge crosses it in --settings-sweep, quicker than
+     --seam-duration. The backdrop fades in --settings-fade, as the edge sets
+     off on the way in and as it arrives on the way out. With reduced motion
+     the panel only fades, as the backdrop does. The script runs it all. */
+  dialog[data-settings] {
+    --settings-sweep: 0.45s;
+    --settings-fade: 0.2s;
+  }
+  /* ::backdrop is not caught by the reduced-motion rule in global.css, so its
+     fade stays either way. */
+  dialog[data-settings]::backdrop {
+    transition: opacity var(--settings-fade) ease;
+  }
+  @starting-style {
+    dialog[data-settings][open]::backdrop {
+      opacity: 0;
+    }
+  }
+  dialog[data-settings][data-closing]::backdrop {
+    opacity: 0;
+    transition-delay: calc(var(--settings-sweep) - var(--settings-fade));
+  }
+  @media (prefers-reduced-motion: reduce) {
+    dialog[data-settings][data-closing]::backdrop {
+      transition-delay: 0s;
+    }
+  }
+  /* Fixed, so it stays put while the panel scrolls; the panel's clip trims it
+     to the box. Slanted as the slashes are, about its mid-height. */
+  .settings-seam {
+    position: fixed;
+    width: var(--wipe-line);
+    background: var(--color-border);
+    transform: skewX(-32deg);
+    pointer-events: none;
+  }
+
   /* Theme choices share the row equally; the chosen one carries a tint. */
   .settings-choice span {
     display: block;
@@ -173,6 +215,72 @@ const label = "mb-0 text-xs font-bold tracking-normal uppercase md:text-sm font-
   // focus there if it was opened from the keyboard.
   let openedByKeyboard = false;
 
+  // The sweep (see the style above). The edge is a line on screen at the
+  // logo's angle: ex is where it crosses the panel's mid-height, and it leans
+  // tan 32deg sideways per unit of height. The panel shows what is right of
+  // it; its contents start --page-band further right, and in that gap the
+  // line rides between two strips of the panel's background, as on a page
+  // turn. Every clip is a polygon in its own box, so the contents' clip
+  // follows them however far they are scrolled.
+  const TAN = Math.tan((32 * Math.PI) / 180);
+  const ms = (style: CSSStyleDeclaration, name: string) => {
+    const value = style.getPropertyValue(name).trim();
+    return value.endsWith("ms") ? parseFloat(value) : parseFloat(value) * 1000;
+  };
+  const reduced = () => matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  // Resolves when it is done; rejects if it is cancelled (by the close below).
+  function turn(d: HTMLDialogElement, show: boolean) {
+    const style = getComputedStyle(d);
+    const fill: FillMode = show ? "none" : "forwards";
+    if (reduced()) {
+      return d.animate({ opacity: show ? [0, 1] : [1, 0] }, { duration: ms(style, "--settings-fade"), easing: "ease", fill }).finished;
+    }
+    const contents = d.firstElementChild as HTMLElement;
+    const line = d.querySelector<HTMLElement>("[data-settings-seam]")!;
+    const box = d.getBoundingClientRect();
+    const inner = contents.getBoundingClientRect();
+    const halo = parseFloat(style.getPropertyValue("--page-halo")) || 0;
+    const band = (parseFloat(style.getPropertyValue("--wipe-line")) || 0) + 2 * halo;
+    const mid = box.top + box.height / 2;
+    const lean = (box.height / 2) * TAN;
+    // Hidden: the edge's foot is at the box's right side. Shown: the line and
+    // the gap are past its left side at the top.
+    const hidden = box.right + lean;
+    const shown = box.left - lean - band;
+    const [from, to] = show ? [hidden, shown] : [shown, hidden];
+    const clip = (b: DOMRect, ex: number, gap: number) => {
+      const x = (y: number) => ex + (mid - y) * TAN + gap - b.left;
+      return `polygon(${x(b.top)}px 0, 10000px 0, 10000px ${b.height}px, ${x(b.bottom)}px ${b.height}px)`;
+    };
+    const timing = { duration: ms(style, "--settings-sweep"), easing: style.getPropertyValue("--page-seam-easing").trim(), fill };
+    Object.assign(line.style, { left: `${box.left}px`, top: `${box.top}px`, height: `${box.height}px` });
+    line.hidden = false;
+    return Promise.all(
+      [
+        d.animate({ clipPath: [clip(box, from, 0), clip(box, to, 0)] }, timing),
+        contents.animate({ clipPath: [clip(inner, from, band), clip(inner, to, band)] }, timing),
+        line.animate({ translate: [`${from + halo - box.left}px 0`, `${to + halo - box.left}px 0`] }, timing),
+      ].map((a) => a.finished),
+    ).finally(() => {
+      // Unless it was cut short by a close, which needs the line again.
+      if (show && !d.hasAttribute("data-closing")) line.hidden = true;
+    });
+  }
+
+  // Every way of closing comes here: the panel turns away, then the dialog
+  // closes. data-closing (which also fades the backdrop) keeps a second
+  // click or Esc from starting it again. One still opening is finished first.
+  function shut(d: HTMLDialogElement) {
+    if (!d.open || d.hasAttribute("data-closing")) return;
+    d.getAnimations({ subtree: true }).forEach((a) => a.finish());
+    d.setAttribute("data-closing", "");
+    turn(d, false).then(
+      () => d.close(),
+      () => {},
+    );
+  }
+
   document.addEventListener("click", (e) => {
     const target = e.target as Element;
     const d = dialog();
@@ -184,8 +292,9 @@ const label = "mb-0 text-xs font-bold tracking-normal uppercase md:text-sm font-
       });
       openedByKeyboard = e.detail === 0;
       d.showModal();
+      turn(d, true).catch(() => {});
     } else if (target.closest("[data-settings-close]") || (target === d && pressedOnBackdrop)) {
-      d.close();
+      shut(d);
     }
   });
 
@@ -196,13 +305,30 @@ const label = "mb-0 text-xs font-bold tracking-normal uppercase md:text-sm font-
     pressedOnBackdrop = (e.target as Element).matches("dialog[data-settings]");
   });
 
-  // "close" does not bubble, so listen in the capture phase.
+  // Esc asks first ("cancel"), so it can turn away too. (Chromium closes
+  // outright on a second Esc with no click or key between; the close below
+  // then tidies up.)
+  document.addEventListener(
+    "cancel",
+    (e) => {
+      const d = e.target as HTMLDialogElement;
+      if (!d.matches("dialog[data-settings]")) return;
+      e.preventDefault();
+      shut(d);
+    },
+    true,
+  );
+
+  // "close" and "cancel" do not bubble, so listen in the capture phase.
   document.addEventListener(
     "close",
     (e) => {
-      if (!openedByKeyboard && (e.target as Element).matches("dialog[data-settings]")) {
-        document.querySelector<HTMLElement>("[data-settings-open]")?.blur();
-      }
+      const d = e.target as HTMLDialogElement;
+      if (!d.matches("dialog[data-settings]")) return;
+      d.removeAttribute("data-closing");
+      d.getAnimations({ subtree: true }).forEach((a) => a.cancel());
+      d.querySelector<HTMLElement>("[data-settings-seam]")!.hidden = true;
+      if (!openedByKeyboard) document.querySelector<HTMLElement>("[data-settings-open]")?.blur();
     },
     true,
   );
