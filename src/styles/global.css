@@ -258,17 +258,15 @@
        is an element of its own, named, so a page turn captures it apart from
        the page: in the root snapshot, the incoming screen (the hero runs up
        under it) would cover it until the turn ended. Fixed with the header,
-       so it stays under it while the page scrolls (at every size), and as
-       wide as main: in the body's gutter, the body centred at
-       --container-site. Above the header and whatever scrolls under it (a
+       so it stays under it while the page scrolls (at every size), and edge
+       to edge of the viewport, past the gutter and --container-site (the
+       position mark on it keeps to the nav's width: see .position,
+       BaseLayout.astro). Above the header and whatever scrolls under it (a
        thumbnail's wash is z-index 2), so nothing crosses it. */
     .frame-rule {
-        @apply h-px bg-border pointer-events-none;
+        @apply inset-x-0 h-px bg-border pointer-events-none;
         position: fixed;
         top: var(--spacing-header);
-        inset-inline: var(--spacing-gutter);
-        max-width: calc(var(--container-site) - 2 * var(--spacing-gutter));
-        margin-inline: auto;
         z-index: calc(var(--z-header) + 1);
     }
     section {
