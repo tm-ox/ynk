@@ -90,10 +90,10 @@ const links = ROW.map((s, i) => ({
                     <Sosmed />
                 </li>
                 <!-- Phones only: the footer line (Base.astro hides the footer
-                     there), small and quiet under the social icons, centred
-                     in the --menu-foot between them and the panel's foot: ©
-                     at the left, Privacy at the right, on one baseline. -->
-                <li class="flex items-center h-(--menu-foot) text-xs tracking-wide uppercase sm:hidden font-displayCon text-accent-muted">
+                     there), small and quiet under the social icons:
+                     --menu-gap below them and as much above the panel's foot.
+                     © at the left, Privacy at the right, on one baseline. -->
+                <li class="flex py-(--menu-gap) text-xs tracking-wide uppercase sm:hidden font-displayCon text-accent-muted">
                     <div class="flex items-baseline justify-between w-full">
                         <span>© 2010–{new Date().getFullYear()} Yes No Klub</span>
                         <a href="/privacy" class="w-auto text-xs" target="_self">Privacy</a>
@@ -207,21 +207,22 @@ const links = ROW.map((s, i) => ({
         }
         /* The links, as large as fits, in BioRhyme Expanded at
            --menu-weight: "FEATURED", the longest, runs gutter to gutter. It
-           is 10.249em wide at 300 (advance widths from the font file, no
-           tracking; 400 is the same), so 100cqw / 10.249 would touch both
-           gutters; --menu-size is 2% under that so it never wraps.
+           is 10.252em wide at 700 (advance widths from the font file, no
+           tracking; 300 and 400 are 10.249em), so 100cqw / 10.252 would
+           touch both gutters; --menu-size is 2% under that so it never
+           wraps.
            --menu-leading sets the rows, about 1.3 of the 0.686em cap height,
            but never under --menu-target, the least tap height (which sets
            them on most phones). A longer label in utils/row.ts, or another
            face, needs --menu-size measured again. */
         .main-nav {
-            --menu-size: calc(100cqw / 10.249 * 0.98);
-            --menu-weight: 300;
+            --menu-size: calc(100cqw / 10.252 * 0.98);
+            --menu-weight: 700;
             --menu-leading: 0.9em;
             --menu-target: 40px;
-            /* The room the footer line has under the social icons, the line
-               centred in it. */
-            --menu-foot: calc(var(--spacing) * 20);
+            /* Between the social icons and the footer line, and again
+               between the line and the panel's foot. */
+            --menu-gap: calc(var(--spacing) * 6);
         }
         .main-nav a[data-section] {
             font-family: var(--font-biorhyme-expanded);
