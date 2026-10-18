@@ -42,11 +42,50 @@ const widthsFor = (w: number) => [640, 960, 1280, 1600, 1920].filter((x) => x < 
 
 // The headline: "Experimental" and a word that changes. The founding event
 // was "a monthly experimental whatever event" (see About); the last word is the
-// one shown when nothing moves, and the cycle starts from the first. Edit the
-// list to change the cycle (two words at least).
+// one shown when nothing moves. Edit the list to change the cycle (two words at
+// least).
 const words = ["music", "sound", "performance", "people", "etc.", "whatever"];
 if (words.length < 2) throw new Error("Hero.astro: the cycling headline needs at least two words.");
-const still = words[words.length - 1];
+const wordSeconds = 1.8;
+const cycle = words.length * wordSeconds;
+
+// How each word glitches in and out. Every word gets its own jolt (sideways,
+// up/down, tilt) from these lists, used in turn, so entrances differ (the lists have six entries and repeat beyond that).
+const jolts = {
+    x: ["0.06em", "-0.09em", "0.11em", "-0.05em", "0.08em", "-0.1em"],
+    y: ["-0.03em", "0.04em", "0.02em", "-0.05em", "-0.02em", "0.04em"],
+    r: ["-3deg", "2.5deg", "-1.5deg", "3.5deg", "-2deg", "1.5deg"],
+};
+const jolt = (list: string[], i: number) => list[i % list.length];
+
+// One slot is a word's 1/N of the cycle. Keyframes are hard cuts (steps), as a
+// signal breaking up: flicker and slice in, settle, a brief twitch mid-way, then
+// slice and flicker out. The slices leave room (-0.3em) on the sides they do not
+// cut, because the capitals are taller than the tight line box; settled is no clip.
+// Colour fringes echo the photograph's blue and pink.
+const slot = 100 / words.length;
+const split = (e: number) =>
+    `text-shadow: ${e}em 0 rgb(255 40 140 / 0.75), -${e}em 0 rgb(0 210 255 / 0.75)`;
+const frames: [number, string][] = [
+    [0, "opacity: 0"],
+    [0.005, `opacity: 1; translate: var(--dx) var(--dy); rotate: var(--dr); clip-path: inset(-0.3em -0.3em 55% -0.3em); ${split(0.05)}`],
+    [0.03, "opacity: 0"],
+    [0.05, `opacity: 1; translate: calc(var(--dx) * -0.6) calc(var(--dy) * -1); rotate: calc(var(--dr) * -0.5); clip-path: inset(38% -0.3em -0.3em -0.3em); ${split(0.04)}`],
+    [0.08, `translate: calc(var(--dx) * 0.3) 0; rotate: 0deg; clip-path: inset(-0.3em -0.3em 20% -0.3em); ${split(0.02)}`],
+    [0.11, "translate: 0 0; rotate: 0deg; clip-path: none; text-shadow: none"],
+    [0.5, `translate: calc(var(--dx) * 0.4) 0; ${split(0.03)}`],
+    [0.52, "translate: 0 0; text-shadow: none"],
+    [0.84, `translate: calc(var(--dx) * -1) calc(var(--dy) * 0.5); rotate: calc(var(--dr) * 0.7); clip-path: inset(20% -0.3em 40% -0.3em); ${split(0.05)}`],
+    [0.88, "opacity: 0"],
+    [0.91, `opacity: 1; translate: calc(var(--dx) * 0.5) 0; rotate: 0deg; clip-path: inset(55% -0.3em -0.3em -0.3em); ${split(0.03)}`],
+    [0.95, "opacity: 0"],
+];
+const wordKeyframes = `@keyframes hero-word {
+${frames
+    .map(([at, css]) => `    ${(slot * at).toFixed(3)}% { ${css}; animation-timing-function: steps(1, end); }`)
+    .join("\n")}
+    ${slot.toFixed(3)}%, 100% { opacity: 0; }
+}`;
 
 // The tempo: seconds a picture rests before the next sweep, on a wide stage
 // and on a narrow (under 48rem) or portrait one, where there is more to take
@@ -88,25 +127,27 @@ const parallax = { shift: 10, ease: 0.06, overscan: 1.02 };
             <div class="hero-scrim"></div>
         </div>
         <!-- The line that rides the seam, between two strips of page background,
-             as in the page turn. Below the headline: where the seam cuts the
-             word, the gap between the two words shows it. -->
+             as in the page turn. Below the headline. -->
         <div class="hero-seam" aria-hidden="true"></div>
-        <!-- The two bars of the logo's equals sign, full width, with the
-             headline between them. -->
-        <div class="relative row-start-2 hero-head">
-            <h1 class="display-hero hero-title">
-                <span class="block">Experimental</span>
-                <!-- The words are for the eye; the heading reads "Experimental etc." -->
-                <span class="sr-only"> etc.</span>
-                <span class="hero-words" aria-hidden="true" data-words={JSON.stringify(words)}>
-                    <!-- Every word, unseen, so the cell is as big as the biggest
-                         and nothing reflows as the words change. -->
-                    {words.map((word) => <span class="hero-sizer">{word}</span>)}
-                    <span class="hero-word" data-word="out">{still}</span>
-                    <span class="hero-word" data-word="in">{words[0]}</span>
-                </span>
-            </h1>
-        </div>
+        <h1 class="relative row-start-2 display-hero hero-title">
+            <span class="block hero-lead">Experimental</span>
+            <!-- The words are for the eye; the heading reads "Experimental etc." -->
+            <span class="sr-only"> etc.</span>
+            <span
+                class="hero-words"
+                aria-hidden="true"
+                style={`--cycle:${cycle}s; --step:${wordSeconds}s;`}
+            >
+                {words.map((word, i) => (
+                    <span
+                        class="hero-word"
+                        style={`--i:${i}; --dx:${jolt(jolts.x, i)}; --dy:${jolt(jolts.y, i)}; --dr:${jolt(jolts.r, i)};`}
+                    >
+                        {word}
+                    </span>
+                ))}
+            </span>
+        </h1>
         <!-- Out of the grid flow altogether (absolute), vertically centred on the
              stage at its right edge, so it cannot move the headline. Size and
              inset: see .hero-next in the styles. -->
@@ -119,9 +160,9 @@ const parallax = { shift: 10, ease: 0.06, overscan: 1.02 };
 <script>
     // The sweep: every dwell, once the next picture is decoded, the seam
     // crosses the stage right to left (the .is-sweeping animation in the
-    // styles), the next picture and word behind it. When it is across, the
-    // roles move on in the same frame: the next picture becomes the current
-    // one, the incoming word the outgoing one, and the masks reset offstage.
+    // styles), the next picture behind it. When it is across, the roles move
+    // on in the same frame: the next picture becomes the current one, and the
+    // mask resets offstage.
     // It waits while the tab is hidden and while a page turn is being prepared.
     let teardown: (() => void) | undefined;
 
@@ -157,11 +198,7 @@ const parallax = { shift: 10, ease: 0.06, overscan: 1.02 };
         );
 
         const pics = [...stage.querySelectorAll<HTMLElement>(".hero-pic")];
-        const cell = stage.querySelector<HTMLElement>(".hero-words")!;
-        const out = cell.querySelector<HTMLElement>('[data-word="out"]')!;
-        const inc = cell.querySelector<HTMLElement>('[data-word="in"]')!;
         const seam = stage.querySelector<HTMLElement>(".hero-seam")!;
-        const words: string[] = JSON.parse(cell.dataset.words ?? "[]");
 
         // Back to the server's state (a restart can come mid-cycle), then the
         // order for this visit: the first stays, the rest shuffled.
@@ -176,28 +213,7 @@ const parallax = { shift: 10, ease: 0.06, overscan: 1.02 };
         };
         stage.classList.remove("is-sweeping");
         setRoles();
-        let word = 0;
-        out.textContent = words[words.length - 1];
-        inc.textContent = words[word];
         if (still.matches) return;
-
-        // The word's masks are its own box's size, so its edge is the stage's
-        // seam shifted by where the box sits: the seam leans (tan 32deg, about
-        // 0.625 sideways per unit down), so it crosses the box's mid-height
-        // left of the stage's centre line by 0.625 times the box's drop below
-        // the stage's centre (as Base.astro's page turn shifts do).
-        const measure = () => {
-            const s = stage.getBoundingClientRect();
-            const w = out.getBoundingClientRect();
-            const dx = w.left + w.width / 2 - (s.left + s.width / 2);
-            const dy = w.top + w.height / 2 - (s.top + s.height / 2);
-            stage.style.setProperty("--word-shift", `${-(dx + 0.625 * dy)}px`);
-        };
-        const sizes = new ResizeObserver(measure);
-        sizes.observe(stage);
-        sizes.observe(cell);
-        signal.addEventListener("abort", () => sizes.disconnect());
-        document.fonts?.ready.then(() => signal.aborted || measure());
 
         // Paused while hidden or while a page turn is under way; every change
         // of state re-arms whatever is waiting.
@@ -232,8 +248,8 @@ const parallax = { shift: 10, ease: 0.06, overscan: 1.02 };
             const narrow = stage.clientWidth < 768 || stage.clientHeight > stage.clientWidth;
             return Number(narrow ? stage.dataset.dwellNarrow : stage.dataset.dwellWide) * 1000;
         };
-        // One crossing; the seam's own animation ends it (the pictures' and
-        // words' run alongside on the same clock).
+        // One crossing; the seam's own animation ends it (the pictures' run
+        // alongside on the same clock).
         const sweep = () =>
             new Promise<void>((resolve) => {
                 const done = (e: AnimationEvent) => {
@@ -241,9 +257,6 @@ const parallax = { shift: 10, ease: 0.06, overscan: 1.02 };
                     seam.removeEventListener("animationend", done);
                     at = (at + 1) % order.length;
                     setRoles();
-                    word = (word + 1) % words.length;
-                    out.textContent = inc.textContent;
-                    inc.textContent = words[word];
                     stage.classList.remove("is-sweeping");
                     resolve();
                 };
@@ -315,6 +328,8 @@ const parallax = { shift: 10, ease: 0.06, overscan: 1.02 };
     document.addEventListener("astro:before-swap", () => teardown?.());
 </script>
 
+<style set:html={wordKeyframes}></style>
+
 <style>
     .hero-stage {
         container-type: size;
@@ -328,13 +343,12 @@ const parallax = { shift: 10, ease: 0.06, overscan: 1.02 };
        sweep takes it to just past the left edge over --seam-duration with
        --page-seam-easing, the page turn's tempo. */
     .hero-pic,
-    .hero-seam,
-    .hero-word {
+    .hero-seam {
         --sweep-overhang: calc(50cqh * 0.625 + 8px);
         --seam: calc(50cqw + var(--sweep-overhang));
         --edge: var(--seam);
     }
-    .hero-stage.is-sweeping :is(.hero-pic, .hero-seam, .hero-word) {
+    .hero-stage.is-sweeping :is(.hero-pic, .hero-seam) {
         animation: hero-sweep var(--seam-duration) var(--page-seam-easing) both;
     }
     @keyframes hero-sweep {
@@ -407,25 +421,13 @@ const parallax = { shift: 10, ease: 0.06, overscan: 1.02 };
             transparent calc(50% + var(--edge) * 0.848 + var(--page-band))
         );
     }
-    /* The bars: 1px rules in the border colour, as the frame's rules, across
-       the whole stage, --rule-gap clear of the headline. */
-    .hero-head {
-        --rule-gap: clamp(0.75rem, 2.5cqh, 2rem);
-        justify-self: stretch;
-        display: flex;
-        justify-content: center;
-        border-block: 1px solid var(--color-border);
-        padding-block: var(--rule-gap);
-    }
     /* A strip down the middle of the stage (--strip wide), with the headline
        large enough to break inside it: "Experimental" over the changing word,
        each wrapping within the strip. BioRhyme Expanded's capitals are about
        0.72em tall, so a line-height of 0.72 would just touch; --cap-lh is tuned
        lower so the lines overlap. This overrides the --text-hero tokens in
-       global.css, which now serve only the 404 page's .display-hero. The
-       padding makes up the capitals' overhang of the tight line box, so the
-       rules' gap is measured from the letters. Tune --strip, --size and
-       --cap-lh. */
+       global.css, which now serve only the 404 page's .display-hero. Tune
+       --strip, --size and --cap-lh. */
     .hero-title {
         --strip: 62cqw;
         --size: clamp(2.25rem, 7cqw, 6.5rem);
@@ -435,66 +437,56 @@ const parallax = { shift: 10, ease: 0.06, overscan: 1.02 };
         flex-direction: column;
         align-items: center;
         width: var(--strip);
-        margin: 0;
         text-align: center;
         overflow-wrap: anywhere;
         word-break: normal;
         font-size: var(--size);
         line-height: var(--cap-lh);
-        padding-block: 0.1em;
+        padding-block: 1rem;
     }
-    /* The words share one cell, so the line is as wide and tall as the
-       biggest (the unseen sizers); the outgoing and incoming words lie on top
-       of each other. */
+    /* The words share one cell, so the line is as wide as the longest. Still, or
+       with reduced motion, only the last shows. */
     .hero-words {
         display: inline-grid;
         margin-top: calc(var(--word-pull) * -1);
         width: 100%;
         text-align: center;
     }
-    .hero-sizer,
     .hero-word {
         grid-area: 1 / 1;
         min-width: 0;
+        opacity: 0;
     }
-    .hero-sizer {
-        visibility: hidden;
-    }
-    /* Each word is masked by the seam, its edge shifted to where its box sits
-       (--word-shift, from the script): the outgoing word left of the edge, the
-       incoming one right of it past the band, so the seam cuts one into the
-       other. The boxes reach --word-bleed past the cell (the margins give it
-       back), since a mask clips everything outside its box and the capitals
-       overhang the tight line box. */
-    .hero-word {
-        --word-bleed: 0.3em;
-        --edge: calc(var(--seam) + var(--word-shift, 0px));
-        padding: var(--word-bleed);
-        margin: calc(var(--word-bleed) * -1);
-        mask-size: 100% 100%;
-        mask-repeat: no-repeat;
-    }
-    .hero-word[data-word="out"] {
-        mask-image: linear-gradient(
-            var(--wipe-angle),
-            #000 calc(50% + var(--edge) * 0.848),
-            transparent calc(50% + var(--edge) * 0.848)
-        );
-    }
-    .hero-word[data-word="in"] {
-        mask-image: linear-gradient(
-            var(--wipe-angle),
-            transparent calc(50% + var(--edge) * 0.848 + var(--page-band)),
-            #000 calc(50% + var(--edge) * 0.848 + var(--page-band))
-        );
+    .hero-word:last-child {
+        opacity: 1;
     }
     /* Reduced motion: no cycle, a still split frame. The seam stands through
-       the stage's centre between two pictures; the word stays the last one
-       (its own seam stays offstage). */
+       the stage's centre between two pictures. */
     @media (prefers-reduced-motion: reduce) {
         .hero-pic,
         .hero-seam {
             --seam: 0px;
+        }
+    }
+    @media (prefers-reduced-motion: no-preference) {
+        /* "Experimental" sways very slowly, the calm against the glitching word.
+           Movement only, no change of size or spacing, so it never reflows. */
+        .hero-lead {
+            animation: hero-sway 18s ease-in-out infinite alternate;
+        }
+        .hero-word {
+            animation: hero-word var(--cycle) linear infinite both;
+            animation-delay: calc(var(--i) * var(--step));
+        }
+    }
+    @keyframes hero-sway {
+        from {
+            translate: -0.07em 0;
+            rotate: -1.2deg;
+        }
+        to {
+            translate: 0.07em 0;
+            rotate: 1.2deg;
         }
     }
     .hero-next {
