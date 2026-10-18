@@ -224,7 +224,8 @@ const ogImage = new URL(image ?? "/og-default.jpg", Astro.site).href;
                 // of screens (utils/row.ts), as the nav and the arrow keys
                 // have them. A move between two of them that are different
                 // screens turns the page that way, like page numbers do.
-                // Details are not in the row and keep the morph.
+                // Details are not in the row and keep the morph (privacy,
+                // below, turns all the same).
                 const screen = (url: URL) => screenOf(url.pathname);
                 const from = screen(e.from);
                 const to = screen(e.to);
@@ -235,6 +236,10 @@ const ogImage = new URL(image ?? "/og-default.jpg", Astro.site).href;
                     from !== to
                 )
                     e.direction = to > from ? "paging-forward" : "paging-back";
+                // Privacy is off the row, a page laid over it: going to it
+                // from anywhere turns forward, leaving it turns back.
+                if (!e.direction?.startsWith("paging") && isPrivacy(e.to) !== isPrivacy(e.from))
+                    e.direction = isPrivacy(e.to) ? "paging-forward" : "paging-back";
                 paging = !!e.direction && e.direction.startsWith("paging");
                 // Names and classes changed for the last transition (see
                 // unname, fold and turnBox) come back first, so any of them can
@@ -284,12 +289,15 @@ const ogImage = new URL(image ?? "/og-default.jpg", Astro.site).href;
                 // Page turns set it too: the grid slides in and wipes instead.
                 pagedDetail = paging && isDetail(e.to);
                 returning = (isDetail(e.from) || paging) && isArchive(e.to);
-                // A page turn onto a screen of the row, or Previous / Next
-                // between details: the seam crosses the two snapshots
-                // (global.css), placed by the boxes measured below.
+                // A page turn onto a screen of the row, to or from privacy,
+                // or Previous / Next between details: the seam crosses the two
+                // snapshots (global.css), placed by the boxes measured below.
                 turn =
                     paging &&
-                    (screen(e.to) !== undefined || (isDetail(e.from) && isDetail(e.to)))
+                    (screen(e.to) !== undefined ||
+                        isPrivacy(e.to) ||
+                        isPrivacy(e.from) ||
+                        (isDetail(e.from) && isDetail(e.to)))
                         ? e.direction === "paging-back"
                             ? "back"
                             : "forward"
@@ -335,6 +343,7 @@ const ogImage = new URL(image ?? "/og-default.jpg", Astro.site).href;
                 document.documentElement.toggleAttribute("data-closing", closing);
             });
 
+            const isPrivacy = (url: URL) => /^\/privacy\/?$/.test(url.pathname);
             let paging = false;
             let pagedDetail = false;
             let returning = false;
@@ -417,7 +426,7 @@ const ogImage = new URL(image ?? "/og-default.jpg", Astro.site).href;
             });
 
             // What a page turn moves: a screen's main content (.vt-page: the
-            // hero, Featured, an archive grid, About, Contact), or on a
+            // hero, Featured, an archive grid, About, Contact, Privacy), or on a
 
             // detail page the named piece that is the page (an event's
             // section, its parts folded into it; a picture). Run after fold,

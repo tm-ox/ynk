@@ -612,8 +612,8 @@ select:-webkit-autofill:focus {
     view-transition-class: swap;
 }
 /* A screen's main content as one piece (the hero, Featured, an archive grid,
-   About, Contact), so a page turn between screens slides it whole: see the
-   .page rules below. */
+   About, Contact, and Privacy, off the row), so a page turn between screens
+   slides it whole: see the .page rules below. */
 .vt-page {
     view-transition-class: page;
 }

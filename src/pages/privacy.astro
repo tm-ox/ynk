@@ -6,70 +6,74 @@ import BaseLayout from "../layouts/BaseLayout.astro";
   title="Privacy"
   description="What the Yes No Klub website collects about visitors, and how to opt out."
 >
-  <section>
-    <div class="grid text-left lg:gap-6 lg:grid-cols-3">
-      <p
-        class="mt-1 text-sm sm:text-2xl font-display font-bold tracking-normal text-accent lg:text-right col-span-2 sm:col-span-3 lg:col-span-1"
-      >
-        What this site collects, in plain terms.
-      </p>
-      <div class="col-span-2">
-        <hr class="lg:hidden" />
-        <h1>Privacy</h1>
-        <hr />
-        <div class="py-rule">
-          <h2 class="text-base md:text-lg">Visit statistics</h2>
-          <p>
-            This site uses Google Analytics to count visits and see which pages
-            are read. It records pages viewed, approximate location, device and
-            browser type, and how a visitor arrived. It uses cookies to tell
-            visits apart. Google Analytics does not log or store IP addresses.
-            It does not identify anyone by name, and Yes No Klub does not combine
-            it with any other information about you.
-          </p>
-          <p>
-            The data is held by Google, which may process it on servers around the
-            world. It is kept for a limited period under
-            Google's standard retention settings, then deleted. We use it only to
-            understand how the site is used and to improve it. It is not used for
-            advertising.
-          </p>
-          <h2 class="text-base md:text-lg">What we don't collect</h2>
-          <p>
-            There are no accounts, sign-up forms, comments or advertising on this
-            site, and no other tracking tools. We do not sell or share personal
-            information.
-          </p>
-          <h2 class="text-base md:text-lg">Opting out</h2>
-          <p>
-            You can block or delete cookies in your browser settings, or install
-            Google's
-            <a
-              href="https://tools.google.com/dlpage/gaoptout"
-              target="_blank"
-              rel="noopener noreferrer">opt-out browser add-on</a
-            >. The site works the same either way.
-          </p>
-          <h2 class="text-base md:text-lg">Email and other sites</h2>
-          <p>
-            If you send a message through the contact form or email us, we keep it only to reply to it. The form is processed by Netlify, our host, which filters spam. Links to
-            Instagram, Facebook, YouTube, SoundCloud and other sites leave this
-            one, and those services have their own privacy policies.
-          </p>
-          <h2 class="text-base md:text-lg">Photographs and flyers</h2>
-          <p>
-            This site documents past events, including photographs of performers
-            and audiences. If you appear in an image and would like it removed or
-            credited differently, <a href="/contact/" target="_self">get in touch</a> and we will deal with it promptly.
-          </p>
-          <h2 class="text-base md:text-lg">Questions</h2>
-          <p>
-            For any question about this page, <a href="/contact/" target="_self">get in touch</a>.
-          </p>
+  <!-- Off the row, but it turns as a screen does (Base.astro: forward in,
+       back out): named and a .vt-page, so its title and text slide whole. -->
+  <div class="vt-page" transition:name="privacy">
+    <section>
+      <div class="grid text-left lg:gap-6 lg:grid-cols-3">
+        <p
+          class="mt-1 text-sm sm:text-2xl font-display font-bold tracking-normal text-accent lg:text-right col-span-2 sm:col-span-3 lg:col-span-1"
+        >
+          What this site collects, in plain terms.
+        </p>
+        <div class="col-span-2">
+          <hr class="lg:hidden" />
+          <h1>Privacy</h1>
+          <hr />
+          <div class="py-rule">
+            <h2 class="text-base md:text-lg">Visit statistics</h2>
+            <p>
+              This site uses Google Analytics to count visits and see which pages
+              are read. It records pages viewed, approximate location, device and
+              browser type, and how a visitor arrived. It uses cookies to tell
+              visits apart. Google Analytics does not log or store IP addresses.
+              It does not identify anyone by name, and Yes No Klub does not combine
+              it with any other information about you.
+            </p>
+            <p>
+              The data is held by Google, which may process it on servers around the
+              world. It is kept for a limited period under
+              Google's standard retention settings, then deleted. We use it only to
+              understand how the site is used and to improve it. It is not used for
+              advertising.
+            </p>
+            <h2 class="text-base md:text-lg">What we don't collect</h2>
+            <p>
+              There are no accounts, sign-up forms, comments or advertising on this
+              site, and no other tracking tools. We do not sell or share personal
+              information.
+            </p>
+            <h2 class="text-base md:text-lg">Opting out</h2>
+            <p>
+              You can block or delete cookies in your browser settings, or install
+              Google's
+              <a
+                href="https://tools.google.com/dlpage/gaoptout"
+                target="_blank"
+                rel="noopener noreferrer">opt-out browser add-on</a
+              >. The site works the same either way.
+            </p>
+            <h2 class="text-base md:text-lg">Email and other sites</h2>
+            <p>
+              If you send a message through the contact form or email us, we keep it only to reply to it. The form is processed by Netlify, our host, which filters spam. Links to
+              Instagram, Facebook, YouTube, SoundCloud and other sites leave this
+              one, and those services have their own privacy policies.
+            </p>
+            <h2 class="text-base md:text-lg">Photographs and flyers</h2>
+            <p>
+              This site documents past events, including photographs of performers
+              and audiences. If you appear in an image and would like it removed or
+              credited differently, <a href="/contact/" target="_self">get in touch</a> and we will deal with it promptly.
+            </p>
+            <h2 class="text-base md:text-lg">Questions</h2>
+            <p>
+              For any question about this page, <a href="/contact/" target="_self">get in touch</a>.
+            </p>
+          </div>
+          <hr />
+          <h6>Last updated October 2026</h6>
         </div>
-        <hr />
-        <h6>Last updated October 2026</h6>
       </div>
-    </div>
-  </section>
+    </section>
+  </div>
 </BaseLayout>
