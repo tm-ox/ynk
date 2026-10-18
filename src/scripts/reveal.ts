@@ -9,9 +9,8 @@
 // data-side; with reduced motion, or without this script, panels are plain.
 // At rest the panel in view is whole and the others hidden, so a neighbour
 // only ever shows through the seam.
-// Arriving on home by a page turn from an archive (data-turn on the root, set
-// in Base.astro), the panel landed on wipes in with the page slide instead, in
-// CSS ("landing"); this only waits for that to end.
+// Arriving on home by a page turn, the panel landed on is simply whole: the
+// turn's own seam, on the snapshots (global.css), brings it in.
 import { panelsOf, setAim, takeAim } from "./track";
 
 // How far the edge leans sideways per pixel of height: it rises at 58
@@ -85,9 +84,7 @@ type Seam = {
 
 let teardown: (() => void) | null = null;
 
-// turn: the root's data-turn, on the page load that follows a page turn only
-// (not when the breakpoint is crossed later).
-function arm(turn?: string) {
+function arm() {
   teardown?.();
   teardown = null;
 
@@ -104,14 +101,9 @@ function arm(turn?: string) {
     plain(s);
     s.dataset.reveal = "hidden";
   };
-  // Everything starts plain, whatever an earlier arm or Base.astro left,
-  // except a panel landed on by a page turn while its CSS wipe runs.
-  const landing = turn ? panels.find((s) => s.dataset.reveal === "landing") : undefined;
-  panels.forEach((s) => s !== landing && plain(s));
-  if (!wide.matches || reduced.matches || !track.clientWidth) {
-    if (landing) plain(landing);
-    return;
-  }
+  // Everything starts plain, whatever an earlier arm left.
+  panels.forEach(plain);
+  if (!wide.matches || reduced.matches || !track.clientWidth) return;
 
   const root = getComputedStyle(document.documentElement);
   const duration = ms(root.getPropertyValue("--seam-duration"), 750);
@@ -119,7 +111,7 @@ function arm(turn?: string) {
   const ease = easing(root.getPropertyValue("--wipe-easing"));
 
   // The panel shown whole while the track rests on it (none while a seam
-  // runs, or while a landing panel wipes in).
+  // runs).
   let rest: HTMLElement | null = panels[Math.round(track.scrollLeft / track.clientWidth)] ?? null;
   let seam: Seam | null = null;
   // Where the seam was drawn last frame, and the furthest the track has got
@@ -181,7 +173,7 @@ function arm(turn?: string) {
     const still = !moving && Math.abs(pos - near) < 0.01 ? panels[near] : undefined;
 
     if (!seam) {
-      if (!rest) return; // a landing panel is still wiping in
+      if (!rest) return;
       const from = panels.indexOf(rest);
       if (Math.abs(pos - from) <= SET_OFF) return;
       const dir = pos > from ? 1 : -1;
@@ -231,29 +223,9 @@ function arm(turn?: string) {
     if (seam && (t < 1 || moving || still)) schedule();
   }
 
-  // After a page turn the panel landed on wipes in with the slide, in CSS
-  // (global.css, keyed on data-turn; Base.astro set it "landing" and keeps the
-  // wipe on the slide's clock). It is whole once that ends, or at once when it
-  // is not running (a page turn without view transitions).
-  let alive = true;
-  if (landing) {
-    if (landing === rest) {
-      rest = null;
-      const wipes = landing
-        .getAnimations()
-        .filter((a) => a instanceof CSSAnimation && a.animationName.startsWith("turn-"));
-      Promise.allSettled(wipes.map((a) => a.finished)).then(() => {
-        if (!alive) return;
-        settle(landing);
-        schedule();
-      });
-    } else hide(landing);
-  }
-
   track.addEventListener("scroll", schedule, { passive: true });
   addEventListener("resize", schedule);
   teardown = () => {
-    alive = false;
     cancelAnimationFrame(frame);
     track.removeEventListener("scroll", schedule);
     removeEventListener("resize", schedule);
@@ -275,10 +247,10 @@ document.addEventListener(
   { capture: true },
 );
 
-document.addEventListener("astro:page-load", () => arm(document.documentElement.dataset.turn));
+document.addEventListener("astro:page-load", () => arm());
 // Crossing the sm breakpoint switches between side-by-side and stacked panels.
 wide.addEventListener("change", () => arm());
 reduced.addEventListener("change", () => arm());
 // This module can first load on a page turn to home (it is only on the home
 // page), after that page's astro:page-load has gone by.
-arm(document.documentElement.dataset.turn);
+arm();

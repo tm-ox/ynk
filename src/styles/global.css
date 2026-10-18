@@ -627,14 +627,11 @@ html[data-astro-transition="paging-back"]::view-transition-new(.detail) {
 }
 /* Page turns between screens (archive page numbers, and moves along the row
    home, events archive, images archive; not Previous/Next on a detail page)
-   slide like the home panels do, under one seam, as on the home track. The
-   slide is done here, on the snapshots of the .page groups (the home track,
-   an archive grid): the outgoing one leaves whole and the incoming one comes
-   in from the far side. One diagonal edge crosses the screen once on the
-   same clock: ahead of it the outgoing snapshot, behind it the real incoming
-   content (an archive's .gallery-fit, or the home panel landed on, keyed on
-   data-turn below), which the new snapshot shows live, so its mask is drawn
-   at full resolution with the line on it, as on the home panels. A
+   slide like the home panels do, under one seam, as on the home track. It is
+   all done here, on the snapshots of the .page groups (the home track, an
+   archive grid): the outgoing one leaves whole and the incoming one comes in
+   from the far side, and one diagonal edge with its line crosses the screen
+   once, the outgoing snapshot ahead of it and the incoming one behind it. A
    smooth-scroll ease-out gives the slide its feel. These come after the
    .detail rules above, and use the same prefix, because a named pseudo and a
    class argument have equal specificity and the later one wins. */
@@ -666,28 +663,36 @@ html[data-astro-transition="paging-back"]::view-transition-new(.detail) {
         translate: 100vw 0;
     }
 }
-/* The seam runs on its own clock, as on the home track, not the slide's: the
-   same --seam-delay after the slide starts (home's waits as long after the
-   scroll does), then --seam-duration with --wipe-easing. Tied to the slide instead it rode the boundary
-   between the two screens and only crossed the incoming one at the very end.
+/* The seam runs on its own clock, as on the home track, not the slide's: it
+   waits --seam-delay after the slide starts (home's waits as long after the
+   scroll does), then takes --seam-duration with --wipe-easing. Everything is
+   on the snapshots, which all start together, so there is one clock and
+   nothing to keep in step with the live page.
    Two registered lengths are animated on each target, apart:
      --seam: the seam's distance right of the screen's centre (at mid-height),
        from just past the screen edge it starts at to just past the other one
-       (R, --seam-overhang, past each), going forward from W/2 + R to
-       -(W/2 + R), W being the screen's width (100vw); back is the reverse.
+       (R, --seam-overhang, past each): going forward from W/2 + R to
+       -(W/2 + R), W being the screen's width (100vw); back, the reverse.
      --slide-x: how far the target is moved, exactly as the slide moves its
        snapshot (same keyframes, duration and easing): the outgoing one from 0
        to -W going forward (to W going back), the incoming one from W to 0
-       (from -W going back). The live content is not moved itself, its
-       snapshot is, so it gets the incoming snapshot's.
+       (from -W going back).
    --edge, the seam's distance right of the box's own centre (the home panels'
    formula, see @layer components), is then
      --seam - --slide-x + the box's shift.
    The shift is for a box not centred on the screen: the seam leans, so it
-   crosses such a box's mid-height elsewhere. Base.astro measures each box and
-   sets --turn-old-shift and --turn-new-shift: minus (its centre's offset right
-   of the screen's centre + 0.625 times its offset below it). Then the
-   outgoing and incoming edges are one line on screen. */
+   crosses such a box's mid-height elsewhere. Base.astro measures the outgoing
+   and incoming boxes and sets --turn-old-shift and --turn-new-shift: minus
+   (the centre's offset right of the screen's centre + 0.625 times its offset
+   below it). So all the edges below are one line on screen.
+   The outgoing snapshot shows what is ahead of that line, the incoming one
+   what is behind it, less --wipe-line: between them is a gap of exactly the
+   line's width where neither paints. The line is a band of that width filling
+   the gap, the background of the incoming page's group (which holds its
+   snapshot, and on archive to archive both), painted beneath the snapshots,
+   so it only shows through the gap. The group does not slide (its snapshot
+   does) and is not moved here either, so its edge is --seam + the incoming
+   shift, with no --slide-x. */
 @property --seam {
     syntax: "<length>";
     inherits: true;
@@ -746,26 +751,24 @@ html[data-astro-transition="paging-back"]::view-transition-new(.detail) {
         --slide-x: 0px;
     }
 }
-/* The incoming snapshot is not masked here: it only slides (its mask is on
-   the live content, below). */
-html[data-astro-transition^="paging"]::view-transition-old(.page),
-html[data-astro-transition^="paging"]::view-transition-new(.page) {
-    mask-image: none;
-}
-/* The outgoing snapshot shows what is ahead of the edge: left of it going
-   forward, right of it going back. The lengths are animated on the
-   pseudo-element itself, which works for registered properties. The
-   snapshot is a picture, so it carries no line (the one line is the incoming
-   content's). Its seam (delay and all) outlasts the slide, which keeps the
-   transition (and so the live content's wipe) running until the seam is
-   across. During the delay it sits at its start value (fill both). mask-size is
-   set because a .detail .page pair gets the wipe's oversized mask above. */
+/* The lengths are animated on the pseudo-elements themselves, which works for
+   registered properties. The seam (delay and all) outlasts the slide, which
+   keeps the transition running until it is across; during the delay it sits
+   at its start value (fill both). mask-size is set because a .detail .page
+   pair gets the wipe's oversized mask above. */
 html[data-astro-transition^="paging"]::view-transition-old(.page) {
     --edge: calc(var(--seam) - var(--slide-x) + var(--turn-old-shift, 0px));
-}
-html[data-astro-transition="paging-forward"]::view-transition-old(.page) {
     mask-size: 100% 100%;
     mask-repeat: no-repeat;
+}
+html[data-astro-transition^="paging"]::view-transition-new(.page) {
+    --edge: calc(var(--seam) - var(--slide-x) + var(--turn-new-shift, 0px));
+    mask-size: 100% 100%;
+    mask-repeat: no-repeat;
+}
+/* Forward: the seam crosses right to left; outgoing left of it, incoming
+   right of it past the line. */
+html[data-astro-transition="paging-forward"]::view-transition-old(.page) {
     mask-image: linear-gradient(
         var(--wipe-angle),
         #000 calc(50% + var(--edge) * 0.848),
@@ -776,9 +779,20 @@ html[data-astro-transition="paging-forward"]::view-transition-old(.page) {
         turn-slide-out-forward var(--page-slide-duration) var(--page-slide-easing) both,
         turn-seam-forward var(--seam-duration) var(--wipe-easing) var(--seam-delay) both;
 }
+html[data-astro-transition="paging-forward"]::view-transition-new(.page) {
+    mask-image: linear-gradient(
+        var(--wipe-angle),
+        transparent calc(50% + var(--edge) * 0.848 + var(--wipe-line)),
+        #000 calc(50% + var(--edge) * 0.848 + var(--wipe-line))
+    );
+    animation:
+        page-in-from-right var(--page-slide-duration) var(--page-slide-easing) both,
+        turn-slide-in-forward var(--page-slide-duration) var(--page-slide-easing) both,
+        turn-seam-forward var(--seam-duration) var(--wipe-easing) var(--seam-delay) both;
+}
+/* Back: the mirror image; outgoing right of the seam, incoming left of it
+   past the line. */
 html[data-astro-transition="paging-back"]::view-transition-old(.page) {
-    mask-size: 100% 100%;
-    mask-repeat: no-repeat;
     mask-image: linear-gradient(
         var(--wipe-angle),
         transparent calc(50% + var(--edge) * 0.848),
@@ -789,88 +803,47 @@ html[data-astro-transition="paging-back"]::view-transition-old(.page) {
         turn-slide-out-back var(--page-slide-duration) var(--page-slide-easing) both,
         turn-seam-back var(--seam-duration) var(--wipe-easing) var(--seam-delay) both;
 }
-html[data-astro-transition="paging-forward"]::view-transition-new(.page) {
-    animation: page-in-from-right var(--page-slide-duration) var(--page-slide-easing) both;
-}
 html[data-astro-transition="paging-back"]::view-transition-new(.page) {
-    animation: page-in-from-left var(--page-slide-duration) var(--page-slide-easing) both;
+    mask-image: linear-gradient(
+        var(--wipe-angle),
+        #000 calc(50% + var(--edge) * 0.848 - var(--wipe-line)),
+        transparent calc(50% + var(--edge) * 0.848 - var(--wipe-line))
+    );
+    animation:
+        page-in-from-left var(--page-slide-duration) var(--page-slide-easing) both,
+        turn-slide-in-back var(--page-slide-duration) var(--page-slide-easing) both,
+        turn-seam-back var(--seam-duration) var(--wipe-easing) var(--seam-delay) both;
 }
-/* The incoming content behind the seam. Base.astro marks the new page's root
-   with data-turn (forward or back) on a page turn, and the home panel landed
-   on with data-reveal="landing", and takes data-turn off when the transition
-   ends, so the mask and line go with it, wherever they were. Its animations
-   start as the page is swapped in, a little before the snapshots'; Base.astro
-   sets them back to the slide's start, so the two halves of the seam meet.
-   Its children are captured with it, not on their own (Base.astro unnames
-   them for page turns), so the mask covers all of it. It shows what is
-   behind the edge, with the line just inside, as on the home panels. */
-@keyframes rule-in {
-    from {
-        scale: 0 1;
-    }
+/* The line: the incoming page's group (data-turn-into, its name, set by
+   Base.astro on the new page). Its own move from the old box to the new one
+   (when it holds both, archive to archive) is replaced by the seam, so it
+   stays where the new box is, as its measured shift assumes; the snapshots
+   in it are placed from its top left and keep their own heights, so an
+   outgoing grid of another height is still where it was. The band is
+   transparent but for the line's width just behind the edge, and ends past
+   the box with the seam. */
+html[data-astro-transition^="paging"][data-turn-into="home"]::view-transition-group(home),
+html[data-astro-transition^="paging"][data-turn-into="gallery-page"]::view-transition-group(gallery-page) {
+    --edge: calc(var(--seam) + var(--turn-new-shift, 0px));
+    animation: turn-seam-forward var(--seam-duration) var(--wipe-easing) var(--seam-delay) both;
+    background-image: linear-gradient(
+        var(--wipe-angle),
+        transparent calc(50% + var(--edge) * 0.848),
+        var(--color-border) calc(50% + var(--edge) * 0.848),
+        var(--color-border) calc(50% + var(--edge) * 0.848 + var(--wipe-line)),
+        transparent calc(50% + var(--edge) * 0.848 + var(--wipe-line))
+    );
 }
-@media (prefers-reduced-motion: no-preference) {
-    /* Positioned so the line (::after) covers the grid's box. From xl up the
-       grid scrolls inside itself, and an absolute child of a scroller sits on
-       the scrolled content; a new page is at the top, so it starts where the
-       box is. (Home panels are positioned already.) */
-    html[data-turn] .gallery-fit {
-        position: relative;
-    }
-    html[data-turn] :is(.gallery-fit, .home-track > section[data-reveal="landing"]) {
-        --edge: calc(var(--seam) - var(--slide-x) + var(--turn-new-shift, 0px));
-        animation:
-            turn-slide-in-forward var(--page-slide-duration) var(--page-slide-easing) both,
-            turn-seam-forward var(--seam-duration) var(--wipe-easing) var(--seam-delay) both;
-        mask-image: linear-gradient(
-            var(--wipe-angle),
-            transparent calc(50% + var(--edge) * 0.848),
-            #000 calc(50% + var(--edge) * 0.848)
-        );
-    }
-    /* Held at the start (fill both) until Base.astro has put it on the
-       slide's clock, so it never shows progress it would then lose. */
-    html[data-turn][data-turn-held] :is(.gallery-fit, .home-track > section[data-reveal="landing"]),
-    html[data-turn][data-turn-held] .home-track > section[data-reveal="landing"] hr {
-        animation-play-state: paused;
-    }
-    html[data-turn="back"] :is(.gallery-fit, .home-track > section[data-reveal="landing"]) {
-        animation-name: turn-slide-in-back, turn-seam-back;
-        mask-image: linear-gradient(
-            var(--wipe-angle),
-            #000 calc(50% + var(--edge) * 0.848),
-            transparent calc(50% + var(--edge) * 0.848)
-        );
-    }
-    html[data-turn] :is(.gallery-fit, .home-track > section[data-reveal="landing"])::after {
-        content: "";
-        position: absolute;
-        inset: 0;
-        z-index: 1;
-        pointer-events: none;
-        background-image: linear-gradient(
-            var(--wipe-angle),
-            transparent calc(50% + var(--edge) * 0.848),
-            var(--color-border) calc(50% + var(--edge) * 0.848),
-            var(--color-border) calc(50% + var(--edge) * 0.848 + var(--wipe-line)),
-            transparent calc(50% + var(--edge) * 0.848 + var(--wipe-line))
-        );
-    }
-    html[data-turn="back"] :is(.gallery-fit, .home-track > section[data-reveal="landing"])::after {
-        background-image: linear-gradient(
-            var(--wipe-angle),
-            transparent calc(50% + var(--edge) * 0.848 - var(--wipe-line)),
-            var(--color-border) calc(50% + var(--edge) * 0.848 - var(--wipe-line)),
-            var(--color-border) calc(50% + var(--edge) * 0.848),
-            transparent calc(50% + var(--edge) * 0.848)
-        );
-    }
-    /* A landing panel's rules draw in over the second half of the seam, as
-       the home panels' do behind it, done as the transition ends. */
-    html[data-turn] .home-track > section[data-reveal="landing"] hr {
-        animation: rule-in calc(var(--seam-duration) * 0.5) var(--wipe-easing)
-            calc(var(--seam-delay) + var(--seam-duration) * 0.5) both;
-    }
+html[data-astro-transition="paging-back"][data-turn-into="home"]::view-transition-group(home),
+html[data-astro-transition="paging-back"][data-turn-into="gallery-page"]::view-transition-group(gallery-page) {
+    animation-name: turn-seam-back;
+    background-image: linear-gradient(
+        var(--wipe-angle),
+        transparent calc(50% + var(--edge) * 0.848 - var(--wipe-line)),
+        var(--color-border) calc(50% + var(--edge) * 0.848 - var(--wipe-line)),
+        var(--color-border) calc(50% + var(--edge) * 0.848),
+        transparent calc(50% + var(--edge) * 0.848)
+    );
 }
 @media (prefers-reduced-motion: reduce) {
     ::view-transition-group(*),
