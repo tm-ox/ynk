@@ -160,7 +160,10 @@ const ogImage = new URL(image ?? "/og-default.jpg", Astro.site).href;
             class="sr-only focus:not-sr-only focus:absolute focus:top-2 focus:left-2 focus:z-(--z-overlay) focus:bg-bg focus:p-2"
             >Skip to content</a
         >
-        <header>
+        <!-- Named, so a page turn captures it apart from the page and draws it
+             over the turning screen (global.css), as it lies over the page
+             scrolled under it. -->
+        <header transition:name="header">
             <nav aria-label="Main">
                 <Logo />
                 <slot name="nav" transition:persist />

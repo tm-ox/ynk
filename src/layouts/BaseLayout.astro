@@ -74,7 +74,7 @@ const links = ROW.map((s, i) => ({
                 </li>
                 {
                     links.map((link) => (
-                        <li transition:name={`nav-${link.section}`}>
+                        <li class="vt-nav" transition:name={`nav-${link.section}`}>
                             <a
                                 class:list={["max-sm:block sm:relative sm:top-[2px]", link.current && "active"]}
                                 aria-current={link.current ? "true" : undefined}
@@ -86,7 +86,7 @@ const links = ROW.map((s, i) => ({
                         </li>
                     ))
                 }
-                <li class="max-sm:mt-auto max-sm:pt-4" transition:name="nav-social">
+                <li class="max-sm:mt-auto max-sm:pt-4 vt-nav" transition:name="nav-social">
                     <Sosmed />
                 </li>
                 <!-- Phones only: the footer line (Base.astro hides the footer

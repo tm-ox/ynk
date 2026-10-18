@@ -680,6 +680,11 @@ select:-webkit-autofill:focus {
 .vt-page {
     view-transition-class: page;
 }
+/* The nav's own named parts (its links, the social icons), so one rule
+   lifts them all over the header's group: see the ladder below. */
+.vt-nav {
+    view-transition-class: nav;
+}
 
 /* The morph between pages (everything that is not a page turn).
    Astro's own fade sits in @layer astro, so these unlayered rules win over
@@ -753,15 +758,43 @@ html:not([data-astro-transition^="paging"]):not([data-closing])::view-transition
     animation: none;
     opacity: 1;
 }
-/* The rule under the header stays over the pages as they turn, and the
-   position mark over the rule, whichever order the two pages were captured
-   in (a group only in the incoming page is otherwise added on top of those
-   both pages share, so the incoming screen covered the rule). */
-::view-transition-group(frame-rule) {
+/* The stacking of the groups, whichever order the two pages were captured in
+   (a group only in the incoming page is otherwise added on top of those both
+   pages share, so the incoming screen covered the rule):
+     auto  root and the pages (.page, and every group not listed)
+     1     an archive's bar held still, a travelling picture or title
+     2     the header
+     3     the nav's links and social icons (.nav), which lie on it
+     4     the rule under the header
+     5     the position mark on the rule
+   So a page scrolled under the header turns beneath it, as it scrolls. */
+::view-transition-group(header) {
     z-index: 2;
 }
-::view-transition-group(position) {
+::view-transition-group(.nav) {
     z-index: 3;
+}
+::view-transition-group(frame-rule) {
+    z-index: 4;
+}
+::view-transition-group(position) {
+    z-index: 5;
+}
+/* The header (Base.astro) is the same on both pages: it does not move or
+   fade, the incoming one shows from the first frame. Its snapshot holds
+   its scrim but not the blur (a backdrop is not captured), so the blur is
+   put back on its group, over the groups beneath it. */
+::view-transition-group(header) {
+    animation: none;
+    backdrop-filter: blur(var(--blur-sm));
+}
+::view-transition-old(header) {
+    animation: none;
+    opacity: 0;
+}
+::view-transition-new(header) {
+    animation: none;
+    opacity: 1;
 }
 /* An archive's bar on a turn between two of its pages (Base.astro names it
    for that turn only): it does not move or fade, the incoming bar shows from
