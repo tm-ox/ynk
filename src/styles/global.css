@@ -530,6 +530,24 @@
     .imageGrid {
         @apply grid gap-2;
     }
+    /* The line that rides a panel's edge as it opens and closes
+       (scripts/sweep.ts), in a window the script lays over the panel's box,
+       whose edges cut it off. Fixed, so it stays put while the panel scrolls.
+       The line is slanted as the slashes are, about its mid-height. */
+    .sweep-seam {
+        position: fixed;
+        overflow: hidden;
+        pointer-events: none;
+    }
+    .sweep-seam > span {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: var(--wipe-line);
+        height: 100%;
+        background: var(--color-border);
+        transform: skewX(-32deg);
+    }
 }
 
 input:-webkit-autofill,
