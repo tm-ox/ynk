@@ -29,9 +29,10 @@ const organization = {
 };
 ---
 
-<BaseLayout jsonLd={organization}>
+<BaseLayout jsonLd={organization} bleed>
     <!-- The first screen of the row: named and a .vt-page, so a turn to or
-         from it slides it whole (see global.css). -->
+         from it slides it whole (see global.css). bleed: on phones it
+         runs edge to edge, past the gutter, as the hero does. -->
     <div class="vt-page" transition:name="home">
         <Hero />
     </div>

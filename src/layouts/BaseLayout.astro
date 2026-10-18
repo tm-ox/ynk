@@ -7,7 +7,7 @@ import { getCollection } from "astro:content";
 import { EVENTS_PER_PAGE, IMAGES_PER_PAGE, getGalleryImages } from "../utils/events";
 import { ROW, pageOf, screenOf } from "../utils/row";
 
-const { title, description, image, jsonLd } = Astro.props;
+const { title, description, image, jsonLd, bleed } = Astro.props;
 const pathname = new URL(Astro.request.url).pathname;
 const currentPath = pathname.slice(1); // remove the first "/"
 const isHome = currentPath === "";
@@ -41,7 +41,7 @@ const links = ROW.map((s, i) => ({
 
 ---
 
-<Base title={title} description={description} image={image} jsonLd={jsonLd}>
+<Base title={title} description={description} image={image} jsonLd={jsonLd} bleed={bleed}>
     <div slot="nav" class="flex items-center justify-center w-full">
         <Hamburger />
         <div

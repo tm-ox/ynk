@@ -11,12 +11,14 @@ export interface Props {
   description?: string;
   image?: string;
   jsonLd?: object | object[];
+  /** The page's first screen runs edge to edge (body.bleed, global.css). */
+  bleed?: boolean;
 }
 
 const siteName = "Yes No Klub";
 const defaultDescription =
   "Yes No Klub - Experimental etc. event organiser out of Yogyakarta, Indonesia.";
-const { title, description = defaultDescription, image, jsonLd } = Astro.props;
+const { title, description = defaultDescription, image, jsonLd, bleed } = Astro.props;
 const fullTitle = title
   ? `${title} – ${siteName}`
   : `${siteName} – Experimental etc., Yogyakarta`;
@@ -152,7 +154,7 @@ const ogImage = new URL(image ?? "/og-default.jpg", Astro.site).href;
       gtag("config", "G-T32SXCFCXD");
     </script> -->
     </head>
-    <body>
+    <body class:list={[bleed && "bleed"]}>
         <a
             href="#main"
             class="sr-only focus:not-sr-only focus:absolute focus:top-2 focus:left-2 focus:z-(--z-overlay) focus:bg-bg focus:p-2"

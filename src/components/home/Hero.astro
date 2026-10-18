@@ -411,6 +411,9 @@ const parallax = { shift: 10, ease: 0.06, overscan: 1.02, title: 0.3 };
 <style set:html={wordKeyframes}></style>
 
 <style>
+    /* From the header rule (-mt-2 takes back the section's pt-2) to the
+       footer; on phones, which have none, to the screen's foot
+       (min-h-section), and edge to edge (the page bleeds there: index.astro). */
     .hero-stage {
         container-type: size;
     }
