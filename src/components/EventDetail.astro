@@ -47,7 +47,11 @@ const label = "mb-0 text-xs font-bold tracking-normal md:text-sm font-displayCon
     data-scroll={capped ? "" : undefined}
     class:list={[
       "w-full",
-      capped && "md:max-h-[calc(100vh-var(--section-offset)-var(--spacing-section-inset))] md:overflow-y-auto md:pr-2",
+      // From md the page's bar lies over the section's top (absolute, top-2),
+      // so a long details column, centred at its full height, would rise
+      // under it: it starts --bar-clear down (the bar's foot and a bar gap)
+      // and is that much shorter, scrolling sooner instead.
+      capped && "md:[--bar-clear:calc(var(--spacing)*2+var(--bar-row)+var(--spacing-bar-gap))] md:mt-(--bar-clear) md:max-h-[calc(100vh-var(--section-offset)-var(--spacing-section-inset)-var(--bar-clear))] md:overflow-y-auto md:pr-2",
     ]}
   >
 
