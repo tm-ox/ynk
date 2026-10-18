@@ -54,17 +54,20 @@ const items: (number | "gap")[] = shown.flatMap((n, i) => {
     /* Below md the numbers have a row of their own in the bar (the bars put it
        last), set left, and each is a touch target --hit square, its figure at
        the box's left so the run starts on the gutter. The row wraps should it
-       ever run past the width. */
+       ever run past the width, so the targets are shorter than they are wide
+       (--hit-y), keeping two rows of numbers compact; 2rem is still well over
+       the 24px minimum target. */
     @media (width < 48rem) {
         nav {
             --hit: 2.5rem;
+            --hit-y: 2rem;
         }
         nav > span,
         a {
             display: inline-flex;
             align-items: center;
             min-width: var(--hit);
-            height: var(--hit);
+            height: var(--hit-y);
         }
     }
 </style>
