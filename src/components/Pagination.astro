@@ -2,42 +2,38 @@
 // Page numbers only; the Previous / Next arrows follow them in the bar at the
 // top of an archive (Paging.astro), where a visitor reaches for both.
 const { lastPage, currentPage, basePath = "/images/" } = Astro.props;
-// With many pages the row would run on: the first and last pages, the current
-// one and three either side, and "…" for each gap (1 … 7 8 9 10 11 12 13 … 30).
-// Up to sixteen pages all show: the dropdown is only as wide as its text, so
-// the bar has room for them.
-const shown =
-    lastPage <= 16
-        ? Array.from({ length: lastPage }, (_, i) => i + 1)
-        : [...new Set([1, ...Array.from({ length: 7 }, (_, i) => currentPage - 3 + i), lastPage])]
-              .filter((n) => n >= 1 && n <= lastPage)
-              .sort((a, b) => a - b);
-// A gap marker wherever the run skips; a skip of one page shows that page.
-const items: (number | "gap")[] = shown.flatMap((n, i) => {
-    const prev = shown[i - 1];
-    if (prev === undefined || n - prev === 1) return [n];
-    return n - prev === 2 ? [prev + 1, n] : ["gap", n];
-});
+// Every number is in the page; a script (below) shows as many as the bar has
+// room for: all of them, or the first and last, the current one and as many
+// either side as fit, with "…" for each gap. Without the script (and before it
+// runs) three either side show: 1 … 7 8 9 10 11 12 13 … 30.
+const pages = Array.from({ length: lastPage }, (_, i) => i + 1);
+const near = (n: number, r: number) => n === 1 || n === lastPage || Math.abs(n - currentPage) <= r;
+// A page hidden between two shown is shown instead of a gap.
+const visible = (n: number, r: number) => near(n, r) || (near(n - 1, r) && near(n + 1, r));
+const START = lastPage <= 16 ? lastPage : 3;
 // Only the pages either side are prefetched after load, not every number. A
 // single page has no numbers.
 ---
 
 {lastPage > 1 && (
-<nav aria-label="Pagination" transition:name="pagination" class="flex flex-wrap items-center justify-end gap-x-4 shrink-0 md:h-(--bar-row) max-md:justify-start max-md:gap-x-0">
+<nav aria-label="Pagination" transition:name="pagination" class="flex flex-nowrap items-center justify-end gap-x-4 min-w-0 overflow-hidden md:h-(--bar-row) max-md:justify-start max-md:gap-x-0" data-pagination data-current={currentPage} data-last={lastPage}>
     {
-        items.map((num) => num === "gap" ? (
-            <span class="text-xs md:text-sm leading-none font-displayCon font-bold text-accent-muted" aria-hidden="true">…</span>
-        ) : (
-            <span class="text-xs md:text-sm leading-none font-displayCon font-bold text-accent">
-                <a
-                    href={num === 1 ? basePath : `${basePath}${num}/`}
-                    data-astro-prefetch={Math.abs(num - currentPage) === 1 ? "load" : undefined}
-                    class={currentPage === num ? "active" : undefined}
-                    aria-current={currentPage === num ? "page" : undefined}
-                >
-                    {num}
-                </a>
-            </span>
+        pages.map((num) => (
+            <>
+                <span class="text-xs md:text-sm leading-none font-displayCon font-bold text-accent" data-n={num} hidden={!visible(num, START)}>
+                    <a
+                        href={num === 1 ? basePath : `${basePath}${num}/`}
+                        data-astro-prefetch={Math.abs(num - currentPage) === 1 ? "load" : undefined}
+                        class={currentPage === num ? "active" : undefined}
+                        aria-current={currentPage === num ? "page" : undefined}
+                    >
+                        {num}
+                    </a>
+                </span>
+                {num < lastPage && (
+                    <span class="text-xs md:text-sm leading-none font-displayCon font-bold text-accent-muted" data-gap={num} aria-hidden="true" hidden={!(visible(num, START) && !visible(num + 1, START))}>…</span>
+                )}
+            </>
         ))
     }
 </nav>
@@ -53,10 +49,14 @@ const items: (number | "gap")[] = shown.flatMap((n, i) => {
     }
     /* Below md the numbers have a row of their own in the bar (the bars put it
        last), set left, and each is a touch target --hit square, its figure at
-       the box's left so the run starts on the gutter. The row wraps should it
-       ever run past the width, so the targets are shorter than they are wide
-       (--hit-y), keeping two rows of numbers compact; 2rem is still well over
-       the 24px minimum target. */
+       the box's left so the run starts on the gutter. The targets are shorter
+       than they are wide (--hit-y), keeping the row compact; 2rem is still
+       well over the 24px minimum target. */
+    /* The script hides the numbers that do not fit (hidden), over the
+       display set below. */
+    nav > span[hidden] {
+        display: none;
+    }
     @media (width < 48rem) {
         nav {
             --hit: 2.5rem;
@@ -71,3 +71,64 @@ const items: (number | "gap")[] = shown.flatMap((n, i) => {
         }
     }
 </style>
+
+<script>
+    // Shows as many page numbers as the bar has room for, widening the run
+    // around the current page one either side at a time while the row still
+    // fits: the numbers on one line, and (on the images archive) the dropdown
+    // still showing its whole label. Runs after every swap, before the new
+    // page is captured, so a page turn shows the final numbers; and again
+    // when the bar's width changes.
+    const fit = (nav: HTMLElement) => {
+        const current = Number(nav.dataset.current);
+        const last = Number(nav.dataset.last);
+        const select = nav.parentElement?.querySelector("select");
+        const show = (r: number) => {
+            const near = (n: number) => n === 1 || n === last || Math.abs(n - current) <= r;
+            const visible = (n: number) => near(n) || (near(n - 1) && near(n + 1));
+            nav.querySelectorAll<HTMLElement>("[data-n]").forEach((el) => (el.hidden = !visible(Number(el.dataset.n))));
+            nav.querySelectorAll<HTMLElement>("[data-gap]").forEach((el) => {
+                const n = Number(el.dataset.gap);
+                el.hidden = !(visible(n) && !visible(n + 1));
+            });
+        };
+        let r = 0;
+        show(r);
+        // A label too long for the bar even with the fewest numbers is left
+        // to truncate; the numbers do not give way to it.
+        const label = !!select && select.scrollWidth <= select.clientWidth + 1;
+        const fits = () =>
+            nav.scrollWidth <= nav.clientWidth + 1 && (!label || select!.scrollWidth <= select!.clientWidth + 1);
+        while (current - r > 1 || current + r < last) {
+            show(r + 1);
+            if (!fits()) {
+                show(r);
+                break;
+            }
+            r++;
+        }
+    };
+    const fitAll = () => document.querySelectorAll<HTMLElement>("[data-pagination]").forEach(fit);
+    let watcher: ResizeObserver | undefined;
+    const watch = () => {
+        watcher?.disconnect();
+        const bars = [...document.querySelectorAll<HTMLElement>("[data-pagination]")].map((nav) => nav.parentElement!);
+        if (!bars.length) return;
+        let width = new Map<Element, number>();
+        watcher = new ResizeObserver((entries) => {
+            for (const entry of entries) {
+                const w = Math.round(entry.contentRect.width);
+                if (width.get(entry.target) !== w) {
+                    width.set(entry.target, w);
+                    fitAll();
+                }
+            }
+        });
+        bars.forEach((bar) => watcher!.observe(bar));
+    };
+    document.addEventListener("astro:after-swap", fitAll);
+    document.addEventListener("astro:page-load", () => {
+        fitAll();
+        watch();
+    });
+</script>
