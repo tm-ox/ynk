@@ -309,6 +309,7 @@ const ogImage = new URL(image ?? "/og-default.jpg", Astro.site).href;
                 // (close or back): the grid was already seen, so its thumbnails
                 // do not rise in again (global.css keys on data-returning).
                 // Page turns set it too: the grid slides in and wipes instead.
+                pagedDetail = paging && isDetail(e.to);
                 returning = (isDetail(e.from) || paging) && isArchive(e.to);
                 // A page turn onto an archive or home: the seam crosses the
                 // two snapshots (global.css), placed by the boxes measured
@@ -344,6 +345,7 @@ const ogImage = new URL(image ?? "/og-default.jpg", Astro.site).href;
             });
 
             let paging = false;
+            let pagedDetail = false;
             let returning = false;
             let turn: "forward" | "back" | null = null;
             let focus: string | null = null;
@@ -384,6 +386,10 @@ const ogImage = new URL(image ?? "/og-default.jpg", Astro.site).href;
                 if (crossing) unnumber(e.newDocument);
                 else unname(e.newDocument, focus ?? undefined);
                 if (closing) e.newDocument.documentElement.dataset.closing = "";
+                // Paging onto a detail page: its rules do not draw in (global.css
+                // keys on data-paged). Set here, before the swap, so the attribute
+                // is already on the root when the new page's rules first get styled.
+                if (pagedDetail) e.newDocument.documentElement.dataset.paged = "";
                 // The new page's root attributes replace the current ones, so
                 // this lasts until the next navigation.
                 if (returning) e.newDocument.documentElement.dataset.returning = "";

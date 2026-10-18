@@ -436,6 +436,33 @@
     html[data-astro-transition] .thumb.thumb::before {
         display: none;
     }
+    /* Detail pages: the rules (the event's listing, the picture's info strip)
+       draw in from the left one after another, once the morph has mostly
+       landed. Only on opening from a grid or a direct load: Previous / Next
+       paging wipes, and rules redrawn under the wipe would flicker, so Base.astro
+       marks that arrival (data-paged) and it skips this. It is an animation,
+       not a transition, with the check in the selector: the rule is either
+       animated from the moment it is first styled or never, so setting or
+       clearing the attribute later cannot start it late. Fill is both, and the
+       keyframes only name the start, so the end is the rule's own state and a
+       rule is never left at scale 0 (if the animation is dropped, it simply
+       shows). --r is the rule's place in the order (EventDetail.astro). */
+    @media (prefers-reduced-motion: no-preference) {
+        :root {
+            --rule-step: 40ms;
+            --rule-duration: 0.4s;
+        }
+        @keyframes rule-draw {
+            from {
+                scale: 0 1;
+            }
+        }
+        html:not([data-paged]) :is(.detail-rules, .image-info) hr {
+            transform-origin: left;
+            animation: rule-draw var(--rule-duration) var(--wipe-easing)
+                calc(var(--morph-duration) * 0.6 + var(--r, 0) * var(--rule-step)) both;
+        }
+    }
     /* Spotlight: while one thumbnail in a grid (archive or home photos) is
        hovered or focused, the pictures of the others dim, so it stands out.
        Only the pictures: titles and rules stay. Hover only where there is a

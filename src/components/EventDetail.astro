@@ -30,7 +30,7 @@ const titleClass = summary ? "" : "text-xl md:text-3xl font-bold";
 const label = "mb-0 text-xs font-bold tracking-normal md:text-sm font-displayCon text-accent";
 ---
 
-<div class:list={[!summary && "flex flex-col gap-4 md:grid md:grid-cols-[minmax(0,3fr)_minmax(0,5fr)]", summary && headingHref && "relative group listing-link"]}>
+<div class:list={[!summary && "detail-rules flex flex-col gap-4 md:grid md:grid-cols-[minmax(0,3fr)_minmax(0,5fr)]", summary && headingHref && "relative group listing-link"]}>
   {!summary && event.data.flyer && (
   <div class:list={[capped && "md:self-center"]}>
     <Image
@@ -69,7 +69,7 @@ const label = "mb-0 text-xs font-bold tracking-normal md:text-sm font-displayCon
         )
       )}
     </div>
-    <hr />
+    <hr style="--r:0" />
     <div class="flex flex-col sm:flex-row justify-between py-rule">
       <div class="flex w-full flex-col sm:flex-row">
         <div class="flex flex-col">
@@ -85,7 +85,7 @@ const label = "mb-0 text-xs font-bold tracking-normal md:text-sm font-displayCon
           )
         }
       </div>
-      <hr />
+      <hr style="--r:1" />
       <div class="w-full">
         <p class={label}>venue:</p>
         <h4>
@@ -104,7 +104,7 @@ const label = "mb-0 text-xs font-bold tracking-normal md:text-sm font-displayCon
         </h4>
       </div>
     </div>
-    <hr />
+    <hr style="--r:2" />
     {
       event.data.with !== "" && (
         <>
@@ -112,7 +112,7 @@ const label = "mb-0 text-xs font-bold tracking-normal md:text-sm font-displayCon
             <p class={label}>with:</p>
             <h3 class="mb-0">{event.data.with}</h3>
           </div>
-          <hr />
+          <hr style="--r:3" />
         </>
       )
     }
@@ -123,7 +123,7 @@ const label = "mb-0 text-xs font-bold tracking-normal md:text-sm font-displayCon
             <p class={label}>info:</p>
             <h4>{event.data.info}</h4>
           </div>
-          <hr />
+          <hr style="--r:4" />
         </>
       )
     }
