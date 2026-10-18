@@ -1,15 +1,17 @@
 ---
 // Top row of a screen (Featured, About, Contact): the section's label at the
-// left and, optionally, its actions (slot) at the right.
+// left and, optionally, its actions (slot) at the right. From sm up it is the
+// archives' bar row (--bar-row high, text centred, .bar-label), so every
+// screen's title sits at the same height.
 interface Props {
     label: string;
 }
 const { label } = Astro.props;
 ---
 
-<div class="flex items-baseline justify-between w-full gap-4">
-    <h2 class="mb-0 text-xs font-bold text-left uppercase md:text-sm font-displayCon">
+<div class="flex items-baseline justify-between w-full gap-4 sm:items-center sm:h-(--bar-row)">
+    <h2 class="bar-label">
         {label}
     </h2>
-    <div class="flex gap-6"><slot /></div>
+    <div class="flex gap-6 sm:leading-none"><slot /></div>
 </div>
