@@ -330,6 +330,16 @@
         opacity: 0;
         transition: none;
     }
+    /* A picture shown whole, as large as fits the width and a height cap
+       (--fit-h; none by default), its box exactly the picture. Page transitions
+       then morph to the picture itself, not to the empty margins round it.
+       Set --ar (width / height) inline. */
+    .fit-picture {
+        display: block;
+        width: min(100%, calc(var(--fit-h, 100000px) * var(--ar)));
+        height: auto;
+        margin-inline: auto;
+    }
     .section-action {
         @apply text-xs uppercase font-displayCon md:text-sm text-accent-muted hover:text-accent;
     }
@@ -431,6 +441,14 @@ select:-webkit-autofill:focus {
 ::view-transition-old(.picture),
 ::view-transition-new(.picture) {
     animation-duration: calc(var(--morph-duration) * var(--picture-lead));
+}
+/* A travelling picture's old and new fill its box as it morphs (cover), so a
+   square thumbnail opens out to the whole picture (and a flyer's letterbox
+   is trimmed) rather than being stretched to the box's width. */
+::view-transition-old(.picture),
+::view-transition-new(.picture) {
+    height: 100%;
+    object-fit: cover;
 }
 /* The travelling picture and title paint over the rest of the transition: the
    grid fading out beneath them, or fading in under them on the way back.

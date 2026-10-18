@@ -32,14 +32,13 @@ const label = "mb-0 text-xs font-bold tracking-normal md:text-sm font-displayCon
 
 <div class:list={[!summary && "flex flex-col gap-4 md:grid md:grid-cols-[minmax(0,3fr)_minmax(0,5fr)]", summary && headingHref && "relative group listing-link"]}>
   {!summary && event.data.flyer && (
-  <div
-    class:list={["vt-picture", capped && "md:self-center"]}
-    transition:name={`${event.data.id}-flyer`}
-  >
+  <div class:list={[capped && "md:self-center"]}>
     <Image
       src={event.data.flyer.src}
       alt={flyerAlt(event.data)}
-      class:list={["object-contain h-auto w-full mb-auto", capped && "md:max-h-[calc(100vh-var(--section-offset)-var(--spacing-section-inset))]"]}
+      class:list={["fit-picture mb-auto vt-picture", capped && "md:[--fit-h:calc(100vh-var(--section-offset)-var(--spacing-section-inset))]"]}
+      style={`--ar:${event.data.flyer.src.width / event.data.flyer.src.height}`}
+      transition:name={`${event.data.id}-flyer`}
     />
   </div>
   )}

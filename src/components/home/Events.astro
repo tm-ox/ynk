@@ -24,13 +24,14 @@ const picks = photos.slice(0, 36);
         transition:name={featured.data.id}
     >
         {flyer && (
-        <div class="w-full max-w-md mx-auto md:max-w-none md:self-center vt-picture" transition:name={`${featured.data.id}-flyer`}>
-            <a href={href} class="block thumb" tabindex="-1">
+        <div class="w-full max-w-md mx-auto md:max-w-none md:self-center">
+            <a href={href} class="thumb fit-picture md:[--fit-h:calc(100vh-var(--section-offset)-var(--spacing-section-inset))]" style={`--ar:${flyer.src.width / flyer.src.height}`} tabindex="-1">
                 <Image
                     src={flyer.src}
                     alt={flyerAlt(featured.data)}
                     width={1200}
-                    class="object-contain h-auto w-full mb-auto md:max-h-[calc(100vh-var(--section-offset)-var(--spacing-section-inset))]"
+                    class="block w-full h-auto vt-picture"
+                    transition:name={`${featured.data.id}-flyer`}
                 />
             </a>
         </div>
