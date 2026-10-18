@@ -273,8 +273,9 @@
        turn captures it apart from the page: in the root snapshot, the
        incoming screen (the hero runs up under it) would cover it until the
        turn ended. Fixed with the header, so it stays under it while the
-       page scrolls (at every size). From sm up as wide as main: --rule-inset (the gutter) in from each side,
-       capped at --container-site. On phones edge to edge (--rule-inset 0);
+       page scrolls (at every size). From sm up as wide as main:
+       --rule-inset (the gutter) in from each side, capped at
+       --container-site. On phones edge to edge (--rule-inset 0);
        the position mark on it keeps to the nav's width all the same (see
        .position, BaseLayout.astro). Above the header and whatever scrolls
        under it (a thumbnail's wash is z-index 2), so nothing crosses it. */
