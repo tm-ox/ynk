@@ -52,7 +52,7 @@ const label = "mb-0 text-xs font-bold tracking-normal md:text-sm font-displayCon
   >
 
     <div class="flex items-center">
-      <Title class:list={["mb-0 uppercase mx-auto sm:mx-0 vt-title", titleClass]} transition:name={`${event.data.id}-title`}>
+      <Title class:list={["mb-0 uppercase vt-title", titleClass]} transition:name={`${event.data.id}-title`}>
         {
           headingHref ? (
             <a href={headingHref} class="after:absolute after:inset-0 group-hover:text-accent-hover">{event.data.title}</a>
@@ -81,7 +81,7 @@ const label = "mb-0 text-xs font-bold tracking-normal md:text-sm font-displayCon
         {
           event.data.time !== "" && (
             <>
-              <div class="flex flex-col mx-auto">
+              <div class="flex flex-col">
                 <p class={label}>time:</p>
                 <h4>{event.data.time}</h4>
               </div>

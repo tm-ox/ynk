@@ -48,8 +48,10 @@ const links = ROW.map((s, i) => ({
             id="main-nav"
             class="absolute top-0 left-0 ml-auto justify-center hidden w-full h-viewport overflow-y-auto sm:flex sm:w-auto sm:h-auto sm:overflow-visible sm:relative main-nav bg-scrim-heavy sm:bg-transparent"
         >
+            <!-- Phones: the open menu is set left, in the page's gutter, as
+                 everything else is. -->
             <ul
-                class="flex flex-col items-center my-auto text-center sm:flex-row sm:gap-x-3"
+                class="flex flex-col items-stretch my-auto text-left max-sm:px-gutter sm:items-center sm:flex-row sm:gap-x-3"
             >
                 {
                     links.map((link, i) => (

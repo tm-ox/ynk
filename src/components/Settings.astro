@@ -38,7 +38,7 @@ const label = "mb-0 text-xs font-bold tracking-normal uppercase md:text-sm font-
 >
   <div class="flex flex-col p-4 pb-0 sm:p-6 sm:pb-0">
     <div class="flex items-center justify-between gap-4 pb-3">
-      <h2 id="settings-title" tabindex="-1" autofocus class="focus:outline-none mb-0 text-xl uppercase sm:text-left md:text-3xl">Settings</h2>
+      <h2 id="settings-title" tabindex="-1" autofocus class="focus:outline-none mb-0 text-xl uppercase md:text-3xl">Settings</h2>
       <button type="button" data-settings-close aria-label="Close settings" class="cursor-pointer -translate-y-0.75">
         <Icon name="ion:close-sharp" class="icon" />
       </button>
@@ -46,7 +46,7 @@ const label = "mb-0 text-xs font-bold tracking-normal uppercase md:text-sm font-
 
     <div>
       <hr class="mt-0" />
-      <h3 id="settings-theme" class={`${label} sm:text-left`}>Theme</h3>
+      <h3 id="settings-theme" class={label}>Theme</h3>
       <hr class="mb-0" />
       <div class="grid grid-cols-3 overflow-hidden" role="radiogroup" aria-labelledby="settings-theme">
         {themes.map(([value, text]) => (
@@ -60,7 +60,7 @@ const label = "mb-0 text-xs font-bold tracking-normal uppercase md:text-sm font-
 
     <div>
       <hr class="mt-0" />
-      <h3 class={`${label} sm:text-left`}>Keyboard</h3>
+      <h3 class={label}>Keyboard</h3>
       <hr class="mb-0" />
       <dl class="grid items-baseline gap-x-6 gap-y-3 py-3 sm:grid-cols-[auto_1fr]">
         {keyboard.map(([keys, text]) => (
@@ -76,7 +76,7 @@ const label = "mb-0 text-xs font-bold tracking-normal uppercase md:text-sm font-
 
     <div>
       <hr class="mt-0" />
-      <h3 class={`${label} sm:text-left`}>Good to know</h3>
+      <h3 class={label}>Good to know</h3>
       <hr class="mb-0" />
       <ul class="flex flex-col py-3 text-sm font-light tracking-wide list-none font-body text-pretty md:text-base">
         <li class="normal-case">The mouse wheel moves on the same way, once the page has scrolled to its end.

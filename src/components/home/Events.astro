@@ -28,7 +28,7 @@ const picks = photos.slice(0, 36);
         transition:name={featured.data.id}
     >
         {flyer && (
-        <div class="w-full max-w-md mx-auto md:max-w-none md:self-center">
+        <div class="w-full max-w-md md:max-w-none md:self-center">
             <a href={href} class="thumb fit-picture md:[--fit-h:calc(100vh-var(--section-offset)-var(--spacing-section-inset))]" style={`--ar:${flyer.src.width / flyer.src.height}`} tabindex="-1">
                 <Image
                     src={flyer.src}
