@@ -50,15 +50,16 @@ const links = ROW.map((s, i) => ({
         >
             <!-- Phones: the open menu is a panel from the header rule down, set
                  left in the page's gutter as everything else is: the links at
-                 its top, the social icons at its foot. -->
+                 its top, as wide as the gutters allow, the social icons and
+                 the footer line at its foot. -->
             <ul
-                class="flex flex-col items-stretch text-left max-sm:grow max-sm:shrink-0 max-sm:px-gutter max-sm:pt-2 max-sm:pb-4 sm:my-auto sm:items-center sm:flex-row sm:gap-x-3"
+                class="flex flex-col items-stretch text-left max-sm:grow max-sm:shrink-0 max-sm:px-gutter max-sm:pt-2 sm:my-auto sm:items-center sm:flex-row sm:gap-x-3"
             >
                 {
                     links.map((link) => (
                         <li transition:name={`nav-${link.section}`}>
                             <a
-                                class:list={["max-sm:block max-sm:py-2 sm:relative sm:top-[2px]", link.current && "active"]}
+                                class:list={["max-sm:block sm:relative sm:top-[2px]", link.current && "active"]}
                                 aria-current={link.current ? "true" : undefined}
                                 href={link.href}
                                 data-section={link.section}
@@ -72,10 +73,14 @@ const links = ROW.map((s, i) => ({
                     <Sosmed />
                 </li>
                 <!-- Phones only: the footer line (Base.astro hides the footer
-                     there), small and quiet under the social icons. -->
-                <li class="flex items-center gap-x-3 pt-4 text-xs tracking-wide uppercase sm:hidden font-displayCon text-accent-muted">
-                    <span>© 2010–{new Date().getFullYear()} Yes No Klub</span>
-                    <a href="/privacy" class="w-auto text-xs" target="_self">Privacy</a>
+                     there), small and quiet under the social icons, centred
+                     in the --menu-foot between them and the panel's foot: ©
+                     at the left, Privacy at the right, on one baseline. -->
+                <li class="flex items-center h-(--menu-foot) text-xs tracking-wide uppercase sm:hidden font-displayCon text-accent-muted">
+                    <div class="flex items-baseline justify-between w-full">
+                        <span>© 2010–{new Date().getFullYear()} Yes No Klub</span>
+                        <a href="/privacy" class="w-auto text-xs" target="_self">Privacy</a>
+                    </div>
                 </li>
             </ul>
             <!-- The line that rides the panel's edge as it opens and closes. -->
@@ -177,6 +182,33 @@ const links = ROW.map((s, i) => ({
         .main-nav {
             height: calc(100vh - var(--spacing-header));
             height: calc(100dvh - var(--spacing-header));
+        }
+        /* The links' width is the list's (the panel less its gutters), so
+           their size can be a share of it (cqw). */
+        .main-nav ul {
+            container-type: inline-size;
+        }
+        /* The links, as large as fits: "FEATURED", the longest, runs gutter
+           to gutter. It is 6.477em wide in BioRhyme at 800 (advance widths
+           from the font file, no tracking), so 100cqw / 6.477 would touch
+           both gutters; --menu-size is 2% under that so it never wraps.
+           --menu-leading sets the rows tight, about 0.95 of the 0.686em cap
+           height, but never under --menu-target, the least tap height. A
+           longer label in utils/row.ts needs --menu-size measured again. */
+        .main-nav {
+            --menu-size: calc(100cqw / 6.477 * 0.98);
+            --menu-leading: 0.65em;
+            --menu-target: 40px;
+            /* What the footer line has under the social icons, its middle
+               the line's. */
+            --menu-foot: calc(var(--spacing) * 12);
+        }
+        .main-nav a[data-section] {
+            font-size: var(--menu-size);
+            font-weight: 800;
+            letter-spacing: 0;
+            line-height: max(var(--menu-leading), var(--menu-target));
+            white-space: nowrap;
         }
     }
     .main-nav a {
