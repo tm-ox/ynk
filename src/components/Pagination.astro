@@ -2,6 +2,21 @@
 // Page numbers only; the Previous / Next arrows follow them in the bar at the
 // top of an archive (Paging.astro), where a visitor reaches for both.
 const { lastPage, currentPage, basePath = "/images/" } = Astro.props;
+// With many pages the row would run on: the first and last pages, the current
+// one and two either side, and "…" for each gap (1 … 6 7 8 9 10 … 15). Up to
+// seven pages all show, as a window that size would leave no gap worth one.
+const shown =
+    lastPage <= 7
+        ? Array.from({ length: lastPage }, (_, i) => i + 1)
+        : [...new Set([1, ...Array.from({ length: 5 }, (_, i) => currentPage - 2 + i), lastPage])]
+              .filter((n) => n >= 1 && n <= lastPage)
+              .sort((a, b) => a - b);
+// A gap marker wherever the run skips; a skip of one page shows that page.
+const items: (number | "gap")[] = shown.flatMap((n, i) => {
+    const prev = shown[i - 1];
+    if (prev === undefined || n - prev === 1) return [n];
+    return n - prev === 2 ? [prev + 1, n] : ["gap", n];
+});
 // Only the pages either side are prefetched after load, not every number. A
 // single page has no numbers.
 ---
@@ -9,7 +24,9 @@ const { lastPage, currentPage, basePath = "/images/" } = Astro.props;
 {lastPage > 1 && (
 <nav aria-label="Pagination" transition:name="pagination" class="flex flex-wrap items-center justify-end gap-x-4 shrink-0 sm:h-(--bar-row) max-sm:justify-center max-sm:py-2">
     {
-        Array.from({ length: lastPage }, (_, i) => i + 1).map((num) => (
+        items.map((num) => num === "gap" ? (
+            <span class="text-xs md:text-sm leading-none font-displayCon font-bold text-accent-muted" aria-hidden="true">…</span>
+        ) : (
             <span class="text-xs md:text-sm leading-none font-displayCon font-bold text-accent">
                 <a
                     href={num === 1 ? basePath : `${basePath}${num}/`}
