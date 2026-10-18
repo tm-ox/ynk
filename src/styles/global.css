@@ -672,6 +672,28 @@ html:not([data-astro-transition^="paging"]):not([data-closing])::view-transition
 ::view-transition-group(position) {
     z-index: 3;
 }
+/* An archive's bar on a turn between two of its pages (Base.astro names it
+   for that turn only): it does not move or fade, the incoming bar shows from
+   the first frame (only the current page number differs), and it lies above
+   the turning grid with the page background behind it, so the seam's line
+   and band, drawn across the whole screen's group, are covered where the bar
+   is and only cross the grid. */
+html[data-astro-transition^="paging"]::view-transition-group(archive-bar) {
+    animation: none;
+    z-index: 1;
+    background: var(--color-bg);
+    /* And over the section's top padding (pt-2) between it and the header
+       rule, which the band would cross too. */
+    box-shadow: 0 calc(var(--spacing) * -2) 0 var(--color-bg);
+}
+html[data-astro-transition^="paging"]::view-transition-old(archive-bar) {
+    animation: none;
+    opacity: 0;
+}
+html[data-astro-transition^="paging"]::view-transition-new(archive-bar) {
+    animation: none;
+    opacity: 1;
+}
 /* The travelling picture and title paint over the rest of the transition: the
    grid fading out beneath them, or fading in under them on the way back.
    (Otherwise they keep the order the pages were captured in, and on the way
