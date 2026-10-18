@@ -29,14 +29,15 @@ const screenIndex =
     : /^\/images(\/(\d+\/?)?)?$/.test(pathname) || /^\/images\/event\//.test(pathname)
       ? HOME_PANELS + eventsPages + (pathname.startsWith("/images/event/") ? 0 : pageNo - 1)
     : null;
-// Sections of the home page first, then the archives (divided by a rule from sm).
+// One run of links: what is on show first, then about and contact. (The row of
+// screens itself keeps its order: home panels, then the archives.)
 const links = [
     { label: "Home", href: isHome ? "/#top" : "/", section: "top", current: false },
     { label: "Featured", href: "/#events", section: "events", current: false },
+    { label: "Events", href: "/events/", section: "events-page", current: isCurrent("events"), last: eventsLast },
+    { label: "Images", href: "/images/", section: "images-page", current: isCurrent("images") },
     { label: "About", href: "/#about", section: "about", current: false },
     { label: "Contact", href: "/#contact", section: "contact", current: false },
-    { label: "Events", href: "/events/", section: "events-page", current: isCurrent("events"), divided: true, last: eventsLast },
-    { label: "Images", href: "/images/", section: "images-page", current: isCurrent("images") },
 ];
 ---
 
@@ -53,7 +54,7 @@ const links = [
             >
                 {
                     links.map((link, i) => (
-                        <li class:list={[link.divided && "sm:slash-l sm:ml-1 sm:pl-3.5"]} transition:name={`nav-${link.section}`}>
+                        <li transition:name={`nav-${link.section}`}>
                             {i === 0 && <hr class="sm:hidden" />}
                             <a
                                 class:list={["sm:relative sm:top-[2px]", link.current && "active"]}
