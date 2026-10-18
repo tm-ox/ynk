@@ -276,6 +276,16 @@ const ogImage = new URL(image ?? "/og-default.jpg", Astro.site).href;
                 // do not rise in again (global.css keys on data-returning).
                 // Page turns set it too: the grid slides in and wipes instead.
                 returning = (isDetail(e.from) || paging) && isArchive(e.to);
+                // A page turn onto an archive: its grid wipes in live, with the
+                // home panels' edge and line (global.css keys on data-turn,
+                // set on the new page below). Not for Previous / Next between
+                // details, which keep the wipe on the snapshots.
+                turn =
+                    paging && isArchive(e.to)
+                        ? e.direction === "paging-back"
+                            ? "back"
+                            : "forward"
+                        : null;
                 // Opening a picture or event from a grid (archive or home), or
                 // closing back to it: only its own thumbnail and title travel.
                 // The others are left to fade with the page beneath it, rather
@@ -294,6 +304,7 @@ const ogImage = new URL(image ?? "/og-default.jpg", Astro.site).href;
 
             let paging = false;
             let returning = false;
+            let turn: "forward" | "back" | null = null;
             let focus: string | null = null;
             let closing = false;
             const bare = (path: string) => path.replace(/\/$/, "");
@@ -331,6 +342,7 @@ const ogImage = new URL(image ?? "/og-default.jpg", Astro.site).href;
                 // The new page's root attributes replace the current ones, so
                 // this lasts until the next navigation.
                 if (returning) e.newDocument.documentElement.dataset.returning = "";
+                if (turn) e.newDocument.documentElement.dataset.turn = turn;
             });
 
             // Kept in sessionStorage so a reload keeps the close destination.

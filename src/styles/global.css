@@ -624,13 +624,15 @@ html[data-astro-transition="paging-back"]::view-transition-new(.detail) {
     mask-image: linear-gradient(var(--wipe-angle), #000 50%, transparent 50%);
 }
 /* Archive page turns (the grid's own group, not Previous/Next on a detail
-   page) slide like the home panels do, then wipe: the old grid leaves whole
-   and the new one comes in from the far side, hidden until its wipe starts
-   a moment later, so the slide is already under way when the edge sweeps
-   across. A smooth-scroll ease-out gives the slide its feel. Both fills are
-   "both", so the new grid is masked away until the wipe begins. These come
-   after the .detail rules above, and use the same prefix, because a named
-   pseudo and a class argument have equal specificity and the later one wins. */
+   page) slide like the home panels do, and the incoming grid wipes in with
+   the panels' edge and line. The slide is done here, on the snapshots: the
+   old grid leaves whole and the new one comes in from the far side. The wipe
+   is not: it runs on the real incoming grid (.gallery-fit, keyed on
+   data-turn below), which the new snapshot shows live, so its mask is drawn
+   at full resolution with the line on it, as on the home panels. A
+   smooth-scroll ease-out gives the slide its feel. These come after the
+   .detail rules above, and use the same prefix, because a named pseudo and a
+   class argument have equal specificity and the later one wins. */
 :root {
     --page-slide-duration: 0.5s;
     --page-slide-easing: cubic-bezier(0.22, 0.61, 0.36, 1);
@@ -656,8 +658,19 @@ html[data-astro-transition="paging-back"]::view-transition-new(.detail) {
         translate: 100vw 0;
     }
 }
-/* The old grid is not masked: it simply slides away. */
-html[data-astro-transition^="paging"]::view-transition-old(gallery-page) {
+/* Changes nothing (the snapshot is shown whole anyway), but lasts as long as the live wipe below (its delay and
+   duration), so the transition does too. Parts of the grid captured on their
+   own (the page numbers) stay shown as their own group until it ends;
+   ending at the slide's end instead would hand them back to the grid while
+   its wipe still hides them, and they would blink out. */
+@keyframes turn-hold {
+    to {
+        opacity: 1;
+    }
+}
+/* Neither snapshot is masked here: they only slide. */
+html[data-astro-transition^="paging"]::view-transition-old(gallery-page),
+html[data-astro-transition^="paging"]::view-transition-new(gallery-page) {
     mask-image: none;
 }
 html[data-astro-transition="paging-forward"]::view-transition-old(gallery-page) {
@@ -666,17 +679,88 @@ html[data-astro-transition="paging-forward"]::view-transition-old(gallery-page) 
 html[data-astro-transition="paging-forward"]::view-transition-new(gallery-page) {
     animation:
         page-in-from-right var(--page-slide-duration) var(--page-slide-easing) both,
-        wipe var(--panel-wipe-duration) var(--wipe-easing) var(--page-wipe-delay) both;
+        turn-hold calc(var(--page-wipe-delay) + var(--panel-wipe-duration));
 }
-/* Back: the mirror image. The wipe runs reversed, as for .detail above (an
-   explicit direction per animation, as the shorthand resets it). */
 html[data-astro-transition="paging-back"]::view-transition-old(gallery-page) {
     animation: page-out-to-right var(--page-slide-duration) var(--page-slide-easing) both;
 }
 html[data-astro-transition="paging-back"]::view-transition-new(gallery-page) {
     animation:
         page-in-from-left var(--page-slide-duration) var(--page-slide-easing) both,
-        wipe var(--panel-wipe-duration) var(--wipe-easing) var(--page-wipe-delay) both reverse;
+        turn-hold calc(var(--page-wipe-delay) + var(--panel-wipe-duration));
+}
+/* The incoming grid's wipe. Base.astro marks the new page's root with
+   data-turn (forward or back) on a page turn; the root's attributes are
+   replaced on every navigation, so it lasts until the next one, and the
+   animation plays once, as the page arrives. The mask and line are the home
+   panels' (see the panel wipe in @layer components for the 0.848 and the
+   box-sized gradient), driven by keyframes on --edge instead of a
+   transition. Forward shows what is right of the edge, which sweeps right to
+   left; back is the mirror image. It starts --page-wipe-delay in, so the
+   slide is already under way, and fills both ways, so the grid is hidden
+   until then and stays fully shown after, with the line past the box. */
+@keyframes turn-wipe-forward {
+    from {
+        --edge: var(--wipe-reach);
+    }
+    to {
+        --edge: calc(var(--wipe-reach) * -1);
+    }
+}
+@keyframes turn-wipe-back {
+    from {
+        --edge: calc(var(--wipe-reach) * -1);
+    }
+    to {
+        --edge: var(--wipe-reach);
+    }
+}
+@media (prefers-reduced-motion: no-preference) {
+    /* Positioned so the line (::after) covers the grid's box. From xl up the
+       grid scrolls inside itself, and an absolute child of a scroller sits on
+       the scrolled content; a new page is at the top, so it starts where the
+       box is. */
+    html[data-turn] .gallery-fit {
+        position: relative;
+        animation: turn-wipe-forward var(--panel-wipe-duration) var(--wipe-easing) var(--page-wipe-delay) both;
+        mask-image: linear-gradient(
+            var(--wipe-angle),
+            transparent calc(50% + var(--edge) * 0.848),
+            #000 calc(50% + var(--edge) * 0.848)
+        );
+    }
+    html[data-turn="back"] .gallery-fit {
+        animation-name: turn-wipe-back;
+        mask-image: linear-gradient(
+            var(--wipe-angle),
+            #000 calc(50% + var(--edge) * 0.848),
+            transparent calc(50% + var(--edge) * 0.848)
+        );
+    }
+    /* The line, just inside the visible side, as on the panels. */
+    html[data-turn] .gallery-fit::after {
+        content: "";
+        position: absolute;
+        inset: 0;
+        z-index: 1;
+        pointer-events: none;
+        background-image: linear-gradient(
+            var(--wipe-angle),
+            transparent calc(50% + var(--edge) * 0.848),
+            var(--color-border) calc(50% + var(--edge) * 0.848),
+            var(--color-border) calc(50% + var(--edge) * 0.848 + var(--wipe-line)),
+            transparent calc(50% + var(--edge) * 0.848 + var(--wipe-line))
+        );
+    }
+    html[data-turn="back"] .gallery-fit::after {
+        background-image: linear-gradient(
+            var(--wipe-angle),
+            transparent calc(50% + var(--edge) * 0.848 - var(--wipe-line)),
+            var(--color-border) calc(50% + var(--edge) * 0.848 - var(--wipe-line)),
+            var(--color-border) calc(50% + var(--edge) * 0.848),
+            transparent calc(50% + var(--edge) * 0.848)
+        );
+    }
 }
 @media (prefers-reduced-motion: reduce) {
     ::view-transition-group(*),
