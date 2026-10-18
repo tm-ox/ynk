@@ -636,7 +636,18 @@ html[data-astro-transition="paging-back"]::view-transition-new(.detail) {
    .detail rules above, and use the same prefix, because a named pseudo and a
    class argument have equal specificity and the later one wins. */
 :root {
-    --page-slide-duration: 0.4s;
+    /* The two pages overlap rather than travel edge to edge: each moves only
+       --page-slide-distance, for as long as the seam takes, so the seam always
+       has the old page on one side and the new one on the other. (Edge to
+       edge, any seam off the boundary between them leaves an empty wedge, which
+       read as the turn stopping and starting.) */
+    --page-slide-distance: 25vw;
+    /* With the pages overlapping there is no gap to wait out, so a page turn's
+       seam starts at once and gets going quickly (home's waits --seam-delay
+       for the panel to arrive). */
+    --page-seam-delay: 0s;
+    --page-seam-easing: cubic-bezier(0.3, 0, 0.2, 1);
+    --page-slide-duration: calc(var(--page-seam-delay) + var(--seam-duration));
     --page-slide-easing: cubic-bezier(0.22, 0.61, 0.36, 1);
     /* How far past each side of the screen the seam starts and ends: the
        edge's sideways lean over half the screen's height (tan 32deg, about
@@ -645,22 +656,22 @@ html[data-astro-transition="paging-back"]::view-transition-new(.detail) {
 }
 @keyframes page-in-from-right {
     from {
-        translate: 100vw 0;
+        translate: var(--page-slide-distance) 0;
     }
 }
 @keyframes page-in-from-left {
     from {
-        translate: -100vw 0;
+        translate: calc(var(--page-slide-distance) * -1) 0;
     }
 }
 @keyframes page-out-to-left {
     to {
-        translate: -100vw 0;
+        translate: calc(var(--page-slide-distance) * -1) 0;
     }
 }
 @keyframes page-out-to-right {
     to {
-        translate: 100vw 0;
+        translate: var(--page-slide-distance) 0;
     }
 }
 /* The seam runs on its own clock, as on the home track, not the slide's: it
@@ -724,7 +735,7 @@ html[data-astro-transition="paging-back"]::view-transition-new(.detail) {
         --slide-x: 0px;
     }
     to {
-        --slide-x: -100vw;
+        --slide-x: calc(var(--page-slide-distance) * -1);
     }
 }
 @keyframes turn-slide-out-back {
@@ -732,12 +743,12 @@ html[data-astro-transition="paging-back"]::view-transition-new(.detail) {
         --slide-x: 0px;
     }
     to {
-        --slide-x: 100vw;
+        --slide-x: var(--page-slide-distance);
     }
 }
 @keyframes turn-slide-in-forward {
     from {
-        --slide-x: 100vw;
+        --slide-x: var(--page-slide-distance);
     }
     to {
         --slide-x: 0px;
@@ -745,7 +756,7 @@ html[data-astro-transition="paging-back"]::view-transition-new(.detail) {
 }
 @keyframes turn-slide-in-back {
     from {
-        --slide-x: -100vw;
+        --slide-x: calc(var(--page-slide-distance) * -1);
     }
     to {
         --slide-x: 0px;
@@ -777,7 +788,7 @@ html[data-astro-transition="paging-forward"]::view-transition-old(.page) {
     animation:
         page-out-to-left var(--page-slide-duration) var(--page-slide-easing) both,
         turn-slide-out-forward var(--page-slide-duration) var(--page-slide-easing) both,
-        turn-seam-forward var(--seam-duration) var(--wipe-easing) var(--seam-delay) both;
+        turn-seam-forward var(--seam-duration) var(--page-seam-easing) var(--page-seam-delay) both;
 }
 html[data-astro-transition="paging-forward"]::view-transition-new(.page) {
     mask-image: linear-gradient(
@@ -788,7 +799,7 @@ html[data-astro-transition="paging-forward"]::view-transition-new(.page) {
     animation:
         page-in-from-right var(--page-slide-duration) var(--page-slide-easing) both,
         turn-slide-in-forward var(--page-slide-duration) var(--page-slide-easing) both,
-        turn-seam-forward var(--seam-duration) var(--wipe-easing) var(--seam-delay) both;
+        turn-seam-forward var(--seam-duration) var(--page-seam-easing) var(--page-seam-delay) both;
 }
 /* Back: the mirror image; outgoing right of the seam, incoming left of it
    past the line. */
@@ -801,7 +812,7 @@ html[data-astro-transition="paging-back"]::view-transition-old(.page) {
     animation:
         page-out-to-right var(--page-slide-duration) var(--page-slide-easing) both,
         turn-slide-out-back var(--page-slide-duration) var(--page-slide-easing) both,
-        turn-seam-back var(--seam-duration) var(--wipe-easing) var(--seam-delay) both;
+        turn-seam-back var(--seam-duration) var(--page-seam-easing) var(--page-seam-delay) both;
 }
 html[data-astro-transition="paging-back"]::view-transition-new(.page) {
     mask-image: linear-gradient(
@@ -812,7 +823,7 @@ html[data-astro-transition="paging-back"]::view-transition-new(.page) {
     animation:
         page-in-from-left var(--page-slide-duration) var(--page-slide-easing) both,
         turn-slide-in-back var(--page-slide-duration) var(--page-slide-easing) both,
-        turn-seam-back var(--seam-duration) var(--wipe-easing) var(--seam-delay) both;
+        turn-seam-back var(--seam-duration) var(--page-seam-easing) var(--page-seam-delay) both;
 }
 /* The line: the incoming page's group (data-turn-into, its name, set by
    Base.astro on the new page). Its own move from the old box to the new one
@@ -825,7 +836,7 @@ html[data-astro-transition="paging-back"]::view-transition-new(.page) {
 html[data-astro-transition^="paging"][data-turn-into="home"]::view-transition-group(home),
 html[data-astro-transition^="paging"][data-turn-into="gallery-page"]::view-transition-group(gallery-page) {
     --edge: calc(var(--seam) + var(--turn-new-shift, 0px));
-    animation: turn-seam-forward var(--seam-duration) var(--wipe-easing) var(--seam-delay) both;
+    animation: turn-seam-forward var(--seam-duration) var(--page-seam-easing) var(--page-seam-delay) both;
     background-image: linear-gradient(
         var(--wipe-angle),
         transparent calc(50% + var(--edge) * 0.848),
