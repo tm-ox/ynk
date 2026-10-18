@@ -3,12 +3,13 @@
 // top of an archive (Paging.astro), where a visitor reaches for both.
 const { lastPage, currentPage, basePath = "/images/" } = Astro.props;
 // With many pages the row would run on: the first and last pages, the current
-// one and two either side, and "…" for each gap (1 … 6 7 8 9 10 … 15). Up to
-// seven pages all show, as a window that size would leave no gap worth one.
+// one and three either side, and "…" for each gap (1 … 7 8 9 10 11 12 13 … 30).
+// Up to sixteen pages all show: the dropdown is only as wide as its text, so
+// the bar has room for them.
 const shown =
-    lastPage <= 7
+    lastPage <= 16
         ? Array.from({ length: lastPage }, (_, i) => i + 1)
-        : [...new Set([1, ...Array.from({ length: 5 }, (_, i) => currentPage - 2 + i), lastPage])]
+        : [...new Set([1, ...Array.from({ length: 7 }, (_, i) => currentPage - 3 + i), lastPage])]
               .filter((n) => n >= 1 && n <= lastPage)
               .sort((a, b) => a - b);
 // A gap marker wherever the run skips; a skip of one page shows that page.

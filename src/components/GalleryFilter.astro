@@ -10,7 +10,10 @@ const { label, events, current } = Astro.props;
 
 <div class="gallery-filter" transition:name="gallery-bar">
     {label && <h2 class="bar-label">{label}</h2>}
-    <div class="flex-1 min-w-0">
+    {/* Only as wide as the chosen event's name (see select, below), its rule
+        with it; the free space falls after it (mr-auto), so the page numbers
+        have the rest of the row. */}
+    <div class="min-w-0 mr-auto">
     <div class="select-wrap">
     <select aria-label="Filter by event" data-gallery-filter>
         <option value="/images/" selected={!current}>ALL IMAGES</option>
@@ -120,8 +123,18 @@ const { label, events, current } = Astro.props;
     .select-wrap {
         @apply relative;
     }
+    /* As wide as the chosen option (field-sizing), not the longest one, and
+       never past the bar. Without field-sizing the browser sizes it to the
+       longest option, so it is capped at a width that leaves the numbers room. */
     select {
-        @apply w-full pr-6 appearance-none font-displayCon text-xs md:text-sm bg-bg text-accent-muted py-0 hover:text-accent max-sm:py-2 max-sm:text-base;
+        field-sizing: content;
+        max-width: 100%;
+        @apply pr-6 appearance-none font-displayCon text-xs md:text-sm bg-bg text-accent-muted py-0 hover:text-accent max-sm:py-2 max-sm:text-base;
+    }
+    @supports not (field-sizing: content) {
+        select {
+            max-width: min(100%, 18rem);
+        }
     }
     /* A fixed row (--bar-row), shared with the picture's info strip. */
     @media (min-width: 40rem) {
