@@ -34,7 +34,11 @@ document.addEventListener("keydown", (e) => {
   if (document.querySelector("dialog[open]")) return;
   if (e.key === "?") {
     e.preventDefault();
-    document.querySelector<HTMLElement>("[data-settings-open]")?.click();
+    // The cog that shows (the header's from sm up, the menu panel's on
+    // phones: BaseLayout.astro); with the menu shut neither does, and either
+    // opens the same dialog.
+    const cogs = [...document.querySelectorAll<HTMLElement>("[data-settings-open]")];
+    (cogs.find((b) => b.checkVisibility()) ?? cogs[0])?.click();
     return;
   }
   if (e.shiftKey) return;

@@ -3,6 +3,7 @@ import Hamburger from "../components/Hamburger.astro";
 import "../styles/global.css";
 import Base from "./Base.astro";
 import Sosmed from "../components/Sosmed.astro";
+import { Icon } from "astro-icon/components";
 import { getCollection } from "astro:content";
 import { EVENTS_PER_PAGE, IMAGES_PER_PAGE, getGalleryImages } from "../utils/events";
 import { ROW, pageOf, screenOf } from "../utils/row";
@@ -51,10 +52,26 @@ const links = ROW.map((s, i) => ({
             <!-- Phones: the open menu is a panel from the header rule down, set
                  left in the page's gutter as everything else is: the links at
                  its top, as wide as the gutters allow, the social icons and
-                 the footer line at its foot. -->
+                 the footer line at its foot. Above the links, on a row of its
+                 own, the Settings cog, which on phones lives here rather
+                 than in the header (Settings.astro hides that one below sm):
+                 at the right, its edge under the menu button's. Settings
+                 opens over the open menu, which is still there when it
+                 closes (Esc closes Settings first: Hamburger.astro). -->
             <ul
                 class="flex flex-col items-stretch text-left max-sm:grow max-sm:shrink-0 max-sm:px-gutter max-sm:pt-2 sm:my-auto sm:items-center sm:flex-row sm:gap-x-3"
             >
+                <li class="flex justify-end sm:hidden">
+                    <button
+                        type="button"
+                        class="flex items-center justify-end w-10 h-10 cursor-pointer"
+                        data-settings-open
+                        aria-label="Settings"
+                        aria-haspopup="dialog"
+                    >
+                        <Icon name="bx:bxs-cog" class="w-6 h-6 icon" />
+                    </button>
+                </li>
                 {
                     links.map((link) => (
                         <li transition:name={`nav-${link.section}`}>
