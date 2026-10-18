@@ -679,8 +679,9 @@ select:-webkit-autofill:focus {
 .vt-swap {
     view-transition-class: swap;
 }
-/* A screen's main content as one piece (the home track, an archive grid), so
-   a page turn between screens slides it whole: see the .page rules below. */
+/* A screen's main content as one piece (the home track, an archive grid,
+   About, Contact), so a page turn between screens slides it whole: see the
+   .page rules below. */
 .vt-page {
     view-transition-class: page;
 }
@@ -769,13 +770,14 @@ html:not([data-astro-transition^="paging"]):not([data-closing])::view-transition
     animation-duration: calc(var(--morph-duration) * var(--fade-out));
 }
 /* Page turns (archive page numbers, moves along the row home, events
-   archive, images archive, steps between home panels, and Previous / Next
-   between event or picture pages) slide under one seam. It is all done here,
-   on the snapshots of the .page groups (the home track, an archive grid, or
-   the named piece that is a detail page, made a .page for the turn by
-   Base.astro): the outgoing one leaves whole and the incoming one comes in
-   from the far side, and one diagonal edge with its line crosses the screen
-   once, the outgoing snapshot ahead of it and the incoming one behind it.
+   archive, images archive, About, Contact, steps between home panels, and
+   Previous / Next between event or picture pages) slide under one seam. It is
+   all done here, on the snapshots of the .page groups (the home track, an
+   archive grid, About, Contact, or the named piece that is a detail page,
+   made a .page for the turn by Base.astro): the outgoing one leaves whole and
+   the incoming one comes in from the far side, and one diagonal edge with its
+   line crosses the screen once, the outgoing snapshot ahead of it and the
+   incoming one behind it.
    These use the html[data-astro-transition] prefix so they win over the
    morph's rules above (a named pseudo and a class argument have equal
    specificity). */
