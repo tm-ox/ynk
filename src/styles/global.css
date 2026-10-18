@@ -244,94 +244,51 @@
             scroll-behavior: smooth;
         }
     }
-    /* Home panels wipe in on arrival, with the paging wipe's edge (same angle,
-       easing and reach, a little longer) and a thin line riding on it. It is timed,
-       not tied to the scroll, so it plays the same however the panel was
-       reached (scripts/reveal.ts sets data-reveal in/out and data-side, the
-       side of the screen an "out" panel waits on, so the edge enters from
-       there). Without the script, or with reduced motion, panels are plain.
-       The hero takes part too. */
+    /* The seam between home panels: one diagonal edge (the paging wipe's
+       angle and easing) with a thin line on it, crossing the screen once as
+       the track moves from one panel to another (scripts/reveal.ts runs it;
+       see there). The panel being left shows what is ahead of the edge, the
+       one arriving what is behind it, and every other panel is hidden.
+       Without the script, or with reduced motion, panels are plain. The hero
+       takes part too. */
     @media (min-width: 40rem) and (prefers-reduced-motion: no-preference) {
         /* Positioned so the edge line (::after) can cover the panel. */
         .home-track > section {
             position: relative;
         }
+        .home-track > section[data-reveal="hidden"] {
+            mask-image: linear-gradient(transparent, transparent);
+        }
         /* The edge is a gradient the size of the panel, with its stop moved by
-           --edge (the state below only sets that, and one transition drives
-           both mask and line). The gradient runs at 122deg, so moving the
-           edge sideways by d moves its stop by d * cos 32deg, about 0.848d,
-           along the gradient; the gradient's 50% is the panel's centre. A
-           panel-sized gradient is rasterised at full resolution, unlike the
-           huge tile this replaced, which left the 1px line unseen. The
-           visible side is the one the panel arrives from the far side of:
-           right-hand panels show what is right of the edge. */
-        .home-track > section[data-reveal],
-        .home-track > section[data-reveal][data-side="right"] {
+           --edge, which reveal.ts sets every frame: the seam's distance right
+           of the panel's centre (the gradient's 50%), at the panel's
+           mid-height. The gradient runs at 122deg, so moving the edge sideways
+           by d moves its stop by d * cos 32deg, about 0.848d, along the
+           gradient. A panel-sized gradient is rasterised at full resolution,
+           unlike a huge tile, which would leave the 1px line unseen.
+           data-side is the side of the edge the panel shows: right for the
+           one arriving when the track moves on (the seam crosses right to
+           left), left for the one it leaves; mirrored going back. */
+        .home-track > section:is([data-reveal="arriving"], [data-reveal="leaving"])[data-side="right"] {
             mask-image: linear-gradient(
                 var(--wipe-angle),
                 transparent calc(50% + var(--edge) * 0.848),
                 #000 calc(50% + var(--edge) * 0.848)
             );
         }
-        .home-track > section[data-reveal][data-side="left"] {
+        .home-track > section:is([data-reveal="arriving"], [data-reveal="leaving"])[data-side="left"] {
             mask-image: linear-gradient(
                 var(--wipe-angle),
                 #000 calc(50% + var(--edge) * 0.848),
                 transparent calc(50% + var(--edge) * 0.848)
             );
         }
-        /* Hidden, then in: the edge sweeps across the panel. Only "in" has a
-           transition, so resetting to "out" is instant and unseen. */
-        .home-track > section[data-reveal="out"] {
-            --edge: var(--wipe-reach);
-        }
-        .home-track > section[data-reveal="out"][data-side="left"] {
-            --edge: calc(var(--wipe-reach) * -1);
-        }
-        .home-track > section[data-reveal="in"] {
-            --edge: calc(var(--wipe-reach) * -1);
-            transition: --edge var(--panel-wipe-duration) var(--wipe-easing);
-        }
-        .home-track > section[data-reveal="in"][data-side="left"] {
-            --edge: var(--wipe-reach);
-        }
-        /* Leaving: the panel is wiped out by an edge moving the way the track
-           travelled, so it and the incoming panel's edge read as one seam.
-           reveal.ts sets data-side to the side it leaves by, so the gradients
-           above already show the side the edge moves away from (exit left:
-           visible left of the edge, which sweeps right to left). The edge is
-           keyframed, not transitioned, so it starts from its own first frame
-           whatever the panel was doing; its first value is the "in" state's
-           (fully visible), so nothing jumps, and it ends fully hidden, as
-           "out" is, so the next wipe in starts from there. */
-        @keyframes panel-exit-left {
-            from {
-                --edge: var(--wipe-reach);
-            }
-            to {
-                --edge: calc(var(--wipe-reach) * -1);
-            }
-        }
-        @keyframes panel-exit-right {
-            from {
-                --edge: calc(var(--wipe-reach) * -1);
-            }
-            to {
-                --edge: var(--wipe-reach);
-            }
-        }
-        .home-track > section[data-reveal="leaving"][data-exit="left"] {
-            animation: panel-exit-left var(--panel-exit-duration) var(--wipe-easing) both;
-        }
-        .home-track > section[data-reveal="leaving"][data-exit="right"] {
-            animation: panel-exit-right var(--panel-exit-duration) var(--wipe-easing) both;
-        }
-        /* The edge line. It is drawn on the panel itself, which the mask also
-           clips, and a line centred on the mask's edge would lose its hidden
-           half. So it is laid just inside the visible side instead (right of
-           the edge for right-hand panels, left of it for left-hand ones). It
-           inherits --edge, so it moves with exactly the mask's timing. */
-        .home-track > section[data-reveal]::after {
+        /* The line, on the arriving panel only, so there is one. It is drawn
+           on the panel itself, which the mask also clips, and a line centred
+           on the mask's edge would lose its hidden half. So it is laid just
+           inside the visible side instead. It inherits --edge, so it moves
+           with the mask exactly. */
+        .home-track > section[data-reveal="arriving"]::after {
             content: "";
             position: absolute;
             inset: 0;
@@ -345,7 +302,7 @@
                 transparent calc(50% + var(--edge) * 0.848 + var(--wipe-line))
             );
         }
-        .home-track > section[data-reveal][data-side="left"]::after {
+        .home-track > section[data-reveal="arriving"][data-side="left"]::after {
             background-image: linear-gradient(
                 var(--wipe-angle),
                 transparent calc(50% + var(--edge) * 0.848 - var(--wipe-line)),
@@ -354,27 +311,14 @@
                 transparent calc(50% + var(--edge) * 0.848)
             );
         }
-        /* Rules draw in from the left once the wipe is half done. */
+        /* Rules draw in from the left once the seam is half way. They are
+           taken away while the panel is hidden, unseen. */
         .home-track > section hr {
             transform-origin: left;
+            transition: scale 0.4s var(--wipe-easing) calc(var(--seam-duration) * 0.5);
         }
-        .home-track > section[data-reveal="out"] hr {
+        .home-track > section[data-reveal="hidden"] hr {
             scale: 0 1;
-        }
-        .home-track > section[data-reveal="in"] hr {
-            scale: 1 1;
-            transition: scale 0.4s var(--wipe-easing) calc(var(--panel-wipe-duration) * 0.5);
-        }
-        /* Landing on home by a page turn (data-turn, set in Base.astro), the
-           panel's wipe waits --page-wipe-delay, as an archive grid's does, so
-           the slide is under way first. Only while that page transition runs
-           (Astro marks the root until it ends), so later scrolling is not held
-           back. */
-        html[data-turn][data-astro-transition] .home-track > section[data-reveal="in"] {
-            transition-delay: var(--page-wipe-delay);
-        }
-        html[data-turn][data-astro-transition] .home-track > section[data-reveal="in"] hr {
-            transition-delay: calc(var(--panel-wipe-duration) * 0.5 + var(--page-wipe-delay));
         }
     }
     /* Archive thumbnails rise in, a little after one another (--i is the
@@ -514,12 +458,9 @@ select:-webkit-autofill:focus {
     /* Thickness of the line that rides the home panels' wipe edge (0px turns
        it off). */
     --wipe-line: 1px;
-    /* The home panels' wipe, a touch slower than paging's --wipe-duration. */
-    --panel-wipe-duration: 0.65s;
-    /* The matching wipe out: a panel leaving the screen, or the outgoing page
-       of a page turn. A little quicker than the wipe in, so it is gone by the
-       time the new edge has crossed. */
-    --panel-exit-duration: 0.5s;
+    /* How long the seam between home panels takes to cross the screen (it
+       runs on its own clock, not the scroll's; eased by --wipe-easing). */
+    --seam-duration: 0.6s;
 }
 .vt-detail {
     view-transition-class: detail;
@@ -682,21 +623,24 @@ html[data-astro-transition="paging-back"]::view-transition-new(.detail) {
 }
 /* Page turns between screens (archive page numbers, and moves along the row
    home, events archive, images archive; not Previous/Next on a detail page)
-   slide like the home panels do, and the incoming content wipes in with the
-   panels' edge and line. The slide is done here, on the snapshots of the
-   .page groups (the home track, an archive grid): whichever leaves goes
-   whole and the incoming one comes in from the far side. The wipe is not: it
-   runs on the real incoming content (an archive's .gallery-fit, keyed on
-   data-turn below, or the home panel landed on, wiped by scripts/reveal.ts),
-   which the new snapshot shows live, so its mask is drawn at full resolution
-   with the line on it, as on the home panels. A
+   slide like the home panels do, under one seam, as on the home track. The
+   slide is done here, on the snapshots of the .page groups (the home track,
+   an archive grid): the outgoing one leaves whole and the incoming one comes
+   in from the far side. One diagonal edge crosses the screen once on the
+   same clock: ahead of it the outgoing snapshot, behind it the real incoming
+   content (an archive's .gallery-fit, or the home panel landed on, keyed on
+   data-turn below), which the new snapshot shows live, so its mask is drawn
+   at full resolution with the line on it, as on the home panels. A
    smooth-scroll ease-out gives the slide its feel. These come after the
    .detail rules above, and use the same prefix, because a named pseudo and a
    class argument have equal specificity and the later one wins. */
 :root {
     --page-slide-duration: 0.5s;
     --page-slide-easing: cubic-bezier(0.22, 0.61, 0.36, 1);
-    --page-wipe-delay: 0.15s;
+    /* How far past each side of the screen the seam starts and ends: the
+       edge's sideways lean over half the screen's height (tan 32deg, about
+       0.625), and a little for the line, so it enters and leaves wholly. */
+    --seam-overhang: calc(50vh * 0.625 + 2px);
 }
 @keyframes page-in-from-right {
     from {
@@ -718,47 +662,70 @@ html[data-astro-transition="paging-back"]::view-transition-new(.detail) {
         translate: 100vw 0;
     }
 }
-/* Changes nothing (the snapshot is shown whole anyway), but lasts as long as the live wipe below (its delay and
-   duration), so the transition does too. Parts of the grid captured on their
-   own (the page numbers) stay shown as their own group until it ends;
-   ending at the slide's end instead would hand them back to the grid while
-   its wipe still hides them, and they would blink out. */
-@keyframes turn-hold {
+/* The seam. Going forward, with e the slide's eased progress (0 to 1), W the
+   screen's width (100vw) and R the overhang:
+     the seam, right of the screen's centre:  S = (W/2 + R) - (W + 2R) * e
+     the outgoing snapshot is moved by        -W * e
+     the incoming one by                       W * (1 - e)
+   --edge is the seam's distance right of a box's own centre (as on the home
+   panels, see @layer components): S, less the box's offset. So
+     outgoing: S + W * e       = (W/2 + R) - 2R * e, from W/2 + R to W/2 - R
+     incoming: S - W * (1 - e) = (R - W/2) - 2R * e, from R - W/2 to -W/2 - R
+   Both are straight lines in e, so keyframes with the slide's own duration
+   and easing follow the seam exactly. Back is the mirror image (the seam is
+   -(W/2 + R) + (W + 2R) * e, the outgoing snapshot moves by W * e and the
+   incoming one by -W * (1 - e)):
+     outgoing: from -W/2 - R to R - W/2;  incoming: from W/2 - R to W/2 + R.
+   That is for a box centred on the screen. The seam leans, so for a box whose
+   centre is elsewhere (an archive grid sits lower than the home track, and
+   below xl runs on past the screen) it crosses the box's mid-height at
+   another place: Base.astro measures each box and sets --turn-old-shift and
+   --turn-new-shift, minus (its centre's offset right of the screen's centre
+   + 0.625 times its offset below it), which is added to every value. Then
+   the outgoing and incoming edges are one line on screen. */
+@keyframes turn-seam-out-forward {
+    from {
+        --edge: calc(50vw + var(--seam-overhang) + var(--turn-old-shift, 0px));
+    }
     to {
-        opacity: 1;
+        --edge: calc(50vw - var(--seam-overhang) + var(--turn-old-shift, 0px));
     }
 }
-/* The incoming snapshot is not masked here: it only slides (its wipe is the
-   live one below). The outgoing one is, further down. */
+@keyframes turn-seam-out-back {
+    from {
+        --edge: calc(-50vw - var(--seam-overhang) + var(--turn-old-shift, 0px));
+    }
+    to {
+        --edge: calc(var(--seam-overhang) - 50vw + var(--turn-old-shift, 0px));
+    }
+}
+@keyframes turn-seam-in-forward {
+    from {
+        --edge: calc(var(--seam-overhang) - 50vw + var(--turn-new-shift, 0px));
+    }
+    to {
+        --edge: calc(-50vw - var(--seam-overhang) + var(--turn-new-shift, 0px));
+    }
+}
+@keyframes turn-seam-in-back {
+    from {
+        --edge: calc(50vw - var(--seam-overhang) + var(--turn-new-shift, 0px));
+    }
+    to {
+        --edge: calc(50vw + var(--seam-overhang) + var(--turn-new-shift, 0px));
+    }
+}
+/* The incoming snapshot is not masked here: it only slides (its mask is on
+   the live content, below). */
 html[data-astro-transition^="paging"]::view-transition-old(.page),
 html[data-astro-transition^="paging"]::view-transition-new(.page) {
     mask-image: none;
 }
-/* The outgoing snapshot is wiped out as it slides, by the same edge as the
-   home panels' exit (the box-sized gradient and its 0.848, see the panel wipe
-   in @layer components), so the leaving and arriving edges read as one seam.
-   --edge is keyframed on the pseudo-element itself, which works for a
-   registered property. The snapshot is a picture, so it carries no edge line
-   (the live content's ::after cannot be captured into it). Forward shows what
-   is left of the edge, which sweeps right to left; back is the mirror image.
-   No delay: it leaves at once. mask-size is set because a .detail .page pair
-   gets the wipe's oversized mask above. */
-@keyframes page-wipe-out-forward {
-    from {
-        --edge: var(--wipe-reach);
-    }
-    to {
-        --edge: calc(var(--wipe-reach) * -1);
-    }
-}
-@keyframes page-wipe-out-back {
-    from {
-        --edge: calc(var(--wipe-reach) * -1);
-    }
-    to {
-        --edge: var(--wipe-reach);
-    }
-}
+/* The outgoing snapshot shows what is ahead of the edge: left of it going
+   forward, right of it going back. --edge is keyframed on the pseudo-element
+   itself, which works for a registered property. The snapshot is a picture,
+   so it carries no line (the one line is the incoming content's). mask-size
+   is set because a .detail .page pair gets the wipe's oversized mask above. */
 html[data-astro-transition="paging-forward"]::view-transition-old(.page) {
     mask-size: 100% 100%;
     mask-repeat: no-repeat;
@@ -767,6 +734,9 @@ html[data-astro-transition="paging-forward"]::view-transition-old(.page) {
         #000 calc(50% + var(--edge) * 0.848),
         transparent calc(50% + var(--edge) * 0.848)
     );
+    animation:
+        page-out-to-left var(--page-slide-duration) var(--page-slide-easing) both,
+        turn-seam-out-forward var(--page-slide-duration) var(--page-slide-easing) both;
 }
 html[data-astro-transition="paging-back"]::view-transition-old(.page) {
     mask-size: 100% 100%;
@@ -776,77 +746,54 @@ html[data-astro-transition="paging-back"]::view-transition-old(.page) {
         transparent calc(50% + var(--edge) * 0.848),
         #000 calc(50% + var(--edge) * 0.848)
     );
-}
-html[data-astro-transition="paging-forward"]::view-transition-old(.page) {
-    animation:
-        page-out-to-left var(--page-slide-duration) var(--page-slide-easing) both,
-        page-wipe-out-forward var(--panel-exit-duration) var(--wipe-easing) both;
-}
-html[data-astro-transition="paging-forward"]::view-transition-new(.page) {
-    animation:
-        page-in-from-right var(--page-slide-duration) var(--page-slide-easing) both,
-        turn-hold calc(var(--page-wipe-delay) + var(--panel-wipe-duration));
-}
-html[data-astro-transition="paging-back"]::view-transition-old(.page) {
     animation:
         page-out-to-right var(--page-slide-duration) var(--page-slide-easing) both,
-        page-wipe-out-back var(--panel-exit-duration) var(--wipe-easing) both;
+        turn-seam-out-back var(--page-slide-duration) var(--page-slide-easing) both;
+}
+html[data-astro-transition="paging-forward"]::view-transition-new(.page) {
+    animation: page-in-from-right var(--page-slide-duration) var(--page-slide-easing) both;
 }
 html[data-astro-transition="paging-back"]::view-transition-new(.page) {
-    animation:
-        page-in-from-left var(--page-slide-duration) var(--page-slide-easing) both,
-        turn-hold calc(var(--page-wipe-delay) + var(--panel-wipe-duration));
+    animation: page-in-from-left var(--page-slide-duration) var(--page-slide-easing) both;
 }
-/* The incoming grid's wipe. Base.astro marks the new page's root with
-   data-turn (forward or back) on a page turn; the root's attributes are
-   replaced on every navigation, so it lasts until the next one, and the
-   animation plays once, as the page arrives. The mask and line are the home
-   panels' (see the panel wipe in @layer components for the 0.848 and the
-   box-sized gradient), driven by keyframes on --edge instead of a
-   transition. Forward shows what is right of the edge, which sweeps right to
-   left; back is the mirror image. It starts --page-wipe-delay in, so the
-   slide is already under way, and fills both ways, so the grid is hidden
-   until then and stays fully shown after, with the line past the box. */
-@keyframes turn-wipe-forward {
+/* The incoming content behind the seam. Base.astro marks the new page's root
+   with data-turn (forward or back) on a page turn, and the home panel landed
+   on with data-reveal="landing", and takes data-turn off when the transition
+   ends. The live content's own box is not moved (its snapshot is), so its
+   --edge is the incoming snapshot's above. Its animation starts as the page
+   is swapped in, a little before the slide; Base.astro sets it back to the
+   slide's start, so the two halves of the seam meet. It shows what is behind
+   the edge, with the line just inside, as on the home panels. */
+@keyframes rule-in {
     from {
-        --edge: var(--wipe-reach);
-    }
-    to {
-        --edge: calc(var(--wipe-reach) * -1);
-    }
-}
-@keyframes turn-wipe-back {
-    from {
-        --edge: calc(var(--wipe-reach) * -1);
-    }
-    to {
-        --edge: var(--wipe-reach);
+        scale: 0 1;
     }
 }
 @media (prefers-reduced-motion: no-preference) {
     /* Positioned so the line (::after) covers the grid's box. From xl up the
        grid scrolls inside itself, and an absolute child of a scroller sits on
        the scrolled content; a new page is at the top, so it starts where the
-       box is. */
+       box is. (Home panels are positioned already.) */
     html[data-turn] .gallery-fit {
         position: relative;
-        animation: turn-wipe-forward var(--panel-wipe-duration) var(--wipe-easing) var(--page-wipe-delay) both;
+    }
+    html[data-turn] :is(.gallery-fit, .home-track > section[data-reveal="landing"]) {
+        animation: turn-seam-in-forward var(--page-slide-duration) var(--page-slide-easing) both;
         mask-image: linear-gradient(
             var(--wipe-angle),
             transparent calc(50% + var(--edge) * 0.848),
             #000 calc(50% + var(--edge) * 0.848)
         );
     }
-    html[data-turn="back"] .gallery-fit {
-        animation-name: turn-wipe-back;
+    html[data-turn="back"] :is(.gallery-fit, .home-track > section[data-reveal="landing"]) {
+        animation-name: turn-seam-in-back;
         mask-image: linear-gradient(
             var(--wipe-angle),
             #000 calc(50% + var(--edge) * 0.848),
             transparent calc(50% + var(--edge) * 0.848)
         );
     }
-    /* The line, just inside the visible side, as on the panels. */
-    html[data-turn] .gallery-fit::after {
+    html[data-turn] :is(.gallery-fit, .home-track > section[data-reveal="landing"])::after {
         content: "";
         position: absolute;
         inset: 0;
@@ -860,7 +807,7 @@ html[data-astro-transition="paging-back"]::view-transition-new(.page) {
             transparent calc(50% + var(--edge) * 0.848 + var(--wipe-line))
         );
     }
-    html[data-turn="back"] .gallery-fit::after {
+    html[data-turn="back"] :is(.gallery-fit, .home-track > section[data-reveal="landing"])::after {
         background-image: linear-gradient(
             var(--wipe-angle),
             transparent calc(50% + var(--edge) * 0.848 - var(--wipe-line)),
@@ -868,6 +815,12 @@ html[data-astro-transition="paging-back"]::view-transition-new(.page) {
             var(--color-border) calc(50% + var(--edge) * 0.848),
             transparent calc(50% + var(--edge) * 0.848)
         );
+    }
+    /* A landing panel's rules draw in over the second half of the slide, as
+       the home panels' do behind the seam. */
+    html[data-turn] .home-track > section[data-reveal="landing"] hr {
+        animation: rule-in calc(var(--page-slide-duration) * 0.5) var(--wipe-easing)
+            calc(var(--page-slide-duration) * 0.5) both;
     }
 }
 @media (prefers-reduced-motion: reduce) {
