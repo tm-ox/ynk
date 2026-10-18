@@ -59,12 +59,15 @@ const ogImage = new URL(image ?? "/og-default.jpg", Astro.site).href;
         <script is:inline>
             (function () {
                 var root = document.documentElement;
+                // The visitor's choice: "system" (follow the device), "light"
+                // or "dark". Dark until they choose (the light theme is not
+                // finished), so "system" is stored like the others.
                 var stored = function () {
                     try {
                         var t = localStorage.getItem("theme");
-                        return t === "light" || t === "dark" ? t : null;
+                        return t === "light" || t === "dark" || t === "system" ? t : "dark";
                     } catch (e) {
-                        return null;
+                        return "dark";
                     }
                 };
                 var syncMeta = function () {
@@ -72,26 +75,23 @@ const ogImage = new URL(image ?? "/og-default.jpg", Astro.site).href;
                     if (m) m.content = getComputedStyle(root).backgroundColor;
                 };
                 window.__applyTheme = function (theme, doc) {
-                    (doc || document).documentElement.setAttribute("data-theme", theme);
+                    var r = (doc || document).documentElement;
+                    if (theme === "system") r.removeAttribute("data-theme");
+                    else r.setAttribute("data-theme", theme);
                     if (!doc && document.readyState === "complete") syncMeta();
                 };
-                // choice: "system" (follow the device), "light" or "dark".
                 window.__setTheme = function (choice) {
                     try {
-                        if (choice === "system") localStorage.removeItem("theme");
-                        else localStorage.setItem("theme", choice);
+                        localStorage.setItem("theme", choice);
                     } catch (e) {}
-                    if (choice === "system") root.removeAttribute("data-theme");
-                    else root.setAttribute("data-theme", choice);
+                    window.__applyTheme(choice);
                     syncMeta();
                 };
-                window.__storedTheme = function () {
-                    return stored() || "system";
-                };
-                if (stored()) window.__applyTheme(stored());
+                window.__storedTheme = stored;
+                window.__applyTheme(stored());
                 window.addEventListener("load", syncMeta);
                 document.addEventListener("astro:before-swap", function (e) {
-                    if (stored()) window.__applyTheme(stored(), e.newDocument);
+                    window.__applyTheme(stored(), e.newDocument);
                 });
                 document.addEventListener("astro:after-swap", syncMeta);
             })();

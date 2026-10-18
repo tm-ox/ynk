@@ -177,8 +177,9 @@
 }
 
 @layer base {
-    /* Theme values. Dark is the default; light applies via [data-theme] or,
-       with no stored choice, the OS preference. */
+    /* Theme values. Dark is the default (Base.astro sets data-theme="dark"
+       until the visitor chooses); light applies via [data-theme], or the OS
+       preference when they choose System (no data-theme). */
     :root,
     [data-theme="dark"] {
         color-scheme: dark;
