@@ -263,15 +263,17 @@
         padding-bottom: var(--header-bottom);
     }
     main {
-        @apply pt-header;
+        @apply relative pt-header;
     }
-    /* The rule under the header, the site's one rule, belongs to the page
-       frame, not to the sections, so it stays put while a section changes. It
-       is an element of its own, named, so a page turn captures it apart from
-       the page: in the root snapshot, the incoming screen (the hero runs up
-       under it) would cover it until the turn ended. Fixed with the header,
-       so it stays under it while the page scrolls (at every size). From sm
-       up as wide as main: --rule-inset (the gutter) in from each side,
+    /* The rules under the header and, from sm up, above the footer belong to
+       the page frame, not to the sections, so they stay put while a section
+       changes. Phones have no rule above the footer: the footer is in the
+       menu there (BaseLayout.astro) and a screen runs to the screen's foot.
+       The one under the header is an element of its own, named, so a page
+       turn captures it apart from the page: in the root snapshot, the
+       incoming screen (the hero runs up under it) would cover it until the
+       turn ended. Fixed with the header, so it stays under it while the
+       page scrolls (at every size). From sm up as wide as main: --rule-inset (the gutter) in from each side,
        capped at --container-site. On phones edge to edge (--rule-inset 0);
        the position mark on it keeps to the nav's width all the same (see
        .position, BaseLayout.astro). Above the header and whatever scrolls
@@ -289,6 +291,15 @@
     @media (width < 40rem) {
         .frame-rule {
             --rule-inset: 0px;
+        }
+    }
+    /* Above the footer, as wide as main, mirroring the one under the header. */
+    @media (min-width: 40rem) {
+        main::after {
+            content: "";
+            @apply absolute inset-x-0 bottom-0 h-px bg-border pointer-events-none;
+            /* Above the positioned layers inside a section (the hero picture). */
+            z-index: 1;
         }
     }
     section {
