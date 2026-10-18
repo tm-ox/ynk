@@ -19,7 +19,8 @@ const label = "mb-0 text-xs font-bold tracking-normal uppercase md:text-sm font-
 <!-- Below md (touch) the button is 2.5rem tall, pulled back into the row by
      the difference, so the cog and its slash do not move. Not on phones: there
      the header holds only the logo and the menu button, and the cog is in the
-     menu panel (BaseLayout.astro), another [data-settings-open]. -->
+     menu panel (BaseLayout.astro), another [data-settings-open]. The icon is
+     the social icons' size (sm:w-5, Sosmed.astro). -->
 <button
   type="button"
   class="h-7 ml-2 pl-2 sm:pl-3.5 sm:slash-l cursor-pointer max-md:h-10 max-md:-my-1.5 max-sm:hidden"
@@ -28,7 +29,7 @@ const label = "mb-0 text-xs font-bold tracking-normal uppercase md:text-sm font-
   aria-haspopup="dialog"
   transition:persist="settings"
 >
-  <Icon name="bx:bxs-cog" class="w-6 sm:h-6 icon" />
+  <Icon name="bx:bxs-cog" class="w-6 sm:w-5 sm:h-5 icon" />
 </button>
 
 <!-- A native modal dialog: centred on screen, the page behind is inert, focus
