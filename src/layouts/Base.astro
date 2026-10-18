@@ -20,11 +20,14 @@ const { title, description = defaultDescription, image, jsonLd } = Astro.props;
 const fullTitle = title
   ? `${title} – ${siteName}`
   : `${siteName} – Experimental etc., Yogyakarta`;
+// Thumbnail look at rest: "" (full colour, default) or "duotone" (two-tone of
+// the theme, colour on hover). Change this one word to try it site-wide.
+const thumbs: "" | "duotone" = "";
 const canonical = new URL(Astro.url.pathname, Astro.site).href;
 const ogImage = new URL(image ?? "/og-default.jpg", Astro.site).href;
 ---
 
-<html lang="en">
+<html lang="en" data-thumbs={thumbs || undefined}>
     <head>
         <meta charset="utf-8" />
         <link
@@ -50,6 +53,7 @@ const ogImage = new URL(image ?? "/og-default.jpg", Astro.site).href;
         <link rel="mask-icon" href="/safari-pinned-tab.svg" color="#03c91d" />
         <meta name="msapplication-TileColor" content="#041b1b" />
         <meta name="theme-color" content="#041b1b" />
+        <!-- Thumbnail duotone: set `thumbs` in the frontmatter above to "duotone". -->
         <script is:inline>
             (function () {
                 var root = document.documentElement;

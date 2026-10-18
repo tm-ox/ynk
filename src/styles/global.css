@@ -9,6 +9,16 @@
     initial-value: 0px;
 }
 
+/* How far the thumbnail hover wash has swept along the diagonal, as a share of
+   the gradient line. A percentage, not a length: the gradient line's length
+   depends on the box, and a share needs no per-thumbnail sums. It is
+   <length-percentage> so the end stop can be 100% plus the line's width. */
+@property --thumb-edge {
+    syntax: "<length-percentage>";
+    inherits: false;
+    initial-value: 0%;
+}
+
 @theme inline {
     --color-*: initial;
     /* Roles, not hues. Values per theme live in the --rgb-* blocks below. */
@@ -343,24 +353,39 @@
         }
     }
     /* Thumbnails that link somewhere: while the link is hovered or focused the
-       picture is filtered (--thumb-filter) and takes a wash of the accent colour.
-       The thumb is either inside the link or is the link itself. */
+       picture is filtered (--thumb-filter) and a wash of the accent colour
+       sweeps across it along the site's diagonal, with a line on its leading
+       edge. It sweeps back out on leave. The thumb is either inside the link
+       or is the link itself. */
     .thumb {
         position: relative;
         /* Picture filter on hover. Alternatives: grayscale(1), invert(1), contrast(1.3) saturate(1.6); `none` for the wash alone. */
         --thumb-filter: grayscale(0.25);
+        /* Duration of the sweep. */
+        --thumb-sweep: 0.25s;
     }
     .thumb img {
         transition: filter 0.2s ease;
     }
+    /* One box-sized gradient: wash behind the edge, the line just behind the
+       edge, nothing ahead of it. At rest the edge is at 0%, so the line sits
+       outside the box. Swept, the edge is at 100% plus the line's width, so
+       the line has left the far corner and the wash covers everything. */
     .thumb::after {
         content: "";
         position: absolute;
         inset: 0;
-        background: rgb(var(--rgb-accent-muted) / 0.3);
-        opacity: 0;
-        transition: opacity 0.2s ease;
+        --thumb-edge: 0%;
+        background: linear-gradient(
+            var(--wipe-angle),
+            rgb(var(--rgb-accent-muted) / 0.3) calc(var(--thumb-edge) - var(--wipe-line)),
+            var(--color-border) calc(var(--thumb-edge) - var(--wipe-line)),
+            var(--color-border) var(--thumb-edge),
+            transparent var(--thumb-edge)
+        );
+        transition: --thumb-edge var(--thumb-sweep) var(--wipe-easing);
         pointer-events: none;
+        z-index: 2;
     }
     /* Keyboard focus always shows the effect; hover only where there is a
        real pointer, so it does not stick after a tap. */
@@ -370,7 +395,7 @@
     }
     a:focus-visible > .thumb::after,
     a.thumb:focus-visible::after {
-        opacity: 1;
+        --thumb-edge: calc(100% + var(--wipe-line));
     }
     .gallery-grid a:focus-visible h5 {
         color: var(--color-accent-hover);
@@ -382,7 +407,7 @@
         }
         a:hover > .thumb::after,
         a.thumb:hover::after {
-            opacity: 1;
+            --thumb-edge: calc(100% + var(--wipe-line));
         }
         .gallery-grid a:hover h5 {
             color: var(--color-accent-hover);
@@ -391,15 +416,73 @@
     /* Not while a page transition runs (Astro marks the root from just before
        the outgoing page is captured until the animation ends): the wash covers
        the whole square, letterbox included, so on a travelling flyer it would
-       grow past the picture. Off at once, not faded, so it is not captured.
+       grow past the picture. Off at once, not swept, so it is not captured.
        (.thumb.thumb: outranks the a:hover > .thumb rules above.) */
     html[data-astro-transition] .thumb.thumb img {
         filter: none;
+        mix-blend-mode: normal;
         transition: none;
     }
     html[data-astro-transition] .thumb.thumb::after {
-        opacity: 0;
+        --thumb-edge: 0%;
         transition: none;
+    }
+    html[data-astro-transition] .thumb.thumb::before {
+        display: none;
+    }
+    /* Reduced motion: the wash and line appear and go at once. */
+    @media (prefers-reduced-motion: reduce) {
+        .thumb::after {
+            transition: none;
+        }
+    }
+    /* Duotone variant, off unless <html data-thumbs="duotone"> (see Base.astro).
+       At rest a thumbnail is its picture in grey, multiplied onto the accent
+       colour (black stays black, white becomes accent), with a lighten layer
+       lifting the blacks to a deep tint of the accent. That tint is mixed
+       from the accent, not taken from --color-bg: in the light theme the
+       background is pale and would turn the picture into a faded negative.
+       This reads the same in both themes. Plain CSS blending, so no SVG
+       filter has to be kept in step with the theme variables. Hover and focus
+       show the picture in colour with the sweep wash on top, so the sweep
+       still reads. Blend modes cannot be transitioned, so the switch to
+       colour is instant while the grey fades out. :where keeps these rest
+       rules weaker than the hover rules above. Only .thumb is touched, so
+       detail pages' main pictures are not. */
+    :where(html[data-thumbs="duotone"]) .thumb {
+        isolation: isolate;
+        background-color: var(--color-accent);
+    }
+    :where(html[data-thumbs="duotone"]) .thumb img {
+        filter: grayscale(1) contrast(1.1);
+        mix-blend-mode: multiply;
+    }
+    :where(html[data-thumbs="duotone"]) .thumb::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        z-index: 1;
+        background: color-mix(in srgb, var(--color-accent) 15%, black);
+        mix-blend-mode: lighten;
+        pointer-events: none;
+    }
+    html[data-thumbs="duotone"] a:focus-visible > .thumb img,
+    html[data-thumbs="duotone"] a.thumb:focus-visible img {
+        mix-blend-mode: normal;
+    }
+    html[data-thumbs="duotone"] a:focus-visible > .thumb::before,
+    html[data-thumbs="duotone"] a.thumb:focus-visible::before {
+        display: none;
+    }
+    @media (hover: hover) {
+        html[data-thumbs="duotone"] a:hover > .thumb img,
+        html[data-thumbs="duotone"] a.thumb:hover img {
+            mix-blend-mode: normal;
+        }
+        html[data-thumbs="duotone"] a:hover > .thumb::before,
+        html[data-thumbs="duotone"] a.thumb:hover::before {
+            display: none;
+        }
     }
     /* A picture shown whole, as large as fits the width and a height cap
        (--fit-h; none by default), its box exactly the picture. Page transitions
