@@ -818,6 +818,31 @@ html[data-astro-transition^="paging"]::view-transition-new(archive-bar) {
     animation: none;
     opacity: 1;
 }
+/* A detail page's top bar on Previous / Next (an event's, named detail-bar
+   or featured-label; a picture's info strip, gallery-bar) holds as still:
+   without this its group would morph from the old bar's box to the new
+   one's, and on phones, where the page itself scrolls, the old box is
+   wherever the scroll had left it, so the bar slid back down over the
+   morph's long tail. With both ends there, the incoming bar shows from the
+   first frame; a bar on one side only (an event with a featured label next
+   to one without, or a turn to privacy) keeps its fade, in place. */
+html[data-astro-transition^="paging"]::view-transition-group(detail-bar),
+html[data-astro-transition^="paging"]::view-transition-group(featured-label),
+html[data-astro-transition^="paging"]::view-transition-group(gallery-bar) {
+    animation: none;
+}
+html[data-astro-transition^="paging"]::view-transition-old(detail-bar):not(:only-child),
+html[data-astro-transition^="paging"]::view-transition-old(featured-label):not(:only-child),
+html[data-astro-transition^="paging"]::view-transition-old(gallery-bar):not(:only-child) {
+    animation: none;
+    opacity: 0;
+}
+html[data-astro-transition^="paging"]::view-transition-new(detail-bar):not(:only-child),
+html[data-astro-transition^="paging"]::view-transition-new(featured-label):not(:only-child),
+html[data-astro-transition^="paging"]::view-transition-new(gallery-bar):not(:only-child) {
+    animation: none;
+    opacity: 1;
+}
 /* The travelling picture and title paint over the rest of the transition: the
    grid fading out beneath them, or fading in under them on the way back.
    (Otherwise they keep the order the pages were captured in, and on the way

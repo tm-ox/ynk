@@ -319,12 +319,18 @@ const ogImage = new URL(image ?? "/og-default.jpg", Astro.site).href;
                 // arrows, keys): only the grid turns. The bar holds still
                 // above it (global.css), the current page number the one
                 // change in it. Leaving the archive, it goes with the page.
+                // Its page numbers are in it, not captured on their own: a
+                // group of their own would morph between the old and new
+                // rows (which differ in width), under the bar's background.
                 still =
                     !!turn &&
                     isArchive(e.from) &&
                     isArchive(e.to) &&
                     screen(e.from) === screen(e.to);
-                if (still) pin(document);
+                if (still) {
+                    pin(document);
+                    unnumber(document);
+                }
                 // A move to another set of page numbers (another screen, or
                 // between all images and one event's, or two events'), not
                 // between pages of one set: they go with their own page rather
@@ -422,7 +428,10 @@ const ogImage = new URL(image ?? "/og-default.jpg", Astro.site).href;
                     // takes its classes, also when it holds both pages).
                     turnBox(e.newDocument)?.style.setProperty("view-transition-class", "page into");
                     unbar(e.newDocument);
-                    if (still) pin(e.newDocument);
+                    if (still) {
+                        pin(e.newDocument);
+                        unnumber(e.newDocument);
+                    }
                     // The outgoing screen, as captured for the slide (this
                     // runs before the swap). See seamShift.
                     const old = turnBox(document);
