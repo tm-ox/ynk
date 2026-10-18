@@ -23,11 +23,18 @@
     import { sweep } from "../scripts/sweep";
 
     // The phone menu (#main-nav, BaseLayout.astro) opens and closes like a
-    // page turn (scripts/sweep.ts), clipped to its panel. The nav is persisted
-    // across transitions and this module runs once, so it is bound once and
+    // page turn (scripts/sweep.ts), clipped to its panel. The router swaps the
+    // nav with every page but this module runs once, so it is bound once and
     // everything is looked up when the event happens.
     const panel = () => document.querySelector<HTMLElement>("#main-nav");
     const button = () => document.querySelector<HTMLButtonElement>(".hamburger");
+    // While the menu is open the page under it is out of reach (inert): no
+    // tabbing or reading into it. (The page's scroll is locked in the styles,
+    // BaseLayout.astro.)
+    const page = (inert: boolean) => {
+        const main = document.querySelector<HTMLElement>("main");
+        if (main) main.inert = inert;
+    };
     const isOpen = (p: HTMLElement) => p.classList.contains("expanded") && !p.hasAttribute("data-closing");
 
     const turn = (p: HTMLElement, show: boolean) =>
@@ -45,6 +52,7 @@
         p.removeAttribute("data-closing");
         p.querySelector<HTMLElement>("[data-menu-seam]")!.hidden = true;
         button()?.setAttribute("aria-expanded", "false");
+        page(false);
     }
 
     // A close still turning is cut short where it is.
@@ -53,17 +61,20 @@
         p.removeAttribute("data-closing");
         p.classList.add("expanded");
         button()?.setAttribute("aria-expanded", "true");
+        page(true);
         turn(p, true).catch(() => {});
     }
 
     // The button and Esc: the panel turns away, then it is hidden.
     // data-closing keeps a second tap from starting it again; one still
     // opening is finished first. Focus left inside goes back to the button.
+    // The page is in reach again as the panel starts to turn away.
     function shut(p: HTMLElement) {
         if (!isOpen(p)) return;
         p.getAnimations({ subtree: true }).forEach((a) => a.finish());
         p.setAttribute("data-closing", "");
         button()?.setAttribute("aria-expanded", "false");
+        page(false);
         if (p.contains(document.activeElement)) button()?.focus();
         turn(p, false).then(
             () => reset(p),
@@ -94,7 +105,6 @@
             if (e.key !== "Escape" || !p || !isOpen(p) || document.querySelector("dialog[open]")) return;
             e.preventDefault();
             shut(p);
-            button()?.focus();
         },
         true,
     );

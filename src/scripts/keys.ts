@@ -38,9 +38,14 @@ document.addEventListener("keydown", (e) => {
     // phones: BaseLayout.astro); with the menu shut neither does, and either
     // opens the same dialog.
     const cogs = [...document.querySelectorAll<HTMLElement>("[data-settings-open]")];
-    (cogs.find((b) => b.checkVisibility()) ?? cogs[0])?.click();
+    // (checkVisibility is newer than the rest; a box with no offsetParent is
+    // display:none, or fixed, which no cog is.)
+    (cogs.find((b) => b.checkVisibility?.() ?? b.offsetParent !== null) ?? cogs[0])?.click();
     return;
   }
+  // The open phone menu covers the page, which is inert and does not scroll
+  // under it (Hamburger.astro): no paging or scrolling it from here either.
+  if (document.querySelector("#main-nav.expanded")) return;
   if (e.shiftKey) return;
   const key = e.key;
 

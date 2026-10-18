@@ -122,31 +122,6 @@ const links = ROW.map((s, i) => ({
 </Base>
 
 
-<script>
-    import { ROW } from "../utils/row";
-
-    // Marks the nav link for the screen the page belongs to: its own, or for
-    // a detail page its archive's. The nav is persisted across transitions
-    // (its markup is not swapped), so this runs on every page load.
-    const setActive = (id: string | null) => {
-        document
-            .querySelectorAll<HTMLAnchorElement>("#main-nav a[data-section]")
-            .forEach((a) => {
-                const on = a.dataset.section === id;
-                a.classList.toggle("active", on);
-                if (on) a.setAttribute("aria-current", "true");
-                else a.removeAttribute("aria-current");
-            });
-    };
-
-    // Bound once (module scripts are not re-run by the router).
-    document.addEventListener("astro:page-load", () => {
-        const path = location.pathname;
-        const first = path.split("/")[1];
-        setActive(path === "/" ? ROW[0].name : (ROW.find((s) => s.name === first)?.name ?? null));
-    });
-</script>
-
 
 <style>
     @reference "../styles/global.css";
@@ -200,6 +175,12 @@ const links = ROW.map((s, i) => ({
         .main-nav {
             height: calc(100vh - var(--spacing-header));
             height: calc(100dvh - var(--spacing-header));
+        }
+        /* While it is open (and turning away) the page under it does not
+           scroll; the panel scrolls on its own if it must. Hamburger.astro
+           makes the page inert alongside. */
+        :global(html:has(#main-nav.expanded)) {
+            overflow: hidden;
         }
         /* The links' width is the list's (the panel less its gutters), so
            their size can be a share of it (cqw). */

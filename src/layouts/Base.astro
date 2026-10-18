@@ -166,7 +166,7 @@ const ogImage = new URL(image ?? "/og-default.jpg", Astro.site).href;
         <header transition:name="header">
             <nav aria-label="Main">
                 <Logo />
-                <slot name="nav" transition:persist />
+                <slot name="nav" />
                 <Settings />
             </nav>
         </header>
