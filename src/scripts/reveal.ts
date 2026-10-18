@@ -1,5 +1,7 @@
-// The seam between home panels (sm and up). When the track moves off the panel
-// in view toward another, one diagonal edge (the paging wipe's, with the line
+// The seam between home panels (sm and up), for the track scrolled by hand (a
+// swipe). Steps by key, wheel or link are page turns instead (scripts/track.ts),
+// whose seam is on the transition's snapshots: meanwhile this keeps every
+// panel whole. When the track moves off the panel in view toward another, one diagonal edge (the paging wipe's, with the line
 // on it) crosses the screen once, on its own clock: it waits --seam-delay
 // after the track sets off, so the incoming panel is mostly in place, then
 // takes --seam-duration, eased like --wipe-easing. Ahead of it is the panel being left, behind it the panel
@@ -11,7 +13,7 @@
 // only ever shows through the seam.
 // Arriving on home by a page turn, the panel landed on is simply whole: the
 // turn's own seam, on the snapshots (global.css), brings it in.
-import { panelsOf, setAim, takeAim } from "./track";
+import { panelsOf, trackStepping } from "./track";
 
 // How far the edge leans sideways per pixel of height: it rises at 58
 // degrees, so tan 32deg (global.css uses the matching cos 32deg, 0.848).
@@ -172,15 +174,21 @@ function arm() {
     const near = Math.round(pos);
     const still = !moving && Math.abs(pos - near) < 0.01 ? panels[near] : undefined;
 
+    // A step by script, as a view transition: its snapshots carry the seam.
+    // The panel it lands on is simply whole, so nothing is masked twice.
+    if (trackStepping()) {
+      if (panels[near]) settle(panels[near]);
+      return;
+    }
+
     if (!seam) {
       if (!rest) return;
       const from = panels.indexOf(rest);
       if (Math.abs(pos - from) <= SET_OFF) return;
       const dir = pos > from ? 1 : -1;
-      // Where the track is headed: a jump (menu, keys) says so, otherwise
-      // the next panel along. Anything else is put right once it settles.
-      const aim = takeAim();
-      const to = aim !== null && (aim - from) * dir > 0 && panels[aim] ? aim : from + dir;
+      // Headed for the next panel along; anywhere else is put right once
+      // the track settles.
+      const to = from + dir;
       if (!panels[to]) return;
       seam = go(rest, panels[to], dir, dir * end(), now, delay);
       rest = null;
@@ -212,7 +220,7 @@ function arm() {
 
     if (t >= 1 && still) {
       // Done and at rest. If the track came to rest somewhere else (a fling
-      // past the next panel, a jump with no aim), the seam crosses again from
+      // past the next panel), the seam crosses again from
       // the panel just shown to that one, so no panel stays hidden in view.
       if (still === seam.to) settle(still);
       else {
@@ -231,21 +239,6 @@ function arm() {
     removeEventListener("resize", schedule);
   };
 }
-
-// A jump to a panel by a link (the menu, the hero's arrow) says where the
-// track is headed, so the seam runs straight to it and the panels passed on
-// the way stay hidden.
-document.addEventListener(
-  "click",
-  (e) => {
-    const link = (e.target as Element | null)?.closest?.("a");
-    const track = document.querySelector<HTMLElement>("[data-track]");
-    if (!link || !track || !link.hash || link.pathname !== location.pathname) return;
-    const index = panelsOf(track).findIndex((s) => `#${s.id}` === link.hash);
-    if (index >= 0) setAim(index);
-  },
-  { capture: true },
-);
 
 document.addEventListener("astro:page-load", () => arm());
 // Crossing the sm breakpoint switches between side-by-side and stacked panels.

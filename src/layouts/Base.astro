@@ -175,7 +175,7 @@ const ogImage = new URL(image ?? "/og-default.jpg", Astro.site).href;
             import { bindWheelPager } from "../scripts/wheel-pager";
             // Keyboard paging, scrolling and Escape (binds itself once on import).
             import "../scripts/keys";
-            import { panelsOf } from "../scripts/track";
+            import { panelsOf, seamShift } from "../scripts/track";
 
             const link = (label: string) =>
                 document.querySelector<HTMLAnchorElement>(`a[aria-label="${label}"]`);
@@ -381,23 +381,6 @@ const ogImage = new URL(image ?? "/og-default.jpg", Astro.site).href;
                 }
             });
 
-            // tan 32deg: how far the seam (rising at 58 degrees) leans
-            // sideways per pixel of height.
-            const SLANT = 0.6249;
-            // global.css draws the seam of a page turn relative to each
-            // snapshot's own box, assuming it is centred on the screen. A box
-            // that is not (an archive grid sits lower than the home track,
-            // and below xl runs on past the screen) needs this added to keep
-            // the outgoing and incoming edges one line: minus its centre's
-            // offset right of the screen's centre, and the seam's lean over
-            // its centre's offset below it.
-            const seamShift = (el: Element | null) => {
-                if (!el) return "0px";
-                const r = el.getBoundingClientRect();
-                const dx = r.left + r.width / 2 - innerWidth / 2;
-                const dy = r.top + r.height / 2 - innerHeight / 2;
-                return `${-(dx + SLANT * dy)}px`;
-            };
             let oldShift = "0px";
 
             // Kept in sessionStorage so a reload keeps the close destination.
