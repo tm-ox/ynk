@@ -16,7 +16,7 @@ Through the project YNK organised a five-day, multi-venue festival in Yogyakarta
 </div>
 <div>
 
-YNK previously acted as an official host organisation in Indonesia for [Asialink](https://asialink.unimelb.edu.au/) (Australia) and, in 2020, furthered its international network through a collaboration with HuruHara for the inclusion of four Indonesian artists in the [Asia TOPA Festival](https://www.asiatopa.com.au/) in Melbourne, Australia.
+YNK previously acted as an official host organisation in Indonesia for [Asialink](https://asialink.unimelb.edu.au/) (Australia) and, in 2020, furthered its international network through a collaboration with HuruHara for the inclusion of four Indonesian artists in the [AsiaTOPA Festival](https://www.asiatopa.com.au/) in Melbourne, Australia.
 
 During Covid YNK shifted its focus to the curation of content for external events, most notably [ARTJOG](https://artjog.id), and the facilitation of a stage at [Pestapora](https://www.pestapora.com) with artists from Indonesia, Malaysia, Thailand, the Philippines, Vietnam, Cambodia, Myanmar, Singapore, Japan and Uganda. YNK also participated virtually, on a number of occasions, in [MUTEK Montréal](https://montreal.mutek.org/), the Canadian festival of electronic music and digital creativity.
 
