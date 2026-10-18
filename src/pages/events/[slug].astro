@@ -93,9 +93,9 @@ const neighbourFlyers = await Promise.all(
         <SectionBar label={featuredLabel}><Paging {...paging} /></SectionBar>
       </div>
     ) : (
-      <!-- Named, so it stays put while Previous / Next turns the page under it
-           (Base.astro's fold leaves .detail-bar alone), as the photo page's
-           info strip does. -->
+      // Named, so it stays put while Previous / Next turns the page under it
+      // (Base.astro's fold leaves .detail-bar alone), as the photo page's
+      // info strip does.
       <div class="w-full md:absolute md:inset-x-0 md:top-3 detail-bar" transition:name="detail-bar">
         <SectionBar label="Events"><Paging {...paging} /></SectionBar>
       </div>
