@@ -295,6 +295,37 @@
         .home-track > section[data-reveal="in"][data-side="left"] {
             --edge: var(--wipe-reach);
         }
+        /* Leaving: the panel is wiped out by an edge moving the way the track
+           travelled, so it and the incoming panel's edge read as one seam.
+           reveal.ts sets data-side to the side it leaves by, so the gradients
+           above already show the side the edge moves away from (exit left:
+           visible left of the edge, which sweeps right to left). The edge is
+           keyframed, not transitioned, so it starts from its own first frame
+           whatever the panel was doing; its first value is the "in" state's
+           (fully visible), so nothing jumps, and it ends fully hidden, as
+           "out" is, so the next wipe in starts from there. */
+        @keyframes panel-exit-left {
+            from {
+                --edge: var(--wipe-reach);
+            }
+            to {
+                --edge: calc(var(--wipe-reach) * -1);
+            }
+        }
+        @keyframes panel-exit-right {
+            from {
+                --edge: calc(var(--wipe-reach) * -1);
+            }
+            to {
+                --edge: var(--wipe-reach);
+            }
+        }
+        .home-track > section[data-reveal="leaving"][data-exit="left"] {
+            animation: panel-exit-left var(--panel-exit-duration) var(--wipe-easing) both;
+        }
+        .home-track > section[data-reveal="leaving"][data-exit="right"] {
+            animation: panel-exit-right var(--panel-exit-duration) var(--wipe-easing) both;
+        }
         /* The edge line. It is drawn on the panel itself, which the mask also
            clips, and a line centred on the mask's edge would lose its hidden
            half. So it is laid just inside the visible side instead (right of
@@ -485,6 +516,10 @@ select:-webkit-autofill:focus {
     --wipe-line: 1px;
     /* The home panels' wipe, a touch slower than paging's --wipe-duration. */
     --panel-wipe-duration: 0.65s;
+    /* The matching wipe out: a panel leaving the screen, or the outgoing page
+       of a page turn. A little quicker than the wipe in, so it is gone by the
+       time the new edge has crossed. */
+    --panel-exit-duration: 0.5s;
 }
 .vt-detail {
     view-transition-class: detail;
@@ -693,13 +728,59 @@ html[data-astro-transition="paging-back"]::view-transition-new(.detail) {
         opacity: 1;
     }
 }
-/* Neither snapshot is masked here: they only slide. */
+/* The incoming snapshot is not masked here: it only slides (its wipe is the
+   live one below). The outgoing one is, further down. */
 html[data-astro-transition^="paging"]::view-transition-old(.page),
 html[data-astro-transition^="paging"]::view-transition-new(.page) {
     mask-image: none;
 }
+/* The outgoing snapshot is wiped out as it slides, by the same edge as the
+   home panels' exit (the box-sized gradient and its 0.848, see the panel wipe
+   in @layer components), so the leaving and arriving edges read as one seam.
+   --edge is keyframed on the pseudo-element itself, which works for a
+   registered property. The snapshot is a picture, so it carries no edge line
+   (the live content's ::after cannot be captured into it). Forward shows what
+   is left of the edge, which sweeps right to left; back is the mirror image.
+   No delay: it leaves at once. mask-size is set because a .detail .page pair
+   gets the wipe's oversized mask above. */
+@keyframes page-wipe-out-forward {
+    from {
+        --edge: var(--wipe-reach);
+    }
+    to {
+        --edge: calc(var(--wipe-reach) * -1);
+    }
+}
+@keyframes page-wipe-out-back {
+    from {
+        --edge: calc(var(--wipe-reach) * -1);
+    }
+    to {
+        --edge: var(--wipe-reach);
+    }
+}
 html[data-astro-transition="paging-forward"]::view-transition-old(.page) {
-    animation: page-out-to-left var(--page-slide-duration) var(--page-slide-easing) both;
+    mask-size: 100% 100%;
+    mask-repeat: no-repeat;
+    mask-image: linear-gradient(
+        var(--wipe-angle),
+        #000 calc(50% + var(--edge) * 0.848),
+        transparent calc(50% + var(--edge) * 0.848)
+    );
+}
+html[data-astro-transition="paging-back"]::view-transition-old(.page) {
+    mask-size: 100% 100%;
+    mask-repeat: no-repeat;
+    mask-image: linear-gradient(
+        var(--wipe-angle),
+        transparent calc(50% + var(--edge) * 0.848),
+        #000 calc(50% + var(--edge) * 0.848)
+    );
+}
+html[data-astro-transition="paging-forward"]::view-transition-old(.page) {
+    animation:
+        page-out-to-left var(--page-slide-duration) var(--page-slide-easing) both,
+        page-wipe-out-forward var(--panel-exit-duration) var(--wipe-easing) both;
 }
 html[data-astro-transition="paging-forward"]::view-transition-new(.page) {
     animation:
@@ -707,7 +788,9 @@ html[data-astro-transition="paging-forward"]::view-transition-new(.page) {
         turn-hold calc(var(--page-wipe-delay) + var(--panel-wipe-duration));
 }
 html[data-astro-transition="paging-back"]::view-transition-old(.page) {
-    animation: page-out-to-right var(--page-slide-duration) var(--page-slide-easing) both;
+    animation:
+        page-out-to-right var(--page-slide-duration) var(--page-slide-easing) both,
+        page-wipe-out-back var(--panel-exit-duration) var(--wipe-easing) both;
 }
 html[data-astro-transition="paging-back"]::view-transition-new(.page) {
     animation:

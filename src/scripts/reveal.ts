@@ -7,6 +7,9 @@
 // State is derived from the track's scroll position on every scroll, so it does
 // not depend on the route taken: a panel is "in" once START of it is in view and
 // resets to "out" when (almost) none of it is, and so plays again on each visit.
+// A panel that has been in view (LEAVE) and drops below it is "leaving": it
+// wipes out along the edge it leaves by (data-exit), and is "out" once (almost)
+// none of it is in view. Brought back, it wipes in again from that side.
 // While "out" a panel also records which side of the screen it lies on
 // (data-side), so the wipe enters from that side; it is left alone while "in".
 // (An IntersectionObserver cannot do this: it never reports a panel that merely
@@ -15,6 +18,17 @@ import { panelsOf } from "./track";
 
 // Fraction of a panel in view that triggers its wipe: raise for later, lower for earlier.
 const START = 0.4;
+
+// Fraction of a settled panel still in view below which it counts as leaving
+// and is wiped out (data-reveal="leaving"), along the edge it leaves by. It
+// is only checked for a panel that has been this far in view, so one that is
+// still arriving (passing START on the way in) is not taken for leaving.
+const LEAVE = 0.85;
+
+// A leaving panel is "in" again only once it is back this far, a margin above
+// LEAVE: with the same threshold both ways, a panel hovering at it would
+// flip between "in" and "leaving" on every scroll event.
+const REENTER = 0.95;
 
 const wide = matchMedia("(min-width: 40rem)");
 let teardown: (() => void) | null = null;
@@ -30,17 +44,42 @@ function arm(turn?: string) {
 
   const panels = panelsOf(track);
 
+  // Panels that have been at least LEAVE in view since they went "in".
+  const settled = new Set<HTMLElement>();
+
   const update = () => {
     const w = track.clientWidth;
     if (!w) return;
     for (const s of panels) {
       const offset = panels.indexOf(s) * w - track.scrollLeft;
       const visible = 1 - Math.abs(offset) / w;
-      if (visible >= START) s.dataset.reveal = "in";
-      // Not "<= 0": at fractional zoom or pixel ratios scrollLeft settles a
-      // fraction of a pixel off, so a panel next door never reaches exactly 0.
-      else if (visible < 0.1) s.dataset.reveal = "out";
-      if (s.dataset.reveal === "out") s.dataset.side = offset < 0 ? "left" : "right";
+      const state = s.dataset.reveal;
+      if (state === "leaving") {
+        if (visible < 0.1) s.dataset.reveal = "out";
+        else if (visible >= REENTER) {
+          // Back in: wipe in again from the side it left by.
+          s.dataset.side = s.dataset.exit;
+          s.dataset.reveal = "in";
+          settled.add(s);
+        }
+      } else if (state === "in" && settled.has(s) && visible < LEAVE) {
+        const exit = offset < 0 ? "left" : "right";
+        s.dataset.exit = exit;
+        // The exit gradients are the side gradients, so the edge leaves on
+        // the side the panel does; they are fully visible to start with.
+        s.dataset.side = exit;
+        s.dataset.reveal = visible < 0.1 ? "out" : "leaving";
+      } else if (visible >= START && state !== "in") {
+        s.dataset.reveal = "in";
+      } else if (visible < 0.1) {
+        // Not "<= 0": at fractional zoom or pixel ratios scrollLeft settles a
+        // fraction of a pixel off, so a panel next door never reaches exactly 0.
+        s.dataset.reveal = "out";
+      }
+      if (s.dataset.reveal === "out") {
+        s.dataset.side = offset < 0 ? "left" : "right";
+        settled.delete(s);
+      } else if (s.dataset.reveal === "in" && visible >= LEAVE) settled.add(s);
     }
   };
 
@@ -52,6 +91,8 @@ function arm(turn?: string) {
     s.dataset.side = panels.indexOf(s) < current ? "left" : "right";
     if (panels.indexOf(s) !== current) s.dataset.reveal = "out";
   });
+
+  if (panels[current]) settled.add(panels[current]);
 
   // After a page turn the panel in view (where Base.astro's after-swap has
   // already scrolled the track) wipes in from the side the page came from.
