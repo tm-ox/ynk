@@ -71,6 +71,12 @@ const links = ROW.map((s, i) => ({
                 <li class="max-sm:mt-auto max-sm:pt-4" transition:name="nav-social">
                     <Sosmed />
                 </li>
+                <!-- Phones only: the footer line (Base.astro hides the footer
+                     there), small and quiet under the social icons. -->
+                <li class="flex items-center gap-x-3 pt-4 text-xs tracking-wide uppercase sm:hidden font-displayCon text-accent-muted">
+                    <span>© 2010–{new Date().getFullYear()} Yes No Klub</span>
+                    <a href="/privacy" class="w-auto text-xs" target="_self">Privacy</a>
+                </li>
             </ul>
             <!-- The line that rides the panel's edge as it opens and closes. -->
             <span class="sweep-seam" aria-hidden="true" hidden data-menu-seam><span></span></span>

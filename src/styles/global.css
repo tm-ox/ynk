@@ -83,7 +83,8 @@
     --text-hero-lg--line-height: calc(var(--spacing) * 20);
 }
 
-/* Height of a full-viewport section: viewport minus header and footer. */
+/* Height of a full-viewport section: viewport minus header and footer (no
+   footer on phones: see --section-offset). */
 @utility min-h-section {
     min-height: calc(100vh - var(--section-offset));
     min-height: calc(100dvh - var(--section-offset));
@@ -205,8 +206,9 @@
 
     /* Layout and stacking tokens. */
     :root {
-        /* Mobile carries 10px more than desktop. */
-        --section-offset: calc(var(--spacing-header) + var(--spacing-footer) + 10px);
+        /* Phones have no footer (it moves into the menu, BaseLayout.astro),
+           so a screen runs from the header to the screen's foot. */
+        --section-offset: var(--spacing-header);
         --z-header: 50;
         --z-overlay: 50;
     }

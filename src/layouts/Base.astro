@@ -171,7 +171,9 @@ const ogImage = new URL(image ?? "/og-default.jpg", Astro.site).href;
             <div class="frame-rule" aria-hidden="true" transition:name="frame-rule"><slot name="rule" /></div>
             <slot />
         </main>
-        <footer class="flex items-center justify-center h-footer">
+        <!-- Not on phones: there it sits at the foot of the menu panel
+             (BaseLayout.astro), display:none here so it is read once. -->
+        <footer class="flex items-center justify-center h-footer max-sm:hidden">
             <a
                 href="/privacy"
                 class="text-xs tracking-wide uppercase font-displayCon text-accent-muted hover:text-accent"
