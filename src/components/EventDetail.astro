@@ -167,7 +167,11 @@ const label = "mb-0 text-xs font-bold tracking-normal md:text-sm font-displayCon
       --ll: 1.25rem;
     }
   }
+  /* At the right of its gap, as if leading the next item: its top leans
+     about 9px right of centre, so this leaves about 8px clear of the text. */
   .meta-slash::before {
+    left: auto;
+    right: 1.25rem;
     top: var(--top);
     transform: skewX(-32deg);
   }
