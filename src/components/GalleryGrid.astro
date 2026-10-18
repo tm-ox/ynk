@@ -34,7 +34,7 @@ const padding = Math.max(0, pageSize - images.length);
                     >
                         <h5 class="uppercase xl:truncate">{image.alt}</h5>
                         <hr />
-                        <div class="thumb vt-picture" transition:name={image.id}>
+                        <div class:list={["thumb", image.kind === "photo" ? "vt-photo" : "vt-picture"]} transition:name={image.id}>
                             <Image
                                 src={image.src}
                                 alt={image.description}

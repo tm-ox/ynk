@@ -39,6 +39,7 @@ const label = "mb-0 text-xs font-bold tracking-normal md:text-sm font-displayCon
       class:list={["fit-picture mb-auto vt-picture", capped && "md:[--fit-h:calc(100vh-var(--section-offset)-var(--spacing-section-inset))]"]}
       style={`--ar:${event.data.flyer.src.width / event.data.flyer.src.height}`}
       transition:name={`${event.data.id}-flyer`}
+      loading="eager"
     />
   </div>
   )}

@@ -386,6 +386,11 @@ select:-webkit-autofill:focus {
 .vt-picture {
     view-transition-class: detail picture;
 }
+/* A photograph's thumbnail is a square crop of it (a flyer's is the whole
+   flyer), so it travels differently: see the .photo rules below. */
+.vt-photo {
+    view-transition-class: detail picture photo;
+}
 /* An event title travels on its own (card or listing title to page title),
    so the outgoing card never carries a second, scaled-up copy of it. */
 .vt-title {
@@ -449,6 +454,23 @@ select:-webkit-autofill:focus {
 ::view-transition-new(.picture) {
     height: 100%;
     object-fit: cover;
+}
+/* A photograph opening from (or closing to) its square crop: the new picture,
+   filling the moving box, starts as exactly that crop and opens out to the
+   whole photograph, so it shows alone from the first frame. The old one, a
+   crop scaled up, would only double it. Closing (data-closing, set in
+   Base.astro) is the mirror: the outgoing photograph closes down to the crop
+   and shows alone. (A flyer's thumbnail is the whole flyer, so the even
+   crossfade above suits it.) Not for Previous/Next, which slide. */
+html:not([data-astro-transition^="paging"]):not([data-closing])::view-transition-old(.photo),
+html[data-closing]::view-transition-new(.photo) {
+    animation: none;
+    opacity: 0;
+}
+html:not([data-astro-transition^="paging"]):not([data-closing])::view-transition-new(.photo),
+html[data-closing]::view-transition-old(.photo) {
+    animation: none;
+    opacity: 1;
 }
 /* The travelling picture and title paint over the rest of the transition: the
    grid fading out beneath them, or fading in under them on the way back.

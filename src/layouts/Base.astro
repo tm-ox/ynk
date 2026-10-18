@@ -273,11 +273,17 @@ const ogImage = new URL(image ?? "/og-default.jpg", Astro.site).href;
                 // than captured on their own and painted over it.
                 focus = isDetail(e.to) ? e.to.pathname : isDetail(e.from) ? e.from.pathname : null;
                 if (!paging && focus) unname(document, focus);
+                // Closing a picture back to its grid: global.css shows the
+                // outgoing photograph rather than the incoming crop. Set on
+                // both pages, as the root's attributes are swapped mid-way.
+                closing = !paging && !!focus && isDetail(e.from);
+                document.documentElement.toggleAttribute("data-closing", closing);
             });
 
             let paging = false;
             let returning = false;
             let focus: string | null = null;
+            let closing = false;
             const bare = (path: string) => path.replace(/\/$/, "");
             // The named parts of grid thumbnails (the link itself, or the title
             // and picture inside it).
@@ -296,6 +302,7 @@ const ogImage = new URL(image ?? "/og-default.jpg", Astro.site).href;
             document.addEventListener("astro:before-swap", (e: any) => {
                 if (paging) unname(e.newDocument);
                 else if (focus) unname(e.newDocument, focus);
+                if (closing) e.newDocument.documentElement.dataset.closing = "";
                 // The new page's root attributes replace the current ones, so
                 // this lasts until the next navigation.
                 if (returning) e.newDocument.documentElement.dataset.returning = "";

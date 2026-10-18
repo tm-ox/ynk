@@ -62,7 +62,8 @@ const positionLabel = image.kind === "flyer" ? "Flyer" : position ? `${position.
         src={image.src}
         alt={image.description}
         width="1600"
-        class="fit-picture [--fit-h:100cqh] vt-picture"
+        class:list={["fit-picture [--fit-h:100cqh]", image.kind === "photo" ? "vt-photo" : "vt-picture"]}
+        loading="eager"
         style={`--ar:${image.src.width / image.src.height}`}
         transition:name={image.id}
       />
