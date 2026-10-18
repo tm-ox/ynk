@@ -14,17 +14,28 @@ const CLOSE_LINKS =
   'a[data-close], a[aria-label="Back to home"]';
 
 // Past the end of a section the arrows carry on into the neighbouring one:
-// home panels (Contact is last) -> Events archive -> Images archive, and back.
+// home panels (Featured is last) -> Events archive -> Images archive -> About
+// -> Contact, and back. Within an archive the Previous / Next links page it,
+// so these only run at its ends, where the link is missing.
 const archive = (name: string) => new RegExp(`^/${name}/(\\d+/)?$`).test(location.pathname);
+const page = (name: string) => new RegExp(`^/${name}/?$`).test(location.pathname);
+// An archive's last page, as the nav has it (BaseLayout.astro).
+const last = (section: string, fallback: string) =>
+  document.querySelector<HTMLAnchorElement>(`#main-nav a[data-section="${section}"][data-last]`)?.dataset.last ??
+  fallback;
 const beyond = (dir: 1 | -1): string | undefined => {
   if (dir > 0) {
     if (location.pathname === "/" && trackActive()) return "/events/";
     if (archive("events")) return "/images/";
+    if (archive("images")) return "/about/";
+    if (page("about")) return "/contact/";
   } else {
-    if (archive("events")) return "/#contact";
-    // Back into the events archive at its last page, so pages stay in order.
-    if (archive("images"))
-      return document.querySelector<HTMLAnchorElement>("#main-nav a[data-last]")?.dataset.last ?? "/events/";
+    // Back to home at the panel next to the events archive.
+    if (archive("events")) return "/#events";
+    // Back into the previous archive at its last page, so pages stay in order.
+    if (archive("images")) return last("events-page", "/events/");
+    if (page("about")) return last("images-page", "/images/");
+    if (page("contact")) return "/about/";
   }
 };
 
