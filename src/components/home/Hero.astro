@@ -523,13 +523,16 @@ const parallax = { shift: 10, ease: 0.06, overscan: 1.02, title: 0.3 };
         line-height: var(--cap-lh);
         padding-block: 1rem;
     }
-    /* Narrow stages: the strip takes the stage's full width (less a 1rem
-       gutter each side) and the type grows with it, rather than holding at
-       62% and the minimum size. Tune --strip and --size here for phones. */
+    /* Narrow stages: the strip runs edge to edge and the type is as large as
+       "EXPERI" across it, so "Experimental" breaks before the M and the
+       changing words break wherever they reach the edge. "EXPERI" is about
+       6.46em wide in BioRhyme Expanded with the -0.1em tracking, so 15cqw
+       leaves it about 3% short of the edges (15.4cqw would touch them). Tune
+       --size here for phones. */
     @container (max-width: 48rem) {
         .hero-title {
-            --strip: calc(100cqw - 2rem);
-            --size: 10.5cqw;
+            --strip: 100cqw;
+            --size: 15cqw;
         }
     }
     /* The words share one cell, so the line is as wide as the longest. Still, or
