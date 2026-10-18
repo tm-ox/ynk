@@ -47,6 +47,10 @@
     /* Height of the bar above a gallery: the filter on an archive, the info strip
        on a picture. Both are this tall from sm up, so the rule below does not move. */
     --bar-row: calc(var(--spacing) * 7);
+    /* Between a screen's bar row and what comes under it where the two stack
+       (phones and tablets): one grid gap, as an archive's grid sits under its
+       bar at every size. */
+    --spacing-bar-gap: calc(var(--spacing) * 2);
     /* The header: the logo's height (Logo.astro's h-8, md:h-9; see the media
        query below) with the space it had centred in a 4rem bar above it, and
        below it only what the event details leave between text and rule. */
@@ -501,17 +505,14 @@
         margin-inline: auto;
     }
     /* An archive's title at the left of its bar, set as a screen's section
-       title (SectionBar) and centred in the bar's row from sm up. */
+       title (SectionBar) and centred in the bar's row at every size, so the
+       title sits as far below the header rule on a phone as on a desktop. */
     .bar-label {
         @apply shrink-0 mb-0 text-xs font-bold text-left uppercase md:text-sm font-displayCon;
-    }
-    @media (min-width: 40rem) {
-        .bar-label {
-            display: flex;
-            align-items: center;
-            height: var(--bar-row);
-            line-height: 1;
-        }
+        display: flex;
+        align-items: center;
+        height: var(--bar-row);
+        line-height: 1;
     }
     .section-action {
         @apply text-xs uppercase font-displayCon md:text-sm text-accent-muted hover:text-accent;

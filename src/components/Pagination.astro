@@ -23,7 +23,7 @@ const items: (number | "gap")[] = shown.flatMap((n, i) => {
 ---
 
 {lastPage > 1 && (
-<nav aria-label="Pagination" transition:name="pagination" class="flex flex-wrap items-center justify-end gap-x-4 shrink-0 sm:h-(--bar-row) max-sm:justify-center max-sm:py-2">
+<nav aria-label="Pagination" transition:name="pagination" class="flex flex-wrap items-center justify-end gap-x-4 shrink-0 md:h-(--bar-row) max-md:justify-start max-md:gap-x-0">
     {
         items.map((num) => num === "gap" ? (
             <span class="text-xs md:text-sm leading-none font-displayCon font-bold text-accent-muted" aria-hidden="true">…</span>
@@ -50,5 +50,21 @@ const items: (number | "gap")[] = shown.flatMap((n, i) => {
     }
     .active {
         @apply underline underline-offset-4 text-accent;
+    }
+    /* Below md the numbers have a row of their own in the bar (the bars put it
+       last), set left, and each is a touch target --hit square, its figure at
+       the box's left so the run starts on the gutter. The row wraps should it
+       ever run past the width. */
+    @media (width < 48rem) {
+        nav {
+            --hit: 2.5rem;
+        }
+        nav > span,
+        a {
+            display: inline-flex;
+            align-items: center;
+            min-width: var(--hit);
+            height: var(--hit);
+        }
     }
 </style>

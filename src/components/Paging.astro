@@ -26,3 +26,20 @@ const { prev, next, close, iconClass } = Astro.props;
     </a>
   )}
 </div>
+
+<style>
+    /* Below md (touch): each arrow and the close reach --hit square, padded
+       out and pulled back by the same, so the row's height and the icons'
+       places do not move; the gap widens to keep the targets apart. */
+    @media (width < 48rem) {
+        .paging {
+            --hit: 2.5rem;
+            --hit-pad: calc((var(--hit) - 1.75rem) / 2);
+            gap: calc(var(--hit-pad) * 2);
+        }
+        .paging > :global(*) {
+            padding: var(--hit-pad);
+            margin: calc(var(--hit-pad) * -1);
+        }
+    }
+</style>

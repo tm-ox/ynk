@@ -18,17 +18,19 @@ const { event } = image;
      (same transition name, so the bar stays put between the archive and a
      picture) and is the page's h1. From sm up its row is exactly the filter's
      (--bar-row high, text centred) so the picture below does not move when one becomes
-     the other; keep the two in step. Credits for who is in the photograph can
+     the other; keep the two in step. On phones it wraps in rows --bar-row
+     apart: the title and the arrows first, as on the bars, then the rest.
+     Credits for who is in the photograph can
      join it later. -->
 <div class="w-full image-info" transition:name="gallery-bar">
-    <div class="flex flex-wrap items-baseline w-full gap-x-6 text-xs uppercase font-displayCon md:text-sm max-sm:py-2 max-sm:text-base sm:flex-nowrap sm:items-center sm:h-(--bar-row) sm:leading-none">
-        <h1 class="min-w-0 m-0 text-xs font-bold leading-[inherit] truncate md:text-sm max-sm:text-base text-accent">
+    <div class="flex flex-wrap items-center w-full gap-x-6 text-xs uppercase font-displayCon md:text-sm max-sm:leading-(--bar-row) max-sm:text-base sm:flex-nowrap sm:h-(--bar-row) sm:leading-none">
+        <h1 class="min-w-0 m-0 text-xs font-bold leading-[inherit] truncate md:text-sm max-sm:text-base max-sm:flex-1 text-accent">
             <a href={`/events/${event.id}/`} title={event.title} class="hover:text-accent-hover">{event.title}</a>
         </h1>
-        <span class="text-accent-muted shrink-0">{event.date}</span>
+        <span class="text-accent-muted shrink-0 max-sm:order-3">{event.date}</span>
         {
             event.venue?.name && (
-                <span class="min-w-0 truncate text-accent-muted">
+                <span class="min-w-0 truncate text-accent-muted max-sm:order-3">
                     {event.venue.url ? (
                         <a href={event.venue.url} title={event.venue.name} target="_blank" rel="noopener noreferrer" class="hover:text-accent">
                             {event.venue.name}
@@ -39,11 +41,13 @@ const { event } = image;
                 </span>
             )
         }
-        <span class="flex items-baseline gap-6 ml-auto shrink-0">
+        <span class="flex items-baseline gap-6 ml-auto shrink-0 max-sm:order-3">
             {position && <span class="text-accent-muted">{position}</span>}
             <a href={`/images/event/${groupSlug(event.title)}/`} class="section-action">Event images</a>
         </span>
-        <Paging prev={prev} next={next} close={{ href: "/images/", title: "All images" }} iconClass="icon h-6 w-6" />
+        {/* Phones: ends the first row (the title, then the arrows). */}
+        <span class="hidden order-2 max-sm:block basis-full" aria-hidden="true"></span>
+        <Paging prev={prev} next={next} close={{ href: "/images/", title: "All images" }} iconClass="icon h-7 w-7 md:h-6 md:w-6" />
     </div>
 </div>
 
@@ -52,5 +56,11 @@ const { event } = image;
        outside focus ring, so it is drawn inside. */
     .image-info a:focus-visible {
         outline-offset: -2px;
+    }
+    /* Phones: the arrows follow the title on the first row. */
+    @media (width < 40rem) {
+        .image-info :global(.paging) {
+            order: 1;
+        }
     }
 </style>
