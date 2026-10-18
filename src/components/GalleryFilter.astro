@@ -8,7 +8,7 @@ interface Props {
 const { label, events, current } = Astro.props;
 ---
 
-<div class="gallery-filter" transition:name="gallery-bar">
+<div class="gallery-filter max-md:detail-sticky" transition:name="gallery-bar">
     {label && <h2 class="bar-label">{label}</h2>}
     {/* Takes what the row leaves (see .select-cell, below); the dropdown in
         it is only as wide as the chosen event's name, so the free space falls

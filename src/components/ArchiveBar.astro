@@ -4,14 +4,16 @@
 // bar (GalleryFilter.astro). Between them it keeps that bar's dropdown row,
 // unseen, so the two archives' grids start at the same height. Below md the
 // page numbers drop to a row of their own under the title and arrows (see
-// Pagination.astro); the rows stack with no gap between them.
+// Pagination.astro); the rows stack with no gap between them, and the bar
+// holds under the header rule as the page scrolls (detail-sticky,
+// global.css), so its page numbers and arrows are at hand under a long grid.
 interface Props {
     label: string;
 }
 const { label } = Astro.props;
 ---
 
-<div class="archive-bar">
+<div class="archive-bar max-md:detail-sticky">
     <h2 class="bar-label">{label}</h2>
     <div class="flex-1 min-w-0 invisible max-sm:hidden" aria-hidden="true">
         <div class="h-(--bar-row)"></div>

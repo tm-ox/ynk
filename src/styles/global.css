@@ -103,11 +103,14 @@
     height: calc(100dvh - var(--section-offset));
 }
 
-/* A detail page's top bar (the event's title row, the picture's info strip)
-   where the page itself scrolls: it holds under the header rule while the
-   content scrolls beneath it. Used with a variant (max-md: on the event page,
-   whose text column scrolls on its own from md up and whose bar lies over the
-   section there; max-lg: on the picture's). --bar-stick is where it holds: as
+/* A screen's top bar (an event's title row, a picture's info strip, an
+   archive's bar) where the page itself scrolls: it holds under the header
+   rule while the content scrolls beneath it. Used with a variant (max-md: on
+   the event page, whose text column scrolls on its own from md up and whose
+   bar lies over the section there, and on the archives' bars, whose grids
+   are below md a page long or more; max-lg: on the picture's). It holds only
+   as far as its parent runs, so it must be a child of the section that
+   holds the content (the section is the page's height). --bar-stick is where it holds: as
    far under the header as it sits at rest (the section's pt-2), so it does not
    jump as it catches. The page background behind it, and over that gap up to
    the rule (the shadow), keeps the content from showing through. Its view
