@@ -1,6 +1,14 @@
 
 @import "tailwindcss";
 
+/* The home panels' wipe edge, as a length so it can be transitioned (and
+   inherited by the panel's ::after line, so one transition drives both). */
+@property --edge {
+    syntax: "<length>";
+    inherits: true;
+    initial-value: 0px;
+}
+
 @theme inline {
     --color-*: initial;
     /* Roles, not hues. Values per theme live in the --rgb-* blocks below. */
@@ -237,7 +245,7 @@
         }
     }
     /* Home panels wipe in on arrival, with the paging wipe's edge (same angle,
-       duration, easing and reach) and a thin line riding on it. It is timed,
+       easing and reach, a little longer) and a thin line riding on it. It is timed,
        not tied to the scroll, so it plays the same however the panel was
        reached (scripts/reveal.ts sets data-reveal in/out and data-side, the
        side of the screen an "out" panel waits on, so the edge enters from
@@ -247,76 +255,73 @@
         /* Positioned so the edge line (::after) can cover the panel. */
         .home-track > section:not(#top) {
             position: relative;
-            mask-size: 400vmax 400vmax;
-            mask-repeat: no-repeat;
         }
-        /* The tile is far larger than the panel, so the edge crosses it at
-           every position. The visible side is the one the panel arrives from
-           the far side of: right-hand panels show what is right of the edge. */
+        /* The edge is a gradient the size of the panel, with its stop moved by
+           --edge (the state below only sets that, and one transition drives
+           both mask and line). The gradient runs at 122deg, so moving the
+           edge sideways by d moves its stop by d * cos 32deg, about 0.848d,
+           along the gradient; the gradient's 50% is the panel's centre. A
+           panel-sized gradient is rasterised at full resolution, unlike the
+           huge tile this replaced, which left the 1px line unseen. The
+           visible side is the one the panel arrives from the far side of:
+           right-hand panels show what is right of the edge. */
         .home-track > section:not(#top)[data-reveal],
         .home-track > section:not(#top)[data-reveal][data-side="right"] {
-            mask-image: linear-gradient(var(--wipe-angle), transparent 50%, #000 50%);
+            mask-image: linear-gradient(
+                var(--wipe-angle),
+                transparent calc(50% + var(--edge) * 0.848),
+                #000 calc(50% + var(--edge) * 0.848)
+            );
         }
         .home-track > section:not(#top)[data-reveal][data-side="left"] {
-            mask-image: linear-gradient(var(--wipe-angle), #000 50%, transparent 50%);
+            mask-image: linear-gradient(
+                var(--wipe-angle),
+                #000 calc(50% + var(--edge) * 0.848),
+                transparent calc(50% + var(--edge) * 0.848)
+            );
         }
         /* Hidden, then in: the edge sweeps across the panel. Only "in" has a
            transition, so resetting to "out" is instant and unseen. */
         .home-track > section:not(#top)[data-reveal="out"] {
-            mask-position: calc(50% + var(--wipe-reach)) 50%;
+            --edge: var(--wipe-reach);
         }
         .home-track > section:not(#top)[data-reveal="out"][data-side="left"] {
-            mask-position: calc(50% - var(--wipe-reach)) 50%;
+            --edge: calc(var(--wipe-reach) * -1);
         }
         .home-track > section:not(#top)[data-reveal="in"] {
-            mask-position: calc(50% - var(--wipe-reach)) 50%;
-            transition: mask-position var(--wipe-duration) var(--wipe-easing);
+            --edge: calc(var(--wipe-reach) * -1);
+            transition: --edge var(--panel-wipe-duration) var(--wipe-easing);
         }
         .home-track > section:not(#top)[data-reveal="in"][data-side="left"] {
-            mask-position: calc(50% + var(--wipe-reach)) 50%;
+            --edge: var(--wipe-reach);
         }
         /* The edge line. It is drawn on the panel itself, which the mask also
            clips, and a line centred on the mask's edge would lose its hidden
            half. So it is laid just inside the visible side instead (right of
-           the edge for right-hand panels, left of it for left-hand ones), and
-           moves with exactly the same size, position and timing as the mask. */
+           the edge for right-hand panels, left of it for left-hand ones). It
+           inherits --edge, so it moves with exactly the mask's timing. */
         .home-track > section:not(#top)[data-reveal]::after {
             content: "";
             position: absolute;
             inset: 0;
             z-index: 1;
             pointer-events: none;
-            background-repeat: no-repeat;
-            background-size: 400vmax 400vmax;
             background-image: linear-gradient(
                 var(--wipe-angle),
-                transparent 50%,
-                var(--color-border) 50%,
-                var(--color-border) calc(50% + var(--wipe-line)),
-                transparent calc(50% + var(--wipe-line))
+                transparent calc(50% + var(--edge) * 0.848),
+                var(--color-border) calc(50% + var(--edge) * 0.848),
+                var(--color-border) calc(50% + var(--edge) * 0.848 + var(--wipe-line)),
+                transparent calc(50% + var(--edge) * 0.848 + var(--wipe-line))
             );
         }
         .home-track > section:not(#top)[data-reveal][data-side="left"]::after {
             background-image: linear-gradient(
                 var(--wipe-angle),
-                transparent calc(50% - var(--wipe-line)),
-                var(--color-border) calc(50% - var(--wipe-line)),
-                var(--color-border) 50%,
-                transparent 50%
+                transparent calc(50% + var(--edge) * 0.848 - var(--wipe-line)),
+                var(--color-border) calc(50% + var(--edge) * 0.848 - var(--wipe-line)),
+                var(--color-border) calc(50% + var(--edge) * 0.848),
+                transparent calc(50% + var(--edge) * 0.848)
             );
-        }
-        .home-track > section:not(#top)[data-reveal="out"]::after {
-            background-position: calc(50% + var(--wipe-reach)) 50%;
-        }
-        .home-track > section:not(#top)[data-reveal="out"][data-side="left"]::after {
-            background-position: calc(50% - var(--wipe-reach)) 50%;
-        }
-        .home-track > section:not(#top)[data-reveal="in"]::after {
-            background-position: calc(50% - var(--wipe-reach)) 50%;
-            transition: background-position var(--wipe-duration) var(--wipe-easing);
-        }
-        .home-track > section:not(#top)[data-reveal="in"][data-side="left"]::after {
-            background-position: calc(50% + var(--wipe-reach)) 50%;
         }
         /* Rules draw in from the left once the wipe is half done. */
         .home-track > section:not(#top) hr {
@@ -327,7 +332,7 @@
         }
         .home-track > section:not(#top)[data-reveal="in"] hr {
             scale: 1 1;
-            transition: scale 0.4s var(--wipe-easing) calc(var(--wipe-duration) * 0.5);
+            transition: scale 0.4s var(--wipe-easing) calc(var(--panel-wipe-duration) * 0.5);
         }
     }
     /* Archive thumbnails rise in, a little after one another (--i is the
@@ -466,6 +471,8 @@ select:-webkit-autofill:focus {
     /* Thickness of the line that rides the home panels' wipe edge (0px turns
        it off). */
     --wipe-line: 1px;
+    /* The home panels' wipe, a little slower than paging's --wipe-duration. */
+    --panel-wipe-duration: 0.75s;
 }
 .vt-detail {
     view-transition-class: detail;
