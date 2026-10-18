@@ -278,7 +278,9 @@ const ogImage = new URL(image ?? "/og-default.jpg", Astro.site).href;
                 // The others are left to fade with the page beneath it, rather
                 // than captured on their own and painted over it.
                 focus = isDetail(e.to) ? e.to.pathname : isDetail(e.from) ? e.from.pathname : null;
-                if (!paging && focus) unname(document, focus);
+                // Any other move (between archives, home and an archive): no
+                // thumbnail travels, so matching flyers do not fly about.
+                if (!paging) unname(document, focus ?? undefined);
                 // Closing a picture back to its grid: global.css keeps the
                 // crossfade there (the photograph opening rule is for opening
                 // only). Set on both pages, as the root's attributes are
@@ -294,16 +296,20 @@ const ogImage = new URL(image ?? "/og-default.jpg", Astro.site).href;
             const bare = (path: string) => path.replace(/\/$/, "");
             // The named parts of grid thumbnails (the link itself, or the title
             // and picture inside it).
+            // The named parts of grid thumbnails and of the home featured panel
+            // (links themselves, or the titles, pictures and rows around them).
             const gridNamed = (root: ParentNode) =>
                 root.querySelectorAll<HTMLElement>(
-                    ":is(.gallery-grid, .photo-grid) a, :is(.gallery-grid, .photo-grid) a [data-astro-transition-scope]",
+                    ":is(.gallery-grid, .photo-grid) a, :is(.gallery-grid, .photo-grid, #events) [data-astro-transition-scope]",
                 );
-            // Takes the names off them for one transition, except those of the
-            // link to `keep`.
+            // Takes the names off them for one transition. With `keep`, those
+            // that lead to it stay (the link they are in, or the first link they
+            // hold), and so do parts with no link at all (the featured label).
             const unname = (root: ParentNode, keep?: string) =>
                 gridNamed(root).forEach((el) => {
-                    const href = el.closest("a")?.getAttribute("href");
-                    if (keep && href && bare(href) === bare(keep)) return;
+                    const link = el.closest("a") ?? el.querySelector("a");
+                    const href = link?.getAttribute("href");
+                    if (keep && (!href || bare(href) === bare(keep))) return;
                     el.style.viewTransitionName = "none";
                 });
             // Named parts inside a named section (an event's flyer, title and
@@ -317,7 +323,7 @@ const ogImage = new URL(image ?? "/og-default.jpg", Astro.site).href;
                     unname(e.newDocument);
                     fold(e.newDocument);
                 }
-                else if (focus) unname(e.newDocument, focus);
+                else unname(e.newDocument, focus ?? undefined);
                 if (closing) e.newDocument.documentElement.dataset.closing = "";
                 // The new page's root attributes replace the current ones, so
                 // this lasts until the next navigation.
