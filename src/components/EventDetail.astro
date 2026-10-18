@@ -150,16 +150,25 @@ const label = "mb-0 text-xs font-bold tracking-normal md:text-sm font-displayCon
   .listing-link:hover :is(h2, h3, h4, p, a):not(.section-action) {
     color: rgb(var(--rgb-accent-hover));
   }
+  /* The rows sit --gap from their rules, about the space between a label
+     and its value, so the rules read as line breaks. */
+  hr,
+  .meta-slash {
+    --gap: 0.375rem;
+  }
+  hr {
+    margin-block: var(--gap);
+  }
   /* The slash between date, time and venue runs the row's full height, from
-     the rule above to the rule below (each 0.5rem off the row, hr's my-2).
-     It leads the next item: it leans from the top rule down and to the left
-     (skewed about its top end), meeting the rule 0.5rem before the text
-     starts, the same space the text has from the rules. */
+     the rule above to the rule below. It leads the next item: it leans from
+     the top rule down and to the left (skewed about its top end), meeting the
+     rule --gap before the text starts, the same space the text has from the
+     rules. */
   .meta-slash::before {
     left: auto;
-    right: 0.5rem;
-    top: -0.5rem;
-    height: calc(100% + 1rem);
+    right: var(--gap);
+    top: calc(var(--gap) * -1);
+    height: calc(100% + 2 * var(--gap));
     transform: skewX(-32deg);
     transform-origin: top;
   }
