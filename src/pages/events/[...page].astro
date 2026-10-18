@@ -34,7 +34,7 @@ const { page } = Astro.props;
   </div>
   <section class="flex-col xl:h-section xl:min-h-0 xl:overflow-hidden">
     <h1 class="sr-only">Events</h1>
-    <ArchiveBar label="All events">
+    <ArchiveBar>
       <Pagination lastPage={page.lastPage} currentPage={page.currentPage} basePath="/events/" />
     </ArchiveBar>
     <EventGrid events={page.data} />
