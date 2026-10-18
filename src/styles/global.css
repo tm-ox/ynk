@@ -73,6 +73,10 @@
     /* What a section's padding and the flyer's frame take from the screen height. */
     --spacing-section-inset: calc(var(--spacing) * 6.5);
     --container-site: 90rem;
+    /* Leading of the big display headings (h1). They break mid-word where a
+       word is wider than the screen (overflow-wrap below, on purpose), so the
+       lines sit tight enough for the halves to read as one word. */
+    --leading-display: 0.85;
     --text-hero: 3.25rem;
     --text-hero--line-height: calc(var(--spacing) * 10);
     --text-hero-lg: 6.5rem;
@@ -288,8 +292,27 @@
     h5 {
         @apply font-bold text-accent font-display;
     }
+    /* A heading, a paragraph or a body list's line breaks inside a word that
+       is wider than the screen (a display word, a long URL) rather than
+       widening the page. Anywhere, not break-word, so the word no longer sets
+       how narrow a flex or grid column can go. */
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6,
+    p,
+    .detail-body li {
+        overflow-wrap: anywhere;
+    }
     h1 {
         @apply mb-2 text-5xl font-black uppercase sm:text-5xl md:text-6xl xl:text-7xl;
+    }
+    /* After the sizes above, which bring their own leading at each step. A
+       sized h1 (the event title, a picture's strip) sets its own. */
+    h1 {
+        line-height: var(--leading-display);
     }
     h2 {
         @apply mb-2 text-xl md:text-3xl;
@@ -337,7 +360,7 @@
         @apply z-(--z-overlay) text-4xl transition cursor-pointer w-7 h-7 text-accent-muted border-border bg-none hover:text-accent;
     }
     .display-hero {
-        @apply w-full text-center -tracking-widest wrap-break-word text-hero lg:text-hero-lg;
+        @apply w-full text-center -tracking-widest wrap-anywhere text-hero lg:text-hero-lg;
     }
     /* Archive thumbnails rise in, a little after one another along the
        diagonal (--d is the cell's place on it, set by scripts/diagonal.ts;
