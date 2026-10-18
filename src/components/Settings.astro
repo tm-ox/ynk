@@ -39,7 +39,7 @@ const label = "mb-0 text-xs font-bold tracking-normal uppercase md:text-sm font-
   aria-haspopup="dialog"
   transition:persist="settings"
 >
-  <Icon name="bx:bxs-cog" class="w-6 sm:w-5 sm:h-5 icon" />
+  <Icon name="bx:bxs-cog" class="sm:w-5 sm:h-5 icon" />
 </button>
 
 <!-- A native modal dialog: centred on screen, the page behind is inert, focus
@@ -255,6 +255,12 @@ const label = "mb-0 text-xs font-bold tracking-normal uppercase md:text-sm font-
   // dialog opened with the mouse, can draw the keyboard ring on it. Only keep
   // focus there if it was opened from the keyboard.
   let openedByKeyboard = false;
+  // ? opens the dialog through a cog even when none shows (keys.ts): on
+  // phones with the menu shut. The browser would hand focus back to a cog
+  // that is display:none, which leaves it nowhere; focus then goes back to
+  // what had it when the dialog opened.
+  let returnTo: HTMLElement | null = null;
+  const shown = (el: HTMLElement) => el.checkVisibility?.() ?? el.offsetParent !== null;
 
   // The sweep (see the style above): the panel is the dialog, its contents the
   // padded div inside it.
@@ -281,12 +287,14 @@ const label = "mb-0 text-xs font-bold tracking-normal uppercase md:text-sm font-
     const target = e.target as Element;
     const d = dialog();
     if (!d) return;
-    if (target.closest("[data-settings-open]")) {
+    const cog = target.closest<HTMLElement>("[data-settings-open]");
+    if (cog) {
       const current = window.__storedTheme();
       d.querySelectorAll<HTMLInputElement>("[data-theme-choice]").forEach((input) => {
         input.checked = input.value === current;
       });
       openedByKeyboard = e.detail === 0;
+      returnTo = shown(cog) ? null : (document.activeElement as HTMLElement | null);
       d.showModal();
       turn(d, true).catch(() => {});
     } else if (target.closest("[data-settings-close]") || (target === d && pressedOnBackdrop)) {
@@ -325,6 +333,8 @@ const label = "mb-0 text-xs font-bold tracking-normal uppercase md:text-sm font-
       d.getAnimations({ subtree: true }).forEach((a) => a.cancel());
       d.querySelector<HTMLElement>("[data-settings-seam]")!.hidden = true;
       if (!openedByKeyboard) document.querySelectorAll<HTMLElement>("[data-settings-open]").forEach((b) => b.blur());
+      if (returnTo?.isConnected && returnTo !== document.body) returnTo.focus({ preventScroll: true });
+      returnTo = null;
     },
     true,
   );
