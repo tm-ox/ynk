@@ -164,7 +164,10 @@ const links = [
        sm up only (below it, a phone pass later). */
     .position {
         --position-min: 2rem;
-        --position-color: var(--color-accent);
+        /* Brighter and thicker than the rule it lies on, which is the accent
+           at 1px: the same colour and weight would not show. */
+        --position-color: var(--color-accent-hover);
+        --position-weight: 3px;
         display: none;
     }
     @media (min-width: 40rem) {
@@ -172,10 +175,11 @@ const links = [
             --w: max(calc(100% / var(--n)), var(--position-min));
             display: block;
             position: absolute;
-            top: var(--spacing-header);
+            /* Centred on the 1px rule. */
+            top: calc(var(--spacing-header) - (var(--position-weight) - 1px) / 2);
             left: calc((100% - var(--w)) * var(--i) / (var(--n) - 1));
             width: var(--w);
-            height: 1px;
+            height: var(--position-weight);
             background: var(--position-color);
             pointer-events: none;
             /* Above the rule itself and the panels' own layers. */
