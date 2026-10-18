@@ -12,6 +12,7 @@ import Events from "../components/home/Events.astro";
        title still morph into the event's page (Base.astro leaves them named
        for that move). -->
   <div class="vt-page" transition:name="featured">
+    <h1 class="sr-only">Featured</h1>
     <Events />
   </div>
 </BaseLayout>
