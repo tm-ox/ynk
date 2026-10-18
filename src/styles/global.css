@@ -315,7 +315,7 @@
            taken away while the panel is hidden, unseen. */
         .home-track > section hr {
             transform-origin: left;
-            transition: scale 0.4s var(--wipe-easing) calc(var(--seam-duration) * 0.5);
+            transition: scale 0.4s var(--wipe-easing) calc(var(--seam-delay) + var(--seam-duration) * 0.5);
         }
         .home-track > section[data-reveal="hidden"] hr {
             scale: 0 1;
@@ -458,9 +458,13 @@ select:-webkit-autofill:focus {
     /* Thickness of the line that rides the home panels' wipe edge (0px turns
        it off). */
     --wipe-line: 1px;
-    /* How long the seam between home panels takes to cross the screen (it
-       runs on its own clock, not the scroll's; eased by --wipe-easing). */
-    --seam-duration: 0.6s;
+    /* How long the seam (between home panels, and on page turns) waits after
+       the move starts, so the incoming screen is mostly in place before it
+       crosses it. */
+    --seam-delay: 0.1s;
+    /* How long the seam then takes to cross the screen (it runs on its own
+       clock, not the scroll's or the slide's; eased by --wipe-easing). */
+    --seam-duration: 0.75s;
 }
 .vt-detail {
     view-transition-class: detail;
@@ -635,7 +639,7 @@ html[data-astro-transition="paging-back"]::view-transition-new(.detail) {
    .detail rules above, and use the same prefix, because a named pseudo and a
    class argument have equal specificity and the later one wins. */
 :root {
-    --page-slide-duration: 0.5s;
+    --page-slide-duration: 0.4s;
     --page-slide-easing: cubic-bezier(0.22, 0.61, 0.36, 1);
     /* How far past each side of the screen the seam starts and ends: the
        edge's sideways lean over half the screen's height (tan 32deg, about
@@ -663,8 +667,8 @@ html[data-astro-transition="paging-back"]::view-transition-new(.detail) {
     }
 }
 /* The seam runs on its own clock, as on the home track, not the slide's: the
-   same --seam-duration and --wipe-easing, starting with the slide (home's
-   starts as the scroll does). Tied to the slide instead it rode the boundary
+   same --seam-delay after the slide starts (home's waits as long after the
+   scroll does), then --seam-duration with --wipe-easing. Tied to the slide instead it rode the boundary
    between the two screens and only crossed the incoming one at the very end.
    Two registered lengths are animated on each target, apart:
      --seam: the seam's distance right of the screen's centre (at mid-height),
@@ -752,8 +756,9 @@ html[data-astro-transition^="paging"]::view-transition-new(.page) {
    forward, right of it going back. The lengths are animated on the
    pseudo-element itself, which works for registered properties. The
    snapshot is a picture, so it carries no line (the one line is the incoming
-   content's). Its seam outlasts the slide, which keeps the transition (and so
-   the live content's wipe) running until the seam is across. mask-size is
+   content's). Its seam (delay and all) outlasts the slide, which keeps the
+   transition (and so the live content's wipe) running until the seam is
+   across. During the delay it sits at its start value (fill both). mask-size is
    set because a .detail .page pair gets the wipe's oversized mask above. */
 html[data-astro-transition^="paging"]::view-transition-old(.page) {
     --edge: calc(var(--seam) - var(--slide-x) + var(--turn-old-shift, 0px));
@@ -769,7 +774,7 @@ html[data-astro-transition="paging-forward"]::view-transition-old(.page) {
     animation:
         page-out-to-left var(--page-slide-duration) var(--page-slide-easing) both,
         turn-slide-out-forward var(--page-slide-duration) var(--page-slide-easing) both,
-        turn-seam-forward var(--seam-duration) var(--wipe-easing) both;
+        turn-seam-forward var(--seam-duration) var(--wipe-easing) var(--seam-delay) both;
 }
 html[data-astro-transition="paging-back"]::view-transition-old(.page) {
     mask-size: 100% 100%;
@@ -782,7 +787,7 @@ html[data-astro-transition="paging-back"]::view-transition-old(.page) {
     animation:
         page-out-to-right var(--page-slide-duration) var(--page-slide-easing) both,
         turn-slide-out-back var(--page-slide-duration) var(--page-slide-easing) both,
-        turn-seam-back var(--seam-duration) var(--wipe-easing) both;
+        turn-seam-back var(--seam-duration) var(--wipe-easing) var(--seam-delay) both;
 }
 html[data-astro-transition="paging-forward"]::view-transition-new(.page) {
     animation: page-in-from-right var(--page-slide-duration) var(--page-slide-easing) both;
@@ -816,7 +821,7 @@ html[data-astro-transition="paging-back"]::view-transition-new(.page) {
         --edge: calc(var(--seam) - var(--slide-x) + var(--turn-new-shift, 0px));
         animation:
             turn-slide-in-forward var(--page-slide-duration) var(--page-slide-easing) both,
-            turn-seam-forward var(--seam-duration) var(--wipe-easing) both;
+            turn-seam-forward var(--seam-duration) var(--wipe-easing) var(--seam-delay) both;
         mask-image: linear-gradient(
             var(--wipe-angle),
             transparent calc(50% + var(--edge) * 0.848),
@@ -858,7 +863,7 @@ html[data-astro-transition="paging-back"]::view-transition-new(.page) {
        the home panels' do behind it, done as the transition ends. */
     html[data-turn] .home-track > section[data-reveal="landing"] hr {
         animation: rule-in calc(var(--seam-duration) * 0.5) var(--wipe-easing)
-            calc(var(--seam-duration) * 0.5) both;
+            calc(var(--seam-delay) + var(--seam-duration) * 0.5) both;
     }
 }
 @media (prefers-reduced-motion: reduce) {

@@ -1,7 +1,8 @@
 // The seam between home panels (sm and up). When the track moves off the panel
 // in view toward another, one diagonal edge (the paging wipe's, with the line
-// on it) crosses the screen once, on its own clock: --seam-duration, eased
-// like --wipe-easing. Ahead of it is the panel being left, behind it the panel
+// on it) crosses the screen once, on its own clock: it waits --seam-delay
+// after the track sets off, so the incoming panel is mostly in place, then
+// takes --seam-duration, eased like --wipe-easing. Ahead of it is the panel being left, behind it the panel
 // arriving, each wherever the scroll has got to; the panels slide underneath
 // as they always did. Going back is the mirror image. global.css draws the
 // masks and the line from --edge (set here every frame), data-reveal and
@@ -113,7 +114,8 @@ function arm(turn?: string) {
   }
 
   const root = getComputedStyle(document.documentElement);
-  const duration = ms(root.getPropertyValue("--seam-duration"), 600);
+  const duration = ms(root.getPropertyValue("--seam-duration"), 750);
+  const delay = ms(root.getPropertyValue("--seam-delay"), 100);
   const ease = easing(root.getPropertyValue("--wipe-easing"));
 
   // The panel shown whole while the track rests on it (none while a seam
@@ -137,8 +139,16 @@ function arm(turn?: string) {
   // edge, the one it brings in what is behind it, with the line (global.css,
   // by data-reveal and data-side); every other panel is hidden. One that
   // starts part way (turning back) runs only the rest of the way, at the
-  // same pace.
-  const go = (from: HTMLElement, to: HTMLElement, dir: 1 | -1, s0: number, now: number): Seam => {
+  // same pace. wait holds it at s0 first (--seam-delay, for a seam setting
+  // off with the track).
+  const go = (
+    from: HTMLElement,
+    to: HTMLElement,
+    dir: 1 | -1,
+    s0: number,
+    now: number,
+    wait = 0,
+  ): Seam => {
     panels.forEach((s) => s !== from && s !== to && hide(s));
     from.dataset.reveal = "leaving";
     from.dataset.side = dir > 0 ? "left" : "right";
@@ -146,7 +156,7 @@ function arm(turn?: string) {
     to.dataset.side = dir > 0 ? "right" : "left";
     furthest = track.scrollLeft / track.clientWidth;
     const share = Math.min(1, Math.abs(-dir * end() - s0) / (2 * end()));
-    return { from, to, dir, start: now, s0, duration: duration * share };
+    return { from, to, dir, start: now + wait, s0, duration: duration * share };
   };
   const settle = (panel: HTMLElement) => {
     seam = null;
@@ -180,7 +190,7 @@ function arm(turn?: string) {
       const aim = takeAim();
       const to = aim !== null && (aim - from) * dir > 0 && panels[aim] ? aim : from + dir;
       if (!panels[to]) return;
-      seam = go(rest, panels[to], dir, dir * end(), now);
+      seam = go(rest, panels[to], dir, dir * end(), now, delay);
       rest = null;
     }
 
@@ -193,7 +203,13 @@ function arm(turn?: string) {
       return schedule();
     }
 
-    const t = seam.duration ? Math.min(1, (now - seam.start) / seam.duration) : 1;
+    // Before its start (the delay) t is 0, so the seam waits just past the
+    // leading edge; it counts as done, and can settle, only once across.
+    const t = seam.duration
+      ? Math.min(1, Math.max(0, (now - seam.start) / seam.duration))
+      : now >= seam.start
+        ? 1
+        : 0;
     at = seam.s0 + (-seam.dir * end() - seam.s0) * ease(t);
     // --edge is the seam's distance right of the panel's own centre, where
     // its gradient's 50% lies. Panels are the track's width and height, so a
