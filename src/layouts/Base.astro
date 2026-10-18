@@ -274,7 +274,8 @@ const ogImage = new URL(image ?? "/og-default.jpg", Astro.site).href;
                 // Coming back to an archive from one of its pictures or events
                 // (close or back): the grid was already seen, so its thumbnails
                 // do not rise in again (global.css keys on data-returning).
-                returning = isDetail(e.from) && isArchive(e.to);
+                // Page turns set it too: the grid slides in and wipes instead.
+                returning = (isDetail(e.from) || paging) && isArchive(e.to);
                 // Opening a picture or event from a grid (archive or home), or
                 // closing back to it: only its own thumbnail and title travel.
                 // The others are left to fade with the page beneath it, rather

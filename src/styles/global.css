@@ -336,9 +336,10 @@
         }
     }
     /* Archive thumbnails rise in, a little after one another (--i is the
-       cell's index). Titles and rules stay put. Plays on every arrival, page turns
-       included (where it follows the grid's wipe), except when coming back from one
-       of its pictures or events (data-returning, set in Base.astro). */
+       cell's index). Titles and rules stay put. Plays on every arrival except
+       when coming back from one of its pictures or events, and on page turns,
+       where the grid slides in and wipes instead (data-returning, set in
+       Base.astro, covers both). */
     @media (prefers-reduced-motion: no-preference) {
         @keyframes rise-in {
             from {
@@ -621,6 +622,61 @@ html[data-astro-transition="paging-back"]::view-transition-old(.detail) {
 }
 html[data-astro-transition="paging-back"]::view-transition-new(.detail) {
     mask-image: linear-gradient(var(--wipe-angle), #000 50%, transparent 50%);
+}
+/* Archive page turns (the grid's own group, not Previous/Next on a detail
+   page) slide like the home panels do, then wipe: the old grid leaves whole
+   and the new one comes in from the far side, hidden until its wipe starts
+   a moment later, so the slide is already under way when the edge sweeps
+   across. A smooth-scroll ease-out gives the slide its feel. Both fills are
+   "both", so the new grid is masked away until the wipe begins. These come
+   after the .detail rules above, and use the same prefix, because a named
+   pseudo and a class argument have equal specificity and the later one wins. */
+:root {
+    --page-slide-duration: 0.5s;
+    --page-slide-easing: cubic-bezier(0.22, 0.61, 0.36, 1);
+    --page-wipe-delay: 0.15s;
+}
+@keyframes page-in-from-right {
+    from {
+        translate: 100vw 0;
+    }
+}
+@keyframes page-in-from-left {
+    from {
+        translate: -100vw 0;
+    }
+}
+@keyframes page-out-to-left {
+    to {
+        translate: -100vw 0;
+    }
+}
+@keyframes page-out-to-right {
+    to {
+        translate: 100vw 0;
+    }
+}
+/* The old grid is not masked: it simply slides away. */
+html[data-astro-transition^="paging"]::view-transition-old(gallery-page) {
+    mask-image: none;
+}
+html[data-astro-transition="paging-forward"]::view-transition-old(gallery-page) {
+    animation: page-out-to-left var(--page-slide-duration) var(--page-slide-easing) both;
+}
+html[data-astro-transition="paging-forward"]::view-transition-new(gallery-page) {
+    animation:
+        page-in-from-right var(--page-slide-duration) var(--page-slide-easing) both,
+        wipe var(--panel-wipe-duration) var(--wipe-easing) var(--page-wipe-delay) both;
+}
+/* Back: the mirror image. The wipe runs reversed, as for .detail above (an
+   explicit direction per animation, as the shorthand resets it). */
+html[data-astro-transition="paging-back"]::view-transition-old(gallery-page) {
+    animation: page-out-to-right var(--page-slide-duration) var(--page-slide-easing) both;
+}
+html[data-astro-transition="paging-back"]::view-transition-new(gallery-page) {
+    animation:
+        page-in-from-left var(--page-slide-duration) var(--page-slide-easing) both,
+        wipe var(--panel-wipe-duration) var(--wipe-easing) var(--page-wipe-delay) both reverse;
 }
 @media (prefers-reduced-motion: reduce) {
     ::view-transition-group(*),
