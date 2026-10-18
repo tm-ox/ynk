@@ -86,17 +86,18 @@ const neighbourFlyers = await Promise.all(
        featured label always sat, so the listing stays centred in the screen
        and the flyer holds still from Featured; below md, where the listing
        stacks, it comes first in the flow so it never covers the flyer, and
-       the listing is centred under it, at least --spacing-bar-gap below. -->
+       the listing is centred under it, at least --spacing-bar-gap below, and
+       it holds under the header rule as the page scrolls (detail-sticky). -->
   <section transition:name={event.data.id} class="relative z-10 vt-detail vt-swap max-md:flex-col max-md:items-stretch max-md:[&>:last-child]:my-auto">
     {featuredLabel ? (
-      <div class="w-full max-md:mb-bar-gap md:absolute md:inset-x-0 md:top-2 vt-detail detail-bar" transition:name="featured-label">
+      <div class="w-full max-md:mb-bar-gap max-md:detail-sticky md:absolute md:inset-x-0 md:top-2 vt-detail detail-bar" transition:name="featured-label">
         <SectionBar label={featuredLabel}><Paging {...paging} /></SectionBar>
       </div>
     ) : (
       // Named, so it stays put while Previous / Next turns the page under it
       // (Base.astro's fold leaves .detail-bar alone), as the photo page's
       // info strip does.
-      <div class="w-full max-md:mb-bar-gap md:absolute md:inset-x-0 md:top-2 detail-bar" transition:name="detail-bar">
+      <div class="w-full max-md:mb-bar-gap max-md:detail-sticky md:absolute md:inset-x-0 md:top-2 detail-bar" transition:name="detail-bar">
         <SectionBar label="Events"><Paging {...paging} /></SectionBar>
       </div>
     )}

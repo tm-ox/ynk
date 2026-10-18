@@ -98,6 +98,25 @@
     height: calc(100dvh - var(--section-offset));
 }
 
+/* A detail page's top bar (the event's title row, the picture's info strip)
+   where the page itself scrolls: it holds under the header rule while the
+   content scrolls beneath it. Used with a variant (max-md: on the event page,
+   whose text column scrolls on its own from md up and whose bar lies over the
+   section there; max-lg: on the picture's). --bar-stick is where it holds: as
+   far under the header as it sits at rest (the section's pt-2), so it does not
+   jump as it catches. The page background behind it, and over that gap up to
+   the rule (the shadow), keeps the content from showing through. Its view
+   transition name is untouched, so it still holds still on Previous / Next. */
+@utility detail-sticky {
+    --bar-stick: calc(var(--spacing-header) + var(--spacing) * 2);
+    position: sticky;
+    top: var(--bar-stick);
+    /* Over anything raised inside the section (the venue link), under the header. */
+    z-index: calc(var(--z-header) - 1);
+    background: var(--color-bg);
+    box-shadow: 0 calc(var(--spacing-header) - var(--bar-stick)) 0 var(--color-bg);
+}
+
 /* A divider at the logo's angle (its stroke rises at about 58deg, so it leans
    32deg off vertical), in place of a vertical border on the element's left
    edge. It is centred on where the border was and

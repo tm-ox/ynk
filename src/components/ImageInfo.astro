@@ -20,9 +20,10 @@ const { event } = image;
      (--bar-row high, text centred) so the picture below does not move when one becomes
      the other; keep the two in step. On phones it wraps in rows --bar-row
      apart: the title and the arrows first, as on the bars, then the rest.
-     Credits for who is in the photograph can
+     Below lg it holds under the header rule should the page scroll
+     (detail-sticky, global.css). Credits for who is in the photograph can
      join it later. -->
-<div class="w-full image-info" transition:name="gallery-bar">
+<div class="w-full image-info max-lg:detail-sticky" transition:name="gallery-bar">
     <div class="flex flex-wrap items-center w-full gap-x-6 text-xs uppercase font-displayCon md:text-sm max-sm:leading-(--bar-row) max-sm:text-base sm:flex-nowrap sm:h-(--bar-row) sm:leading-none">
         <h1 class="min-w-0 m-0 text-xs font-bold leading-[inherit] truncate md:text-sm max-sm:text-base max-sm:flex-1 text-accent">
             <a href={`/events/${event.id}/`} title={event.title} class="hover:text-accent-hover">{event.title}</a>
