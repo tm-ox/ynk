@@ -754,6 +754,16 @@ html:not([data-astro-transition^="paging"]):not([data-closing])::view-transition
     animation: none;
     opacity: 1;
 }
+/* The rule under the header stays over the pages as they turn, and the
+   position mark over the rule, whichever order the two pages were captured
+   in (a group only in the incoming page is otherwise added on top of those
+   both pages share, so the incoming screen covered the rule). */
+::view-transition-group(frame-rule) {
+    z-index: 2;
+}
+::view-transition-group(position) {
+    z-index: 3;
+}
 /* The travelling picture and title paint over the rest of the transition: the
    grid fading out beneath them, or fading in under them on the way back.
    (Otherwise they keep the order the pages were captured in, and on the way
