@@ -18,7 +18,7 @@ const label = "mb-0 text-xs font-bold tracking-normal uppercase md:text-sm font-
 
 <button
   type="button"
-  class="h-7 ml-1 pl-3 slash-l cursor-pointer"
+  class="h-7 ml-5 pl-5 slash-l cursor-pointer"
   data-settings-open
   aria-label="Settings"
   aria-haspopup="dialog"
@@ -48,11 +48,11 @@ const label = "mb-0 text-xs font-bold tracking-normal uppercase md:text-sm font-
       <hr class="mt-0" />
       <h3 id="settings-theme" class={`${label} sm:text-left`}>Theme</h3>
       <hr class="mb-0" />
-      <div class="grid grid-cols-3" role="radiogroup" aria-labelledby="settings-theme">
+      <div class="grid grid-cols-3 overflow-hidden" role="radiogroup" aria-labelledby="settings-theme">
         {themes.map(([value, text]) => (
           <label class="settings-choice">
             <input type="radio" name="theme" value={value} class="sr-only peer" data-theme-choice />
-            <span class="font-displayCon peer-checked:text-accent peer-checked:bg-accent-muted/10 peer-focus-visible:outline peer-focus-visible:outline-2 peer-focus-visible:-outline-offset-2 peer-focus-visible:outline-accent">{text}</span>
+            <span class="font-displayCon">{text}</span>
           </label>
         ))}
       </div>
@@ -111,16 +111,43 @@ const label = "mb-0 text-xs font-bold tracking-normal uppercase md:text-sm font-
   .settings-choice + .settings-choice {
     position: relative;
   }
+  /* Full height here, so the slashes split the row into slanted cells. */
   .settings-choice + .settings-choice::before {
     content: "";
     position: absolute;
+    z-index: 1;
     left: calc(var(--slash-weight) / -2);
-    top: 50%;
+    top: 0;
     width: var(--slash-weight);
-    height: var(--slash-height);
+    height: 100%;
     background: var(--color-border);
-    transform: translateY(-50%) skewX(-32deg);
+    transform: skewX(-32deg);
     pointer-events: none;
+  }
+  /* The chosen one's tint, and the keyboard focus ring, are a box slanted the
+     same way, so they meet the slashes either side (the row clips the outer
+     ends straight). */
+  .settings-choice span {
+    position: relative;
+    isolation: isolate;
+  }
+  .settings-choice span::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    transform: skewX(-32deg);
+    transition: background-color 0.2s ease;
+  }
+  .settings-choice input:checked + span {
+    color: var(--color-accent);
+  }
+  .settings-choice input:checked + span::before {
+    background: rgb(var(--rgb-accent-muted) / 0.1);
+  }
+  .settings-choice input:focus-visible + span::before {
+    outline: 2px solid var(--color-accent);
+    outline-offset: -2px;
   }
   .settings-choice:hover span {
     color: var(--color-accent);
