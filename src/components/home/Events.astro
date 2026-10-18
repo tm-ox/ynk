@@ -22,7 +22,7 @@ const picks = photos.slice(0, 36);
 {featured && (
 <section
  id="featured" class="flex-col items-stretch md:h-section md:min-h-0 md:overflow-y-auto" data-scroll>
-    <div transition:name="featured-label" class="vt-detail"><SectionBar label={label} /></div>
+    <div transition:name="featured-label" class="vt-detail max-md:mb-bar-gap"><SectionBar label={label} /></div>
     <div
         class="grid w-full gap-4 my-auto md:my-0 md:flex-1 md:min-h-0 md:grid-cols-[minmax(0,3fr)_minmax(0,5fr)] md:items-center vt-swap"
         transition:name={featured.data.id}
@@ -73,9 +73,10 @@ const picks = photos.slice(0, 36);
         </div>
     </div>
     <!-- Mirrors the bar so the row is centred in the whole screen, as on the event
-
-         page, and the flyer holds still between the two. -->
-    <div class="invisible" aria-hidden="true"><SectionBar label={label} /></div>
+         page, and the flyer holds still between the two. From md only: below
+         it the screen stacks and scrolls, and the mirror was only an empty
+         row at the end. -->
+    <div class="invisible max-md:hidden" aria-hidden="true"><SectionBar label={label} /></div>
 </section>
 )}
 
