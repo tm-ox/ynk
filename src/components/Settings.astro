@@ -8,6 +8,16 @@ const keyboard: [string[], string][] = [
   [["Esc"], "Close and go back."],
   [["?"], "Open settings."],
 ];
+// Reference for the Touch group, shown instead on a touch screen (no hover,
+// a coarse pointer): what the site's own controls do there. It has no
+// gestures of its own (no swipes), so only its buttons are listed, each
+// drawn as its icon (named for screen readers) or, with none, its word.
+const touch: [[string, string?][], string][] = [
+  [[["Previous", "ion:arrow-back-sharp"], ["Next", "ion:arrow-forward-sharp"]], "Move between events, photographs and pages."],
+  [[["Close", "ion:close-sharp"]], "Close and go back."],
+  [[["Menu"]], "On a narrow screen, go to any screen."],
+];
+const kbd = "inline-flex items-center justify-center h-7 px-1.5 text-sm leading-none border min-w-7 font-displayCon text-accent border-accent-muted";
 const themes = [
   ["system", "System"],
   ["light", "Light"],
@@ -63,7 +73,7 @@ const label = "mb-0 text-xs font-bold tracking-normal uppercase md:text-sm font-
       </div>
     </div>
 
-    <div>
+    <div class="settings-keys">
       <hr class="mt-0" />
       <h3 class={label}>Keyboard</h3>
       <hr class="mb-0" />
@@ -71,7 +81,29 @@ const label = "mb-0 text-xs font-bold tracking-normal uppercase md:text-sm font-
         {keyboard.map(([keys, text]) => (
           <>
             <dt class="flex flex-wrap gap-1">
-              {keys.map((key) => <kbd class="inline-flex items-center justify-center h-7 px-1.5 text-sm leading-none border min-w-7 font-displayCon text-accent border-accent-muted">{key}</kbd>)}
+              {keys.map((key) => <kbd class={kbd}>{key}</kbd>)}
+            </dt>
+            <dd class="m-0 text-sm font-light tracking-wide font-body md:text-base">{text}</dd>
+          </>
+        ))}
+      </dl>
+    </div>
+
+    <div class="settings-touch">
+      <hr class="mt-0" />
+      <h3 class={label}>Touch</h3>
+      <hr class="mb-0" />
+      <dl class="grid items-baseline gap-x-6 gap-y-3 py-3 sm:grid-cols-[auto_1fr]">
+        {touch.map(([marks, text]) => (
+          <>
+            <dt class="flex flex-wrap gap-1">
+              {marks.map(([word, icon]) =>
+                icon ? (
+                  <span class={kbd} role="img" aria-label={word}><Icon name={icon} class="w-4 h-4" aria-hidden="true" /></span>
+                ) : (
+                  <span class={kbd}>{word}</span>
+                ),
+              )}
             </dt>
             <dd class="m-0 text-sm font-light tracking-wide font-body md:text-base">{text}</dd>
           </>
@@ -84,9 +116,10 @@ const label = "mb-0 text-xs font-bold tracking-normal uppercase md:text-sm font-
       <h3 class={label}>Good to know</h3>
       <hr class="mb-0" />
       <ul class="flex flex-col py-3 text-sm font-light tracking-wide list-none font-body text-pretty md:text-base">
-        <li class="normal-case">The mouse wheel moves on the same way, once the page has scrolled to its end.
+        <li class="normal-case settings-keys">The mouse wheel moves on the same way, once the page has scrolled to its end.
 </li>
-        <li class="normal-case">Shortcuts pause while you type in a form.</li>
+        <li class="normal-case settings-keys">Shortcuts pause while you type in a form.</li>
+        <li class="normal-case settings-touch">Pages scroll as usual; the arrows move on.</li>
         <li class="normal-case">Animations are reduced if your device asks.</li>
       </ul>
     </div>
@@ -128,6 +161,19 @@ const label = "mb-0 text-xs font-bold tracking-normal uppercase md:text-sm font-
   @media (prefers-reduced-motion: reduce) {
     dialog[data-settings][data-closing]::backdrop {
       transition-delay: 0s;
+    }
+  }
+  /* On a touch screen (no hover, a coarse pointer, whatever its width) the
+     Keyboard group and its notes give way to the Touch group and its own. */
+  .settings-touch {
+    display: none;
+  }
+  @media (hover: none) and (pointer: coarse) {
+    .settings-keys {
+      display: none;
+    }
+    .settings-touch {
+      display: revert;
     }
   }
   /* Theme choices share the row equally; the chosen one carries a tint. */
