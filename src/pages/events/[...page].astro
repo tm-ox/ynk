@@ -2,7 +2,6 @@
 import type { GetStaticPaths } from "astro";
 import { getCollection } from "astro:content";
 import { Icon } from "astro-icon/components";
-import SectionBar from "../../components/home/SectionBar.astro";
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import { EVENTS_PER_PAGE, slash } from "../../utils/events";
 import EventGrid from "../../components/EventGrid.astro";
@@ -35,8 +34,7 @@ const { page } = Astro.props;
   </div>
   <section class="flex-col xl:h-section xl:min-h-0 xl:overflow-hidden">
     <h1 class="sr-only">Events</h1>
-    <SectionBar label="Events" />
-    <ArchiveBar>
+    <ArchiveBar label="Events">
       <Pagination lastPage={page.lastPage} currentPage={page.currentPage} basePath="/events/" />
     </ArchiveBar>
     <EventGrid events={page.data} />

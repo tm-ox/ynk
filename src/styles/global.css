@@ -506,6 +506,19 @@
         height: auto;
         margin-inline: auto;
     }
+    /* An archive's title at the left of its bar, set as a screen's section
+       title (SectionBar) and centred in the bar's row from sm up. */
+    .bar-label {
+        @apply shrink-0 mb-0 text-xs font-bold text-left uppercase md:text-sm font-displayCon;
+    }
+    @media (min-width: 40rem) {
+        .bar-label {
+            display: flex;
+            align-items: center;
+            height: var(--bar-row);
+            line-height: 1;
+        }
+    }
     .section-action {
         @apply text-xs uppercase font-displayCon md:text-sm text-accent-muted hover:text-accent;
     }

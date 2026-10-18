@@ -1,12 +1,15 @@
 ---
 interface Props {
+    /** The screen's title, at the left of the bar. */
+    label?: string;
     events: { id: string; label: string; count: number }[];
     current?: string;
 }
-const { events, current } = Astro.props;
+const { label, events, current } = Astro.props;
 ---
 
 <div class="gallery-filter" transition:name="gallery-bar">
+    {label && <h2 class="bar-label">{label}</h2>}
     <div class="flex-1 min-w-0">
     <div class="select-wrap">
     <select aria-label="Filter by event" data-gallery-filter>
