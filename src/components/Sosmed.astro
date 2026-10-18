@@ -5,7 +5,11 @@ import { Icon } from "astro-icon/components";
 <div
   class="flex items-center h-full max-sm:w-full max-sm:justify-between sm:gap-1 sm:ml-1 sm:pl-2.5 sm:slash-l sm:w-fit sm:mx-auto"
 >
-  <a href="https://soundcloud.com/yesnoklub" aria-label="SoundCloud (opens in a new tab)" target="_blank" rel="noopener noreferrer" class="sm:p-0.5 sm:-m-0.5">
+  <!-- On phones the icons spread edge to edge (the menu's foot): SoundCloud's
+       stroke runs 2 to 22 of its 24 viewBox, so its 40px box is pulled in by
+       that 1/12 each side and its ink, not its box, meets the edge and sets
+       the gap to Instagram. -->
+  <a href="https://soundcloud.com/yesnoklub" aria-label="SoundCloud (opens in a new tab)" target="_blank" rel="noopener noreferrer" class="max-sm:-mx-[calc(2.5rem/12)] sm:p-0.5 sm:-m-0.5">
     <Icon name="tabler:brand-soundcloud" class="w-10 h-10 sm:w-7 sm:h-7 icon" />
   </a>
   <a href="https://www.instagram.com/yes.no.klub/" aria-label="Instagram (opens in a new tab)" target="_blank" rel="noopener noreferrer" class="sm:p-0.5 sm:-m-0.5">

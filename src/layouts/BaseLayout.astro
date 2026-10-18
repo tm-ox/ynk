@@ -86,23 +86,20 @@ const links = ROW.map((s, i) => ({
                         </li>
                     ))
                 }
-                <!-- On phones as wide as the © line under it, and no wider: a
-                     hidden, zero-height copy of that line sets the width
-                     (max-content), and the icons spread across it. -->
-                <li class="max-sm:mt-auto max-sm:pt-4 max-sm:self-start max-sm:grid max-sm:w-max vt-nav menu-social" transition:name="nav-social">
+                <!-- From sm up the icons sit in the nav row, after the links. -->
+                <li class="max-sm:hidden vt-nav" transition:name="nav-social">
                     <Sosmed />
-                    <span class="invisible h-0 overflow-hidden text-xs tracking-wide uppercase sm:hidden font-displayCon" aria-hidden="true">© 2010–{new Date().getFullYear()} Yes No Klub</span>
                 </li>
-                <!-- Phones only: the footer line (Base.astro hides the footer
-                     there), small and quiet under the social icons:
-                     --menu-gap below them and as much above the panel's foot,
-                     measured from the ink (.menu-foot, below). © at the left,
-                     Privacy at the right, on one baseline. -->
-                <li class="flex text-xs tracking-wide uppercase sm:hidden font-displayCon text-accent-muted menu-foot">
-                    <div class="flex items-baseline justify-between w-full">
-                        <span>© 2010–{new Date().getFullYear()} Yes No Klub</span>
-                        <a href="/privacy" class="w-auto text-xs leading-none" target="_self">Privacy</a>
-                    </div>
+                <!-- Phones only: the icons and the footer line (Base.astro hides
+                     the footer there) at the panel's foot. One grid: the icons
+                     share the © line's column, so they spread across exactly
+                     its width; Privacy takes the rest, set right. --menu-gap
+                     between the icons and the line and as much under it,
+                     measured from the ink (.menu-social, .menu-foot, below). -->
+                <li class="grid grid-cols-[max-content_1fr] mt-auto pt-4 text-xs tracking-wide uppercase sm:hidden font-displayCon text-accent-muted">
+                    <div class="menu-social"><Sosmed /></div>
+                    <span class="row-start-2 menu-foot">© 2010–{new Date().getFullYear()} Yes No Klub</span>
+                    <a href="/privacy" class="w-auto row-start-2 text-xs justify-self-end menu-foot" target="_self">Privacy</a>
                 </li>
             </ul>
             <!-- The line that rides the panel's edge as it opens and closes. -->
