@@ -52,7 +52,7 @@ const label = "mb-0 text-xs font-bold tracking-normal md:text-sm font-displayCon
   >
 
     <div class="flex items-center">
-      <Title class:list={["mb-0 uppercase vt-title", titleClass]} transition:name={`${event.data.id}-title`}>
+      <Title class:list={["min-w-0 mb-0 uppercase wrap-break-word vt-title", titleClass]} transition:name={`${event.data.id}-title`}>
         {
           headingHref ? (
             <a href={headingHref} class="after:absolute after:inset-0 group-hover:text-accent-hover">{event.data.title}</a>
