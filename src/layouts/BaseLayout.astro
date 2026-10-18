@@ -126,38 +126,32 @@ const links = ROW.map((s, i) => ({
        from the rule's start to its end as --i goes from 0 to n - 1 (both set
        at build, above). It is named, so a page turn
 
-       morphs it from the old place to the new on the morph's own tempo. From
-       sm up only (below it, a phone pass later). */
+       morphs it from the old place to the new on the morph's own tempo. At
+       every size: phones have the same rule under the same header. */
     .position {
         --position-min: 2rem;
         /* Brighter and thicker than the rule it lies on, which is the accent
            at 1px: the same colour and weight would not show. */
         --position-color: var(--color-accent-hover);
         --position-weight: 3px;
-        display: none;
-    }
-    @media (min-width: 40rem) {
-        .position {
-            --w: max(calc(100% / var(--n)), var(--position-min));
-            display: block;
-            position: absolute;
-            /* Centred on the 1px rule. */
-            top: calc(var(--spacing-header) - (var(--position-weight) - 1px) / 2);
-            left: calc((100% - var(--w)) * var(--i) / (var(--n) - 1));
-            width: var(--w);
-            height: var(--position-weight);
-            background: var(--position-color);
-            /* Its ends cut at the logo's angle, as the page turn's seam. */
-            clip-path: polygon(
-                calc(var(--position-weight) * 0.625) 0,
-                100% 0,
-                calc(100% - var(--position-weight) * 0.625) 100%,
-                0 100%
-            );
-            pointer-events: none;
-            /* Above the rule itself and the screens' own layers. */
-            z-index: 2;
-        }
+        --w: max(calc(100% / var(--n)), var(--position-min));
+        position: absolute;
+        /* Centred on the 1px rule. */
+        top: calc(var(--spacing-header) - (var(--position-weight) - 1px) / 2);
+        left: calc((100% - var(--w)) * var(--i) / (var(--n) - 1));
+        width: var(--w);
+        height: var(--position-weight);
+        background: var(--position-color);
+        /* Its ends cut at the logo's angle, as the page turn's seam. */
+        clip-path: polygon(
+            calc(var(--position-weight) * 0.625) 0,
+            100% 0,
+            calc(100% - var(--position-weight) * 0.625) 100%,
+            0 100%
+        );
+        pointer-events: none;
+        /* Above the rule itself and the screens' own layers. */
+        z-index: 2;
     }
     .main-nav a {
         @apply text-accent-muted hover:text-accent;

@@ -16,9 +16,11 @@ const themes = [
 const label = "mb-0 text-xs font-bold tracking-normal uppercase md:text-sm font-displayCon text-accent";
 ---
 
+<!-- Below md (touch) the button is 2.5rem tall, pulled back into the row by
+     the difference, so the cog and its slash do not move. -->
 <button
   type="button"
-  class="h-7 ml-2 pl-3.5 slash-l cursor-pointer"
+  class="h-7 ml-2 pl-3.5 slash-l cursor-pointer max-md:h-10 max-md:-my-1.5"
   data-settings-open
   aria-label="Settings"
   aria-haspopup="dialog"
