@@ -183,18 +183,16 @@ const ogImage = new URL(image ?? "/og-default.jpg", Astro.site).href;
             import "../scripts/keys";
             // The archive rise-in's order along the diagonal.
             import "../scripts/diagonal";
-            import { panelsOf, seamShift } from "../scripts/track";
+
             import { screenOf } from "../utils/row";
 
             const link = (label: string) =>
                 document.querySelector<HTMLAnchorElement>(`a[aria-label="${label}"]`);
 
             // Detail pages (events, photos): the wheel follows Next / Previous.
-            // Not on the home page, where the panel track pages instead.
             bindWheelPager({
                 root: () =>
-                    !document.querySelector("[data-track]") &&
-                    (link("Next") || link("Previous"))
+                    link("Next") || link("Previous")
                         ? document.documentElement
                         : null,
                 canStep: (dir) => !!link(dir > 0 ? "Next" : "Previous"),
@@ -279,7 +277,7 @@ const ogImage = new URL(image ?? "/og-default.jpg", Astro.site).href;
                     } catch {}
                 }
 
-                homeHash = e.to.pathname === "/" ? e.to.hash : "";
+
                 // Coming back to an archive from one of its pictures or events
                 // (close or back): the grid was already seen, so its thumbnails
                 // do not rise in again (global.css keys on data-returning).
@@ -386,7 +384,8 @@ const ogImage = new URL(image ?? "/og-default.jpg", Astro.site).href;
             });
 
             // What a page turn moves: a screen's main content (.vt-page: the
-            // home track, Featured, an archive grid, About, Contact), or on a
+            // hero, Featured, an archive grid, About, Contact), or on a
+
             // detail page the named piece that is the page (an event's
             // section, its parts folded into it; a picture). Run after fold,
             // so folded parts are not it.
@@ -399,6 +398,23 @@ const ogImage = new URL(image ?? "/og-default.jpg", Astro.site).href;
                     ),
                 ].find((el) => el.style.viewTransitionName !== "none") ??
                 null;
+            // tan 32deg: how far the seam (rising at 58 degrees) leans
+            // sideways per pixel of height.
+            const SLANT = 0.6249;
+            // global.css draws a page turn's seam relative to each snapshot's
+            // own box, assuming it is centred on the screen. A box that is not
+            // (an archive grid sits lower than the hero, and below xl runs on
+            // past the screen) needs this added to keep the outgoing and
+            // incoming edges one line: minus its centre's offset right of the
+            // screen's centre, and the seam's lean over its centre's offset
+            // below it.
+            const seamShift = (el: Element | null) => {
+                if (!el) return "0px";
+                const r = el.getBoundingClientRect();
+                const dx = r.left + r.width / 2 - innerWidth / 2;
+                const dy = r.top + r.height / 2 - innerHeight / 2;
+                return `${-(dx + SLANT * dy)}px`;
+            };
             let oldShift = "0px";
             // Where the outgoing grid's top was, so global.css can keep it
             // there when the incoming one sits lower (the images archive has
@@ -410,7 +426,6 @@ const ogImage = new URL(image ?? "/og-default.jpg", Astro.site).href;
             try {
                 closeTo = sessionStorage.getItem("closeTo");
             } catch {}
-            let homeHash = "";
 
             // A detail page's close button goes back to where it was opened
             // (otherwise its archive, as built).
@@ -422,9 +437,6 @@ const ogImage = new URL(image ?? "/og-default.jpg", Astro.site).href;
             });
 
 
-            // Arriving on the home page with a #section: place the horizontal
-            // track there before the new page is shown, so it does not slide
-            // in from the first panel.
             document.addEventListener("astro:after-swap", () => {
                 // Each page turn's seam offsets (see seamShift): the root's
                 // attributes were just replaced, so set again on every turn.
@@ -436,13 +448,6 @@ const ogImage = new URL(image ?? "/og-default.jpg", Astro.site).href;
                     const newTop = box?.getBoundingClientRect().top ?? oldTop;
                     root.setProperty("--turn-old-dy", `${oldTop - newTop}px`);
                 }
-                const t = document.querySelector<HTMLElement>("[data-track]");
-                const target = homeHash && document.getElementById(homeHash.slice(1));
-                if (!t || !target || !matchMedia("(min-width: 40rem)").matches)
-                    return;
-                const index = panelsOf(t).indexOf(target as HTMLElement);
-                if (index >= 0)
-                    t.scrollTo({ left: index * t.clientWidth, behavior: "instant" });
             });
         </script>
     </body>

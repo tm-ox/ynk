@@ -19,7 +19,7 @@ const pages: Record<string, number> = {
     images: Math.max(1, Math.ceil((await getGalleryImages()).length / IMAGES_PER_PAGE)),
 };
 const pagesOf = (name: string) => pages[name] ?? 1;
-// The position line under the header (scripts/position.ts): the whole row of
+// The position line under the header (.position, below): the whole row of
 // screens (utils/row.ts), each archive counting each of its pages. Detail
 // pages, privacy and 404 are not in the row and have no line.
 const screens = ROW.reduce((n, s) => n + pagesOf(s.name), 0);
@@ -94,9 +94,6 @@ const links = ROW.map((s, i) => ({
     <slot />
 </Base>
 
-<script>
-    import "../scripts/position";
-</script>
 
 <script>
     import { ROW } from "../utils/row";
@@ -130,8 +127,9 @@ const links = ROW.map((s, i) => ({
        showing where this screen sits in the whole row. Knobs: --position-min
        is its narrowest width (it is 1/n of the rule otherwise, which gets
        thin on a long row); --position-color is its colour. Its left edge runs
-       from the rule's start to its end as --i goes from 0 to n - 1; --i may
-       be fractional while the home track scrolls. It is named, so a page turn
+       from the rule's start to its end as --i goes from 0 to n - 1 (both set
+       at build, above). It is named, so a page turn
+
        morphs it from the old place to the new on the morph's own tempo. From
        sm up only (below it, a phone pass later). */
     .position {
@@ -161,7 +159,7 @@ const links = ROW.map((s, i) => ({
                 0 100%
             );
             pointer-events: none;
-            /* Above the rule itself and the panels' own layers. */
+            /* Above the rule itself and the screens' own layers. */
             z-index: 2;
         }
     }

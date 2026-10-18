@@ -1,6 +1,5 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
-import Track from "../components/home/Track.astro";
 import Hero from "../components/home/Hero.astro";
 
 const organization = {
@@ -31,7 +30,9 @@ const organization = {
 ---
 
 <BaseLayout jsonLd={organization}>
-    <Track>
+    <!-- The first screen of the row: named and a .vt-page, so a turn to or
+         from it slides it whole (see global.css). -->
+    <div class="vt-page" transition:name="home">
         <Hero />
-    </Track>
+    </div>
 </BaseLayout>

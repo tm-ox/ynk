@@ -1,8 +1,12 @@
 
 @import "tailwindcss";
 
-/* The home panels' wipe edge, as a length so it can be transitioned (and
-   inherited by the panel's ::after line, so one transition drives both). */
+/* A page turn's seam edge: its distance right of a snapshot's own centre,
+   at the snapshot's mid-height (see the page turn rules). The masks are
+   gradients the snapshot's size, running at --wipe-angle, so moving the edge
+   sideways by d moves their stop by d * cos 32deg, about 0.848d, along the
+   gradient. A snapshot-sized gradient is rasterised at full resolution, unlike
+   a huge tile, which would leave the 1px line unseen. */
 @property --edge {
     syntax: "<length>";
     inherits: true;
@@ -232,7 +236,7 @@
        not to the sections, so they stay put while a section changes. The one
        under the header is an element of its own, named, so a page turn
        captures it apart from the page: in the root snapshot, the incoming
-       home track (whose hero runs up under it) would cover it until the turn
+       screen (the hero runs up under it) would cover it until the turn
        ended. */
     .frame-rule,
     main::after {
@@ -307,110 +311,6 @@
     }
     .display-hero {
         @apply w-full text-center -tracking-widest wrap-break-word text-hero lg:text-hero-lg;
-    }
-    /* From sm up the home sections are horizontal panels (see Track.astro). */
-    @media (min-width: 40rem) {
-        /* Full viewport width, so panels travel in from the screen edge; each
-           panel pads back in to the site's content width. */
-        .home-track {
-            @apply flex overflow-x-auto overflow-y-hidden h-section;
-            width: 100vw;
-            margin-inline: calc(50% - 50vw);
-            scroll-snap-type: x mandatory;
-            scrollbar-width: none;
-        }
-        .home-track > section {
-            @apply h-full min-h-0 overflow-y-auto;
-            flex: 0 0 100%;
-            scroll-snap-align: start;
-            --bleed: max(
-                calc(var(--spacing) * 2),
-                calc((100vw - var(--container-site)) / 2 + var(--spacing) * 2)
-            );
-            padding-inline: var(--bleed);
-        }
-    }
-    @media (min-width: 40rem) and (prefers-reduced-motion: no-preference) {
-        .home-track {
-            scroll-behavior: smooth;
-        }
-    }
-    /* The seam between home panels: one diagonal edge (the paging wipe's
-       angle and easing) with a thin line on it, crossing the screen once as
-       the track moves from one panel to another (scripts/reveal.ts runs it;
-       see there). The panel being left shows what is ahead of the edge, the
-       one arriving what is behind it, and every other panel is hidden.
-       Without the script, or with reduced motion, panels are plain. The hero
-       takes part too. */
-    @media (min-width: 40rem) and (prefers-reduced-motion: no-preference) {
-        /* Positioned so the edge line (::after) can cover the panel. */
-        .home-track > section {
-            position: relative;
-        }
-        .home-track > section[data-reveal="hidden"] {
-            mask-image: linear-gradient(transparent, transparent);
-        }
-        /* The edge is a gradient the size of the panel, with its stop moved by
-           --edge, which reveal.ts sets every frame: the seam's distance right
-           of the panel's centre (the gradient's 50%), at the panel's
-           mid-height. The gradient runs at 122deg, so moving the edge sideways
-           by d moves its stop by d * cos 32deg, about 0.848d, along the
-           gradient. A panel-sized gradient is rasterised at full resolution,
-           unlike a huge tile, which would leave the 1px line unseen.
-           data-side is the side of the edge the panel shows: right for the
-           one arriving when the track moves on (the seam crosses right to
-           left), left for the one it leaves; mirrored going back. */
-        .home-track > section:is([data-reveal="arriving"], [data-reveal="leaving"])[data-side="right"] {
-            mask-image: linear-gradient(
-                var(--wipe-angle),
-                transparent calc(50% + var(--edge) * 0.848),
-                #000 calc(50% + var(--edge) * 0.848)
-            );
-        }
-        .home-track > section:is([data-reveal="arriving"], [data-reveal="leaving"])[data-side="left"] {
-            mask-image: linear-gradient(
-                var(--wipe-angle),
-                #000 calc(50% + var(--edge) * 0.848),
-                transparent calc(50% + var(--edge) * 0.848)
-            );
-        }
-        /* The line, on the arriving panel only, so there is one. It is drawn
-           on the panel itself, which the mask also clips, and a line centred
-           on the mask's edge would lose its hidden half. So it is laid just
-           inside the visible side instead. It inherits --edge, so it moves
-           with the mask exactly. */
-        .home-track > section[data-reveal="arriving"]::after {
-            content: "";
-            position: absolute;
-            inset: 0;
-            z-index: 1;
-            pointer-events: none;
-            background-image: linear-gradient(
-                var(--wipe-angle),
-                transparent calc(50% + var(--edge) * 0.848),
-                var(--color-border) calc(50% + var(--edge) * 0.848),
-                var(--color-border) calc(50% + var(--edge) * 0.848 + var(--wipe-line)),
-                transparent calc(50% + var(--edge) * 0.848 + var(--wipe-line))
-            );
-        }
-        .home-track > section[data-reveal="arriving"][data-side="left"]::after {
-            background-image: linear-gradient(
-                var(--wipe-angle),
-                transparent calc(50% + var(--edge) * 0.848 - var(--wipe-line)),
-                var(--color-border) calc(50% + var(--edge) * 0.848 - var(--wipe-line)),
-                var(--color-border) calc(50% + var(--edge) * 0.848),
-                transparent calc(50% + var(--edge) * 0.848)
-            );
-        }
-        /* Rules draw in from the left once the seam is half way. They are
-           taken away while the panel is hidden, unseen. */
-        .home-track > section hr {
-            transform-origin: left;
-            transition: scale 0.4s var(--wipe-easing) calc(var(--seam-delay) + var(--seam-duration) * 0.5);
-        }
-        .home-track > section[data-reveal="hidden"] hr {
-            scale: 0 1;
-        }
     }
     /* Archive thumbnails rise in, a little after one another along the
        diagonal (--d is the cell's place on it, set by scripts/diagonal.ts;
@@ -637,22 +537,18 @@ select:-webkit-autofill:focus {
     background: linear-gradient(transparent, var(--color-accent), transparent);
 }
 
-/* The seam's edge, on the home panels and on page turns (see the page turn
-   rules below): a hard edge at the logo's angle. --wipe-easing is the home
-   seam's; --wipe-angle is the edge's lean (the logo's strokes rise at about
-   58 degrees, so the gradient runs at 90 + 32 = 122deg across them). */
+/* The seam's edge on page turns (see the page turn rules below): a hard edge
+   at the logo's angle. --wipe-easing is the easing of the site's other wipes
+   (thumbnail washes, rules drawing in); --wipe-angle is the edge's lean (the
+   logo's strokes rise at about 58 degrees, so the gradient runs at 90 + 32 =
+   122deg across them). */
 :root {
     --wipe-easing: cubic-bezier(0.65, 0, 0.35, 1);
     --wipe-angle: 122deg;
-    /* Thickness of the line that rides the home panels' wipe edge (0px turns
-       it off). */
+    /* Thickness of the line that rides the seam (0px turns it off). */
     --wipe-line: 1px;
-    /* How long the seam (between home panels, and on page turns) waits after
-       the move starts, so the incoming screen is mostly in place before it
-       crosses it. */
-    --seam-delay: 0.1s;
-    /* How long the seam then takes to cross the screen (it runs on its own
-       clock, not the scroll's or the slide's; eased by --wipe-easing). */
+    /* How long the seam takes to cross the screen (it runs on its own clock,
+       not the slide's). */
     --seam-duration: 0.75s;
 }
 /* A picture that travels between a grid and its page (a flyer or a
@@ -672,14 +568,14 @@ select:-webkit-autofill:focus {
 .vt-title {
     view-transition-class: title;
 }
-/* A pair whose two ends hold different content (the home featured row to
-   the event page): the outgoing picture clears early (see --fade-out below).
+/* A pair whose two ends hold different content (Featured's row to the event
+   page): the outgoing picture clears early (see --fade-out below).
    Pairs that look the same at both ends (nav items, bars) keep an even
    crossfade, so they never dim. */
 .vt-swap {
     view-transition-class: swap;
 }
-/* A screen's main content as one piece (the home track, an archive grid,
+/* A screen's main content as one piece (the hero, Featured, an archive grid,
    About, Contact), so a page turn between screens slides it whole: see the
    .page rules below. */
 .vt-page {
@@ -783,11 +679,11 @@ html:not([data-astro-transition^="paging"]):not([data-closing])::view-transition
 ::view-transition-new(.title) {
     animation-duration: calc(var(--morph-duration) * var(--fade-out));
 }
-/* Page turns (archive page numbers, moves along the row home, events
-   archive, images archive, About, Contact, steps between home panels, and
+/* Page turns (archive page numbers, moves along the row of screens, and
    Previous / Next between event or picture pages) slide under one seam. It is
-   all done here, on the snapshots of the .page groups (the home track, an
-   archive grid, About, Contact, or the named piece that is a detail page,
+   all done here, on the snapshots of the .page groups (a screen's main
+   content: the hero, Featured, an archive grid, About, Contact; or the named
+   piece that is a detail page,
    made a .page for the turn by Base.astro): the outgoing one leaves whole and
    the incoming one comes in from the far side, and one diagonal edge with its
    line crosses the screen once, the outgoing snapshot ahead of it and the
@@ -803,8 +699,7 @@ html:not([data-astro-transition^="paging"]):not([data-closing])::view-transition
        read as the turn stopping and starting.) */
     --page-slide-distance: 25vw;
     /* With the pages overlapping there is no gap to wait out, so a page turn's
-       seam starts at once and gets going quickly (home's waits --seam-delay
-       for the panel to arrive). */
+       seam starts at once and gets going quickly. */
     --page-seam-delay: 0s;
     --page-seam-easing: cubic-bezier(0.3, 0, 0.2, 1);
     --page-slide-duration: calc(var(--page-seam-delay) + var(--seam-duration));
@@ -840,9 +735,9 @@ html:not([data-astro-transition^="paging"]):not([data-closing])::view-transition
         translate: var(--page-slide-distance) 0;
     }
 }
-/* The seam runs on its own clock, as on the home track, not the slide's: it
-   waits --seam-delay after the slide starts (home's waits as long after the
-   scroll does), then takes --seam-duration with --wipe-easing. Everything is
+/* The seam runs on its own clock, not the slide's: it waits
+   --page-seam-delay after the slide starts, then takes --seam-duration with
+   --page-seam-easing. Everything is
    on the snapshots, which all start together, so there is one clock and
    nothing to keep in step with the live page.
    Two registered lengths are animated on each target, apart:
@@ -854,8 +749,8 @@ html:not([data-astro-transition^="paging"]):not([data-closing])::view-transition
        snapshot (same keyframes, duration and easing): the outgoing one from 0
        to -W going forward (to W going back), the incoming one from W to 0
        (from -W going back).
-   --edge, the seam's distance right of the box's own centre (the home panels'
-   formula, see @layer components), is then
+   --edge, the seam's distance right of the box's own centre (see its
+   @property at the top), is then
      --seam - --slide-x + the box's shift.
    The shift is for a box not centred on the screen: the seam leans, so it
    crosses such a box's mid-height elsewhere. Base.astro measures the outgoing
@@ -998,9 +893,9 @@ html[data-astro-transition="paging-back"]::view-transition-new(.page) {
         turn-slide-in-back var(--page-slide-duration) var(--page-slide-easing) both,
         turn-seam-back var(--seam-duration) var(--page-seam-easing) var(--page-seam-delay) both;
 }
-/* The line: the incoming page's group (.into, a class Base.astro, or
-   scripts/track.ts for a home step, gives the incoming box; a group takes
-   the classes of its incoming element). Its own move from the old box to the new one
+/* The line: the incoming page's group (.into, a class Base.astro gives the
+   incoming box; a group takes the classes of its incoming element). Its own
+   move from the old box to the new one
    (when it holds both, archive to archive) is replaced by the seam, so it
    stays where the new box is, as its measured shift assumes; the snapshots
    in it are placed from its top left and keep their own heights, so an

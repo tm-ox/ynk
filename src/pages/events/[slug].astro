@@ -43,7 +43,7 @@ const pageDescription =
   rawDescription.length > 158
     ? `${rawDescription.slice(0, 155).trimEnd()}…`
     : rawDescription;
-// The featured event keeps its home panel label (top left) when opened.
+// The featured event keeps its Featured label (top left) when opened.
 const featured = await getFeaturedEvent();
 const featuredLabel = featured.event?.id === event.id ? featured.label : undefined;
 const hasPhotos = (event.data.images ?? []).some(Boolean);

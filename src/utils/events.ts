@@ -164,7 +164,7 @@ export const slash = (url?: string) =>
     url && !url.endsWith("/") ? `${url}/` : url;
 
 /** The home page's featured event: the nearest upcoming one, otherwise the most
- *  recent (decided at build time), with the label the home panel gives it. */
+ *  recent (decided at build time), with the label Featured gives it. */
 export async function getFeaturedEvent() {
   // Jakarta (UTC+7) calendar date, so an event is "today" for the whole local day.
   const today = new Date(Date.now() + 7 * 3600_000).toISOString().slice(0, 10);
