@@ -129,6 +129,8 @@ const ogImage = new URL(image ?? "/og-default.jpg", Astro.site).href;
             cssVariable="--font-pathway-extreme"
             preload={[{ subset: "latin", style: "normal", weight: 300 }]}
         />
+        <!-- Extras a page wants in the head (neighbour pictures to prefetch). -->
+        <slot name="head" />
         <ClientRouter />
         <GoogleAnalytics id="G-T32SXCFCXD" />
         <!-- Google tag (gtag.js) -->

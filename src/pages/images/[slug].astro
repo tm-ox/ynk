@@ -1,5 +1,5 @@
 ---
-import { Image } from "astro:assets";
+import { Image, getImage } from "astro:assets";
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import { Icon } from "astro-icon/components";
 import NavArrow from "../../components/NavArrow.astro";
@@ -28,12 +28,22 @@ const pageTitle = image.kind === "flyer"
   ? `${image.alt} – photo ${position.n} of ${position.of}`
   : `${image.alt} – photo`;
 const positionLabel = image.kind === "flyer" ? "Flyer" : position ? `${position.n} of ${position.of}` : undefined;
+// The neighbours' pictures, prefetched with the same options the neighbour
+// page renders them with, so the hashed URLs match.
+const neighbourPictures = await Promise.all(
+  [prevImage, nextImage]
+    .filter(Boolean)
+    .map((n) => getImage({ src: n.src, width: 1600 })),
+);
 ---
 
 <BaseLayout
   title={pageTitle}
   description={`${image.description}.`}
 >
+  {neighbourPictures.map((p) => (
+    <link slot="head" rel="prefetch" as="image" href={p.src} />
+  ))}
   <div
     slot="subnav"
     class="flex items-center gap-1 px-3 ml-3 mr-auto border-x border-x-border"

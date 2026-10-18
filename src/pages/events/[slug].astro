@@ -50,6 +50,13 @@ const hasPhotos = (event.data.images ?? []).some(Boolean);
 const flyer = event.data.flyer?.src
   ? await getImage({ src: event.data.flyer.src, width: 1200, format: "jpg" })
   : undefined;
+// The neighbours' flyers, prefetched with the same options EventDetail renders
+// them with (no width), so the hashed URLs match. Events without one are skipped.
+const neighbourFlyers = await Promise.all(
+  [prevEvent, nextEvent]
+    .filter((e) => e?.data.flyer?.src)
+    .map((e) => getImage({ src: e!.data.flyer!.src })),
+);
 ---
 
 <BaseLayout
@@ -63,6 +70,9 @@ const flyer = event.data.flyer?.src
     pageDescription,
   )}
 >
+  {neighbourFlyers.map((f) => (
+    <link slot="head" rel="prefetch" as="image" href={f.src} />
+  ))}
   <div
     slot="subnav"
     class="flex items-center gap-1 px-3 ml-4 mr-auto border-x border-x-border"

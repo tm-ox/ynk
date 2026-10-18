@@ -12,9 +12,11 @@ const name = `ion:arrow-${direction}-sharp`;
 const label = direction === "back" ? "Previous" : "Next";
 ---
 
+{/* Prefetched once the page has loaded, so paging is ready when the visitor
+    gets there. Hover alone would leave the wipe waiting on the network. */}
 {
   href ? (
-    <a href={href} aria-label={label} rel={direction === "back" ? "prev" : "next"}>
+    <a href={href} aria-label={label} data-astro-prefetch="load" rel={direction === "back" ? "prev" : "next"}>
       <Icon name={name} class={className} />
     </a>
   ) : (

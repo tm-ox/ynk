@@ -2,6 +2,7 @@
 // Page numbers only; the Previous / Next arrows live in the nav (see the
 // archive pages' "subnav" slot).
 const { lastPage, currentPage, basePath = "/images/" } = Astro.props;
+// Only the pages either side are prefetched after load, not every number.
 ---
 
 <nav aria-label="Pagination" transition:name="pagination" class="flex flex-wrap justify-center h-auto max-w-none gap-x-6 mx-auto px-0">
@@ -10,6 +11,7 @@ const { lastPage, currentPage, basePath = "/images/" } = Astro.props;
             <span class="text-xs md:text-sm font-displayCon font-bold text-accent">
                 <a
                     href={num === 1 ? basePath : `${basePath}${num}/`}
+                    data-astro-prefetch={Math.abs(num - currentPage) === 1 ? "load" : undefined}
                     class={currentPage === num ? "active" : undefined}
                     aria-current={currentPage === num ? "page" : undefined}
                 >
