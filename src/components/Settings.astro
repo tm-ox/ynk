@@ -3,8 +3,8 @@ import { Icon } from "astro-icon/components";
 
 // Reference for the Keyboard group: [keys, what they do].
 const keyboard: [string[], string][] = [
-  [["←", "→", "h", "l"], "Move between panels, events, photographs and pages."],
-  [["↑", "↓", "j", "k"], "Scroll the panel, event or page. Steps through the image filter."],
+  [["←", "→", "h", "l"], "Move between screens, events, photographs and pages."],
+  [["↑", "↓", "j", "k"], "Scroll the event or page. Steps through the image filter."],
   [["Esc"], "Close and go back."],
   [["?"], "Open settings."],
 ];
@@ -79,7 +79,8 @@ const label = "mb-0 text-xs font-bold tracking-normal uppercase md:text-sm font-
       <h3 class={`${label} sm:text-left`}>Good to know</h3>
       <hr class="mb-0" />
       <ul class="flex flex-col py-3 text-sm font-light tracking-wide list-none font-body md:text-base">
-        <li class="normal-case">The mouse wheel and swiping also move between home panels.</li>
+        <li class="normal-case">The mouse wheel moves on the same way, once the page has scrolled to its end.
+</li>
         <li class="normal-case">Shortcuts pause while you type in a form.</li>
         <li class="normal-case">Animations are reduced if your device asks.</li>
       </ul>

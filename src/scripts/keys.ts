@@ -1,6 +1,5 @@
-import { navigate } from "astro:transitions/client";
 import { canScroll } from "./wheel-pager";
-import { neighbour } from "../utils/row";
+import { stepFor } from "./step";
 
 /** Pixels one j/k/ArrowDown/ArrowUp press scrolls. */
 const SCROLL_STEP = 80;
@@ -13,18 +12,6 @@ const UP = ["ArrowUp", "k"];
 const CLOSE_LINKS =
   'a[data-close], a[aria-label="Back to home"]';
 
-// Past the end of a screen the arrows carry on into the neighbouring one,
-// along the row (utils/row.ts): home -> Featured -> Events archive -> Images
-// archive -> About -> Contact, and back. Within an archive the Previous / Next
-// links page it, so these only run at its ends, where the link is missing.
-// Going back onto an archive lands on its last page, as the nav has it
-// (BaseLayout.astro).
-const beyond = (dir: 1 | -1) =>
-  neighbour(
-    location.pathname,
-    dir,
-    (s) => document.querySelector<HTMLAnchorElement>(`#main-nav a[data-section="${s.name}"][data-last]`)?.dataset.last,
-  );
 
 const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
 
@@ -60,21 +47,14 @@ document.addEventListener("keydown", (e) => {
       e.preventDefault();
       return;
     }
-    // Follow Previous / Next; past them, the neighbouring screen.
-    const link = document.querySelector<HTMLAnchorElement>(
-      `a[aria-label="${dir > 0 ? "Next" : "Previous"}"]`,
-    );
-    if (link) {
+    // Follow Previous / Next; past them, the neighbouring screen (scripts/step.ts).
+    const step = stepFor(dir);
+    if (step) {
       e.preventDefault();
-      link.click();
-    } else {
-      const to = beyond(dir);
-      if (to) {
-        e.preventDefault();
-        navigate(to);
-      }
+      step();
     }
     return;
+
   }
 
   if (key === "Escape") {

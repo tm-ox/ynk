@@ -29,8 +29,8 @@ const screenIndex =
         ? null
         : ROW.slice(0, screen).reduce((n, s) => n + pagesOf(s.name), 0) + pageOf(pathname) - 1;
 // One run of links, in the row's order. An archive's carries its last page:
-// stepping back from the next screen (keys) lands there, so the pages run in
-// order (scripts/keys.ts).
+// stepping back from the next screen (keys, wheel) lands there, so the pages
+// run in order (scripts/step.ts).
 const links = ROW.map((s, i) => ({
     label: s.label,
     href: s.href,

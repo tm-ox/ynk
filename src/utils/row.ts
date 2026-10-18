@@ -1,8 +1,9 @@
 // The row of screens, left to right: home (the hero), Featured, the events
 // archive, the images archive (an event's own pictures included), About,
-// Contact. Page turns (Base.astro), the arrow keys (scripts/keys.ts), the
-// nav and the position line (BaseLayout.astro) all follow this order. Detail
-// pages, privacy and 404 are not in the row.
+// Contact. Page turns (Base.astro), the arrow keys and the wheel
+// (scripts/step.ts), the nav and the position line (BaseLayout.astro) all
+// follow this order. Detail pages, privacy and 404 are not in the row.
+
 
 export interface Screen {
   /** The nav link's data-section, and its transition name. */
