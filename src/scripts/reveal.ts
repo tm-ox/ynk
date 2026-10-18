@@ -1,4 +1,5 @@
-// Home panels fade in (columns alternately rising and falling) as they scroll
+// Fallback only: browsers with scroll-linked animations (animation-timeline: view())
+// reveal panels in CSS alone, with no help from this script. Elsewhere, home panels fade in (columns alternately rising and falling) as they scroll
 // into view (sm and up; the CSS in global.css is gated on prefers-reduced-motion,
 // so this only toggles state). The hero is never animated, and the panel in view
 // on arrival is shown as is, so nothing fights the page-to-page morphs.
