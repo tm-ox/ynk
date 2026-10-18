@@ -79,6 +79,7 @@ const links = ROW.map((s, i) => ({
     {
         screenIndex !== null && (
             <div
+                slot="rule"
                 class="position"
                 data-position
                 aria-hidden="true"
@@ -127,7 +128,8 @@ const links = ROW.map((s, i) => ({
        at build, above). It is named, so a page turn
 
        morphs it from the old place to the new on the morph's own tempo. At
-       every size: phones have the same rule under the same header. */
+       every size: phones have the same rule under the same header. It lies
+       inside the rule (Base.astro), so it stays on it as the page scrolls. */
     .position {
         --position-min: 2rem;
         /* Brighter and thicker than the rule it lies on, which is the accent
@@ -137,7 +139,7 @@ const links = ROW.map((s, i) => ({
         --w: max(calc(100% / var(--n)), var(--position-min));
         position: absolute;
         /* Centred on the 1px rule. */
-        top: calc(var(--spacing-header) - (var(--position-weight) - 1px) / 2);
+        top: calc((var(--position-weight) - 1px) / -2);
         left: calc((100% - var(--w)) * var(--i) / (var(--n) - 1));
         width: var(--w);
         height: var(--position-weight);
@@ -150,8 +152,6 @@ const links = ROW.map((s, i) => ({
             0 100%
         );
         pointer-events: none;
-        /* Above the rule itself and the screens' own layers. */
-        z-index: 2;
     }
     .main-nav a {
         @apply text-accent-muted hover:text-accent;

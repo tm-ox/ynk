@@ -166,8 +166,9 @@ const ogImage = new URL(image ?? "/og-default.jpg", Astro.site).href;
             </nav>
         </header>
         <main id="main">
-            <!-- The rule under the header (see .frame-rule in global.css). -->
-            <div class="frame-rule" aria-hidden="true" transition:name="frame-rule"></div>
+            <!-- The rule under the header (see .frame-rule in global.css), and
+                 what lies on it (the position mark, BaseLayout.astro). -->
+            <div class="frame-rule" aria-hidden="true" transition:name="frame-rule"><slot name="rule" /></div>
             <slot />
         </main>
         <footer class="flex items-center justify-center h-footer">
