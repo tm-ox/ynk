@@ -716,6 +716,12 @@ html:not([data-astro-transition^="paging"]):not([data-closing])::view-transition
        edge's sideways lean over half the screen's height (tan 32deg, about
        0.625), and a little for the line, so it enters and leaves wholly. */
     --seam-overhang: calc(50vh * 0.625 + 2px);
+    /* The line runs between two strips of page background, --page-halo wide,
+       so it still reads as a cut where it crosses a picture (a detail page's
+       flyer or photo), not only over the background. The gap between the two
+       snapshots is the whole band. */
+    --page-halo: 2px;
+    --page-band: calc(var(--wipe-line) + 2 * var(--page-halo));
 }
 @keyframes page-in-from-right {
     from {
@@ -760,9 +766,10 @@ html:not([data-astro-transition^="paging"]):not([data-closing])::view-transition
    (the centre's offset right of the screen's centre + 0.625 times its offset
    below it). So all the edges below are one line on screen.
    The outgoing snapshot shows what is ahead of that line, the incoming one
-   what is behind it, less --wipe-line: between them is a gap of exactly the
-   line's width where neither paints. The line is a band of that width filling
-   the gap, the background of the incoming page's group (which holds its
+   what is behind it, less --page-band: between them is a gap of exactly the
+   band's width where neither paints. The band (the line between strips of
+   page background) fills the gap: it is the background of the incoming
+   page's group (which holds its
    snapshot, and on archive to archive both), painted beneath the snapshots,
    so it only shows through the gap. The group does not slide (its snapshot
    does) and is not moved here either, so its edge is --seam + the incoming
@@ -862,8 +869,8 @@ html[data-astro-transition="paging-forward"]::view-transition-old(.page) {
 html[data-astro-transition="paging-forward"]::view-transition-new(.page) {
     mask-image: linear-gradient(
         var(--wipe-angle),
-        transparent calc(50% + var(--edge) * 0.848 + var(--wipe-line)),
-        #000 calc(50% + var(--edge) * 0.848 + var(--wipe-line))
+        transparent calc(50% + var(--edge) * 0.848 + var(--page-band)),
+        #000 calc(50% + var(--edge) * 0.848 + var(--page-band))
     );
     animation:
         page-in-from-right var(--page-slide-duration) var(--page-slide-easing) both,
@@ -886,8 +893,8 @@ html[data-astro-transition="paging-back"]::view-transition-old(.page) {
 html[data-astro-transition="paging-back"]::view-transition-new(.page) {
     mask-image: linear-gradient(
         var(--wipe-angle),
-        #000 calc(50% + var(--edge) * 0.848 - var(--wipe-line)),
-        transparent calc(50% + var(--edge) * 0.848 - var(--wipe-line))
+        #000 calc(50% + var(--edge) * 0.848 - var(--page-band)),
+        transparent calc(50% + var(--edge) * 0.848 - var(--page-band))
     );
     animation:
         page-in-from-left var(--page-slide-duration) var(--page-slide-easing) both,
@@ -909,18 +916,26 @@ html[data-astro-transition^="paging"]::view-transition-group(.into) {
     background-image: linear-gradient(
         var(--wipe-angle),
         transparent calc(50% + var(--edge) * 0.848),
-        var(--color-border) calc(50% + var(--edge) * 0.848),
-        var(--color-border) calc(50% + var(--edge) * 0.848 + var(--wipe-line)),
-        transparent calc(50% + var(--edge) * 0.848 + var(--wipe-line))
+        var(--color-bg) calc(50% + var(--edge) * 0.848),
+        var(--color-bg) calc(50% + var(--edge) * 0.848 + var(--page-halo)),
+        var(--color-border) calc(50% + var(--edge) * 0.848 + var(--page-halo)),
+        var(--color-border) calc(50% + var(--edge) * 0.848 + var(--page-halo) + var(--wipe-line)),
+        var(--color-bg) calc(50% + var(--edge) * 0.848 + var(--page-halo) + var(--wipe-line)),
+        var(--color-bg) calc(50% + var(--edge) * 0.848 + var(--page-band)),
+        transparent calc(50% + var(--edge) * 0.848 + var(--page-band))
     );
 }
 html[data-astro-transition="paging-back"]::view-transition-group(.into) {
     animation-name: turn-seam-back;
     background-image: linear-gradient(
         var(--wipe-angle),
-        transparent calc(50% + var(--edge) * 0.848 - var(--wipe-line)),
-        var(--color-border) calc(50% + var(--edge) * 0.848 - var(--wipe-line)),
-        var(--color-border) calc(50% + var(--edge) * 0.848),
+        transparent calc(50% + var(--edge) * 0.848 - var(--page-band)),
+        var(--color-bg) calc(50% + var(--edge) * 0.848 - var(--page-band)),
+        var(--color-bg) calc(50% + var(--edge) * 0.848 - var(--page-halo) - var(--wipe-line)),
+        var(--color-border) calc(50% + var(--edge) * 0.848 - var(--page-halo) - var(--wipe-line)),
+        var(--color-border) calc(50% + var(--edge) * 0.848 - var(--page-halo)),
+        var(--color-bg) calc(50% + var(--edge) * 0.848 - var(--page-halo)),
+        var(--color-bg) calc(50% + var(--edge) * 0.848),
         transparent calc(50% + var(--edge) * 0.848)
     );
 }
