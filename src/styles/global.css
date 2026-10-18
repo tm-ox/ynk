@@ -765,7 +765,8 @@ html:not([data-astro-transition^="paging"]):not([data-closing])::view-transition
    (a group only in the incoming page is otherwise added on top of those both
    pages share, so the incoming screen covered the rule):
      auto  root and the pages (.page, and every group not listed)
-     1     an archive's bar held still, a travelling picture or title
+     1     a bar held still (an archive's, a detail page's), a travelling
+           picture or title
      2     the header
      3     the nav's links and social icons (.nav), which lie on it
      4     the rule under the header
@@ -828,23 +829,52 @@ html[data-astro-transition^="paging"]::view-transition-new(archive-bar) {
    wherever the scroll had left it, so the bar slid back down over the
    morph's long tail. With both ends there, the incoming bar shows from the
    first frame; a bar on one side only (an event with a featured label next
-   to one without, or a turn to privacy) keeps its fade, in place. */
+   to one without, or a turn to privacy) keeps its fade, in place. It lies
+   over the pages (z-index 1, as the archive's bar): left among them, the
+   incoming page's band crossed it, wiping the label out and back in. */
 html[data-astro-transition^="paging"]::view-transition-group(detail-bar),
 html[data-astro-transition^="paging"]::view-transition-group(featured-label),
 html[data-astro-transition^="paging"]::view-transition-group(gallery-bar) {
     animation: none;
+    z-index: 1;
 }
-html[data-astro-transition^="paging"]::view-transition-old(detail-bar):not(:only-child),
-html[data-astro-transition^="paging"]::view-transition-old(featured-label):not(:only-child),
-html[data-astro-transition^="paging"]::view-transition-old(gallery-bar):not(:only-child) {
+html[data-astro-transition^="paging"]::view-transition-old(detail-bar),
+html[data-astro-transition^="paging"]::view-transition-old(featured-label),
+html[data-astro-transition^="paging"]::view-transition-old(gallery-bar) {
     animation: none;
     opacity: 0;
 }
-html[data-astro-transition^="paging"]::view-transition-new(detail-bar):not(:only-child),
-html[data-astro-transition^="paging"]::view-transition-new(featured-label):not(:only-child),
-html[data-astro-transition^="paging"]::view-transition-new(gallery-bar):not(:only-child) {
+html[data-astro-transition^="paging"]::view-transition-new(detail-bar),
+html[data-astro-transition^="paging"]::view-transition-new(featured-label),
+html[data-astro-transition^="paging"]::view-transition-new(gallery-bar) {
     animation: none;
     opacity: 1;
+}
+/* A bar on one side only fades instead. (Not written as :not(:only-child)
+   above: Chromium parses that after these pseudo-elements but never matches
+   it, so both ends kept the default crossfade.) The fill is explicit: the
+   group's `animation: none` resets the fill its snapshots inherit, and an
+   outgoing bar's fade, ending before the turn did, came back at full
+   opacity, a flash of the old label. */
+html[data-astro-transition^="paging"]::view-transition-old(detail-bar):only-child,
+html[data-astro-transition^="paging"]::view-transition-old(featured-label):only-child,
+html[data-astro-transition^="paging"]::view-transition-old(gallery-bar):only-child {
+    animation: bar-out var(--morph-duration) var(--morph-fade-easing) both;
+}
+html[data-astro-transition^="paging"]::view-transition-new(detail-bar):only-child,
+html[data-astro-transition^="paging"]::view-transition-new(featured-label):only-child,
+html[data-astro-transition^="paging"]::view-transition-new(gallery-bar):only-child {
+    animation: bar-in var(--morph-duration) var(--morph-fade-easing) both;
+}
+@keyframes bar-out {
+    to {
+        opacity: 0;
+    }
+}
+@keyframes bar-in {
+    from {
+        opacity: 0;
+    }
 }
 /* The travelling picture and title paint over the rest of the transition: the
    grid fading out beneath them, or fading in under them on the way back.
