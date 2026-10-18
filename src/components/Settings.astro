@@ -18,7 +18,7 @@ const label = "mb-0 text-xs font-bold tracking-normal uppercase md:text-sm font-
 
 <button
   type="button"
-  class="h-7 ml-1 pl-3 border-l border-l-border cursor-pointer"
+  class="h-7 ml-1 pl-3 slash-l cursor-pointer"
   data-settings-open
   aria-label="Settings"
   aria-haspopup="dialog"
@@ -106,9 +106,21 @@ const label = "mb-0 text-xs font-bold tracking-normal uppercase md:text-sm font-
     color: var(--color-accent-muted);
     transition: color 0.2s ease, background-color 0.2s ease;
   }
-  /* A divider between the options only, as the nav and social icons have. */
+  /* A divider between the options only, as the nav and social icons have:
+     the slash (see slash-l in global.css). */
   .settings-choice + .settings-choice {
-    border-left: 1px solid var(--color-border);
+    position: relative;
+  }
+  .settings-choice + .settings-choice::before {
+    content: "";
+    position: absolute;
+    left: calc(var(--slash-weight) / -2);
+    top: 50%;
+    width: var(--slash-weight);
+    height: var(--slash-height);
+    background: var(--color-border);
+    transform: translateY(-50%) skewX(-32deg);
+    pointer-events: none;
   }
   .settings-choice:hover span {
     color: var(--color-accent);

@@ -44,6 +44,9 @@
        on a picture. Both are this tall from sm up, so the rule below does not move. */
     --bar-row: calc(var(--spacing) * 7);
     --spacing-header: calc(var(--spacing) * 16);
+    /* The slash dividers (slash-l, slash-r). */
+    --slash-height: 1.125rem;
+    --slash-weight: 1.2px;
     --spacing-footer: calc(var(--spacing) * 8);
     /* What a section's padding and the flyer's frame take from the screen height. */
     --spacing-section-inset: calc(var(--spacing) * 7.5);
@@ -71,6 +74,42 @@
 @utility h-section {
     height: calc(100vh - var(--section-offset));
     height: calc(100dvh - var(--section-offset));
+}
+
+/* A divider at the logo's angle (its stroke rises at about 58deg, so it leans
+   32deg off vertical), in place of a vertical border: slash-l on the element's
+   left edge, slash-r on its right. It is centred on where the border was and
+   --slash-height tall, centred on the row (a full 28px row would lean 17px
+   sideways). --slash-weight is a little over 1px so the leaning line looks as
+   heavy as a 1px upright one. The parent must be positioned (relative is set
+   here). */
+@utility slash-l {
+    position: relative;
+    &::before {
+        content: "";
+        position: absolute;
+        left: calc(var(--slash-weight) / -2);
+        top: 50%;
+        width: var(--slash-weight);
+        height: var(--slash-height);
+        background: var(--color-border);
+        transform: translateY(-50%) skewX(-32deg);
+        pointer-events: none;
+    }
+}
+@utility slash-r {
+    position: relative;
+    &::after {
+        content: "";
+        position: absolute;
+        right: calc(var(--slash-weight) / -2);
+        top: 50%;
+        width: var(--slash-weight);
+        height: var(--slash-height);
+        background: var(--color-border);
+        transform: translateY(-50%) skewX(-32deg);
+        pointer-events: none;
+    }
 }
 
 @layer base {

@@ -118,7 +118,7 @@ export async function getGalleryEvents() {
   }
   return [...groups.values()].map((g) => ({
     id: g.id,
-    label: `${g.title} · ${dateRange(g.date, g.last)}${g.venues.size === 1 ? ` · ${[...g.venues][0]}` : ""}`,
+    label: `${g.title} / ${dateRange(g.date, g.last)}${g.venues.size === 1 ? ` / ${[...g.venues][0]}` : ""}`,
     count: g.count,
   }));
 }

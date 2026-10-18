@@ -53,7 +53,7 @@ const links = [
             >
                 {
                     links.map((link, i) => (
-                        <li class:list={[link.divided && "sm:border-l sm:border-l-border sm:pl-3"]} transition:name={`nav-${link.section}`}>
+                        <li class:list={[link.divided && "sm:slash-l sm:pl-3"]} transition:name={`nav-${link.section}`}>
                             {i === 0 && <hr class="sm:hidden" />}
                             <a
                                 class:list={["sm:relative sm:top-[2px]", link.current && "active"]}
@@ -68,7 +68,7 @@ const links = [
                     ))
                 }
                 {Astro.slots.has("subnav") && (
-                <li class="hidden sm:flex w-auto items-center [&>div]:m-0 [&>div]:border-r-0 [&>div]:pr-0" transition:name="nav-subnav">
+                <li class="hidden sm:flex w-auto items-center [&>div]:m-0 [&>div]:after:hidden [&>div]:pr-0" transition:name="nav-subnav">
                     <slot name="subnav" />
                 </li>
                 )}
@@ -181,6 +181,13 @@ const links = [
             width: var(--w);
             height: var(--position-weight);
             background: var(--position-color);
+            /* Its ends cut at the logo's angle, as the page turn's seam. */
+            clip-path: polygon(
+                calc(var(--position-weight) * 0.625) 0,
+                100% 0,
+                calc(100% - var(--position-weight) * 0.625) 100%,
+                0 100%
+            );
             pointer-events: none;
             /* Above the rule itself and the panels' own layers. */
             z-index: 2;
