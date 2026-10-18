@@ -1,8 +1,7 @@
 ---
 import type { GetStaticPaths } from "astro";
-import { Icon } from "astro-icon/components";
 import BaseLayout from "../../layouts/BaseLayout.astro";
-import NavArrow from "../../components/NavArrow.astro";
+import Paging from "../../components/Paging.astro";
 import Pagination from "../../components/Pagination.astro";
 import GalleryGrid from "../../components/GalleryGrid.astro";
 import GalleryFilter from "../../components/GalleryFilter.astro";
@@ -20,22 +19,13 @@ const events = await getGalleryEvents();
     title={page.currentPage > 1 ? `Images – page ${page.currentPage}` : "Images"}
     description={`Photographs from Yes No Klub events in Yogyakarta, Indonesia.${page.currentPage > 1 ? ` Page ${page.currentPage}.` : ""}`}
 >
-    <div
-      slot="subnav"
-      class="flex items-center gap-1 px-4 ml-4 mr-auto slash-l slash-r"
-    >
-      <NavArrow direction="back" href={slash(page.url.prev)} />
-      <NavArrow direction="forward" href={slash(page.url.next)} />
-      <a href="/" aria-label="Back to home">
-        <Icon name="ion:close-sharp" class="icon" />
-      </a>
-    </div>
     <!-- The archive's screen: its bar and grid, named and a .vt-page, so a
        turn slides the whole of it (see global.css). -->
   <section class="flex-col xl:h-section xl:min-h-0 xl:overflow-hidden vt-page" transition:name="gallery-page">
         <h1 class="sr-only">Images</h1>
         <GalleryFilter label="Images" events={events}>
             <Pagination lastPage={page.lastPage} currentPage={page.currentPage} />
+            {page.lastPage > 1 && <Paging prev={slash(page.url.prev)} next={slash(page.url.next)} />}
         </GalleryFilter>
         <GalleryGrid images={page.data} />
     </section>

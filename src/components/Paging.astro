@@ -1,0 +1,28 @@
+---
+import { Icon } from "astro-icon/components";
+import NavArrow from "./NavArrow.astro";
+
+export interface Props {
+  prev?: string;
+  next?: string;
+  /** A detail page's close link, back to its archive (Base.astro points it
+   *  at wherever the page was opened from). Archives have none. */
+  close?: { href: string; title: string };
+  iconClass?: string;
+}
+const { prev, next, close, iconClass } = Astro.props;
+---
+
+{/* Previous / Next (and Close) at the right end of a screen's top row, by the
+    page numbers or the title, where the eye already is. The labels are what
+    keys.ts, step.ts and Base.astro's page turn look for; keep them. The bars
+    (GalleryFilter, ArchiveBar) centre .paging in their row. */}
+<div class="paging flex items-center gap-1 shrink-0">
+  <NavArrow direction="back" href={prev} class={iconClass} />
+  <NavArrow direction="forward" href={next} class={iconClass} />
+  {close && (
+    <a href={close.href} data-close aria-label="Close" title={close.title}>
+      <Icon name="ion:close-sharp" class="icon" />
+    </a>
+  )}
+</div>

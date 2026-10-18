@@ -1,7 +1,6 @@
 ---
-// Page numbers only; the Previous / Next arrows live in the nav (see the
-// archive pages' "subnav" slot). They sit at the right of the bar at the top
-// of an archive, near the arrows, where a visitor reaches for them.
+// Page numbers only; the Previous / Next arrows follow them in the bar at the
+// top of an archive (Paging.astro), where a visitor reaches for both.
 const { lastPage, currentPage, basePath = "/images/" } = Astro.props;
 // Only the pages either side are prefetched after load, not every number. A
 // single page has no numbers.

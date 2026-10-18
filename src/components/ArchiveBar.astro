@@ -1,6 +1,6 @@
 ---
 // The bar at the top of the events archive: its title at the left and the
-// page numbers (slot) at the right, placed as on the images archive's filter
+// page numbers and arrows (slot) at the right, placed as on the images archive's filter
 // bar (GalleryFilter.astro). Between them it keeps that bar's dropdown row and
 // rule, unseen, so the two archives' grids start at the same height.
 interface Props {
@@ -27,7 +27,8 @@ const { label } = Astro.props;
         @apply mb-0;
     }
     @media (min-width: 40rem) {
-        .archive-bar > :global(nav) {
+        .archive-bar > :global(nav),
+        .archive-bar > :global(.paging) {
             display: flex;
             align-items: center;
             height: var(--bar-row);

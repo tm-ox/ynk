@@ -1,11 +1,10 @@
 ---
 import type { GetStaticPaths } from "astro";
 import { getCollection } from "astro:content";
-import { Icon } from "astro-icon/components";
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import { EVENTS_PER_PAGE, slash } from "../../utils/events";
 import EventGrid from "../../components/EventGrid.astro";
-import NavArrow from "../../components/NavArrow.astro";
+import Paging from "../../components/Paging.astro";
 import ArchiveBar from "../../components/ArchiveBar.astro";
 import Pagination from "../../components/Pagination.astro";
 
@@ -22,22 +21,13 @@ const { page } = Astro.props;
   title={page.currentPage > 1 ? `Events – page ${page.currentPage}` : "Events"}
   description={`Archive of Yes No Klub events, gigs and projects from Yogyakarta, Indonesia.${page.currentPage > 1 ? ` Page ${page.currentPage}.` : ""}`}
 >
-  <div
-    slot="subnav"
-    class="flex items-center gap-1 px-4 ml-4 mr-auto slash-l slash-r"
-  >
-    <NavArrow direction="back" href={slash(page.url.prev)} />
-    <NavArrow direction="forward" href={slash(page.url.next)} />
-    <a href="/" aria-label="Back to home">
-      <Icon name="ion:close-sharp" class="icon" />
-    </a>
-  </div>
   <!-- The archive's screen: its bar and grid, named and a .vt-page, so a
        turn slides the whole of it (see global.css). -->
   <section class="flex-col xl:h-section xl:min-h-0 xl:overflow-hidden vt-page" transition:name="gallery-page">
     <h1 class="sr-only">Events</h1>
     <ArchiveBar label="Events">
       <Pagination lastPage={page.lastPage} currentPage={page.currentPage} basePath="/events/" />
+      {page.lastPage > 1 && <Paging prev={slash(page.url.prev)} next={slash(page.url.next)} />}
     </ArchiveBar>
     <EventGrid events={page.data} />
   </section>
