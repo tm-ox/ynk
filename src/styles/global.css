@@ -251,36 +251,25 @@
         padding-bottom: var(--header-bottom);
     }
     main {
-        @apply relative pt-header;
+        @apply pt-header;
     }
-    /* The rules under the header and above the footer belong to the page frame,
-       not to the sections, so they stay put while a section changes. The one
-       under the header is an element of its own, named, so a page turn
-       captures it apart from the page: in the root snapshot, the incoming
-       screen (the hero runs up under it) would cover it until the turn
-       ended. */
-    .frame-rule,
-    main::after {
-        content: "";
-        @apply inset-x-0 h-px bg-border pointer-events-none;
-        /* Above the positioned layers inside a section (the hero picture). */
-        z-index: 1;
-    }
-    /* Fixed with the header, so it stays under it while the page scrolls
-       (at every size), and as wide as main: in the body's gutter, the body
-       centred at --container-site. Above the header and whatever scrolls
-       under it (a thumbnail's wash is z-index 2), so nothing crosses it. */
+    /* The rule under the header, the site's one rule, belongs to the page
+       frame, not to the sections, so it stays put while a section changes. It
+       is an element of its own, named, so a page turn captures it apart from
+       the page: in the root snapshot, the incoming screen (the hero runs up
+       under it) would cover it until the turn ended. Fixed with the header,
+       so it stays under it while the page scrolls (at every size), and as
+       wide as main: in the body's gutter, the body centred at
+       --container-site. Above the header and whatever scrolls under it (a
+       thumbnail's wash is z-index 2), so nothing crosses it. */
     .frame-rule {
+        @apply h-px bg-border pointer-events-none;
         position: fixed;
         top: var(--spacing-header);
         inset-inline: var(--spacing-gutter);
         max-width: calc(var(--container-site) - 2 * var(--spacing-gutter));
         margin-inline: auto;
         z-index: calc(var(--z-header) + 1);
-    }
-    main::after {
-        position: absolute;
-        bottom: 0;
     }
     section {
         @apply flex items-center pt-2 pb-4 min-h-section;
