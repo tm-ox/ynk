@@ -18,7 +18,10 @@ const events = await getCollection("events");
 const candidates = (minWidth: number): Candidate[] =>
     events.flatMap((event) => {
         const photo = (event.data.images ?? []).find(
-            (img) => img?.src && img.src.width > img.src.height && img.src.width >= minWidth,
+            (img) =>
+                img?.src &&
+                img.src.width > img.src.height &&
+                img.src.width >= minWidth,
         );
         return photo?.src ? [{ src: photo.src, date: event.data.date }] : [];
     });
@@ -31,21 +34,33 @@ for (const c of [...pool].sort((a, b) => b.date.localeCompare(a.date))) {
 }
 const years = [...byYear.values()];
 const photos: ImageMetadata[] = [];
-for (let round = 0; photos.length < pick.most && years.some((y) => y.length > round); round++) {
+for (
+    let round = 0;
+    photos.length < pick.most && years.some((y) => y.length > round);
+    round++
+) {
     for (const year of years) {
-        if (year[round] && photos.length < pick.most) photos.push(year[round].src);
+        if (year[round] && photos.length < pick.most)
+            photos.push(year[round].src);
     }
 }
-if (photos.length < 2) throw new Error("Hero.astro: the sweep needs at least two event photographs.");
+if (photos.length < 2)
+    throw new Error(
+        "Hero.astro: the sweep needs at least two event photographs.",
+    );
 // Responsive widths up to the photograph's own (capped), for sizes="100vw".
-const widthsFor = (w: number) => [640, 960, 1280, 1600, 1920].filter((x) => x < w).concat(Math.min(w, 2400));
+const widthsFor = (w: number) =>
+    [640, 960, 1280, 1600, 1920].filter((x) => x < w).concat(Math.min(w, 2400));
 
 // The headline: "Experimental" and a word that changes. The founding event
 // was "a monthly experimental whatever event" (see About); the last word is the
 // one shown when nothing moves. Edit the list to change the cycle (two words at
 // least).
 const words = ["music", "sound", "performance", "people", "etc.", "whatever"];
-if (words.length < 2) throw new Error("Hero.astro: the cycling headline needs at least two words.");
+if (words.length < 2)
+    throw new Error(
+        "Hero.astro: the cycling headline needs at least two words.",
+    );
 const wordSeconds = 1.8;
 const cycle = words.length * wordSeconds;
 
@@ -59,7 +74,7 @@ const jolts = {
 const jolt = (list: string[], i: number) => list[i % list.length];
 
 // One slot is a word's 1/N of the cycle. Keyframes are hard cuts (steps), as a
-// signal breaking up: flicker and slice in, settle, a brief twitch mid-way, then
+// signal breaking up: flicker and slice in, settle and hold, then
 // slice and flicker out. The slices leave room (-0.3em) on the sides they do not
 // cut, because the capitals are taller than the tight line box; settled is no clip.
 // Colour fringes echo the photograph's blue and pink.
@@ -68,21 +83,37 @@ const split = (e: number) =>
     `text-shadow: ${e}em 0 rgb(255 40 140 / 0.75), -${e}em 0 rgb(0 210 255 / 0.75)`;
 const frames: [number, string][] = [
     [0, "opacity: 0"],
-    [0.005, `opacity: 1; translate: var(--dx) var(--dy); rotate: var(--dr); clip-path: inset(-0.3em -0.3em 55% -0.3em); ${split(0.05)}`],
+    [
+        0.005,
+        `opacity: 1; translate: var(--dx) var(--dy); rotate: var(--dr); clip-path: inset(-0.3em -0.3em 55% -0.3em); ${split(0.05)}`,
+    ],
     [0.03, "opacity: 0"],
-    [0.05, `opacity: 1; translate: calc(var(--dx) * -0.6) calc(var(--dy) * -1); rotate: calc(var(--dr) * -0.5); clip-path: inset(38% -0.3em -0.3em -0.3em); ${split(0.04)}`],
-    [0.08, `translate: calc(var(--dx) * 0.3) 0; rotate: 0deg; clip-path: inset(-0.3em -0.3em 20% -0.3em); ${split(0.02)}`],
+    [
+        0.05,
+        `opacity: 1; translate: calc(var(--dx) * -0.6) calc(var(--dy) * -1); rotate: calc(var(--dr) * -0.5); clip-path: inset(38% -0.3em -0.3em -0.3em); ${split(0.04)}`,
+    ],
+    [
+        0.08,
+        `translate: calc(var(--dx) * 0.3) 0; rotate: 0deg; clip-path: inset(-0.3em -0.3em 20% -0.3em); ${split(0.02)}`,
+    ],
     [0.11, "translate: 0 0; rotate: 0deg; clip-path: none; text-shadow: none"],
-    [0.5, `translate: calc(var(--dx) * 0.4) 0; ${split(0.03)}`],
-    [0.52, "translate: 0 0; text-shadow: none"],
-    [0.84, `translate: calc(var(--dx) * -1) calc(var(--dy) * 0.5); rotate: calc(var(--dr) * 0.7); clip-path: inset(20% -0.3em 40% -0.3em); ${split(0.05)}`],
+    [
+        0.84,
+        `translate: calc(var(--dx) * -1) calc(var(--dy) * 0.5); rotate: calc(var(--dr) * 0.7); clip-path: inset(20% -0.3em 40% -0.3em); ${split(0.05)}`,
+    ],
     [0.88, "opacity: 0"],
-    [0.91, `opacity: 1; translate: calc(var(--dx) * 0.5) 0; rotate: 0deg; clip-path: inset(55% -0.3em -0.3em -0.3em); ${split(0.03)}`],
+    [
+        0.91,
+        `opacity: 1; translate: calc(var(--dx) * 0.5) 0; rotate: 0deg; clip-path: inset(55% -0.3em -0.3em -0.3em); ${split(0.03)}`,
+    ],
     [0.95, "opacity: 0"],
 ];
 const wordKeyframes = `@keyframes hero-word {
 ${frames
-    .map(([at, css]) => `    ${(slot * at).toFixed(3)}% { ${css}; animation-timing-function: steps(1, end); }`)
+    .map(
+        ([at, css]) =>
+            `    ${(slot * at).toFixed(3)}% { ${css}; animation-timing-function: steps(1, end); }`,
+    )
     .join("\n")}
     ${slot.toFixed(3)}%, 100% { opacity: 0; }
 }`;
@@ -116,7 +147,12 @@ const parallax = { shift: 10, ease: 0.06, overscan: 1.02, title: 0.3 };
              until their turn. -->
         <div class="hero-pics" aria-hidden="true">
             {photos.map((src, i) => (
-                <div class="hero-pic" data-role={i === 0 ? "current" : i === 1 ? "next" : undefined}>
+                <div
+                    class="hero-pic"
+                    data-role={
+                        i === 0 ? "current" : i === 1 ? "next" : undefined
+                    }
+                >
                     <Image
                         src={src}
                         alt=""
@@ -153,7 +189,12 @@ const parallax = { shift: 10, ease: 0.06, overscan: 1.02, title: 0.3 };
         <!-- Out of the grid flow altogether (absolute), vertically centred on the
              stage at its right edge, so it cannot move the headline. Size and
              inset: see .hero-next in the styles. -->
-        <a href="/featured/" target="_self" aria-label="Next section" class="absolute hero-next">
+        <a
+            href="/featured/"
+            target="_self"
+            aria-label="Next section"
+            class="absolute hero-next"
+        >
             <Icon name="ion:arrow-forward-sharp" class="icon hero-next-icon" />
         </a>
     </div>
@@ -224,8 +265,16 @@ const parallax = { shift: 10, ease: 0.06, overscan: 1.02, title: 0.3 };
         const changed = () => waiting.forEach((arm) => arm());
         const running = () => !document.hidden && !turning;
         document.addEventListener("visibilitychange", changed, { signal });
-        document.addEventListener("astro:before-preparation", () => ((turning = true), changed()), { signal });
-        document.addEventListener("astro:after-swap", () => ((turning = false), changed()), { signal });
+        document.addEventListener(
+            "astro:before-preparation",
+            () => ((turning = true), changed()),
+            { signal },
+        );
+        document.addEventListener(
+            "astro:after-swap",
+            () => ((turning = false), changed()),
+            { signal },
+        );
         // Resolves after ms of running time, counted afresh whenever a pause
         // ends (so a tab brought back rests a whole dwell first). rest(0)
         // just waits until running.
@@ -247,8 +296,16 @@ const parallax = { shift: 10, ease: 0.06, overscan: 1.02, title: 0.3 };
                 arm();
             });
         const dwell = () => {
-            const narrow = stage.clientWidth < 768 || stage.clientHeight > stage.clientWidth;
-            return Number(narrow ? stage.dataset.dwellNarrow : stage.dataset.dwellWide) * 1000;
+            const narrow =
+                stage.clientWidth < 768 ||
+                stage.clientHeight > stage.clientWidth;
+            return (
+                Number(
+                    narrow
+                        ? stage.dataset.dwellNarrow
+                        : stage.dataset.dwellWide,
+                ) * 1000
+            );
         };
         // One crossing; the seam's own animation ends it (the pictures' run
         // alongside on the same clock).
@@ -303,12 +360,21 @@ const parallax = { shift: 10, ease: 0.06, overscan: 1.02, title: 0.3 };
                 now.y += (target.y - now.y) * ease;
                 stage.style.setProperty("--px", `${now.x.toFixed(2)}px`);
                 stage.style.setProperty("--py", `${now.y.toFixed(2)}px`);
-                stage.style.setProperty("--tx", `${(-now.x * title).toFixed(2)}px`);
-                stage.style.setProperty("--ty", `${(-now.y * title).toFixed(2)}px`);
-                const far = Math.abs(target.x - now.x) + Math.abs(target.y - now.y) > 0.05;
+                stage.style.setProperty(
+                    "--tx",
+                    `${(-now.x * title).toFixed(2)}px`,
+                );
+                stage.style.setProperty(
+                    "--ty",
+                    `${(-now.y * title).toFixed(2)}px`,
+                );
+                const far =
+                    Math.abs(target.x - now.x) + Math.abs(target.y - now.y) >
+                    0.05;
                 frame = far ? requestAnimationFrame(step) : 0;
             };
-            const toward = (offset: number, half: number) => Math.max(-1, Math.min(1, offset / half));
+            const toward = (offset: number, half: number) =>
+                Math.max(-1, Math.min(1, offset / half));
             window.addEventListener(
                 "pointermove",
                 (e) => {
@@ -317,8 +383,16 @@ const parallax = { shift: 10, ease: 0.06, overscan: 1.02, title: 0.3 };
                         x: Math.max(0, Math.min(most, s.width * spare - 1)),
                         y: Math.max(0, Math.min(most, s.height * spare - 1)),
                     };
-                    target.x = -toward(e.clientX - (s.left + s.width / 2), s.width / 2) * room.x;
-                    target.y = -toward(e.clientY - (s.top + s.height / 2), s.height / 2) * room.y;
+                    target.x =
+                        -toward(
+                            e.clientX - (s.left + s.width / 2),
+                            s.width / 2,
+                        ) * room.x;
+                    target.y =
+                        -toward(
+                            e.clientY - (s.top + s.height / 2),
+                            s.height / 2,
+                        ) * room.y;
                     if (!frame) frame = requestAnimationFrame(step);
                 },
                 { signal, passive: true },
@@ -409,15 +483,24 @@ const parallax = { shift: 10, ease: 0.06, overscan: 1.02, title: 0.3 };
             transparent calc(50% + var(--edge) * 0.848),
             var(--color-bg) calc(50% + var(--edge) * 0.848),
             var(--color-bg) calc(50% + var(--edge) * 0.848 + var(--page-halo)),
-            var(--color-border) calc(50% + var(--edge) * 0.848 + var(--page-halo)),
-            var(--color-border) calc(50% + var(--edge) * 0.848 + var(--page-halo) + var(--wipe-line)),
-            var(--color-bg) calc(50% + var(--edge) * 0.848 + var(--page-halo) + var(--wipe-line)),
+            var(--color-border)
+                calc(50% + var(--edge) * 0.848 + var(--page-halo)),
+            var(--color-border)
+                calc(
+                    50% + var(--edge) * 0.848 + var(--page-halo) +
+                        var(--wipe-line)
+                ),
+            var(--color-bg)
+                calc(
+                    50% + var(--edge) * 0.848 + var(--page-halo) +
+                        var(--wipe-line)
+                ),
             var(--color-bg) calc(50% + var(--edge) * 0.848 + var(--page-band)),
             transparent calc(50% + var(--edge) * 0.848 + var(--page-band))
         );
     }
     /* A strip down the middle of the stage (--strip wide), with the headline
-       large enough to break inside it: "Experimental" over the changing word,
+       large enough to break inside it, set left in it: "Experimental" over the changing word,
        each wrapping within the strip. BioRhyme Expanded's capitals are about
        0.72em tall, so a line-height of 0.72 would just touch; --cap-lh is tuned
        lower so the lines overlap. This overrides the --text-hero tokens in
@@ -426,18 +509,27 @@ const parallax = { shift: 10, ease: 0.06, overscan: 1.02, title: 0.3 };
     .hero-title {
         --strip: 62cqw;
         --size: clamp(2.25rem, 7cqw, 6.5rem);
-        --word-pull: 0.012em; /* moves the changing word up toward "Experimental" */
-        --cap-lh: 0.57;
+        --word-pull: 0.001em; /* moves the changing word up toward "Experimental" */
+        --cap-lh: 0.56;
         display: flex;
         flex-direction: column;
-        align-items: center;
+        align-items: flex-start;
         width: var(--strip);
-        text-align: center;
+        text-align: left;
         overflow-wrap: anywhere;
         word-break: normal;
         font-size: var(--size);
         line-height: var(--cap-lh);
         padding-block: 1rem;
+    }
+    /* Narrow stages: the strip takes the stage's full width (less a 1rem
+       gutter each side) and the type grows with it, rather than holding at
+       62% and the minimum size. Tune --strip and --size here for phones. */
+    @container (max-width: 48rem) {
+        .hero-title {
+            --strip: calc(100cqw - 2rem);
+            --size: 10.5cqw;
+        }
     }
     /* The words share one cell, so the line is as wide as the longest. Still, or
        with reduced motion, only the last shows. */
@@ -445,7 +537,7 @@ const parallax = { shift: 10, ease: 0.06, overscan: 1.02, title: 0.3 };
         display: inline-grid;
         margin-top: calc(var(--word-pull) * -1);
         width: 100%;
-        text-align: center;
+        text-align: left;
     }
     .hero-word {
         grid-area: 1 / 1;
@@ -489,9 +581,12 @@ const parallax = { shift: 10, ease: 0.06, overscan: 1.02, title: 0.3 };
     .hero-next-icon {
         width: var(--next-size);
         height: var(--next-size);
-        /* Pulled out by the empty 13% beside the tip, so the tip meets the edge
-           while the link's own box (and its focus ring) stays inside the stage. */
-        margin-right: calc(var(--next-size) * -0.13);
+        /* Pulled out by the empty 13% beside the tip, so the tip meets the edge,
+           then by --next-crop more, so the stage cuts the point off, as if the
+           arrow runs on through to the next screen. The link's own box (and its
+           focus ring) stays inside the stage. 0 leaves the tip on the edge. */
+        --next-crop: 0.1;
+        margin-right: calc(var(--next-size) * (-0.13 - var(--next-crop)));
         filter: drop-shadow(0 0 0.4rem rgb(0 0 0 / 0.7));
     }
 </style>
