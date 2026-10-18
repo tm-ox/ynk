@@ -9,8 +9,9 @@ import { Icon } from "astro-icon/components";
 // stage sharply. If fewer than `enough` events have one at the preferred width,
 // the fallback width is used. The pick is spread across the years: newest year
 // first, one event from each year in turn, newest event first within a year,
-// up to `most`. The script below keeps the first in place (it is the eager
-// one) and shuffles the rest on every visit.
+// up to `most`. The script below keeps the first two in place (the first is the
+// eager one; the second is the next, shown and loading from the start) and
+// shuffles the rest on every visit.
 const pick = { preferred: 1600, fallback: 1200, enough: 6, most: 10 };
 // Photographs never to use here, by file name (without the extension) as in
 // src/content/images; the event's next one that qualifies takes its place.
@@ -61,7 +62,8 @@ const widthsFor = (w: number) =>
 // The headline: "Experimental" and a word that changes. The founding event
 // was "a monthly experimental whatever event" (see About); the last word is the
 // one shown when nothing moves. Edit the list to change the cycle (two words at
-// least).
+// least). The heading's text for screen readers is "Experimental etc." whatever
+// the list holds (the sr-only span below), not the still word: deliberately.
 const words = ["music", "sound", "performance", "people", "etc.", "whatever"];
 if (words.length < 2)
     throw new Error(
@@ -251,8 +253,9 @@ const parallax = { shift: 10, ease: 0.06, overscan: 1.02, title: 0.3 };
         const seam = stage.querySelector<HTMLElement>(".hero-seam")!;
 
         // Back to the server's state (a restart can come mid-cycle), then the
-        // order for this visit: the first stays, the rest shuffled.
-        const order = [0, ...shuffle(pics.slice(1).map((_, i) => i + 1))];
+        // order for this visit: the first two stay (the server made the second
+        // the next, already loading), the rest shuffled.
+        const order = [0, 1, ...shuffle(pics.slice(2).map((_, i) => i + 2))];
         let at = 0;
         const setRoles = () => {
             pics.forEach((pic) => delete pic.dataset.role);
@@ -302,9 +305,14 @@ const parallax = { shift: 10, ease: 0.06, overscan: 1.02, title: 0.3 };
                 waiting.add(arm);
                 arm();
             });
+        // Narrow as the styles' @container (max-width: 48rem) has it, in the
+        // root's rems.
         const dwell = () => {
+            const rem = parseFloat(
+                getComputedStyle(document.documentElement).fontSize,
+            );
             const narrow =
-                stage.clientWidth < 768 ||
+                stage.clientWidth <= 48 * rem ||
                 stage.clientHeight > stage.clientWidth;
             return (
                 Number(
@@ -341,6 +349,9 @@ const parallax = { shift: 10, ease: 0.06, overscan: 1.02, title: 0.3 };
                     if (signal.aborted) return;
                     if (order.length > 2) {
                         order.splice(slot, 1);
+                        // The next one wraps to the start: the current one
+                        // moves down a place with the rest.
+                        if (slot < at) at--;
                         if (at >= order.length) at = 0;
                         setRoles();
                     }
@@ -518,9 +529,9 @@ const parallax = { shift: 10, ease: 0.06, overscan: 1.02, title: 0.3 };
        --strip, --size and --cap-lh. */
     .hero-title {
         /* Set flush with the stage's left edge (justify-self), its right end
-           where it was (9.7cqw short of the right, room for the arrow).
-           Strip and size are scaled together (1.3x, then 90.3 / 80.6), so the
-           lines break where they did. */
+           9.7cqw short of the stage's right, room for the arrow. --size
+           follows --strip (both in cqw, within the clamp), so the lines break
+           in the same places as the stage grows; change them together. */
         --strip: 90.3cqw;
         --size: clamp(2.25rem, 10.2cqw, 9.5rem);
         justify-self: start;
@@ -529,7 +540,6 @@ const parallax = { shift: 10, ease: 0.06, overscan: 1.02, title: 0.3 };
            box, meets the edge. Other first letters (the changing word) keep
            their own bearings. */
         margin-left: -0.062em;
-        --word-pull: 0.001em; /* moves the changing word up toward "Experimental" */
         --cap-lh: 0.56;
         display: flex;
         flex-direction: column;
@@ -559,7 +569,6 @@ const parallax = { shift: 10, ease: 0.06, overscan: 1.02, title: 0.3 };
        with reduced motion, only the last shows. */
     .hero-words {
         display: inline-grid;
-        margin-top: calc(var(--word-pull) * -1);
         width: 100%;
         text-align: left;
     }
