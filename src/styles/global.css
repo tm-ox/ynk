@@ -473,7 +473,7 @@
         --spotlight: 0.45;
     }
     @media (hover: hover) {
-        html:not([data-astro-transition]) :is(.gallery-grid, .photo-grid):has(.thumb:hover) > li:not(:has(.thumb:hover)) .thumb img {
+        html:not([data-astro-transition]) :is(.gallery-grid, .photo-grid):has(a:hover) > li:not(:has(a:hover)) .thumb img {
             opacity: var(--spotlight);
         }
     }
