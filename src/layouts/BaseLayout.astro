@@ -46,33 +46,34 @@ const links = ROW.map((s, i) => ({
         <Hamburger />
         <div
             id="main-nav"
-            class="absolute top-0 left-0 ml-auto justify-center hidden w-full h-viewport overflow-y-auto sm:flex sm:w-auto sm:h-auto sm:overflow-visible sm:relative main-nav bg-scrim-heavy sm:bg-transparent"
+            class="absolute top-full left-0 ml-auto justify-center hidden w-full overflow-y-auto overscroll-contain max-sm:flex-col sm:flex sm:w-auto sm:h-auto sm:overflow-visible sm:relative sm:top-auto main-nav bg-scrim-heavy sm:bg-transparent"
         >
-            <!-- Phones: the open menu is set left, in the page's gutter, as
-                 everything else is. -->
+            <!-- Phones: the open menu is a panel from the header rule down, set
+                 left in the page's gutter as everything else is: the links at
+                 its top, the social icons at its foot. -->
             <ul
-                class="flex flex-col items-stretch my-auto text-left max-sm:px-gutter sm:items-center sm:flex-row sm:gap-x-3"
+                class="flex flex-col items-stretch text-left max-sm:grow max-sm:shrink-0 max-sm:px-gutter max-sm:pt-2 max-sm:pb-4 sm:my-auto sm:items-center sm:flex-row sm:gap-x-3"
             >
                 {
-                    links.map((link, i) => (
+                    links.map((link) => (
                         <li transition:name={`nav-${link.section}`}>
-                            {i === 0 && <hr class="sm:hidden" />}
                             <a
-                                class:list={["sm:relative sm:top-[2px]", link.current && "active"]}
+                                class:list={["max-sm:block max-sm:py-2 sm:relative sm:top-[2px]", link.current && "active"]}
                                 aria-current={link.current ? "true" : undefined}
                                 href={link.href}
                                 data-section={link.section}
                                 data-last={link.last}
                                 target="_self">{link.label}</a
                             >
-                            <hr class="sm:hidden" />
                         </li>
                     ))
                 }
-                <li transition:name="nav-social">
+                <li class="max-sm:mt-auto max-sm:pt-4" transition:name="nav-social">
                     <Sosmed />
                 </li>
             </ul>
+            <!-- The line that rides the panel's edge as it opens and closes. -->
+            <span class="sweep-seam" aria-hidden="true" hidden data-menu-seam><span></span></span>
         </div>
     </div>
     <slot name="head" slot="head" />
@@ -152,6 +153,21 @@ const links = ROW.map((s, i) => ({
             0 100%
         );
         pointer-events: none;
+    }
+    /* The phone menu's panel: from the header's foot (the rule lies on its
+       top edge) to the screen's. It opens and closes like a page turn
+       (Hamburger.astro, scripts/sweep.ts): --menu-sweep is how long the edge
+       takes to cross it, --menu-fade how long it fades instead with reduced
+       motion. */
+    .main-nav {
+        --menu-sweep: 0.45s;
+        --menu-fade: 0.2s;
+    }
+    @media (width < 40rem) {
+        .main-nav {
+            height: calc(100vh - var(--spacing-header));
+            height: calc(100dvh - var(--spacing-header));
+        }
     }
     .main-nav a {
         @apply text-accent-muted hover:text-accent;

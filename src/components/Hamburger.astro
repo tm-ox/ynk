@@ -19,28 +19,91 @@
     }
 </style>
 
-<script is:inline>
-    // Inline scripts re-run on each swap, so bind once and
-    // close the menu whenever a new page loads.
-    if (!window.__menuBound) {
-        window.__menuBound = true;
-        const setOpen = (open) => {
-            document.querySelector(".main-nav")?.classList.toggle("expanded", open);
-            document
-                .querySelector(".hamburger")
-                ?.setAttribute("aria-expanded", String(open));
-        };
-        document.addEventListener("click", (e) => {
-            if (e.target.closest(".hamburger")) {
-                const open = document
-                    .querySelector(".main-nav")
-                    .classList.contains("expanded");
-                setOpen(!open);
-            }
+<script>
+    import { sweep } from "../scripts/sweep";
+
+    // The phone menu (#main-nav, BaseLayout.astro) opens and closes like a
+    // page turn (scripts/sweep.ts), clipped to its panel. The nav is persisted
+    // across transitions and this module runs once, so it is bound once and
+    // everything is looked up when the event happens.
+    const panel = () => document.querySelector<HTMLElement>("#main-nav");
+    const button = () => document.querySelector<HTMLButtonElement>(".hamburger");
+    const isOpen = (p: HTMLElement) => p.classList.contains("expanded") && !p.hasAttribute("data-closing");
+
+    const turn = (p: HTMLElement, show: boolean) =>
+        sweep(p, p.querySelector("ul")!, p.querySelector<HTMLElement>("[data-menu-seam]")!, show, {
+            duration: "--menu-sweep",
+            fade: "--menu-fade",
         });
-        document.addEventListener("click", (e) => {
-            if (e.target.closest(".main-nav a")) setOpen(false);
-        });
-        document.addEventListener("astro:page-load", () => setOpen(false));
+
+    // Closed at once, nothing of a sweep left: on navigation (before the old
+    // page is captured, so a page turn never carries the menu), at the end of
+    // a close, and when the screen grows past the phone layout.
+    function reset(p: HTMLElement) {
+        p.getAnimations({ subtree: true }).forEach((a) => a.cancel());
+        p.classList.remove("expanded");
+        p.removeAttribute("data-closing");
+        p.querySelector<HTMLElement>("[data-menu-seam]")!.hidden = true;
+        button()?.setAttribute("aria-expanded", "false");
     }
+
+    // A close still turning is cut short where it is.
+    function open(p: HTMLElement) {
+        p.getAnimations({ subtree: true }).forEach((a) => a.cancel());
+        p.removeAttribute("data-closing");
+        p.classList.add("expanded");
+        button()?.setAttribute("aria-expanded", "true");
+        turn(p, true).catch(() => {});
+    }
+
+    // The button and Esc: the panel turns away, then it is hidden.
+    // data-closing keeps a second tap from starting it again; one still
+    // opening is finished first. Focus left inside goes back to the button.
+    function shut(p: HTMLElement) {
+        if (!isOpen(p)) return;
+        p.getAnimations({ subtree: true }).forEach((a) => a.finish());
+        p.setAttribute("data-closing", "");
+        button()?.setAttribute("aria-expanded", "false");
+        if (p.contains(document.activeElement)) button()?.focus();
+        turn(p, false).then(
+            () => reset(p),
+            () => {},
+        );
+    }
+
+    document.addEventListener("click", (e) => {
+        const p = panel();
+        if (!p) return;
+        const target = e.target as Element;
+        if (target.closest(".hamburger")) {
+            if (isOpen(p)) shut(p);
+            else open(p);
+        } else if (target.closest('.main-nav a[target="_blank"]')) {
+            // The social links leave the page open behind a new tab; the
+            // others navigate, which closes it below.
+            shut(p);
+        }
+    });
+
+    // Ahead of the page's own keys (scripts/keys.ts, where Esc goes back), and
+    // not while Settings is open over it (Esc is its own then).
+    document.addEventListener(
+        "keydown",
+        (e) => {
+            const p = panel();
+            if (e.key !== "Escape" || !p || !isOpen(p) || document.querySelector("dialog[open]")) return;
+            e.preventDefault();
+            shut(p);
+            button()?.focus();
+        },
+        true,
+    );
+
+    const closeNow = () => {
+        const p = panel();
+        if (p) reset(p);
+    };
+    document.addEventListener("astro:before-preparation", closeNow);
+    document.addEventListener("astro:page-load", closeNow);
+    matchMedia("(min-width: 40rem)").addEventListener("change", closeNow);
 </script>
