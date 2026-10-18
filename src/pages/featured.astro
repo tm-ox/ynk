@@ -1,0 +1,17 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import Events from "../components/home/Events.astro";
+---
+
+<BaseLayout
+  title="Featured"
+  description="The event Yes No Klub is featuring now: the next one coming up, otherwise the latest, with its pictures."
+>
+  <!-- The second screen of the row, after home: named and a .vt-page, so a
+       turn to or from it slides it whole (see global.css). Its flyer and
+       title still morph into the event's page (Base.astro leaves them named
+       for that move). -->
+  <div class="vt-page" transition:name="featured">
+    <Events />
+  </div>
+</BaseLayout>

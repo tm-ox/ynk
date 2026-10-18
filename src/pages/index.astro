@@ -2,7 +2,6 @@
 import BaseLayout from "../layouts/BaseLayout.astro";
 import Track from "../components/home/Track.astro";
 import Hero from "../components/home/Hero.astro";
-import Events from "../components/home/Events.astro";
 
 const organization = {
   "@context": "https://schema.org",
@@ -34,6 +33,5 @@ const organization = {
 <BaseLayout jsonLd={organization}>
     <Track>
         <Hero />
-        <Events />
     </Track>
 </BaseLayout>

@@ -4,7 +4,8 @@ import "../styles/global.css";
 import Base from "./Base.astro";
 import Sosmed from "../components/Sosmed.astro";
 import { getCollection } from "astro:content";
-import { EVENTS_PER_PAGE, IMAGES_PER_PAGE, HOME_PANELS, getGalleryImages } from "../utils/events";
+import { EVENTS_PER_PAGE, IMAGES_PER_PAGE, getGalleryImages } from "../utils/events";
+import { ROW, pageOf, screenOf } from "../utils/row";
 
 const { title, description, image, jsonLd } = Astro.props;
 const pathname = new URL(Astro.request.url).pathname;
@@ -12,37 +13,32 @@ const currentPath = pathname.slice(1); // remove the first "/"
 const isHome = currentPath === "";
 const isCurrent = (name: string) =>
     currentPath === name || currentPath.startsWith(`${name}/`);
-// The archives' last pages: stepping back from the next screen (keys) lands
-// there, so the pages run in order (scripts/keys.ts).
-const eventsPages = Math.max(1, Math.ceil((await getCollection("events")).length / EVENTS_PER_PAGE));
-const eventsLast = eventsPages > 1 ? `/events/${eventsPages}/` : "/events/";
+// How many pages each screen of the row has: one, or an archive's count.
+const pages: Record<string, number> = {
+    events: Math.max(1, Math.ceil((await getCollection("events")).length / EVENTS_PER_PAGE)),
+    images: Math.max(1, Math.ceil((await getGalleryImages()).length / IMAGES_PER_PAGE)),
+};
+const pagesOf = (name: string) => pages[name] ?? 1;
 // The position line under the header (scripts/position.ts): the whole row of
-// screens is the home panels, then the events pages, then the images pages,
-// then About and Contact. Detail pages, privacy and 404 are not in the row and
-// have no line.
-const imagesPages = Math.max(1, Math.ceil((await getGalleryImages()).length / IMAGES_PER_PAGE));
-const imagesLast = imagesPages > 1 ? `/images/${imagesPages}/` : "/images/";
-const screens = HOME_PANELS + eventsPages + imagesPages + 2;
-const pageNo = Number(pathname.match(/^\/(?:events|images)\/(\d+)\/?$/)?.[1] ?? 1);
+// screens (utils/row.ts), each archive counting each of its pages. Detail
+// pages, privacy and 404 are not in the row and have no line.
+const screens = ROW.reduce((n, s) => n + pagesOf(s.name), 0);
+const screen = screenOf(pathname);
 const screenIndex =
-    isHome ? 0
-    : /^\/events(\/(\d+\/?)?)?$/.test(pathname) ? HOME_PANELS + pageNo - 1
-    // An event's own gallery counts as the images archive's first page.
-    : /^\/images(\/(\d+\/?)?)?$/.test(pathname) || /^\/images\/event\//.test(pathname)
-      ? HOME_PANELS + eventsPages + (pathname.startsWith("/images/event/") ? 0 : pageNo - 1)
-    : /^\/about\/?$/.test(pathname) ? HOME_PANELS + eventsPages + imagesPages
-    : /^\/contact\/?$/.test(pathname) ? HOME_PANELS + eventsPages + imagesPages + 1
-    : null;
-// One run of links, in the row's order: the home panels, the archives, then
-// About and Contact.
-const links = [
-    { label: "Home", href: isHome ? "/#top" : "/", section: "top", current: false },
-    { label: "Featured", href: "/#events", section: "events", current: false },
-    { label: "Events", href: "/events/", section: "events-page", current: isCurrent("events"), last: eventsLast },
-    { label: "Images", href: "/images/", section: "images-page", current: isCurrent("images"), last: imagesLast },
-    { label: "About", href: "/about/", section: "about", current: isCurrent("about") },
-    { label: "Contact", href: "/contact/", section: "contact", current: isCurrent("contact") },
-];
+    screen === undefined
+        ? null
+        : ROW.slice(0, screen).reduce((n, s) => n + pagesOf(s.name), 0) + pageOf(pathname) - 1;
+// One run of links, in the row's order. An archive's carries its last page:
+// stepping back from the next screen (keys) lands there, so the pages run in
+// order (scripts/keys.ts).
+const links = ROW.map((s, i) => ({
+    label: s.label,
+    href: s.href,
+    section: s.name,
+    current: i === 0 ? isHome : isCurrent(s.name),
+    last: s.paged ? (pagesOf(s.name) > 1 ? `${s.href}${pagesOf(s.name)}/` : s.href) : undefined,
+}));
+
 ---
 
 <Base title={title} description={description} image={image} jsonLd={jsonLd}>
@@ -103,14 +99,11 @@ const links = [
 </script>
 
 <script>
-    // Marks the nav link for the panel in view on the home page, and the
-    // events/images links on their own routes (archives and detail pages), and
-    // About and Contact on their pages. Only the theme is persisted
-    // across transitions, so this runs on every page load.
-    let observer: IntersectionObserver | undefined;
-    // Panels sit side by side from sm up, stacked below it.
-    const wide = matchMedia("(min-width: 40rem)");
+    import { ROW } from "../utils/row";
 
+    // Marks the nav link for the screen the page belongs to: its own, or for
+    // a detail page its archive's. The nav is persisted across transitions
+    // (its markup is not swapped), so this runs on every page load.
     const setActive = (id: string | null) => {
         document
             .querySelectorAll<HTMLAnchorElement>("#main-nav a[data-section]")
@@ -122,44 +115,14 @@ const links = [
             });
     };
 
-    const observe = () => {
-        observer?.disconnect();
-        observer = undefined;
-        const path = location.pathname;
-        if (path === "/") {
-            observer = new IntersectionObserver(
-                (entries) => {
-                    for (const entry of entries) {
-                        if (entry.isIntersecting) setActive(entry.target.id);
-                    }
-                },
-                {
-                    rootMargin: wide.matches
-                        ? "0px -45% 0px -45%"
-                        : "-45% 0px -45% 0px",
-                },
-            );
-            document
-                .querySelectorAll("main section[id]")
-                .forEach((section) => observer!.observe(section));
-        } else {
-            // Inner pages: the archive (or detail page) the route belongs to,
-            // or About and Contact.
-            setActive(
-                path.startsWith("/events") ? "events-page"
-                : path.startsWith("/images") ? "images-page"
-                : /^\/about\/?$/.test(path) ? "about"
-                : /^\/contact\/?$/.test(path) ? "contact"
-                : null,
-            );
-        }
-    };
-
     // Bound once (module scripts are not re-run by the router).
-    document.addEventListener("astro:page-load", observe);
-    // The layout flips when the viewport crosses sm: re-create the observer.
-    wide.addEventListener("change", observe);
+    document.addEventListener("astro:page-load", () => {
+        const path = location.pathname;
+        const first = path.split("/")[1];
+        setActive(path === "/" ? ROW[0].name : (ROW.find((s) => s.name === first)?.name ?? null));
+    });
 </script>
+
 
 <style>
     @reference "../styles/global.css";

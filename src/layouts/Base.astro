@@ -184,6 +184,7 @@ const ogImage = new URL(image ?? "/og-default.jpg", Astro.site).href;
             // The archive rise-in's order along the diagonal.
             import "../scripts/diagonal";
             import { panelsOf, seamShift } from "../scripts/track";
+            import { screenOf } from "../utils/row";
 
             const link = (label: string) =>
                 document.querySelector<HTMLAnchorElement>(`a[aria-label="${label}"]`);
@@ -201,10 +202,9 @@ const ogImage = new URL(image ?? "/og-default.jpg", Astro.site).href;
             });
 
             // Paging between neighbours (Previous / Next, by click, key or wheel)
-            // turns the page, and so do page numbers and moves between home,
-            // the archives, About and Contact (below). Everything else keeps
-            // the morph. The custom direction value is what global.css keys
-            // the turn on.
+            // turns the page, and so do page numbers and moves between the
+            // screens of the row (below). Everything else keeps the morph. The
+            // custom direction value is what global.css keys the turn on.
             document.addEventListener("astro:before-preparation", (e: any) => {
                 const label = e.sourceElement
                     ?.closest?.("a")
@@ -222,29 +222,12 @@ const ogImage = new URL(image ?? "/og-default.jpg", Astro.site).href;
                                 ? "paging-forward"
                                 : "paging-back";
                 }
-                // Home, the archives, About and Contact are one row of
-                // screens: the home panels left to right, then the events
-                // archive, then the images archive (an event's pictures
-                // included), then About, then Contact, as the nav and the
-                // arrow keys have them. A move between two of them that are
-                // different pages turns the page that way, like page numbers
-                // do. (Within home it is a scroll, not a navigation, so which
-                // home panel is involved never decides anything: every one of
-                // them comes before everything else.) Details are not in the
-                // row and keep the morph.
-                const screen = (url: URL) =>
-                    url.pathname === "/"
-                        ? 0
-                        : /^\/events(\/(\d+\/?)?)?$/.test(url.pathname)
-                          ? 1
-                          : /^\/images(\/(\d+\/?)?)?$/.test(url.pathname) ||
-                              /^\/images\/event\/[^/]+(\/(\d+\/?)?)?$/.test(url.pathname)
-                            ? 2
-                            : isPanel(url, "about")
-                              ? 3
-                              : isPanel(url, "contact")
-                                ? 4
-                                : undefined;
+                // Home, Featured, the archives, About and Contact are one row
+                // of screens (utils/row.ts), as the nav and the arrow keys
+                // have them. A move between two of them that are different
+                // screens turns the page that way, like page numbers do.
+                // Details are not in the row and keep the morph.
+                const screen = (url: URL) => screenOf(url.pathname);
                 const from = screen(e.from);
                 const to = screen(e.to);
                 if (
@@ -273,9 +256,9 @@ const ogImage = new URL(image ?? "/og-default.jpg", Astro.site).href;
                 }
 
                 // Remember where a detail page was opened from, so its close
-                // button returns there: the home panel for pages reached from
-                // home, otherwise the archive page (and its grid position).
-                // Paging between details keeps it; anything else clears it.
+                // button returns there: the screen of the row it was opened on
+                // (Featured, an archive page and its grid position). Paging
+                // between details keeps it; anything else clears it.
                 const isDetail = (url: URL) =>
                     /^\/(events|images)\/(?!\d+\/?$)[^/]+\/?$/.test(
                         url.pathname,
@@ -284,29 +267,9 @@ const ogImage = new URL(image ?? "/og-default.jpg", Astro.site).href;
                 const isArchive = (url: URL) =>
                     /^\/(events|images)(\/(\d+\/?)?)?$/.test(url.pathname) ||
                     /^\/images\/event\/[^/]+(\/(\d+\/?)?)?$/.test(url.pathname);
-                // Leaving the home page remembers the panel in view, so closing
-                // out of an archive or detail page lands back on it.
-                if (e.from.pathname === "/" && e.to.pathname !== "/") {
-                    // From the track's own scroll position where the panels are
-                    // side by side (exact); otherwise the nav's active link.
-                    const track = document.querySelector<HTMLElement>("[data-track]");
-                    const panel =
-                        (track && matchMedia("(min-width: 40rem)").matches
-                            ? panelsOf(track)[Math.round(track.scrollLeft / track.clientWidth)]?.id
-                            : undefined) ||
-                        document.querySelector<HTMLElement>("#main-nav a.active[data-section]")?.dataset.section;
-                    if (panel) {
-                        homePanel = panel;
-                        try {
-                            sessionStorage.setItem("homePanel", panel);
-                        } catch {}
-                    }
-                }
                 // Back / forward keeps whatever was remembered.
                 if (e.navigationType !== "traverse") {
-                    if (isDetail(e.to) && e.from.pathname === "/")
-                        closeTo = "home";
-                    else if (isDetail(e.to) && isArchive(e.from))
+                    if (isDetail(e.to) && screen(e.from) !== undefined)
                         closeTo = e.from.pathname + e.from.search;
                     else if (!(isDetail(e.from) && isDetail(e.to)))
                         closeTo = null;
@@ -323,10 +286,9 @@ const ogImage = new URL(image ?? "/og-default.jpg", Astro.site).href;
                 // Page turns set it too: the grid slides in and wipes instead.
                 pagedDetail = paging && isDetail(e.to);
                 returning = (isDetail(e.from) || paging) && isArchive(e.to);
-                // A page turn onto a screen of the row (home, an archive, About,
-                // Contact), or Previous / Next between details: the seam
-                // crosses the two snapshots (global.css), placed by the boxes
-                // measured below.
+                // A page turn onto a screen of the row, or Previous / Next
+                // between details: the seam crosses the two snapshots
+                // (global.css), placed by the boxes measured below.
                 turn =
                     paging &&
                     (screen(e.to) !== undefined || (isDetail(e.from) && isDetail(e.to)))
@@ -337,19 +299,20 @@ const ogImage = new URL(image ?? "/og-default.jpg", Astro.site).href;
                 // The outgoing box turns as a .page (a detail's is not one
                 // otherwise; see turnBox).
                 if (turn) turnBox(document)?.style.setProperty("view-transition-class", "page");
-                // A turn between screens (home, events, images, About,
-                // Contact), not between pages of one archive: the page numbers
-                // are another set, so they go with their own grid rather than
-                // morph from one row into the other (which stretches them).
+                // A turn between screens, not between pages of one archive:
+                // the page numbers are another set, so they go with their own
+                // grid rather than morph from one row into the other (which
+                // stretches them).
                 crossing =
                     !!turn && e.from.pathname.split("/")[1] !== e.to.pathname.split("/")[1];
                 if (crossing) unnumber(document);
-                // Opening a picture or event from a grid (archive or home), or
-                // closing back to it: only its own thumbnail and title travel.
+                // Opening a picture or event from a grid (archive or
+                // Featured), or closing back to it: only its own thumbnail and
+                // title travel.
                 // The others are left to fade with the page beneath it, rather
                 // than captured on their own and painted over it.
                 focus = isDetail(e.to) ? e.to.pathname : isDetail(e.from) ? e.from.pathname : null;
-                // Any other move (between archives, home and an archive): no
+                // Any other move (off the row, or a detail by the nav): no
                 // thumbnail travels, so matching flyers do not fly about.
                 if (!paging) unname(document, focus ?? undefined);
                 // Closing a picture back to its grid: global.css keeps the
@@ -360,10 +323,6 @@ const ogImage = new URL(image ?? "/og-default.jpg", Astro.site).href;
                 document.documentElement.toggleAttribute("data-closing", closing);
             });
 
-            // About and Contact, each a screen of its own (slashless typed by
-            // hand too).
-            const isPanel = (url: URL, name: string) =>
-                new RegExp(`^/${name}/?$`).test(url.pathname);
             let paging = false;
             let pagedDetail = false;
             let returning = false;
@@ -376,11 +335,11 @@ const ogImage = new URL(image ?? "/og-default.jpg", Astro.site).href;
                     .querySelectorAll<HTMLElement>('nav[aria-label="Pagination"]')
                     .forEach((el) => (el.style.viewTransitionName = "none"));
             const bare = (path: string) => path.replace(/\/$/, "");
-            // The named parts of grid thumbnails and of the home featured panel
-            // (links themselves, or the titles, pictures and rows around them).
+            // The named parts of grid thumbnails and of Featured (links
+            // themselves, or the titles, pictures and rows around them).
             const gridNamed = (root: ParentNode) =>
                 root.querySelectorAll<HTMLElement>(
-                    ":is(.gallery-grid, .photo-grid) a, :is(.gallery-grid, .photo-grid, #events) [data-astro-transition-scope]",
+                    ":is(.gallery-grid, .photo-grid) a, :is(.gallery-grid, .photo-grid, #featured) [data-astro-transition-scope]",
                 );
             // Takes the names off them for one transition. With `keep`, those
             // that lead to it stay (the link they are in, or the first link they
@@ -427,10 +386,11 @@ const ogImage = new URL(image ?? "/og-default.jpg", Astro.site).href;
             });
 
             // What a page turn moves: a screen's main content (.vt-page: the
-            // home track, an archive grid, About, Contact), or on a detail
-            // page the named piece that is the page (an event's section, its
-            // parts folded into it; a picture). Run after fold, so folded
-            // parts are not it.
+            // home track, Featured, an archive grid, About, Contact), or on a
+            // detail page the named piece that is the page (an event's
+            // section, its parts folded into it; a picture). Run after fold,
+            // so folded parts are not it.
+
             const turnBox = (root: ParentNode) =>
                 root.querySelector<HTMLElement>(".vt-page") ??
                 [
@@ -451,25 +411,16 @@ const ogImage = new URL(image ?? "/og-default.jpg", Astro.site).href;
                 closeTo = sessionStorage.getItem("closeTo");
             } catch {}
             let homeHash = "";
-            // The home panel last in view; "Back to home" and the close
-            // buttons return to it.
-            let homePanel: string | null = null;
-            try {
-                homePanel = sessionStorage.getItem("homePanel");
-            } catch {}
 
+            // A detail page's close button goes back to where it was opened
+            // (otherwise its archive, as built).
             document.addEventListener("astro:page-load", () => {
-                const home = `/#${homePanel ?? "events"}`;
-                document
-                    .querySelectorAll<HTMLAnchorElement>('a[aria-label="Back to home"]')
-                    .forEach((a) => (a.href = home));
                 if (!closeTo) return;
                 document
                     .querySelectorAll<HTMLAnchorElement>("a[data-close]")
-                    .forEach((a) => {
-                        a.href = closeTo === "home" ? home : closeTo!;
-                    });
+                    .forEach((a) => (a.href = closeTo!));
             });
+
 
             // Arriving on the home page with a #section: place the horizontal
             // track there before the new page is shown, so it does not slide

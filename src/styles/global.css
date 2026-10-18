@@ -691,8 +691,9 @@ select:-webkit-autofill:focus {
    it; the page turn rules further down are more specific and win over these.
    Knobs: --morph-duration and --morph-easing set the tempo (an expo ease-out:
    quick to commit, long soft landing); the crossfade inside a morph uses
-   --morph-fade-easing; the rest of the page (root, and the home track, named
-   for page turns) crossfades in --page-fade-duration; --picture-lead is a travelling picture's share of the morph time,
+   --morph-fade-easing; the rest of the page (root, and home and Featured,
+   named for page turns) crossfades in --page-fade-duration;
+ --picture-lead is a travelling picture's share of the morph time,
    so it lands first and the text settles after it. --fade-out is the share
    of the morph in which the outgoing picture of a .vt-swap pair clears (and in which a title
    swaps old text for new), so old and new never show side by side for long. */
@@ -721,7 +722,10 @@ select:-webkit-autofill:focus {
 ::view-transition-new(root),
 ::view-transition-group(home),
 ::view-transition-old(home),
-::view-transition-new(home) {
+::view-transition-new(home),
+::view-transition-group(featured),
+::view-transition-old(featured),
+::view-transition-new(featured) {
     animation-duration: var(--page-fade-duration);
 }
 ::view-transition-group(.picture),

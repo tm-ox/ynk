@@ -1,6 +1,7 @@
 import { navigate } from "astro:transitions/client";
 import { canScroll } from "./wheel-pager";
 import { pageTrack, panelIndex, track, trackActive } from "./track";
+import { neighbour } from "../utils/row";
 
 /** Pixels one j/k/ArrowDown/ArrowUp press scrolls. */
 const SCROLL_STEP = 80;
@@ -13,31 +14,19 @@ const UP = ["ArrowUp", "k"];
 const CLOSE_LINKS =
   'a[data-close], a[aria-label="Back to home"]';
 
-// Past the end of a section the arrows carry on into the neighbouring one:
-// home panels (Featured is last) -> Events archive -> Images archive -> About
-// -> Contact, and back. Within an archive the Previous / Next links page it,
-// so these only run at its ends, where the link is missing.
-const archive = (name: string) => new RegExp(`^/${name}/(\\d+/)?$`).test(location.pathname);
-const page = (name: string) => new RegExp(`^/${name}/?$`).test(location.pathname);
-// An archive's last page, as the nav has it (BaseLayout.astro).
-const last = (section: string, fallback: string) =>
-  document.querySelector<HTMLAnchorElement>(`#main-nav a[data-section="${section}"][data-last]`)?.dataset.last ??
-  fallback;
-const beyond = (dir: 1 | -1): string | undefined => {
-  if (dir > 0) {
-    if (location.pathname === "/" && trackActive()) return "/events/";
-    if (archive("events")) return "/images/";
-    if (archive("images")) return "/about/";
-    if (page("about")) return "/contact/";
-  } else {
-    // Back to home at the panel next to the events archive.
-    if (archive("events")) return "/#events";
-    // Back into the previous archive at its last page, so pages stay in order.
-    if (archive("images")) return last("events-page", "/events/");
-    if (page("about")) return last("images-page", "/images/");
-    if (page("contact")) return "/about/";
-  }
-};
+// Past the end of a screen the arrows carry on into the neighbouring one,
+// along the row (utils/row.ts): home -> Featured -> Events archive -> Images
+// archive -> About -> Contact, and back. Within an archive the Previous / Next
+// links page it, so these only run at its ends, where the link is missing.
+// Going back onto an archive lands on its last page, as the nav has it
+// (BaseLayout.astro).
+const beyond = (dir: 1 | -1) =>
+  neighbour(
+    location.pathname,
+    dir,
+    (s) => document.querySelector<HTMLAnchorElement>(`#main-nav a[data-section="${s.name}"][data-last]`)?.dataset.last,
+  );
+
 
 const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
 
