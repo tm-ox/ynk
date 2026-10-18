@@ -223,7 +223,7 @@
     header {
         @apply fixed top-0 left-0 z-(--z-header) w-full bg-scrim backdrop-blur-sm;
     }
-    nav {
+    header > nav {
         @apply flex justify-between items-center gap-2 h-header max-w-site mx-auto px-2;
         /* The row (centred) is the logo's height, set off the top and the rule. */
         padding-top: var(--header-top);

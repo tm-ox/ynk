@@ -8,7 +8,7 @@ const { lastPage, currentPage, basePath = "/images/" } = Astro.props;
 ---
 
 {lastPage > 1 && (
-<nav aria-label="Pagination" transition:name="pagination" class="flex flex-wrap items-center justify-end h-auto max-w-none gap-x-4 px-0 shrink-0 sm:h-(--bar-row) max-sm:justify-center max-sm:py-2">
+<nav aria-label="Pagination" transition:name="pagination" class="flex flex-wrap items-center justify-end gap-x-4 shrink-0 sm:h-(--bar-row) max-sm:justify-center max-sm:py-2">
     {
         Array.from({ length: lastPage }, (_, i) => i + 1).map((num) => (
             <span class="text-xs md:text-sm leading-none font-displayCon font-bold text-accent">
