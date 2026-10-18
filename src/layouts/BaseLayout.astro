@@ -43,7 +43,6 @@ const links = ROW.map((s, i) => ({
 
 <Base title={title} description={description} image={image} jsonLd={jsonLd}>
     <div slot="nav" class="flex items-center justify-center w-full">
-        <div class="contents sm:hidden"><slot name="subnav" /></div>
         <Hamburger />
         <div
             id="main-nav"
@@ -68,11 +67,6 @@ const links = ROW.map((s, i) => ({
                         </li>
                     ))
                 }
-                {Astro.slots.has("subnav") && (
-                <li class="hidden sm:flex w-auto items-center [&>div]:my-0 [&>div]:-mr-1 [&>div]:ml-1 [&>div]:after:hidden [&>div]:pl-2.5 [&>div]:pr-0" transition:name="nav-subnav">
-                    <slot name="subnav" />
-                </li>
-                )}
                 <li transition:name="nav-social">
                     <Sosmed />
                 </li>

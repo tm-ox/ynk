@@ -1,8 +1,6 @@
 ---
 import { Image, getImage } from "astro:assets";
 import BaseLayout from "../../layouts/BaseLayout.astro";
-import { Icon } from "astro-icon/components";
-import NavArrow from "../../components/NavArrow.astro";
 import ImageInfo from "../../components/ImageInfo.astro";
 import { getGalleryImages } from "../../utils/events";
 
@@ -44,29 +42,13 @@ const neighbourPictures = await Promise.all(
   {neighbourPictures.map((p) => (
     <link slot="head" rel="prefetch" as="image" href={p.src} />
   ))}
-  <div
-    slot="subnav"
-    class="flex items-center gap-1 px-4 ml-3 mr-auto slash-l slash-r"
-  >
-    
-    <div class="flex items-center gap-1">
-      <NavArrow
-        direction="back"
-        class="icon h-6 w-6"
-        href={prevImage ? `/images/${prevImage.id}/` : undefined}
-      />
-      <NavArrow
-        direction="forward"
-        class="icon h-6 w-6"
-        href={nextImage ? `/images/${nextImage.id}/` : undefined}
-      />
-      <a href="/images/" data-close aria-label="Close" title="All images">
-        <Icon name="ion:close-sharp" class="icon" />
-      </a>
-    </div>
-  </div>
   <section class="h-section flex flex-col pb-3">
-    <ImageInfo image={image} position={positionLabel} />
+    <ImageInfo
+      image={image}
+      position={positionLabel}
+      prev={prevImage ? `/images/${prevImage.id}/` : undefined}
+      next={nextImage ? `/images/${nextImage.id}/` : undefined}
+    />
     <div class="grid w-full flex-1 min-h-0 mt-3 place-items-center [container-type:size]">
       <Image
         src={image.src}

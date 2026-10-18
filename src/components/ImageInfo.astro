@@ -1,12 +1,16 @@
 ---
 import { groupSlug, type GalleryImage } from "../utils/events";
+import Paging from "./Paging.astro";
 
 interface Props {
     image: GalleryImage;
     /** "3 of 14" for a photograph, "Flyer" for a flyer. */
     position?: string;
+    /** The neighbouring pictures' pages, for the arrows at the strip's end. */
+    prev?: string;
+    next?: string;
 }
-const { image, position } = Astro.props;
+const { image, position, prev, next } = Astro.props;
 const { event } = image;
 ---
 
@@ -39,6 +43,7 @@ const { event } = image;
             {position && <span class="text-accent-muted">{position}</span>}
             <a href={`/images/event/${groupSlug(event.title)}/`} class="section-action">Event images</a>
         </span>
+        <Paging prev={prev} next={next} close={{ href: "/images/", title: "All images" }} iconClass="icon h-6 w-6" />
     </div>
     <hr class="mb-0" />
 </div>

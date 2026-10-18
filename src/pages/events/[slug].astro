@@ -2,9 +2,8 @@
 import { getCollection, render } from "astro:content";
 import { getImage } from "astro:assets";
 import BaseLayout from "../../layouts/BaseLayout.astro";
-import { Icon } from "astro-icon/components";
 import EventDetail from "../../components/EventDetail.astro";
-import NavArrow from "../../components/NavArrow.astro";
+import Paging from "../../components/Paging.astro";
 import SectionBar from "../../components/home/SectionBar.astro";
 import { eventJsonLd, getFeaturedEvent, groupSlug } from "../../utils/events";
 
@@ -73,27 +72,17 @@ const neighbourFlyers = await Promise.all(
   {neighbourFlyers.map((f) => (
     <link slot="head" rel="prefetch" as="image" href={f.src} />
   ))}
-  <div
-    slot="subnav"
-    class="flex items-center gap-1 px-4 ml-4 mr-auto slash-l slash-r"
-  >
-    <NavArrow
-      direction="back"
-      href={prevEvent ? `/events/${prevEvent.id}/` : undefined}
-    />
-    <NavArrow
-      direction="forward"
-      href={nextEvent ? `/events/${nextEvent.id}/` : undefined}
-    />
-    <a href="/events/" data-close aria-label="Close" title="All events">
-      <Icon name="ion:close-sharp" class="icon" />
-    </a>
-  </div>
   <section transition:name={event.data.id} class="relative z-10 vt-detail vt-swap">
     {featuredLabel && (
       <div class="absolute inset-x-0 top-3 vt-detail" transition:name="featured-label"><SectionBar label={featuredLabel} /></div>
     )}
     <EventDetail capped event={event} docsHref={hasPhotos ? `/images/event/${groupSlug(title)}/` : undefined}>
+      <Paging
+        slot="paging"
+        prev={prevEvent ? `/events/${prevEvent.id}/` : undefined}
+        next={nextEvent ? `/events/${nextEvent.id}/` : undefined}
+        close={{ href: "/events/", title: "All events" }}
+      />
       <Content />
     </EventDetail>
   </section>

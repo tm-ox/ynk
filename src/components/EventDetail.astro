@@ -64,9 +64,12 @@ const label = "mb-0 text-xs font-bold tracking-normal md:text-sm font-displayCon
       {summary ? (
         <div class="relative z-10 ml-auto"><slot name="title-action" /></div>
       ) : (
-        docsHref && (
-          <a href={docsHref} class="ml-auto section-action">Event images</a>
-        )
+        /* The event page's arrows and close (slot) follow the action, at the
+           row's right end. */
+        <div class="flex items-center gap-6 ml-auto shrink-0">
+          {docsHref && <a href={docsHref} class="section-action">Event images</a>}
+          <slot name="paging" />
+        </div>
       )}
     </div>
     <hr style="--r:0" />

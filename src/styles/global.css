@@ -54,7 +54,7 @@
     --header-top: calc((4rem - var(--logo-h)) / 2);
     --header-bottom: 0.375rem;
     --spacing-header: calc(var(--header-top) + var(--logo-h) + var(--header-bottom));
-    /* The slash dividers (slash-l, slash-c, slash-r), used in the header:
+    /* The slash dividers (slash-l, slash-c), used in the header:
        how far they reach above and below the row's centre. Above, to the top
        of the logo's equals sign (0.61 of the logo); below, down to the rule
        under the header. A little over 1px wide. */
@@ -91,8 +91,8 @@
 }
 
 /* A divider at the logo's angle (its stroke rises at about 58deg, so it leans
-   32deg off vertical), in place of a vertical border: slash-l on the element's
-   left edge, slash-r on its right. It is centred on where the border was and
+   32deg off vertical), in place of a vertical border on the element's left
+   edge. It is centred on where the border was and
    reaches --slash-above above the row's centre and --slash-below below it,
    leaning about the centre, so within the text's height it moves only about
    5px and some 16px of space either side clears the text. --slash-weight is
@@ -126,21 +126,6 @@
         content: "";
         position: absolute;
         left: calc(50% - var(--slash-weight) / 2);
-        top: calc(50% - var(--slash-above));
-        width: var(--slash-weight);
-        height: calc(var(--slash-above) + var(--slash-below));
-        background: var(--color-border);
-        transform: skewX(-32deg);
-        transform-origin: 50% var(--slash-above);
-        pointer-events: none;
-    }
-}
-@utility slash-r {
-    position: relative;
-    &::after {
-        content: "";
-        position: absolute;
-        right: calc(var(--slash-weight) / -2);
         top: calc(50% - var(--slash-above));
         width: var(--slash-weight);
         height: calc(var(--slash-above) + var(--slash-below));
