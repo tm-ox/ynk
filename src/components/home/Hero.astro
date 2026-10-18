@@ -524,6 +524,11 @@ const parallax = { shift: 10, ease: 0.06, overscan: 1.02, title: 0.3 };
         --strip: 90.3cqw;
         --size: clamp(2.25rem, 10.2cqw, 9.5rem);
         justify-self: start;
+        /* Pulled left by the E's side bearing (0.062em in BioRhyme Expanded
+           800, the weight a black h1 resolves to), so its stem, not its
+           box, meets the edge. Other first letters (the changing word) keep
+           their own bearings. */
+        margin-left: -0.062em;
         --word-pull: 0.001em; /* moves the changing word up toward "Experimental" */
         --cap-lh: 0.56;
         display: flex;
@@ -546,6 +551,7 @@ const parallax = { shift: 10, ease: 0.06, overscan: 1.02, title: 0.3 };
     @container (max-width: 48rem) {
         .hero-title {
             --strip: 100cqw;
+            margin-left: 0;
             --size: 15cqw;
         }
     }
