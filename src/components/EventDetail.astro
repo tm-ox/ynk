@@ -136,7 +136,7 @@ const label = "mb-0 text-xs font-bold tracking-normal md:text-sm font-displayCon
       summary ? (
         <slot name="footer" />
       ) : (
-        <div>
+        <div class="detail-body">
           <slot />
         </div>
       )
@@ -158,6 +158,19 @@ const label = "mb-0 text-xs font-bold tracking-normal md:text-sm font-displayCon
   }
   hr {
     margin-block: var(--gap);
+  }
+  /* The body text's first paragraph sits as far below its rule as one
+     paragraph sits below another: their margin (mb-2) plus the half-leading
+     above a line (3px at text-sm's 14/20, 4px at text-base's 16/24), less
+     the rule's own --gap. */
+  .detail-body {
+    --gap: 0.375rem;
+    padding-top: calc(0.5rem + 3px - var(--gap));
+  }
+  @media (min-width: 48rem) {
+    .detail-body {
+      padding-top: calc(0.5rem + 4px - var(--gap));
+    }
   }
   /* The slash between date, time and venue runs the row's full height, from
      the rule above to the rule below. It leads the next item: it leans from
