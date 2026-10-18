@@ -1,6 +1,6 @@
 /**
- * Site-wide paging behaviour for the wheel. The slide's own timing lives in
- * global.css (--slide-duration, --slide-easing).
+ * Site-wide paging behaviour for the wheel. The wipe's own timing lives in
+ * global.css (--wipe-duration, --wipe-easing).
  */
 export const PAGING = {
   /** Wheel events closer together than this are one gesture (ms). */

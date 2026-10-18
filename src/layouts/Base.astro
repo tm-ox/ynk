@@ -191,15 +191,15 @@ const ogImage = new URL(image ?? "/og-default.jpg", Astro.site).href;
             });
 
             // Paging between neighbours (Previous / Next, by click, key or wheel)
-            // slides. Everything else keeps Astro's default morph. The custom
-            // direction value is what global.css keys the slide on.
+            // wipes. Everything else keeps the morph. The custom direction
+            // value is what global.css keys the wipe on.
             document.addEventListener("astro:before-preparation", (e: any) => {
                 const label = e.sourceElement
                     ?.closest?.("a")
                     ?.getAttribute("aria-label");
                 if (label === "Previous") e.direction = "paging-back";
                 else if (label === "Next") e.direction = "paging-forward";
-                // Page numbers slide too, by which way the target page lies.
+                // Page numbers wipe too, by which way the target page lies.
                 // The page you are already on keeps Astro's default.
                 if (e.sourceElement?.closest?.('nav[aria-label="Pagination"]')) {
                     const page = (u: URL) =>
@@ -211,12 +211,18 @@ const ogImage = new URL(image ?? "/og-default.jpg", Astro.site).href;
                                 : "paging-back";
                 }
                 paging = !!e.direction && e.direction.startsWith("paging");
-                // Names taken off grid thumbnails for the last transition (see
-                // unname) come back first, so any of them can travel this time.
-                gridNamed(document).forEach((el) => (el.style.viewTransitionName = ""));
-                // Grid pages slide as a whole; the titles and thumbnails in the cards must not be captured
-                // separately or they would crossfade instead.
-                if (paging) unname(document);
+                // Names taken off for the last transition (see unname and
+                // fold) come back first, so any of them can travel this time.
+                document
+                    .querySelectorAll<HTMLElement>('[style*="view-transition-name"]')
+                    .forEach((el) => (el.style.viewTransitionName = ""));
+                // Pages wipe as a whole, under one edge: the titles and
+                // thumbnails in grid cards, and the flyer, title and label
+                // inside an event, must not be captured separately.
+                if (paging) {
+                    unname(document);
+                    fold(document);
+                }
 
                 // Remember where a detail page was opened from, so its close
                 // button returns there: the home panel for pages reached from
@@ -300,8 +306,17 @@ const ogImage = new URL(image ?? "/og-default.jpg", Astro.site).href;
                     if (keep && href && bare(href) === bare(keep)) return;
                     el.style.viewTransitionName = "none";
                 });
+            // Named parts inside a named section (an event's flyer, title and
+            // label) join the section's own picture for one transition.
+            const fold = (root: ParentNode) =>
+                root
+                    .querySelectorAll<HTMLElement>("section[data-astro-transition-scope] [data-astro-transition-scope]")
+                    .forEach((el) => (el.style.viewTransitionName = "none"));
             document.addEventListener("astro:before-swap", (e: any) => {
-                if (paging) unname(e.newDocument);
+                if (paging) {
+                    unname(e.newDocument);
+                    fold(e.newDocument);
+                }
                 else if (focus) unname(e.newDocument, focus);
                 if (closing) e.newDocument.documentElement.dataset.closing = "";
                 // The new page's root attributes replace the current ones, so

@@ -134,7 +134,7 @@
         @apply relative pt-header;
     }
     /* The rules under the header and above the footer belong to the page frame,
-       not to the sections, so they stay put while a section slides. */
+       not to the sections, so they stay put while a section changes. */
     main::before,
     main::after {
         content: "";
@@ -253,7 +253,7 @@
     }
     /* Archive thumbnails rise in, a little after one another (--i is the
        cell's index). Titles and rules stay put. Plays on every arrival, page turns
-       included (where it follows the grid's slide), except when coming back from one
+       included (where it follows the grid's wipe), except when coming back from one
        of its pictures or events (data-returning, set in Base.astro). */
     @media (prefers-reduced-motion: no-preference) {
         @keyframes rise-in {
@@ -371,17 +371,25 @@ select:-webkit-autofill:focus {
     background: linear-gradient(transparent, var(--color-accent), transparent);
 }
 
-/* Slide between neighbouring detail pages (Previous / Next). The direction
-   value is set in Base.astro; everything else keeps the default morph. */
+/* Wipe between neighbouring pages (Previous / Next, page numbers): a hard
+   edge at the logo's angle sweeps across and the new page is behind it. The
+   direction value is set in Base.astro; everything else keeps the morph.
+   Knobs: --wipe-duration, --wipe-easing; --wipe-angle is the edge's lean
+   (the logo's strokes rise at about 58 degrees, so the gradient runs at
+   90 + 32 = 122deg across them). */
 :root {
-    --slide-duration: 0.35s;
-    --slide-easing: cubic-bezier(0.22, 0.61, 0.36, 1);
+    --wipe-duration: 0.55s;
+    --wipe-easing: cubic-bezier(0.65, 0, 0.35, 1);
+    --wipe-angle: 122deg;
+    /* How far the edge travels either side of an element's centre: past the
+       corners of a box as large as the screen. */
+    --wipe-reach: calc(50vw + 32vh);
 }
 .vt-detail {
     view-transition-class: detail;
 }
 /* A picture that travels between a grid and its page (a flyer or a
-   photograph) is part of the detail (it slides with it) and also lands on its
+   photograph) is part of the detail (it wipes with it) and also lands on its
    own timing, above everything else, in the morph below. */
 .vt-picture {
     view-transition-class: detail picture;
@@ -407,9 +415,9 @@ select:-webkit-autofill:focus {
     view-transition-class: detail swap;
 }
 
-/* The morph between pages (everything that is not a Previous/Next slide).
+/* The morph between pages (everything that is not a Previous/Next wipe).
    Astro's own fade sits in @layer astro, so these unlayered rules win over
-   it; the slide rules further down are more specific and win over these.
+   it; the wipe rules further down are more specific and win over these.
    Knobs: --morph-duration and --morph-easing set the tempo (an expo ease-out:
    quick to commit, long soft landing); the crossfade inside a morph uses
    --morph-fade-easing; the rest of the page (root) crossfades in
@@ -463,7 +471,7 @@ select:-webkit-autofill:focus {
    alone, it read as the full picture shrinking and then snapping to the
    crop, which tm found worse than the brief doubling. (A flyer's thumbnail is
    the whole flyer, so the crossfade suits it both ways.) Not for
-   Previous/Next, which slide. */
+   Previous/Next, which wipe. */
 html:not([data-astro-transition^="paging"]):not([data-closing])::view-transition-old(.photo) {
     animation: none;
     opacity: 0;
@@ -487,37 +495,43 @@ html:not([data-astro-transition^="paging"]):not([data-closing])::view-transition
 ::view-transition-new(.title) {
     animation-duration: calc(var(--morph-duration) * var(--fade-out));
 }
-@keyframes slide-out-left {
-    to {
-        transform: translateX(-100vw);
-    }
-}
-@keyframes slide-in-right {
+/* Each changing element is masked by one half of a large square tile split
+   along the edge, centred on the element and shifted sideways by the same
+   screen distance for all of them. Old and new pages centre their content in
+   the same places, so the edges line up as one line across the screen, even
+   where an old and a new picture differ in size. Old shows on one side of
+   the edge, new on the other. */
+@keyframes wipe {
     from {
-        transform: translateX(100vw);
+        mask-position: calc(50% + var(--wipe-reach)) 50%;
     }
-}
-@keyframes slide-out-right {
     to {
-        transform: translateX(100vw);
+        mask-position: calc(50% - var(--wipe-reach)) 50%;
     }
 }
-@keyframes slide-in-left {
-    from {
-        transform: translateX(-100vw);
-    }
+html[data-astro-transition^="paging"]::view-transition-old(.detail),
+html[data-astro-transition^="paging"]::view-transition-new(.detail) {
+    mask-size: 400vmax 400vmax;
+    mask-repeat: no-repeat;
+    animation: wipe var(--wipe-duration) var(--wipe-easing) both;
 }
+/* Forward: the edge travels right to left, the new page on its right. */
 html[data-astro-transition="paging-forward"]::view-transition-old(.detail) {
-    animation: slide-out-left var(--slide-duration) var(--slide-easing) both;
+    mask-image: linear-gradient(var(--wipe-angle), #000 50%, transparent 50%);
 }
 html[data-astro-transition="paging-forward"]::view-transition-new(.detail) {
-    animation: slide-in-right var(--slide-duration) var(--slide-easing) both;
+    mask-image: linear-gradient(var(--wipe-angle), transparent 50%, #000 50%);
+}
+/* Back: left to right, the new page on its left. */
+html[data-astro-transition="paging-back"]::view-transition-old(.detail),
+html[data-astro-transition="paging-back"]::view-transition-new(.detail) {
+    animation-direction: reverse;
 }
 html[data-astro-transition="paging-back"]::view-transition-old(.detail) {
-    animation: slide-out-right var(--slide-duration) var(--slide-easing) both;
+    mask-image: linear-gradient(var(--wipe-angle), transparent 50%, #000 50%);
 }
 html[data-astro-transition="paging-back"]::view-transition-new(.detail) {
-    animation: slide-in-left var(--slide-duration) var(--slide-easing) both;
+    mask-image: linear-gradient(var(--wipe-angle), #000 50%, transparent 50%);
 }
 @media (prefers-reduced-motion: reduce) {
     ::view-transition-group(*),
