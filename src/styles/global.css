@@ -104,6 +104,21 @@
         pointer-events: none;
     }
 }
+/* The same, centred in its element (a spacer between items). */
+@utility slash-c {
+    position: relative;
+    &::before {
+        content: "";
+        position: absolute;
+        left: calc(50% - var(--slash-weight) / 2);
+        top: 50%;
+        width: var(--slash-weight);
+        height: var(--slash-height);
+        background: var(--color-border);
+        transform: translateY(-50%) skewX(-32deg);
+        pointer-events: none;
+    }
+}
 @utility slash-r {
     position: relative;
     &::after {

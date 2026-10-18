@@ -76,12 +76,17 @@ const label = "mb-0 text-xs font-bold tracking-normal md:text-sm font-displayCon
           <p class={label}>date:</p>
           <h4>{event.data.date}</h4>
         </div>
+        {/* From sm up the items sit apart with a slash centred in each gap. */}
+        <span class="hidden sm:block flex-1 slash-c [--slash-height:100%]" aria-hidden="true" />
         {
           event.data.time !== "" && (
-            <div class="flex flex-col mx-auto">
-              <p class={label}>time:</p>
-              <h4>{event.data.time}</h4>
-            </div>
+            <>
+              <div class="flex flex-col mx-auto">
+                <p class={label}>time:</p>
+                <h4>{event.data.time}</h4>
+              </div>
+              <span class="hidden sm:block flex-1 slash-c [--slash-height:100%]" aria-hidden="true" />
+            </>
           )
         }
       </div>
