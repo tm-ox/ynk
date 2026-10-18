@@ -89,11 +89,14 @@ const neighbourFlyers = await Promise.all(
        the listing is centred under it. -->
   <section transition:name={event.data.id} class="relative z-10 vt-detail vt-swap max-md:flex-col max-md:items-stretch max-md:[&>:last-child]:my-auto">
     {featuredLabel ? (
-      <div class="w-full md:absolute md:inset-x-0 md:top-3 vt-detail" transition:name="featured-label">
+      <div class="w-full md:absolute md:inset-x-0 md:top-3 vt-detail detail-bar" transition:name="featured-label">
         <SectionBar label={featuredLabel}><Paging {...paging} /></SectionBar>
       </div>
     ) : (
-      <div class="w-full md:absolute md:inset-x-0 md:top-3">
+      <!-- Named, so it stays put while Previous / Next turns the page under it
+           (Base.astro's fold leaves .detail-bar alone), as the photo page's
+           info strip does. -->
+      <div class="w-full md:absolute md:inset-x-0 md:top-3 detail-bar" transition:name="detail-bar">
         <SectionBar label="Events"><Paging {...paging} /></SectionBar>
       </div>
     )}

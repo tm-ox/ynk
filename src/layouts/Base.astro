@@ -360,10 +360,11 @@ const ogImage = new URL(image ?? "/og-default.jpg", Astro.site).href;
                     el.style.viewTransitionName = "none";
                 });
             // Named parts inside a named section (an event's flyer, title and
-            // label) join the section's own picture for one transition.
+            // label) join the section's own picture for one transition; not
+            // the event page's top bar, which stays put as the page turns.
             const fold = (root: ParentNode) =>
                 root
-                    .querySelectorAll<HTMLElement>("section[data-astro-transition-scope] [data-astro-transition-scope]")
+                    .querySelectorAll<HTMLElement>("section[data-astro-transition-scope] [data-astro-transition-scope]:not(.detail-bar)")
                     .forEach((el) => (el.style.viewTransitionName = "none"));
             document.addEventListener("astro:before-swap", (e: any) => {
                 if (paging) {
