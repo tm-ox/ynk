@@ -1,6 +1,7 @@
 ---
 import type { GetStaticPaths } from "astro";
 import { Icon } from "astro-icon/components";
+import SectionBar from "../../components/home/SectionBar.astro";
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import NavArrow from "../../components/NavArrow.astro";
 import Pagination from "../../components/Pagination.astro";
@@ -32,6 +33,7 @@ const events = await getGalleryEvents();
     </div>
     <section class="flex-col xl:h-section xl:min-h-0 xl:overflow-hidden">
         <h1 class="sr-only">Images</h1>
+        <SectionBar label="Images" />
         <GalleryFilter events={events}>
             <Pagination lastPage={page.lastPage} currentPage={page.currentPage} />
         </GalleryFilter>
