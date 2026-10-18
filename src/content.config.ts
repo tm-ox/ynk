@@ -25,6 +25,14 @@ export const collections = {
           .optional(),
         with: z.string(),
         info: z.string(),
+        // Who photographed the event's documentation, where known.
+        photographer: z.string().optional(),
+        // The event's artists, in the order they played, each linked once;
+        // a picture names its artist by `name` (images[].artist). Recorded
+        // for crediting later; nothing shows them yet.
+        artists: z
+          .array(z.object({ name: z.string(), url: z.string().optional() }))
+          .optional(),
         flyer: z
           .object({
             src: image(),
@@ -40,6 +48,9 @@ export const collections = {
                 alt: z.string().optional(),
                 id: z.string().optional(),
                 data: z.string().optional(),
+                // The act in the picture (an artists[].name); none for the
+                // crowd and atmosphere.
+                artist: z.string().optional(),
               })
               .optional(),
           )
