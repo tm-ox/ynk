@@ -556,19 +556,13 @@ select:-webkit-autofill:focus {
     background: linear-gradient(transparent, var(--color-accent), transparent);
 }
 
-/* Wipe between neighbouring pages (Previous / Next, page numbers): a hard
-   edge at the logo's angle sweeps across and the new page is behind it. The
-   direction value is set in Base.astro; everything else keeps the morph.
-   Knobs: --wipe-duration, --wipe-easing; --wipe-angle is the edge's lean
-   (the logo's strokes rise at about 58 degrees, so the gradient runs at
-   90 + 32 = 122deg across them). */
+/* The seam's edge, on the home panels and on page turns (see the page turn
+   rules below): a hard edge at the logo's angle. --wipe-easing is the home
+   seam's; --wipe-angle is the edge's lean (the logo's strokes rise at about
+   58 degrees, so the gradient runs at 90 + 32 = 122deg across them). */
 :root {
-    --wipe-duration: 0.55s;
     --wipe-easing: cubic-bezier(0.65, 0, 0.35, 1);
     --wipe-angle: 122deg;
-    /* How far the edge travels either side of an element's centre: past the
-       corners of a box as large as the screen. */
-    --wipe-reach: calc(50vw + 32vh);
     /* Thickness of the line that rides the home panels' wipe edge (0px turns
        it off). */
     --wipe-line: 1px;
@@ -580,24 +574,22 @@ select:-webkit-autofill:focus {
        clock, not the scroll's or the slide's; eased by --wipe-easing). */
     --seam-duration: 0.75s;
 }
-.vt-detail {
-    view-transition-class: detail;
-}
 /* A picture that travels between a grid and its page (a flyer or a
-   photograph) is part of the detail (it wipes with it) and also lands on its
-   own timing, above everything else, in the morph below. */
+   photograph) lands on its own timing, above everything else, in the morph
+   below. (On Previous / Next a detail page's piece turns as a .page instead:
+   Base.astro sets its class for the turn.) */
 .vt-picture {
-    view-transition-class: detail picture;
+    view-transition-class: picture;
 }
 /* A photograph's thumbnail is a square crop of it (a flyer's is the whole
    flyer), so it travels differently: see the .photo rules below. */
 .vt-photo {
-    view-transition-class: detail picture photo;
+    view-transition-class: picture photo;
 }
 /* An event title travels on its own (card or listing title to page title),
    so the outgoing card never carries a second, scaled-up copy of it. */
 .vt-title {
-    view-transition-class: detail title;
+    view-transition-class: title;
 }
 /* A pair whose two ends hold different content (the home featured row to
    the event page): the outgoing picture clears early (see --fade-out below).
@@ -606,21 +598,15 @@ select:-webkit-autofill:focus {
 .vt-swap {
     view-transition-class: swap;
 }
-.vt-detail.vt-swap {
-    view-transition-class: detail swap;
-}
 /* A screen's main content as one piece (the home track, an archive grid), so
    a page turn between screens slides it whole: see the .page rules below. */
 .vt-page {
     view-transition-class: page;
 }
-.vt-detail.vt-page {
-    view-transition-class: detail page;
-}
 
-/* The morph between pages (everything that is not a Previous/Next wipe).
+/* The morph between pages (everything that is not a page turn).
    Astro's own fade sits in @layer astro, so these unlayered rules win over
-   it; the wipe rules further down are more specific and win over these.
+   it; the page turn rules further down are more specific and win over these.
    Knobs: --morph-duration and --morph-easing set the tempo (an expo ease-out:
    quick to commit, long soft landing); the crossfade inside a morph uses
    --morph-fade-easing; the rest of the page (root, and the home track, named
@@ -677,7 +663,7 @@ select:-webkit-autofill:focus {
    alone, it read as the full picture shrinking and then snapping to the
    crop, which tm found worse than the brief doubling. (A flyer's thumbnail is
    the whole flyer, so the crossfade suits it both ways.) Not for
-   Previous/Next, which wipe. */
+   page turns, which slide under the seam. */
 html:not([data-astro-transition^="paging"]):not([data-closing])::view-transition-old(.photo) {
     animation: none;
     opacity: 0;
@@ -701,54 +687,17 @@ html:not([data-astro-transition^="paging"]):not([data-closing])::view-transition
 ::view-transition-new(.title) {
     animation-duration: calc(var(--morph-duration) * var(--fade-out));
 }
-/* Each changing element is masked by one half of a large square tile split
-   along the edge, centred on the element and shifted sideways by the same
-   screen distance for all of them. Old and new pages centre their content in
-   the same places, so the edges line up as one line across the screen, even
-   where an old and a new picture differ in size. Old shows on one side of
-   the edge, new on the other. */
-@keyframes wipe {
-    from {
-        mask-position: calc(50% + var(--wipe-reach)) 50%;
-    }
-    to {
-        mask-position: calc(50% - var(--wipe-reach)) 50%;
-    }
-}
-html[data-astro-transition^="paging"]::view-transition-old(.detail),
-html[data-astro-transition^="paging"]::view-transition-new(.detail) {
-    mask-size: 400vmax 400vmax;
-    mask-repeat: no-repeat;
-    animation: wipe var(--wipe-duration) var(--wipe-easing) both;
-}
-/* Forward: the edge travels right to left, the new page on its right. */
-html[data-astro-transition="paging-forward"]::view-transition-old(.detail) {
-    mask-image: linear-gradient(var(--wipe-angle), #000 50%, transparent 50%);
-}
-html[data-astro-transition="paging-forward"]::view-transition-new(.detail) {
-    mask-image: linear-gradient(var(--wipe-angle), transparent 50%, #000 50%);
-}
-/* Back: left to right, the new page on its left. */
-html[data-astro-transition="paging-back"]::view-transition-old(.detail),
-html[data-astro-transition="paging-back"]::view-transition-new(.detail) {
-    animation-direction: reverse;
-}
-html[data-astro-transition="paging-back"]::view-transition-old(.detail) {
-    mask-image: linear-gradient(var(--wipe-angle), transparent 50%, #000 50%);
-}
-html[data-astro-transition="paging-back"]::view-transition-new(.detail) {
-    mask-image: linear-gradient(var(--wipe-angle), #000 50%, transparent 50%);
-}
-/* Page turns between screens (archive page numbers, and moves along the row
-   home, events archive, images archive; not Previous/Next on a detail page)
-   slide like the home panels do, under one seam, as on the home track. It is
-   all done here, on the snapshots of the .page groups (the home track, an
-   archive grid): the outgoing one leaves whole and the incoming one comes in
+/* Page turns (archive page numbers, moves along the row home, events
+   archive, images archive, steps between home panels, and Previous / Next
+   between event or picture pages) slide under one seam. It is all done here,
+   on the snapshots of the .page groups (the home track, an archive grid, or
+   the named piece that is a detail page, made a .page for the turn by
+   Base.astro): the outgoing one leaves whole and the incoming one comes in
    from the far side, and one diagonal edge with its line crosses the screen
-   once, the outgoing snapshot ahead of it and the incoming one behind it. A
-   smooth-scroll ease-out gives the slide its feel. These come after the
-   .detail rules above, and use the same prefix, because a named pseudo and a
-   class argument have equal specificity and the later one wins. */
+   once, the outgoing snapshot ahead of it and the incoming one behind it.
+   These use the html[data-astro-transition] prefix so they win over the
+   morph's rules above (a named pseudo and a class argument have equal
+   specificity). */
 :root {
     /* The two pages overlap rather than travel edge to edge: each moves only
        --page-slide-distance, for as long as the seam takes, so the seam always
@@ -879,8 +828,7 @@ html[data-astro-transition="paging-back"]::view-transition-new(.detail) {
 /* The lengths are animated on the pseudo-elements themselves, which works for
    registered properties. The seam (delay and all) outlasts the slide, which
    keeps the transition running until it is across; during the delay it sits
-   at its start value (fill both). mask-size is set because a .detail .page
-   pair gets the wipe's oversized mask above. */
+   at its start value (fill both). The mask is the snapshot's size. */
 html[data-astro-transition^="paging"]::view-transition-old(.page) {
     --edge: calc(var(--seam) - var(--slide-x) + var(--turn-old-shift, 0px));
     mask-size: 100% 100%;
@@ -946,16 +894,16 @@ html[data-astro-transition="paging-back"]::view-transition-new(.page) {
         turn-slide-in-back var(--page-slide-duration) var(--page-slide-easing) both,
         turn-seam-back var(--seam-duration) var(--page-seam-easing) var(--page-seam-delay) both;
 }
-/* The line: the incoming page's group (data-turn-into, its name, set by
-   Base.astro on the new page). Its own move from the old box to the new one
+/* The line: the incoming page's group (.into, a class Base.astro, or
+   scripts/track.ts for a home step, gives the incoming box; a group takes
+   the classes of its incoming element). Its own move from the old box to the new one
    (when it holds both, archive to archive) is replaced by the seam, so it
    stays where the new box is, as its measured shift assumes; the snapshots
    in it are placed from its top left and keep their own heights, so an
    outgoing grid of another height is still where it was. The band is
    transparent but for the line's width just behind the edge, and ends past
    the box with the seam. */
-html[data-astro-transition^="paging"][data-turn-into="home"]::view-transition-group(home),
-html[data-astro-transition^="paging"][data-turn-into="gallery-page"]::view-transition-group(gallery-page) {
+html[data-astro-transition^="paging"]::view-transition-group(.into) {
     --edge: calc(var(--seam) + var(--turn-new-shift, 0px));
     animation: turn-seam-forward var(--seam-duration) var(--page-seam-easing) var(--page-seam-delay) both;
     background-image: linear-gradient(
@@ -966,8 +914,7 @@ html[data-astro-transition^="paging"][data-turn-into="gallery-page"]::view-trans
         transparent calc(50% + var(--edge) * 0.848 + var(--wipe-line))
     );
 }
-html[data-astro-transition="paging-back"][data-turn-into="home"]::view-transition-group(home),
-html[data-astro-transition="paging-back"][data-turn-into="gallery-page"]::view-transition-group(gallery-page) {
+html[data-astro-transition="paging-back"]::view-transition-group(.into) {
     animation-name: turn-seam-back;
     background-image: linear-gradient(
         var(--wipe-angle),

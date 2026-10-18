@@ -65,10 +65,10 @@ function step(t: HTMLElement, index: number, move?: () => void) {
 
   stepping = true;
   // What global.css turns pages on, as Base.astro sets it for a page turn:
-  // the way, the incoming group (for the line) and the boxes' shift, the same
+  // the way, the incoming group (.into, for the line) and the boxes' shift, the same
   // at both ends as the track itself does not move.
   root.setAttribute("data-astro-transition", index > from ? "paging-forward" : "paging-back");
-  root.dataset.turnInto = "home";
+  t.style.setProperty("view-transition-class", "page into");
   root.style.setProperty("--turn-old-shift", seamShift(t));
   root.style.setProperty("--turn-new-shift", seamShift(t));
   // Named parts inside the panels (the featured event, its flyer and label,
@@ -84,7 +84,7 @@ function step(t: HTMLElement, index: number, move?: () => void) {
   const vt = document.startViewTransition(go("instant"));
   vt.finished.finally(() => {
     root.removeAttribute("data-astro-transition");
-    delete root.dataset.turnInto;
+    t.style.removeProperty("view-transition-class");
     root.style.removeProperty("--turn-old-shift");
     root.style.removeProperty("--turn-new-shift");
     named.forEach(([el, name]) => (el.style.viewTransitionName = name));

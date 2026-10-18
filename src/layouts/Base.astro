@@ -199,9 +199,9 @@ const ogImage = new URL(image ?? "/og-default.jpg", Astro.site).href;
             });
 
             // Paging between neighbours (Previous / Next, by click, key or wheel)
-            // wipes, and so do page numbers and moves between home and the
-            // archives (below). Everything else keeps the morph. The custom
-            // direction value is what global.css keys the wipe on.
+            // turns the page, and so do page numbers and moves between home and
+            // the archives (below). Everything else keeps the morph. The custom
+            // direction value is what global.css keys the turn on.
             document.addEventListener("astro:before-preparation", (e: any) => {
                 const label = e.sourceElement
                     ?.closest?.("a")
@@ -247,11 +247,15 @@ const ogImage = new URL(image ?? "/og-default.jpg", Astro.site).href;
                 )
                     e.direction = to > from ? "paging-forward" : "paging-back";
                 paging = !!e.direction && e.direction.startsWith("paging");
-                // Names taken off for the last transition (see unname and
-                // fold) come back first, so any of them can travel this time.
+                // Names and classes changed for the last transition (see
+                // unname, fold and turnBox) come back first, so any of them can
+                // travel this time.
                 document
                     .querySelectorAll<HTMLElement>('[style*="view-transition-name"]')
                     .forEach((el) => (el.style.viewTransitionName = ""));
+                document
+                    .querySelectorAll<HTMLElement>('[style*="view-transition-class"]')
+                    .forEach((el) => (el.style.viewTransitionClass = ""));
                 // Pages wipe as a whole, under one edge: the titles and
                 // thumbnails in grid cards, and the flyer, title and label
                 // inside an event, must not be captured separately.
@@ -311,16 +315,19 @@ const ogImage = new URL(image ?? "/og-default.jpg", Astro.site).href;
                 // Page turns set it too: the grid slides in and wipes instead.
                 pagedDetail = paging && isDetail(e.to);
                 returning = (isDetail(e.from) || paging) && isArchive(e.to);
-                // A page turn onto an archive or home: the seam crosses the
-                // two snapshots (global.css), placed by the boxes measured
-                // below. Not for Previous / Next between details, which keep
-                // their own wipe.
+                // A page turn onto an archive or home, or Previous / Next
+                // between details: the seam crosses the two snapshots
+                // (global.css), placed by the boxes measured below.
                 turn =
-                    paging && (isArchive(e.to) || e.to.pathname === "/")
+                    paging &&
+                    (isArchive(e.to) || e.to.pathname === "/" || (isDetail(e.from) && isDetail(e.to)))
                         ? e.direction === "paging-back"
                             ? "back"
                             : "forward"
                         : null;
+                // The outgoing box turns as a .page (a detail's is not one
+                // otherwise; see turnBox).
+                if (turn) turnBox(document)?.style.setProperty("view-transition-class", "page");
                 // A turn between screens (home, events, images), not between
                 // pages of one archive: the page numbers are another set, so
                 // they go with their own grid rather than morph from one row
@@ -394,17 +401,30 @@ const ogImage = new URL(image ?? "/og-default.jpg", Astro.site).href;
                 // this lasts until the next navigation.
                 if (returning) e.newDocument.documentElement.dataset.returning = "";
                 if (turn) {
-                    // Which group the incoming page is, so global.css draws
-                    // the seam's line on it.
-                    e.newDocument.documentElement.dataset.turnInto =
-                        e.newDocument.querySelector("[data-track]") ? "home" : "gallery-page";
+                    // The incoming box turns as a .page too, and is the one
+                    // global.css draws the seam's line on (.into: its group
+                    // takes its classes, also when it holds both pages).
+                    turnBox(e.newDocument)?.style.setProperty("view-transition-class", "page into");
                     // The outgoing screen, as captured for the slide (this
                     // runs before the swap). See seamShift.
-                    oldShift = seamShift(document.querySelector(".vt-page"));
-                    oldTop = document.querySelector(".vt-page")?.getBoundingClientRect().top ?? 0;
+                    const old = turnBox(document);
+                    oldShift = seamShift(old);
+                    oldTop = old?.getBoundingClientRect().top ?? 0;
                 }
             });
 
+            // What a page turn moves: a screen's main content (.vt-page: the
+            // home track, an archive grid), or on a detail page the named
+            // piece that is the page (an event's section, its parts folded
+            // into it; a picture). Run after fold, so folded parts are not it.
+            const turnBox = (root: ParentNode) =>
+                root.querySelector<HTMLElement>(".vt-page") ??
+                [
+                    ...root.querySelectorAll<HTMLElement>(
+                        ":is(.vt-detail, .vt-picture, .vt-photo)[data-astro-transition-scope]",
+                    ),
+                ].find((el) => el.style.viewTransitionName !== "none") ??
+                null;
             let oldShift = "0px";
             // Where the outgoing grid's top was, so global.css can keep it
             // there when the incoming one sits lower (the images archive has
@@ -446,11 +466,9 @@ const ogImage = new URL(image ?? "/og-default.jpg", Astro.site).href;
                 if (turn) {
                     const root = document.documentElement.style;
                     root.setProperty("--turn-old-shift", oldShift);
-                    root.setProperty(
-                        "--turn-new-shift",
-                        seamShift(document.querySelector(".vt-page")),
-                    );
-                    const newTop = document.querySelector(".vt-page")?.getBoundingClientRect().top ?? oldTop;
+                    const box = turnBox(document);
+                    root.setProperty("--turn-new-shift", seamShift(box));
+                    const newTop = box?.getBoundingClientRect().top ?? oldTop;
                     root.setProperty("--turn-old-dy", `${oldTop - newTop}px`);
                 }
                 const t = document.querySelector<HTMLElement>("[data-track]");
