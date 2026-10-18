@@ -10,10 +10,10 @@ const { label, events, current } = Astro.props;
 
 <div class="gallery-filter" transition:name="gallery-bar">
     {label && <h2 class="bar-label">{label}</h2>}
-    {/* Only as wide as the chosen event's name (see select, below), its rule
-        with it; the free space falls after it (mr-auto), so the page numbers
-        have the rest of the row. */}
-    <div class="min-w-0 mr-auto select-cell">
+    {/* Takes what the row leaves (see .select-cell, below); the dropdown in
+        it is only as wide as the chosen event's name, so the free space falls
+        after it and the page numbers sit at the row's end. */}
+    <div class="select-cell">
     <div class="select-wrap">
     <select aria-label="Filter by event" data-gallery-filter>
         <option value="/images/" selected={!current}>ALL IMAGES</option>
@@ -117,17 +117,42 @@ const { label, events, current } = Astro.props;
     .gallery-filter {
         @apply flex flex-wrap items-center w-full gap-x-6;
     }
-    /* Below md the page numbers take a row of their own under the rest (as on
-       the events archive's bar), and the dropdown takes what the first row
-       leaves (basis 0, so a long event name truncates rather than pushing All
-       images and the arrows down a row). */
+    /* The dropdown's cell takes what the row leaves (basis 0), at every
+       size, so a long event name truncates (see select) rather than pushing
+       the page numbers, All images or the arrows down a row. Below md the
+       page numbers take a row of their own under the rest (as on the events
+       archive's bar). */
+    .select-cell {
+        flex: 1 1 0;
+        min-width: 0;
+    }
     @media (width < 48rem) {
-        .select-cell {
-            flex: 1 1 0;
-        }
         .gallery-filter > :global(nav) {
             order: 1;
             flex-basis: 100%;
+        }
+    }
+    /* Phones: the title row is the screen's title and what leads off it (All
+       images, the arrows) at the right; the dropdown has the next row to
+       itself, full width; the page numbers come last. Each row --bar-row high. */
+    @media (width < 40rem) {
+        .bar-label {
+            margin-right: auto;
+        }
+        .select-cell {
+            order: 1;
+            flex-basis: 100%;
+        }
+        .gallery-filter > :global(nav) {
+            order: 2;
+        }
+        .select-cell .select-wrap {
+            width: auto;
+        }
+        .select-cell select {
+            field-sizing: fixed;
+            width: 100%;
+            max-width: 100%;
         }
     }
     /* The text is lifted on its own; the chevron is drawn here (not the browser's
@@ -153,15 +178,29 @@ const { label, events, current } = Astro.props;
     .select-wrap {
         height: var(--bar-row);
     }
-    /* Top-aligned, or the inline select sits on the wrap's baseline and
-       hangs below the row; its text centred in it (base-select lays the
-       button out as a flex row). */
+    /* As wide as the select (fit-content), the chevron at its end, and never
+       past the cell. */
+    .select-wrap {
+        --select-h: var(--bar-row);
+        width: fit-content;
+        max-width: 100%;
+    }
+    /* A block, so its text keeps to one line and ends in an ellipsis where
+       the row runs out (base-select would lay the button out as a flex row,
+       whose text wraps and ignores text-overflow); centred in the row by a
+       line as tall as it (--select-h, the wrap's height). The open list
+       wraps, so its options show their names whole. */
     select {
+        display: block;
         height: 100%;
         min-height: 0;
-        line-height: 1;
-        vertical-align: top;
-        align-items: center;
+        line-height: var(--select-h);
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+    option {
+        white-space: normal;
     }
     /* The slotted pieces (the page numbers, All images, the arrows) sit
        in the same row, centred like the select's text, so all read as one
@@ -182,6 +221,7 @@ const { label, events, current } = Astro.props;
             --hit: 2.5rem;
         }
         .select-wrap {
+            --select-h: var(--hit);
             height: var(--hit);
             margin-block: calc((var(--bar-row) - var(--hit)) / 2);
         }
