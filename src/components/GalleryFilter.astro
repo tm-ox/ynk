@@ -30,7 +30,6 @@ const { label, events, current } = Astro.props;
     </select>
     <span class="chevron" aria-hidden="true"></span>
     </div>
-    <hr />
     <noscript>
         <ul>
             <li><a href="/images/">All images</a></li>
@@ -192,12 +191,13 @@ const { label, events, current } = Astro.props;
         }
         select::picker(select) {
             border: 0;
-            padding: 0;
+            padding: 0.25rem 0;
             box-shadow: none;
             background: rgb(var(--rgb-bg));
         }
         option {
-            @apply px-0 py-1 text-accent-muted;
+            /* Off the list's edges, as the row's text is off the bar's. */
+            @apply px-3 py-1 text-accent-muted;
             outline: none;
         }
         option:hover,
@@ -215,9 +215,5 @@ const { label, events, current } = Astro.props;
     }
     select:hover + .chevron {
         @apply border-accent;
-    }
-    /* Rule under the dropdown only; the slotted action sits free beside it. */
-    hr {
-        @apply mb-0;
     }
 </style>
