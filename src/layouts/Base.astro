@@ -422,8 +422,12 @@ const ogImage = new URL(image ?? "/og-default.jpg", Astro.site).href;
                     const name = was && getComputedStyle(was).viewTransitionName;
                     if (bar && name && name !== "none") bar.style.viewTransitionName = name;
                 }
+                // As on the outgoing page (before-preparation): another set
+                // of page numbers goes with its page, and off a page turn only
+                // the opened or closed thumbnail travels, the rest fading with
+                // the page (closing back to an archive is always crossing).
                 if (crossing) unnumber(e.newDocument);
-                else unname(e.newDocument, focus ?? undefined);
+                if (!paging) unname(e.newDocument, focus ?? undefined);
                 if (closing) e.newDocument.documentElement.dataset.closing = "";
                 // Paging onto a detail page: its rules do not draw in (global.css
                 // keys on data-paged). Set here, before the swap, so the attribute
