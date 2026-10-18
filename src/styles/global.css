@@ -325,10 +325,14 @@
     h1 {
         @apply mb-2 text-5xl font-black uppercase sm:text-5xl md:text-6xl xl:text-7xl;
     }
-    /* After the sizes above, which bring their own leading at each step. A
-       sized h1 (the event title, a picture's strip) sets its own. */
-    h1 {
-        line-height: var(--leading-display);
+    /* Phones: after the sizes above, which bring their own leading at each
+       step, set tight so a heading broken over two lines reads as one word.
+       From sm the sizes' own leading stands. A sized h1 (the event title, a
+       picture's strip) sets its own. */
+    @media (width < 40rem) {
+        h1 {
+            line-height: var(--leading-display);
+        }
     }
     h2 {
         @apply mb-2 text-xl md:text-3xl;
