@@ -236,80 +236,98 @@
             scroll-behavior: smooth;
         }
     }
-    /* Fallback only: browsers without scroll-linked animations (see the block
-       below) get panels that fade in as they come into view, columns alternately
-       rising and falling (scripts/reveal.ts sets data-reveal).
-       Without the script, or with reduced motion, panels are plain. */
-    @supports not (animation-timeline: view()) {
-        @media (min-width: 40rem) and (prefers-reduced-motion: no-preference) {
-            .home-track > section[data-reveal="out"] [data-reveal-item] {
-                opacity: 0;
-                translate: 0 calc(var(--dir, 1) * 0.75rem);
-            }
-            .home-track > section[data-reveal="in"] [data-reveal-item] {
-                transition:
-                    opacity 0.6s ease-out,
-                    translate 0.6s ease-out;
-                transition-delay: calc(var(--i, 0) * 80ms);
-            }
-        }
-    }
-    /* Panels are revealed by the paging wipe's edge (same angle and reach),
-       but driven by scroll instead of time: each panel's progress across the
-       track is its timeline (0% as it enters at the right, 50% when it is
-       snapped in place, 100% as it leaves at the left), so the edge sweeps
-       along the diagonal as the track is dragged and reverses on the way back.
-       view() takes the nearest ancestor scroller of the panel (the track; the
-       panel's own vertical scroll is not used). The timeline is also named so
-       the rules inside can follow the panel rather than their own position.
+    /* Home panels wipe in on arrival, with the paging wipe's edge (same angle,
+       duration, easing and reach) and a thin line riding on it. It is timed,
+       not tied to the scroll, so it plays the same however the panel was
+       reached (scripts/reveal.ts sets data-reveal in/out and data-side, the
+       side of the screen an "out" panel waits on, so the edge enters from
+       there). Without the script, or with reduced motion, panels are plain.
        The hero is left alone. */
-    @supports (animation-timeline: view()) {
-        @media (min-width: 40rem) and (prefers-reduced-motion: no-preference) {
-            /* The edge only moves between 15% and 50% and between 50% and 85%,
-               so a panel is whole for a stretch around the snap point and a
-               thin sliver of travel is not spent on a barely visible edge.
-               (Hard-coded in the keyframes: percentages cannot take variables.) */
-            @keyframes panel-reveal {
-                0%,
-                15%,
-                85%,
-                100% {
-                    mask-position: calc(50% + var(--wipe-reach)) 50%;
-                }
-                50% {
-                    mask-position: calc(50% - var(--wipe-reach)) 50%;
-                }
-            }
-            /* Rules draw in from the left, a little later than the wipe starts
-               and finished by the time the panel is at rest. */
-            @keyframes rule-draw {
-                0%,
-                20%,
-                80%,
-                100% {
-                    scale: 0 1;
-                }
-                50% {
-                    scale: 1 1;
-                }
-            }
-            .home-track > section:not(#top) {
-                view-timeline: --panel inline;
-                animation: panel-reveal linear both;
-                animation-timeline: --panel;
-                animation-range: cover 0% cover 100%;
-                /* Visible side is right of the edge; the tile is far larger than
-                   the panel, so it covers it at every position. */
-                mask-image: linear-gradient(var(--wipe-angle), transparent 50%, #000 50%);
-                mask-size: 400vmax 400vmax;
-                mask-repeat: no-repeat;
-            }
-            .home-track > section:not(#top) hr {
-                transform-origin: left;
-                animation: rule-draw linear both;
-                animation-timeline: --panel;
-                animation-range: cover 0% cover 100%;
-            }
+    @media (min-width: 40rem) and (prefers-reduced-motion: no-preference) {
+        /* Positioned so the edge line (::after) can cover the panel. */
+        .home-track > section:not(#top) {
+            position: relative;
+            mask-size: 400vmax 400vmax;
+            mask-repeat: no-repeat;
+        }
+        /* The tile is far larger than the panel, so the edge crosses it at
+           every position. The visible side is the one the panel arrives from
+           the far side of: right-hand panels show what is right of the edge. */
+        .home-track > section:not(#top)[data-reveal],
+        .home-track > section:not(#top)[data-reveal][data-side="right"] {
+            mask-image: linear-gradient(var(--wipe-angle), transparent 50%, #000 50%);
+        }
+        .home-track > section:not(#top)[data-reveal][data-side="left"] {
+            mask-image: linear-gradient(var(--wipe-angle), #000 50%, transparent 50%);
+        }
+        /* Hidden, then in: the edge sweeps across the panel. Only "in" has a
+           transition, so resetting to "out" is instant and unseen. */
+        .home-track > section:not(#top)[data-reveal="out"] {
+            mask-position: calc(50% + var(--wipe-reach)) 50%;
+        }
+        .home-track > section:not(#top)[data-reveal="out"][data-side="left"] {
+            mask-position: calc(50% - var(--wipe-reach)) 50%;
+        }
+        .home-track > section:not(#top)[data-reveal="in"] {
+            mask-position: calc(50% - var(--wipe-reach)) 50%;
+            transition: mask-position var(--wipe-duration) var(--wipe-easing);
+        }
+        .home-track > section:not(#top)[data-reveal="in"][data-side="left"] {
+            mask-position: calc(50% + var(--wipe-reach)) 50%;
+        }
+        /* The edge line. It is drawn on the panel itself, which the mask also
+           clips, and a line centred on the mask's edge would lose its hidden
+           half. So it is laid just inside the visible side instead (right of
+           the edge for right-hand panels, left of it for left-hand ones), and
+           moves with exactly the same size, position and timing as the mask. */
+        .home-track > section:not(#top)[data-reveal]::after {
+            content: "";
+            position: absolute;
+            inset: 0;
+            z-index: 1;
+            pointer-events: none;
+            background-repeat: no-repeat;
+            background-size: 400vmax 400vmax;
+            background-image: linear-gradient(
+                var(--wipe-angle),
+                transparent 50%,
+                var(--color-border) 50%,
+                var(--color-border) calc(50% + var(--wipe-line)),
+                transparent calc(50% + var(--wipe-line))
+            );
+        }
+        .home-track > section:not(#top)[data-reveal][data-side="left"]::after {
+            background-image: linear-gradient(
+                var(--wipe-angle),
+                transparent calc(50% - var(--wipe-line)),
+                var(--color-border) calc(50% - var(--wipe-line)),
+                var(--color-border) 50%,
+                transparent 50%
+            );
+        }
+        .home-track > section:not(#top)[data-reveal="out"]::after {
+            background-position: calc(50% + var(--wipe-reach)) 50%;
+        }
+        .home-track > section:not(#top)[data-reveal="out"][data-side="left"]::after {
+            background-position: calc(50% - var(--wipe-reach)) 50%;
+        }
+        .home-track > section:not(#top)[data-reveal="in"]::after {
+            background-position: calc(50% - var(--wipe-reach)) 50%;
+            transition: background-position var(--wipe-duration) var(--wipe-easing);
+        }
+        .home-track > section:not(#top)[data-reveal="in"][data-side="left"]::after {
+            background-position: calc(50% + var(--wipe-reach)) 50%;
+        }
+        /* Rules draw in from the left once the wipe is half done. */
+        .home-track > section:not(#top) hr {
+            transform-origin: left;
+        }
+        .home-track > section:not(#top)[data-reveal="out"] hr {
+            scale: 0 1;
+        }
+        .home-track > section:not(#top)[data-reveal="in"] hr {
+            scale: 1 1;
+            transition: scale 0.4s var(--wipe-easing) calc(var(--wipe-duration) * 0.5);
         }
     }
     /* Archive thumbnails rise in, a little after one another (--i is the
@@ -445,6 +463,9 @@ select:-webkit-autofill:focus {
     /* How far the edge travels either side of an element's centre: past the
        corners of a box as large as the screen. */
     --wipe-reach: calc(50vw + 32vh);
+    /* Thickness of the line that rides the home panels' wipe edge (0px turns
+       it off). */
+    --wipe-line: 1px;
 }
 .vt-detail {
     view-transition-class: detail;
