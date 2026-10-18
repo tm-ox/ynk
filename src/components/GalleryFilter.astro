@@ -125,15 +125,31 @@ const { events, current } = Astro.props;
         .select-wrap {
             height: var(--bar-row);
         }
+        /* Top-aligned, or the inline select sits on the wrap's baseline and
+           hangs below the row; its text centred in it (base-select lays the
+           button out as a flex row). */
         select {
             height: 100%;
             min-height: 0;
             line-height: 1;
+            vertical-align: top;
+            align-items: center;
+        }
+        /* The slotted action (All images) sits in the same row, its text
+           centred like the select's, so the two read as one line. */
+        .gallery-filter > :global(a) {
+            display: flex;
+            align-items: center;
+            height: var(--bar-row);
+            line-height: 1;
         }
     }
+    /* A square's bottom and right borders turned 45deg: the V is the lower
+       half of the diamond, so the square is lifted past centre (-50%) to centre
+       the V itself on the text. */
     .chevron {
         @apply absolute w-[0.45rem] h-[0.45rem] border-b border-r pointer-events-none right-1.5 top-1/2 border-accent-muted;
-        transform: translateY(-70%) rotate(45deg);
+        transform: translateY(-80%) rotate(45deg);
     }
     /* No ring, and nothing left behind after a mouse click. Only keyboard focus
        is marked (data-kb, set in the script): the text brightens. The transparent
