@@ -63,7 +63,7 @@
     --slash-weight: 1.2px;
     --spacing-footer: calc(var(--spacing) * 8);
     /* What a section's padding and the flyer's frame take from the screen height. */
-    --spacing-section-inset: calc(var(--spacing) * 7.5);
+    --spacing-section-inset: calc(var(--spacing) * 6.5);
     --container-site: 90rem;
     --text-hero: 3.25rem;
     --text-hero--line-height: calc(var(--spacing) * 10);
@@ -237,7 +237,7 @@
         bottom: 0;
     }
     section {
-        @apply flex items-center pt-3 pb-4 min-h-section;
+        @apply flex items-center pt-2 pb-4 min-h-section;
     }
     h1,
     h2,
