@@ -373,6 +373,16 @@ const ogImage = new URL(image ?? "/og-default.jpg", Astro.site).href;
                 if (returning) e.newDocument.documentElement.dataset.returning = "";
                 if (turn) {
                     e.newDocument.documentElement.dataset.turn = turn;
+                    const vt = e.viewTransition as ViewTransition | undefined;
+                    // The incoming content's wipe is held at its start until
+                    // syncTurn puts it on the slide's clock (global.css), and
+                    // released whatever happens: synced, or (no slide found,
+                    // transition skipped) just let go from its start. With
+                    // nothing to wait for it is not held at all.
+                    if (vt) {
+                        e.newDocument.documentElement.dataset.turnHeld = "";
+                        vt.ready.then(syncTurn).catch(() => {}).finally(release);
+                    }
                     // The outgoing screen, as captured for the slide (this
                     // runs before the swap). See seamShift.
                     oldShift = seamShift(document.querySelector(".vt-page"));
@@ -395,8 +405,6 @@ const ogImage = new URL(image ?? "/og-default.jpg", Astro.site).href;
                         panels.forEach(
                             (s) => (s.dataset.reveal = s === landed ? "landing" : "hidden"),
                         );
-                    const vt = e.viewTransition as ViewTransition | undefined;
-                    vt?.ready.then(syncTurn, () => {});
                     // An explicit end: once the transition is over (or
                     // skipped) data-turn comes off, and with it the incoming
                     // content's mask and line, whatever its animation reached.
@@ -429,20 +437,36 @@ const ogImage = new URL(image ?? "/og-default.jpg", Astro.site).href;
             let turns = 0;
             // The incoming content's wipe (an archive grid, a home panel) is
             // CSS animations on the live page (its seam and its share of the
-            // slide), which start when the page is swapped in, a frame or more
-            // before the snapshots' do. Set back to the slide's start, so they
-            // keep the same clock and the seam does not split in two. (The
-            // snapshots' own are set too, harmlessly: they start with it.)
-            const syncTurn = async () => {
-                const css = document
+            // slide). Started as the page is swapped in, they would run a
+            // frame or more before the snapshots' do, and putting them back
+            // on the slide's clock then showed as a restart. So they are held
+            // paused at their start until now (data-turn-held, global.css),
+            // and only ever moved forward: to the slide's start time, once it
+            // has one. The snapshots' own need nothing: they start together.
+            const live = () =>
+                document
                     .getAnimations()
-                    .filter((a): a is CSSAnimation => a instanceof CSSAnimation);
-                const slide = css.find((a) => a.animationName.startsWith("page-in-from-"));
+                    .filter(
+                        (a): a is CSSAnimation =>
+                            a instanceof CSSAnimation &&
+                            a.animationName.startsWith("turn-") &&
+                            !(a.effect as KeyframeEffect | null)?.pseudoElement,
+                    );
+            const syncTurn = async () => {
+                const slide = document
+                    .getAnimations()
+                    .find(
+                        (a): a is CSSAnimation =>
+                            a instanceof CSSAnimation && a.animationName.startsWith("page-in-from-"),
+                    );
                 if (!slide) return;
                 await slide.ready;
-                css.filter((a) => a.animationName.startsWith("turn-")).forEach(
-                    (a) => (a.startTime = slide.startTime),
-                );
+                live().forEach((a) => (a.startTime = slide.startTime));
+            };
+            // Lets the held wipe go. One that was not synced plays from its
+            // start (it was paused there), so nothing jumps either way.
+            const release = () => {
+                delete document.documentElement.dataset.turnHeld;
             };
 
             // Kept in sessionStorage so a reload keeps the close destination.

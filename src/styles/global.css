@@ -828,6 +828,12 @@ html[data-astro-transition="paging-back"]::view-transition-new(.page) {
             #000 calc(50% + var(--edge) * 0.848)
         );
     }
+    /* Held at the start (fill both) until Base.astro has put it on the
+       slide's clock, so it never shows progress it would then lose. */
+    html[data-turn][data-turn-held] :is(.gallery-fit, .home-track > section[data-reveal="landing"]),
+    html[data-turn][data-turn-held] .home-track > section[data-reveal="landing"] hr {
+        animation-play-state: paused;
+    }
     html[data-turn="back"] :is(.gallery-fit, .home-track > section[data-reveal="landing"]) {
         animation-name: turn-slide-in-back, turn-seam-back;
         mask-image: linear-gradient(
