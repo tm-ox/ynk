@@ -77,8 +77,9 @@ const START = lastPage <= 16 ? lastPage : 3;
     // around the current page one either side at a time while the row still
     // fits: the numbers on one line, and (on the images archive) the dropdown
     // still showing its whole label. Runs after every swap, before the new
-    // page is captured, so a page turn shows the final numbers; and again
-    // when the bar's width changes.
+    // page is captured, so a page turn shows the final numbers; again when
+    // the bar's width changes; and once the page's fonts have loaded, since
+    // the numbers measured in a fallback face are not the ones shown.
     const fit = (nav: HTMLElement) => {
         const current = Number(nav.dataset.current);
         const last = Number(nav.dataset.last);
@@ -97,8 +98,17 @@ const START = lastPage <= 16 ? lastPage : 3;
         // A label too long for the bar even with the fewest numbers is left
         // to truncate; the numbers do not give way to it.
         const label = !!select && select.scrollWidth <= select.clientWidth + 1;
+        // The bar wraps (flex-wrap), so a run too long for its line drops the
+        // numbers (or the arrows after them) to a line of their own rather
+        // than overflowing: the bar's height with the fewest numbers is the
+        // most it may take. (Below md the numbers have their own row from the
+        // start, so that height already counts it.)
+        const bar = nav.parentElement!;
+        const height = bar.offsetHeight;
         const fits = () =>
-            nav.scrollWidth <= nav.clientWidth + 1 && (!label || select!.scrollWidth <= select!.clientWidth + 1);
+            nav.scrollWidth <= nav.clientWidth + 1 &&
+            bar.offsetHeight <= height &&
+            (!label || select!.scrollWidth <= select!.clientWidth + 1);
         while (current - r > 1 || current + r < last) {
             show(r + 1);
             if (!fits()) {
@@ -130,5 +140,8 @@ const START = lastPage <= 16 ? lastPage : 3;
     document.addEventListener("astro:page-load", () => {
         fitAll();
         watch();
+        // Already settled on most visits (a microtask's wait); fits whatever
+        // page is in by then.
+        document.fonts?.ready.then(fitAll);
     });
 </script>
