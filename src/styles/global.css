@@ -334,6 +334,17 @@
             scale: 1 1;
             transition: scale 0.4s var(--wipe-easing) calc(var(--panel-wipe-duration) * 0.5);
         }
+        /* Landing on home by a page turn (data-turn, set in Base.astro), the
+           panel's wipe waits --page-wipe-delay, as an archive grid's does, so
+           the slide is under way first. Only while that page transition runs
+           (Astro marks the root until it ends), so later scrolling is not held
+           back. */
+        html[data-turn][data-astro-transition] .home-track > section[data-reveal="in"] {
+            transition-delay: var(--page-wipe-delay);
+        }
+        html[data-turn][data-astro-transition] .home-track > section[data-reveal="in"] hr {
+            transition-delay: calc(var(--panel-wipe-duration) * 0.5 + var(--page-wipe-delay));
+        }
     }
     /* Archive thumbnails rise in, a little after one another (--i is the
        cell's index). Titles and rules stay put. Plays on every arrival except
@@ -504,14 +515,22 @@ select:-webkit-autofill:focus {
 .vt-detail.vt-swap {
     view-transition-class: detail swap;
 }
+/* A screen's main content as one piece (the home track, an archive grid), so
+   a page turn between screens slides it whole: see the .page rules below. */
+.vt-page {
+    view-transition-class: page;
+}
+.vt-detail.vt-page {
+    view-transition-class: detail page;
+}
 
 /* The morph between pages (everything that is not a Previous/Next wipe).
    Astro's own fade sits in @layer astro, so these unlayered rules win over
    it; the wipe rules further down are more specific and win over these.
    Knobs: --morph-duration and --morph-easing set the tempo (an expo ease-out:
    quick to commit, long soft landing); the crossfade inside a morph uses
-   --morph-fade-easing; the rest of the page (root) crossfades in
-   --page-fade-duration; --picture-lead is a travelling picture's share of the morph time,
+   --morph-fade-easing; the rest of the page (root, and the home track, named
+   for page turns) crossfades in --page-fade-duration; --picture-lead is a travelling picture's share of the morph time,
    so it lands first and the text settles after it. --fade-out is the share
    of the morph in which the outgoing picture of a .vt-swap pair clears (and in which a title
    swaps old text for new), so old and new never show side by side for long. */
@@ -537,7 +556,10 @@ select:-webkit-autofill:focus {
 }
 ::view-transition-group(root),
 ::view-transition-old(root),
-::view-transition-new(root) {
+::view-transition-new(root),
+::view-transition-group(home),
+::view-transition-old(home),
+::view-transition-new(home) {
     animation-duration: var(--page-fade-duration);
 }
 ::view-transition-group(.picture),
@@ -623,13 +645,16 @@ html[data-astro-transition="paging-back"]::view-transition-old(.detail) {
 html[data-astro-transition="paging-back"]::view-transition-new(.detail) {
     mask-image: linear-gradient(var(--wipe-angle), #000 50%, transparent 50%);
 }
-/* Archive page turns (the grid's own group, not Previous/Next on a detail
-   page) slide like the home panels do, and the incoming grid wipes in with
-   the panels' edge and line. The slide is done here, on the snapshots: the
-   old grid leaves whole and the new one comes in from the far side. The wipe
-   is not: it runs on the real incoming grid (.gallery-fit, keyed on
-   data-turn below), which the new snapshot shows live, so its mask is drawn
-   at full resolution with the line on it, as on the home panels. A
+/* Page turns between screens (archive page numbers, and moves along the row
+   home, events archive, images archive; not Previous/Next on a detail page)
+   slide like the home panels do, and the incoming content wipes in with the
+   panels' edge and line. The slide is done here, on the snapshots of the
+   .page groups (the home track, an archive grid): whichever leaves goes
+   whole and the incoming one comes in from the far side. The wipe is not: it
+   runs on the real incoming content (an archive's .gallery-fit, keyed on
+   data-turn below, or the home panel landed on, wiped by scripts/reveal.ts),
+   which the new snapshot shows live, so its mask is drawn at full resolution
+   with the line on it, as on the home panels. A
    smooth-scroll ease-out gives the slide its feel. These come after the
    .detail rules above, and use the same prefix, because a named pseudo and a
    class argument have equal specificity and the later one wins. */
@@ -669,22 +694,22 @@ html[data-astro-transition="paging-back"]::view-transition-new(.detail) {
     }
 }
 /* Neither snapshot is masked here: they only slide. */
-html[data-astro-transition^="paging"]::view-transition-old(gallery-page),
-html[data-astro-transition^="paging"]::view-transition-new(gallery-page) {
+html[data-astro-transition^="paging"]::view-transition-old(.page),
+html[data-astro-transition^="paging"]::view-transition-new(.page) {
     mask-image: none;
 }
-html[data-astro-transition="paging-forward"]::view-transition-old(gallery-page) {
+html[data-astro-transition="paging-forward"]::view-transition-old(.page) {
     animation: page-out-to-left var(--page-slide-duration) var(--page-slide-easing) both;
 }
-html[data-astro-transition="paging-forward"]::view-transition-new(gallery-page) {
+html[data-astro-transition="paging-forward"]::view-transition-new(.page) {
     animation:
         page-in-from-right var(--page-slide-duration) var(--page-slide-easing) both,
         turn-hold calc(var(--page-wipe-delay) + var(--panel-wipe-duration));
 }
-html[data-astro-transition="paging-back"]::view-transition-old(gallery-page) {
+html[data-astro-transition="paging-back"]::view-transition-old(.page) {
     animation: page-out-to-right var(--page-slide-duration) var(--page-slide-easing) both;
 }
-html[data-astro-transition="paging-back"]::view-transition-new(gallery-page) {
+html[data-astro-transition="paging-back"]::view-transition-new(.page) {
     animation:
         page-in-from-left var(--page-slide-duration) var(--page-slide-easing) both,
         turn-hold calc(var(--page-wipe-delay) + var(--panel-wipe-duration));

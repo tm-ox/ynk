@@ -193,8 +193,9 @@ const ogImage = new URL(image ?? "/og-default.jpg", Astro.site).href;
             });
 
             // Paging between neighbours (Previous / Next, by click, key or wheel)
-            // wipes. Everything else keeps the morph. The custom direction
-            // value is what global.css keys the wipe on.
+            // wipes, and so do page numbers and moves between home and the
+            // archives (below). Everything else keeps the morph. The custom
+            // direction value is what global.css keys the wipe on.
             document.addEventListener("astro:before-preparation", (e: any) => {
                 const label = e.sourceElement
                     ?.closest?.("a")
@@ -212,6 +213,33 @@ const ogImage = new URL(image ?? "/og-default.jpg", Astro.site).href;
                                 ? "paging-forward"
                                 : "paging-back";
                 }
+                // Home and the archives are one row of screens: the home
+                // panels left to right, then the events archive, then the
+                // images archive (an event's pictures included), as the nav
+                // and the arrow keys have them. A move between two of them
+                // that are different pages turns the page that way, like
+                // page numbers do. (Within home it is a scroll, not a
+                // navigation, so which home panel is involved never decides
+                // anything: every one of them comes before both archives.)
+                // Details are not in the row and keep the morph.
+                const screen = (url: URL) =>
+                    url.pathname === "/"
+                        ? 0
+                        : /^\/events(\/(\d+\/?)?)?$/.test(url.pathname)
+                          ? 1
+                          : /^\/images(\/(\d+\/?)?)?$/.test(url.pathname) ||
+                              /^\/images\/event\/[^/]+(\/(\d+\/?)?)?$/.test(url.pathname)
+                            ? 2
+                            : undefined;
+                const from = screen(e.from);
+                const to = screen(e.to);
+                if (
+                    !e.direction?.startsWith("paging") &&
+                    from !== undefined &&
+                    to !== undefined &&
+                    from !== to
+                )
+                    e.direction = to > from ? "paging-forward" : "paging-back";
                 paging = !!e.direction && e.direction.startsWith("paging");
                 // Names taken off for the last transition (see unname and
                 // fold) come back first, so any of them can travel this time.
@@ -276,12 +304,13 @@ const ogImage = new URL(image ?? "/og-default.jpg", Astro.site).href;
                 // do not rise in again (global.css keys on data-returning).
                 // Page turns set it too: the grid slides in and wipes instead.
                 returning = (isDetail(e.from) || paging) && isArchive(e.to);
-                // A page turn onto an archive: its grid wipes in live, with the
-                // home panels' edge and line (global.css keys on data-turn,
-                // set on the new page below). Not for Previous / Next between
-                // details, which keep the wipe on the snapshots.
+                // A page turn onto an archive or home: the incoming grid, or
+                // the home panel it lands on, wipes in live with the home
+                // panels' edge and line (global.css and scripts/reveal.ts key
+                // on data-turn, set on the new page below). Not for Previous /
+                // Next between details, which keep the wipe on the snapshots.
                 turn =
-                    paging && isArchive(e.to)
+                    paging && (isArchive(e.to) || e.to.pathname === "/")
                         ? e.direction === "paging-back"
                             ? "back"
                             : "forward"
@@ -342,7 +371,19 @@ const ogImage = new URL(image ?? "/og-default.jpg", Astro.site).href;
                 // The new page's root attributes replace the current ones, so
                 // this lasts until the next navigation.
                 if (returning) e.newDocument.documentElement.dataset.returning = "";
-                if (turn) e.newDocument.documentElement.dataset.turn = turn;
+                if (turn) {
+                    e.newDocument.documentElement.dataset.turn = turn;
+                    // Home's panels start hidden, on the side the page comes
+                    // in from, so the one landed on is already hidden while the
+                    // page slides in, before scripts/reveal.ts (which may still
+                    // be loading) wipes it in. reveal.ts sorts out the others.
+                    (e.newDocument as Document)
+                        .querySelectorAll<HTMLElement>("[data-track] > section")
+                        .forEach((s) => {
+                            s.dataset.reveal = "out";
+                            s.dataset.side = turn === "back" ? "left" : "right";
+                        });
+                }
             });
 
             // Kept in sessionStorage so a reload keeps the close destination.

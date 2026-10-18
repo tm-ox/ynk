@@ -14,7 +14,7 @@ const padding = Math.max(0, pageSize - events.length);
 <!-- Flyers sit in square cells and the grid always spans the content width.
      From xl up a page (18 events) is 6 columns by 3 rows; a screen too short
      for that scrolls inside the grid. Below xl it flows. -->
-<div class="w-full mb-auto gallery-fit vt-detail" transition:name="gallery-page" data-scroll>
+<div class="w-full mb-auto gallery-fit vt-detail vt-page" transition:name="gallery-page" data-scroll>
     <div class="gallery-spacer"></div>
     <div class="gallery-group">
     <ul class="grid gap-2 grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gallery-grid">

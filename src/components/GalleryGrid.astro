@@ -21,7 +21,7 @@ const padding = Math.max(0, pageSize - images.length);
      columns follows the shape of the space available (6, 8 or 12, so 4, 3 or
      2 rows; 8 from a height of about half the width), and anything that still does not fit scrolls inside the grid.
      Below xl the grid flows with fewer columns. -->
-<div class="w-full mb-auto gallery-fit vt-detail" transition:name="gallery-page" data-scroll>
+<div class="w-full mb-auto gallery-fit vt-detail vt-page" transition:name="gallery-page" data-scroll>
     <div class="gallery-spacer"></div>
     <div class="gallery-group">
     <ul class="imageGrid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gallery-grid">
