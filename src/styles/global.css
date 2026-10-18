@@ -777,6 +777,13 @@ html[data-astro-transition^="paging"]::view-transition-new(.page) {
     mask-size: 100% 100%;
     mask-repeat: no-repeat;
 }
+/* Archive to archive, both grids are one group, placed where the incoming
+   grid is; the outgoing one is moved back to where it was (--turn-old-dy, set
+   by Base.astro), or it would jump by the height of the images archive's
+   filter bar as the turn starts. Its own seam shift was measured there. */
+html[data-astro-transition^="paging"]::view-transition-old(gallery-page) {
+    transform: translateY(var(--turn-old-dy, 0px));
+}
 /* Forward: the seam crosses right to left; outgoing left of it, incoming
    right of it past the line. */
 html[data-astro-transition="paging-forward"]::view-transition-old(.page) {

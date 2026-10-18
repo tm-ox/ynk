@@ -314,6 +314,13 @@ const ogImage = new URL(image ?? "/og-default.jpg", Astro.site).href;
                             ? "back"
                             : "forward"
                         : null;
+                // A turn between screens (home, events, images), not between
+                // pages of one archive: the page numbers are another set, so
+                // they go with their own grid rather than morph from one row
+                // into the other (which stretches them).
+                crossing =
+                    !!turn && e.from.pathname.split("/")[1] !== e.to.pathname.split("/")[1];
+                if (crossing) unnumber(document);
                 // Opening a picture or event from a grid (archive or home), or
                 // closing back to it: only its own thumbnail and title travel.
                 // The others are left to fade with the page beneath it, rather
@@ -335,9 +342,12 @@ const ogImage = new URL(image ?? "/og-default.jpg", Astro.site).href;
             let turn: "forward" | "back" | null = null;
             let focus: string | null = null;
             let closing = false;
+            let crossing = false;
+            const unnumber = (root: ParentNode) =>
+                root
+                    .querySelectorAll<HTMLElement>('nav[aria-label="Pagination"]')
+                    .forEach((el) => (el.style.viewTransitionName = "none"));
             const bare = (path: string) => path.replace(/\/$/, "");
-            // The named parts of grid thumbnails (the link itself, or the title
-            // and picture inside it).
             // The named parts of grid thumbnails and of the home featured panel
             // (links themselves, or the titles, pictures and rows around them).
             const gridNamed = (root: ParentNode) =>
@@ -365,6 +375,7 @@ const ogImage = new URL(image ?? "/og-default.jpg", Astro.site).href;
                     unname(e.newDocument);
                     fold(e.newDocument);
                 }
+                if (crossing) unnumber(e.newDocument);
                 else unname(e.newDocument, focus ?? undefined);
                 if (closing) e.newDocument.documentElement.dataset.closing = "";
                 // The new page's root attributes replace the current ones, so
@@ -378,10 +389,15 @@ const ogImage = new URL(image ?? "/og-default.jpg", Astro.site).href;
                     // The outgoing screen, as captured for the slide (this
                     // runs before the swap). See seamShift.
                     oldShift = seamShift(document.querySelector(".vt-page"));
+                    oldTop = document.querySelector(".vt-page")?.getBoundingClientRect().top ?? 0;
                 }
             });
 
             let oldShift = "0px";
+            // Where the outgoing grid's top was, so global.css can keep it
+            // there when the incoming one sits lower (the images archive has
+            // its filter bar above the grid).
+            let oldTop = 0;
 
             // Kept in sessionStorage so a reload keeps the close destination.
             let closeTo: string | null = null;
@@ -422,6 +438,8 @@ const ogImage = new URL(image ?? "/og-default.jpg", Astro.site).href;
                         "--turn-new-shift",
                         seamShift(document.querySelector(".vt-page")),
                     );
+                    const newTop = document.querySelector(".vt-page")?.getBoundingClientRect().top ?? oldTop;
+                    root.setProperty("--turn-old-dy", `${oldTop - newTop}px`);
                 }
                 const t = document.querySelector<HTMLElement>("[data-track]");
                 const target = homeHash && document.getElementById(homeHash.slice(1));
