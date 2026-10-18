@@ -348,8 +348,10 @@
         .gallery-grid .thumb {
             overflow: hidden;
         }
+        /* Backwards, not both: once it has risen the animation lets go of
+           opacity, so the spotlight below can dim the picture. */
         html:not([data-returning]) .gallery-grid .thumb img {
-            animation: rise-in 0.6s ease-out calc(var(--i, 0) * 25ms) both;
+            animation: rise-in 0.6s ease-out calc(var(--i, 0) * 25ms) backwards;
         }
     }
     /* Thumbnails that link somewhere: while the link is hovered or focused the
@@ -365,7 +367,7 @@
         --thumb-sweep: 0.25s;
     }
     .thumb img {
-        transition: filter 0.2s ease;
+        transition: filter 0.2s ease, opacity 0.2s ease;
     }
     /* One box-sized gradient: wash behind the edge, the line just behind the
        edge, nothing ahead of it. At rest the edge is at 0%, so the line sits
@@ -429,6 +431,23 @@
     }
     html[data-astro-transition] .thumb.thumb::before {
         display: none;
+    }
+    /* Spotlight: while one thumbnail in a grid (archive or home photos) is
+       hovered or focused, the pictures of the others dim, so it stands out.
+       Only the pictures: titles and rules stay. Hover only where there is a
+       real pointer; keyboard focus always. Not while a page transition runs
+       (the root is marked, as above), so nothing dimmed is captured into it.
+       --spotlight is how much of their opacity the others keep. */
+    :root {
+        --spotlight: 0.45;
+    }
+    @media (hover: hover) {
+        html:not([data-astro-transition]) :is(.gallery-grid, .photo-grid):has(.thumb:hover) > li:not(:has(.thumb:hover)) .thumb img {
+            opacity: var(--spotlight);
+        }
+    }
+    html:not([data-astro-transition]) :is(.gallery-grid, .photo-grid):has(a:focus-visible) > li:not(:has(a:focus-visible)) .thumb img {
+        opacity: var(--spotlight);
     }
     /* Reduced motion: the wash and line appear and go at once. */
     @media (prefers-reduced-motion: reduce) {
