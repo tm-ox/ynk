@@ -3,6 +3,8 @@ import Hamburger from "../components/Hamburger.astro";
 import "../styles/global.css";
 import Base from "./Base.astro";
 import Sosmed from "../components/Sosmed.astro";
+import { getCollection } from "astro:content";
+import { EVENTS_PER_PAGE } from "../utils/events";
 
 const { title, description, image, jsonLd } = Astro.props;
 const pathname = new URL(Astro.request.url).pathname;
@@ -10,13 +12,17 @@ const currentPath = pathname.slice(1); // remove the first "/"
 const isHome = currentPath === "";
 const isCurrent = (name: string) =>
     currentPath === name || currentPath.startsWith(`${name}/`);
+// The events archive's last page: stepping back from the images archive (keys,
+// wheel) lands there, so the pages run in order (scripts/keys.ts).
+const eventsPages = Math.max(1, Math.ceil((await getCollection("events")).length / EVENTS_PER_PAGE));
+const eventsLast = eventsPages > 1 ? `/events/${eventsPages}/` : "/events/";
 // Sections of the home page first, then the archives (divided by a rule from sm).
 const links = [
     { label: "Home", href: isHome ? "/#top" : "/", section: "top", current: false },
     { label: "Featured", href: "/#events", section: "events", current: false },
     { label: "About", href: "/#about", section: "about", current: false },
     { label: "Contact", href: "/#contact", section: "contact", current: false },
-    { label: "Events", href: "/events/", section: "events-page", current: isCurrent("events"), divided: true },
+    { label: "Events", href: "/events/", section: "events-page", current: isCurrent("events"), divided: true, last: eventsLast },
     { label: "Images", href: "/images/", section: "images-page", current: isCurrent("images") },
 ];
 ---
@@ -41,6 +47,7 @@ const links = [
                                 aria-current={link.current ? "true" : undefined}
                                 href={link.href}
                                 data-section={link.section}
+                                data-last={link.last}
                                 target="_self">{link.label}</a
                             >
                             <hr class="sm:hidden" />

@@ -22,7 +22,9 @@ const beyond = (dir: 1 | -1): string | undefined => {
     if (archive("events")) return "/images/";
   } else {
     if (archive("events")) return "/#contact";
-    if (archive("images")) return "/events/";
+    // Back into the events archive at its last page, so pages stay in order.
+    if (archive("images"))
+      return document.querySelector<HTMLAnchorElement>("#main-nav a[data-last]")?.dataset.last ?? "/events/";
   }
 };
 

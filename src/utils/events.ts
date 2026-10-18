@@ -156,6 +156,9 @@ export function eventJsonLd(
 }
 
 /** Paginated URLs from Astro may lack the trailing slash the site uses. */
+/** Events per page in the events archive. */
+export const EVENTS_PER_PAGE = 18;
+
 export const slash = (url?: string) =>
     url && !url.endsWith("/") ? `${url}/` : url;
 

@@ -3,7 +3,7 @@ import type { GetStaticPaths } from "astro";
 import { getCollection } from "astro:content";
 import { Icon } from "astro-icon/components";
 import BaseLayout from "../../layouts/BaseLayout.astro";
-import { slash } from "../../utils/events";
+import { EVENTS_PER_PAGE, slash } from "../../utils/events";
 import EventGrid from "../../components/EventGrid.astro";
 import NavArrow from "../../components/NavArrow.astro";
 import Pagination from "../../components/Pagination.astro";
@@ -11,7 +11,7 @@ import Pagination from "../../components/Pagination.astro";
 export const getStaticPaths = (async ({ paginate }) => {
   const events = await getCollection("events");
   events.sort((b, a) => Date.parse(a.data.date) - Date.parse(b.data.date));
-  return paginate(events, { pageSize: 18 });
+  return paginate(events, { pageSize: EVENTS_PER_PAGE });
 }) satisfies GetStaticPaths;
 
 const { page } = Astro.props;
