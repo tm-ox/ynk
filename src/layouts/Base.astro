@@ -411,6 +411,16 @@ const ogImage = new URL(image ?? "/og-default.jpg", Astro.site).href;
                 if (paging) {
                     unname(e.newDocument);
                     fold(e.newDocument);
+                    // An event's top bar is named featured-label on the
+                    // featured event (to meet Featured's) and detail-bar on
+                    // the rest, so Previous / Next between the two would fade
+                    // one bar out and the other in: the incoming bar takes the
+                    // outgoing one's name, and the bar holds still, only its
+                    // label changing.
+                    const was = document.querySelector<HTMLElement>(".detail-bar");
+                    const bar = (e.newDocument as Document).querySelector<HTMLElement>(".detail-bar");
+                    const name = was && getComputedStyle(was).viewTransitionName;
+                    if (bar && name && name !== "none") bar.style.viewTransitionName = name;
                 }
                 if (crossing) unnumber(e.newDocument);
                 else unname(e.newDocument, focus ?? undefined);
