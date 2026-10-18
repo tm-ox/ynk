@@ -260,7 +260,12 @@ const label = "mb-0 text-xs font-bold tracking-normal uppercase md:text-sm font-
     const [from, to] = show ? [hidden, shown] : [shown, hidden];
     const clip = (b: DOMRect, ex: number, gap: number) => {
       const x = (y: number) => ex + (mid - y) * TAN + gap - b.left;
-      return `polygon(${x(b.top)}px 0, 10000px 0, 10000px ${b.height}px, ${x(b.bottom)}px ${b.height}px)`;
+      // The top and bottom run a little past the box (by `over`, the edge
+      // still on the same line), so the clip never trims the borders: the box
+      // can sit on a fractional pixel where the clip's edge would antialias
+      // the rule thinner until the clip comes off.
+      const over = 4;
+      return `polygon(${x(b.top - over)}px ${-over}px, 10000px ${-over}px, 10000px ${b.height + over}px, ${x(b.bottom + over)}px ${b.height + over}px)`;
     };
     const timing = { duration: ms(style, "--settings-sweep"), easing: style.getPropertyValue("--page-seam-easing").trim(), fill };
     Object.assign(seam.style, { left: `${box.left}px`, top: `${box.top}px`, width: `${box.width}px`, height: `${box.height}px` });
