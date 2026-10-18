@@ -6,10 +6,10 @@ import NavArrow from "../../components/NavArrow.astro";
 import Pagination from "../../components/Pagination.astro";
 import GalleryGrid from "../../components/GalleryGrid.astro";
 import GalleryFilter from "../../components/GalleryFilter.astro";
-import { slash, getGalleryEvents, getGalleryImages } from "../../utils/events";
+import { slash, getGalleryEvents, getGalleryImages, IMAGES_PER_PAGE } from "../../utils/events";
 
 export const getStaticPaths = (async ({ paginate }) => {
-    return paginate(await getGalleryImages(), { pageSize: 24 });
+    return paginate(await getGalleryImages(), { pageSize: IMAGES_PER_PAGE });
 }) satisfies GetStaticPaths;
 
 const { page } = Astro.props;

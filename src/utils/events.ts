@@ -158,6 +158,10 @@ export function eventJsonLd(
 /** Paginated URLs from Astro may lack the trailing slash the site uses. */
 /** Events per page in the events archive. */
 export const EVENTS_PER_PAGE = 18;
+export const IMAGES_PER_PAGE = 24;
+/** The home page's panels (Hero, Featured, About, Contact), counted for the
+ *  position line under the header. Keep in step with pages/index.astro. */
+export const HOME_PANELS = 4;
 
 export const slash = (url?: string) =>
     url && !url.endsWith("/") ? `${url}/` : url;

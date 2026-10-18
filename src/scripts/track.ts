@@ -1,5 +1,6 @@
 // Paging for the home page's horizontal track of panels (sm and up).
 import { navigate } from "astro:transitions/client";
+import { placePosition } from "./position";
 
 const wide = window.matchMedia("(min-width: 40rem)");
 
@@ -51,6 +52,9 @@ function step(t: HTMLElement, index: number, move?: () => void) {
   const go = (behavior: ScrollBehavior) => () => {
     move?.();
     t.scrollTo({ left: index * t.clientWidth, behavior });
+    // Inside a transition's update, so the position line is where the move
+    // ends when the new state is captured (its scroll event comes too late).
+    placePosition(index);
   };
   if (reduced()) return go("instant")();
   if (!document.startViewTransition) return go("smooth")();

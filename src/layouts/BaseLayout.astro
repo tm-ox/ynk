@@ -4,7 +4,7 @@ import "../styles/global.css";
 import Base from "./Base.astro";
 import Sosmed from "../components/Sosmed.astro";
 import { getCollection } from "astro:content";
-import { EVENTS_PER_PAGE } from "../utils/events";
+import { EVENTS_PER_PAGE, IMAGES_PER_PAGE, HOME_PANELS, getGalleryImages } from "../utils/events";
 
 const { title, description, image, jsonLd } = Astro.props;
 const pathname = new URL(Astro.request.url).pathname;
@@ -16,6 +16,19 @@ const isCurrent = (name: string) =>
 // wheel) lands there, so the pages run in order (scripts/keys.ts).
 const eventsPages = Math.max(1, Math.ceil((await getCollection("events")).length / EVENTS_PER_PAGE));
 const eventsLast = eventsPages > 1 ? `/events/${eventsPages}/` : "/events/";
+// The position line under the header (scripts/position.ts): the whole row of
+// screens is the home panels, then the events pages, then the images pages.
+// Detail pages, privacy and 404 are not in the row and have no line.
+const imagesPages = Math.max(1, Math.ceil((await getGalleryImages()).length / IMAGES_PER_PAGE));
+const screens = HOME_PANELS + eventsPages + imagesPages;
+const pageNo = Number(pathname.match(/^\/(?:events|images)\/(\d+)\/?$/)?.[1] ?? 1);
+const screenIndex =
+    isHome ? 0
+    : /^\/events(\/(\d+\/?)?)?$/.test(pathname) ? HOME_PANELS + pageNo - 1
+    // An event's own gallery counts as the images archive's first page.
+    : /^\/images(\/(\d+\/?)?)?$/.test(pathname) || /^\/images\/event\//.test(pathname)
+      ? HOME_PANELS + eventsPages + (pathname.startsWith("/images/event/") ? 0 : pageNo - 1)
+    : null;
 // Sections of the home page first, then the archives (divided by a rule from sm).
 const links = [
     { label: "Home", href: isHome ? "/#top" : "/", section: "top", current: false },
@@ -66,8 +79,23 @@ const links = [
         </div>
     </div>
     <slot name="head" slot="head" />
+    {
+        screenIndex !== null && (
+            <div
+                class="position"
+                data-position
+                aria-hidden="true"
+                style={`--i:${screenIndex};--n:${screens}`}
+                transition:name="position"
+            />
+        )
+    }
     <slot />
 </Base>
+
+<script>
+    import "../scripts/position";
+</script>
 
 <script>
     // Marks the nav link for the section in view on the home page, and the
@@ -126,6 +154,34 @@ const links = [
 
 <style>
     @reference "../styles/global.css";
+    /* A segment lying on the header's bottom rule (the one main::before draws),
+       showing where this screen sits in the whole row. Knobs: --position-min
+       is its narrowest width (it is 1/n of the rule otherwise, which gets
+       thin on a long row); --position-color is its colour. Its left edge runs
+       from the rule's start to its end as --i goes from 0 to n - 1; --i may
+       be fractional while the home track scrolls. It is named, so a page turn
+       morphs it from the old place to the new on the morph's own tempo. From
+       sm up only (below it, a phone pass later). */
+    .position {
+        --position-min: 2rem;
+        --position-color: var(--color-accent);
+        display: none;
+    }
+    @media (min-width: 40rem) {
+        .position {
+            --w: max(calc(100% / var(--n)), var(--position-min));
+            display: block;
+            position: absolute;
+            top: var(--spacing-header);
+            left: calc((100% - var(--w)) * var(--i) / (var(--n) - 1));
+            width: var(--w);
+            height: 1px;
+            background: var(--position-color);
+            pointer-events: none;
+            /* Above the rule itself and the panels' own layers. */
+            z-index: 2;
+        }
+    }
     .main-nav a {
         @apply text-accent-muted hover:text-accent;
     }
