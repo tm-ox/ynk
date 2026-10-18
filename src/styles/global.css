@@ -44,9 +44,10 @@
        on a picture. Both are this tall from sm up, so the rule below does not move. */
     --bar-row: calc(var(--spacing) * 7);
     --spacing-header: calc(var(--spacing) * 16);
-    /* The slash dividers (slash-l, slash-r): as tall as the logo (h-8,
-       md:h-9; see the media query below), and a little over 1px wide. */
-    --slash-height: calc(var(--spacing) * 8);
+    /* The slash dividers (slash-l, slash-r): as tall as the logo's equals
+       sign (0.61 of the logo, which is h-8, md:h-9; see the media query
+       below), and a little over 1px wide. */
+    --slash-height: calc(var(--spacing) * 8 * 0.61);
     --slash-weight: 1.2px;
     --spacing-footer: calc(var(--spacing) * 8);
     /* What a section's padding and the flyer's frame take from the screen height. */
@@ -80,14 +81,13 @@
 /* A divider at the logo's angle (its stroke rises at about 58deg, so it leans
    32deg off vertical), in place of a vertical border: slash-l on the element's
    left edge, slash-r on its right. It is centred on where the border was and
-   --slash-height tall, centred on the row (a full 28px row would lean 17px
-   sideways). Keep about 20px of space either side (its lean takes half that
-   each way). --slash-weight is a little over 1px so the leaning line looks as
+   --slash-height tall (the logo's equals sign), centred on the row. Keep
+   about 16px of space either side (its lean takes about 7px each way). --slash-weight is a little over 1px so the leaning line looks as
    heavy as a 1px upright one. The parent must be positioned (relative is set
    here). */
 @media (min-width: 48rem) {
     :root {
-        --slash-height: calc(var(--spacing) * 9);
+        --slash-height: calc(var(--spacing) * 9 * 0.61);
     }
 }
 @utility slash-l {

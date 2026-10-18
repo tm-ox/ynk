@@ -18,7 +18,7 @@ const label = "mb-0 text-xs font-bold tracking-normal uppercase md:text-sm font-
 
 <button
   type="button"
-  class="h-7 ml-5 pl-5 slash-l cursor-pointer"
+  class="h-7 ml-4 pl-4 slash-l cursor-pointer"
   data-settings-open
   aria-label="Settings"
   aria-haspopup="dialog"
@@ -138,6 +138,14 @@ const label = "mb-0 text-xs font-bold tracking-normal uppercase md:text-sm font-
     z-index: -1;
     transform: skewX(-32deg);
     transition: background-color 0.2s ease;
+  }
+  /* At the row's ends the slanted box would leave a corner bare; it runs on
+     past them instead, and the row cuts it straight. */
+  .settings-choice:first-child span::before {
+    left: -2rem;
+  }
+  .settings-choice:last-child span::before {
+    right: -2rem;
   }
   .settings-choice input:checked + span {
     color: var(--color-accent);
