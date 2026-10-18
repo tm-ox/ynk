@@ -128,10 +128,10 @@ const links = ROW.map((s, i) => ({
 <style>
     @reference "../styles/global.css";
     /* A segment lying on the header's bottom rule (.frame-rule, Base.astro),
-       showing where this screen sits in the whole row. The rule runs edge to
-       edge; the mark keeps to --track, the nav's own width (the gutter in
-       from each side, centred at --container-site), so it stays under the
-       links. Knobs: --position-min is its narrowest width (it is 1/n of the
+       showing where this screen sits in the whole row. It keeps to --track,
+       the nav's own width: the whole rule from sm up, and on phones, where
+       the rule runs edge to edge, the gutter in from each side (the gutter
+       less the rule's own --rule-inset, global.css). Knobs: --position-min is its narrowest width (it is 1/n of the
        track otherwise, which gets thin on a long row); --position-color is
        its colour. Its left edge runs from the track's start to its end as
        --i goes from 0 to n - 1 (both set at build, above). It is named, so a page turn
@@ -145,15 +145,13 @@ const links = ROW.map((s, i) => ({
            at 1px: the same colour and weight would not show. */
         --position-color: var(--color-accent-hover);
         --position-weight: 3px;
-        --track: calc(min(100%, var(--container-site)) - 2 * var(--spacing-gutter));
+        --pad: calc(var(--spacing-gutter) - var(--rule-inset));
+        --track: calc(100% - 2 * var(--pad));
         --w: max(calc(var(--track) / var(--n)), var(--position-min));
         position: absolute;
         /* Centred on the 1px rule. */
         top: calc((var(--position-weight) - 1px) / -2);
-        left: calc(
-            (100% - min(100%, var(--container-site))) / 2 + var(--spacing-gutter) +
-                (var(--track) - var(--w)) * var(--i) / (var(--n) - 1)
-        );
+        left: calc(var(--pad) + (var(--track) - var(--w)) * var(--i) / (var(--n) - 1));
         width: var(--w);
         height: var(--position-weight);
         background: var(--position-color);
