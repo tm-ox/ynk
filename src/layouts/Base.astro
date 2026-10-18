@@ -379,6 +379,7 @@ const ogImage = new URL(image ?? "/og-default.jpg", Astro.site).href;
                     const old = turnBox(document);
                     oldShift = seamShift(old);
                     oldTop = old?.getBoundingClientRect().top ?? 0;
+                    oldName = old ? getComputedStyle(old).viewTransitionName : "";
                 }
             });
 
@@ -419,6 +420,10 @@ const ogImage = new URL(image ?? "/og-default.jpg", Astro.site).href;
             // there when the incoming one sits lower (the images archive has
             // its filter bar above the grid).
             let oldTop = 0;
+            // Only when the two grids are one group (archive to archive): any
+            // other outgoing screen has a group of its own, already where it
+            // was, and moving it would make it jump as the turn starts.
+            let oldName = "";
 
             // Kept in sessionStorage so a reload keeps the close destination.
             let closeTo: string | null = null;
@@ -445,7 +450,8 @@ const ogImage = new URL(image ?? "/og-default.jpg", Astro.site).href;
                     const box = turnBox(document);
                     root.setProperty("--turn-new-shift", seamShift(box));
                     const newTop = box?.getBoundingClientRect().top ?? oldTop;
-                    root.setProperty("--turn-old-dy", `${oldTop - newTop}px`);
+                    const shared = !!box && getComputedStyle(box).viewTransitionName === oldName;
+                    root.setProperty("--turn-old-dy", shared ? `${oldTop - newTop}px` : "0px");
                 }
             });
         </script>
