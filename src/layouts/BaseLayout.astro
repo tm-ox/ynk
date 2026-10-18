@@ -209,14 +209,20 @@ const links = ROW.map((s, i) => ({
            --menu-weight: "FEATURED", the longest, runs gutter to gutter. It
            is 10.252em wide at 700 (advance widths from the font file, no
            tracking; 300 and 400 are 10.249em), so 100cqw / 10.252 would
-           touch both gutters; --menu-size is 2% under that so it never
-           wraps.
+           touch both gutters; --menu-size is 2% under that, and never over
+           --menu-max, so on a wide phone or one held sideways the links do
+           not grow past a heading's size. They never wrap or break
+           (nowrap, overflow-wrap normal). Held sideways, the six rows at
+           --menu-target, the cog, the icons and the footer line are taller
+           than the panel, which then scrolls (overflow-y-auto) rather than
+           shrink the targets.
            --menu-leading sets the rows, about 1.3 of the 0.686em cap height,
            but never under --menu-target, the least tap height (which sets
            them on most phones). A longer label in utils/row.ts, or another
            face, needs --menu-size measured again. */
         .main-nav {
-            --menu-size: calc(100cqw / 10.252 * 0.98);
+            --menu-size: min(calc(100cqw / 10.252 * 0.98), var(--menu-max));
+            --menu-max: 2.75rem;
             --menu-weight: 700;
             --menu-leading: 0.9em;
             --menu-target: 40px;
@@ -231,6 +237,7 @@ const links = ROW.map((s, i) => ({
             letter-spacing: 0;
             line-height: max(var(--menu-leading), var(--menu-target));
             white-space: nowrap;
+            overflow-wrap: normal;
         }
     }
     .main-nav a {
