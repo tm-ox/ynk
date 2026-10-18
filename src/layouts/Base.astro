@@ -189,6 +189,8 @@ const ogImage = new URL(image ?? "/og-default.jpg", Astro.site).href;
             import { bindWheelPager } from "../scripts/wheel-pager";
             // Keyboard paging, scrolling and Escape (binds itself once on import).
             import "../scripts/keys";
+            // A sideways swipe steps as the arrows do (binds itself once on import).
+            import "../scripts/swipe";
             // The archive rise-in's order along the diagonal.
             import "../scripts/diagonal";
 

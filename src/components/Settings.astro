@@ -9,11 +9,12 @@ const keyboard: [string[], string][] = [
   [["?"], "Open settings."],
 ];
 // Reference for the Touch group, shown instead on a touch screen (no hover,
-// a coarse pointer): what the site's own controls do there. It has no
-// gestures of its own (no swipes), so only its buttons are listed, each
-// drawn as its icon (named for screen readers) or, with none, its word.
+// a coarse pointer): what the site's own controls do there, each drawn as
+// its icon (named for screen readers) or, with none, its word; the one
+// gesture (scripts/swipe.ts) as its word.
 const touch: [[string, string?][], string][] = [
   [[["Previous", "ion:arrow-back-sharp"], ["Next", "ion:arrow-forward-sharp"]], "Move between events, photographs and pages."],
+  [[["Swipe"]], "Left or right, as the arrows."],
   [[["Close", "ion:close-sharp"]], "Close and go back."],
   [[["Menu"]], "On a narrow screen, go to any screen."],
 ];
