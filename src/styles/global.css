@@ -662,57 +662,84 @@ html[data-astro-transition="paging-back"]::view-transition-new(.detail) {
         translate: 100vw 0;
     }
 }
-/* The seam. Going forward, with e the slide's eased progress (0 to 1), W the
-   screen's width (100vw) and R the overhang:
-     the seam, right of the screen's centre:  S = (W/2 + R) - (W + 2R) * e
-     the outgoing snapshot is moved by        -W * e
-     the incoming one by                       W * (1 - e)
-   --edge is the seam's distance right of a box's own centre (as on the home
-   panels, see @layer components): S, less the box's offset. So
-     outgoing: S + W * e       = (W/2 + R) - 2R * e, from W/2 + R to W/2 - R
-     incoming: S - W * (1 - e) = (R - W/2) - 2R * e, from R - W/2 to -W/2 - R
-   Both are straight lines in e, so keyframes with the slide's own duration
-   and easing follow the seam exactly. Back is the mirror image (the seam is
-   -(W/2 + R) + (W + 2R) * e, the outgoing snapshot moves by W * e and the
-   incoming one by -W * (1 - e)):
-     outgoing: from -W/2 - R to R - W/2;  incoming: from W/2 - R to W/2 + R.
-   That is for a box centred on the screen. The seam leans, so for a box whose
-   centre is elsewhere (an archive grid sits lower than the home track, and
-   below xl runs on past the screen) it crosses the box's mid-height at
-   another place: Base.astro measures each box and sets --turn-old-shift and
-   --turn-new-shift, minus (its centre's offset right of the screen's centre
-   + 0.625 times its offset below it), which is added to every value. Then
-   the outgoing and incoming edges are one line on screen. */
-@keyframes turn-seam-out-forward {
+/* The seam runs on its own clock, as on the home track, not the slide's: the
+   same --seam-duration and --wipe-easing, starting with the slide (home's
+   starts as the scroll does). Tied to the slide instead it rode the boundary
+   between the two screens and only crossed the incoming one at the very end.
+   Two registered lengths are animated on each target, apart:
+     --seam: the seam's distance right of the screen's centre (at mid-height),
+       from just past the screen edge it starts at to just past the other one
+       (R, --seam-overhang, past each), going forward from W/2 + R to
+       -(W/2 + R), W being the screen's width (100vw); back is the reverse.
+     --slide-x: how far the target is moved, exactly as the slide moves its
+       snapshot (same keyframes, duration and easing): the outgoing one from 0
+       to -W going forward (to W going back), the incoming one from W to 0
+       (from -W going back). The live content is not moved itself, its
+       snapshot is, so it gets the incoming snapshot's.
+   --edge, the seam's distance right of the box's own centre (the home panels'
+   formula, see @layer components), is then
+     --seam - --slide-x + the box's shift.
+   The shift is for a box not centred on the screen: the seam leans, so it
+   crosses such a box's mid-height elsewhere. Base.astro measures each box and
+   sets --turn-old-shift and --turn-new-shift: minus (its centre's offset right
+   of the screen's centre + 0.625 times its offset below it). Then the
+   outgoing and incoming edges are one line on screen. */
+@property --seam {
+    syntax: "<length>";
+    inherits: true;
+    initial-value: 0px;
+}
+@property --slide-x {
+    syntax: "<length>";
+    inherits: true;
+    initial-value: 0px;
+}
+@keyframes turn-seam-forward {
     from {
-        --edge: calc(50vw + var(--seam-overhang) + var(--turn-old-shift, 0px));
+        --seam: calc(50vw + var(--seam-overhang));
     }
     to {
-        --edge: calc(50vw - var(--seam-overhang) + var(--turn-old-shift, 0px));
+        --seam: calc(-50vw - var(--seam-overhang));
     }
 }
-@keyframes turn-seam-out-back {
+@keyframes turn-seam-back {
     from {
-        --edge: calc(-50vw - var(--seam-overhang) + var(--turn-old-shift, 0px));
+        --seam: calc(-50vw - var(--seam-overhang));
     }
     to {
-        --edge: calc(var(--seam-overhang) - 50vw + var(--turn-old-shift, 0px));
+        --seam: calc(50vw + var(--seam-overhang));
     }
 }
-@keyframes turn-seam-in-forward {
+@keyframes turn-slide-out-forward {
     from {
-        --edge: calc(var(--seam-overhang) - 50vw + var(--turn-new-shift, 0px));
+        --slide-x: 0px;
     }
     to {
-        --edge: calc(-50vw - var(--seam-overhang) + var(--turn-new-shift, 0px));
+        --slide-x: -100vw;
     }
 }
-@keyframes turn-seam-in-back {
+@keyframes turn-slide-out-back {
     from {
-        --edge: calc(50vw - var(--seam-overhang) + var(--turn-new-shift, 0px));
+        --slide-x: 0px;
     }
     to {
-        --edge: calc(50vw + var(--seam-overhang) + var(--turn-new-shift, 0px));
+        --slide-x: 100vw;
+    }
+}
+@keyframes turn-slide-in-forward {
+    from {
+        --slide-x: 100vw;
+    }
+    to {
+        --slide-x: 0px;
+    }
+}
+@keyframes turn-slide-in-back {
+    from {
+        --slide-x: -100vw;
+    }
+    to {
+        --slide-x: 0px;
     }
 }
 /* The incoming snapshot is not masked here: it only slides (its mask is on
@@ -722,10 +749,15 @@ html[data-astro-transition^="paging"]::view-transition-new(.page) {
     mask-image: none;
 }
 /* The outgoing snapshot shows what is ahead of the edge: left of it going
-   forward, right of it going back. --edge is keyframed on the pseudo-element
-   itself, which works for a registered property. The snapshot is a picture,
-   so it carries no line (the one line is the incoming content's). mask-size
-   is set because a .detail .page pair gets the wipe's oversized mask above. */
+   forward, right of it going back. The lengths are animated on the
+   pseudo-element itself, which works for registered properties. The
+   snapshot is a picture, so it carries no line (the one line is the incoming
+   content's). Its seam outlasts the slide, which keeps the transition (and so
+   the live content's wipe) running until the seam is across. mask-size is
+   set because a .detail .page pair gets the wipe's oversized mask above. */
+html[data-astro-transition^="paging"]::view-transition-old(.page) {
+    --edge: calc(var(--seam) - var(--slide-x) + var(--turn-old-shift, 0px));
+}
 html[data-astro-transition="paging-forward"]::view-transition-old(.page) {
     mask-size: 100% 100%;
     mask-repeat: no-repeat;
@@ -736,7 +768,8 @@ html[data-astro-transition="paging-forward"]::view-transition-old(.page) {
     );
     animation:
         page-out-to-left var(--page-slide-duration) var(--page-slide-easing) both,
-        turn-seam-out-forward var(--page-slide-duration) var(--page-slide-easing) both;
+        turn-slide-out-forward var(--page-slide-duration) var(--page-slide-easing) both,
+        turn-seam-forward var(--seam-duration) var(--wipe-easing) both;
 }
 html[data-astro-transition="paging-back"]::view-transition-old(.page) {
     mask-size: 100% 100%;
@@ -748,7 +781,8 @@ html[data-astro-transition="paging-back"]::view-transition-old(.page) {
     );
     animation:
         page-out-to-right var(--page-slide-duration) var(--page-slide-easing) both,
-        turn-seam-out-back var(--page-slide-duration) var(--page-slide-easing) both;
+        turn-slide-out-back var(--page-slide-duration) var(--page-slide-easing) both,
+        turn-seam-back var(--seam-duration) var(--wipe-easing) both;
 }
 html[data-astro-transition="paging-forward"]::view-transition-new(.page) {
     animation: page-in-from-right var(--page-slide-duration) var(--page-slide-easing) both;
@@ -759,11 +793,12 @@ html[data-astro-transition="paging-back"]::view-transition-new(.page) {
 /* The incoming content behind the seam. Base.astro marks the new page's root
    with data-turn (forward or back) on a page turn, and the home panel landed
    on with data-reveal="landing", and takes data-turn off when the transition
-   ends. The live content's own box is not moved (its snapshot is), so its
-   --edge is the incoming snapshot's above. Its animation starts as the page
-   is swapped in, a little before the slide; Base.astro sets it back to the
-   slide's start, so the two halves of the seam meet. It shows what is behind
-   the edge, with the line just inside, as on the home panels. */
+   ends, so the mask and line go with it, wherever they were. Its animations
+   start as the page is swapped in, a little before the snapshots'; Base.astro
+   sets them back to the slide's start, so the two halves of the seam meet.
+   Its children are captured with it, not on their own (Base.astro unnames
+   them for page turns), so the mask covers all of it. It shows what is
+   behind the edge, with the line just inside, as on the home panels. */
 @keyframes rule-in {
     from {
         scale: 0 1;
@@ -778,7 +813,10 @@ html[data-astro-transition="paging-back"]::view-transition-new(.page) {
         position: relative;
     }
     html[data-turn] :is(.gallery-fit, .home-track > section[data-reveal="landing"]) {
-        animation: turn-seam-in-forward var(--page-slide-duration) var(--page-slide-easing) both;
+        --edge: calc(var(--seam) - var(--slide-x) + var(--turn-new-shift, 0px));
+        animation:
+            turn-slide-in-forward var(--page-slide-duration) var(--page-slide-easing) both,
+            turn-seam-forward var(--seam-duration) var(--wipe-easing) both;
         mask-image: linear-gradient(
             var(--wipe-angle),
             transparent calc(50% + var(--edge) * 0.848),
@@ -786,7 +824,7 @@ html[data-astro-transition="paging-back"]::view-transition-new(.page) {
         );
     }
     html[data-turn="back"] :is(.gallery-fit, .home-track > section[data-reveal="landing"]) {
-        animation-name: turn-seam-in-back;
+        animation-name: turn-slide-in-back, turn-seam-back;
         mask-image: linear-gradient(
             var(--wipe-angle),
             #000 calc(50% + var(--edge) * 0.848),
@@ -816,11 +854,11 @@ html[data-astro-transition="paging-back"]::view-transition-new(.page) {
             transparent calc(50% + var(--edge) * 0.848)
         );
     }
-    /* A landing panel's rules draw in over the second half of the slide, as
-       the home panels' do behind the seam. */
+    /* A landing panel's rules draw in over the second half of the seam, as
+       the home panels' do behind it, done as the transition ends. */
     html[data-turn] .home-track > section[data-reveal="landing"] hr {
-        animation: rule-in calc(var(--page-slide-duration) * 0.5) var(--wipe-easing)
-            calc(var(--page-slide-duration) * 0.5) both;
+        animation: rule-in calc(var(--seam-duration) * 0.5) var(--wipe-easing)
+            calc(var(--seam-duration) * 0.5) both;
     }
 }
 @media (prefers-reduced-motion: reduce) {

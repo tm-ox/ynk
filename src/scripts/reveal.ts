@@ -225,7 +225,7 @@ function arm(turn?: string) {
       rest = null;
       const wipes = landing
         .getAnimations()
-        .filter((a) => a instanceof CSSAnimation && a.animationName.startsWith("turn-seam-"));
+        .filter((a) => a instanceof CSSAnimation && a.animationName.startsWith("turn-"));
       Promise.allSettled(wipes.map((a) => a.finished)).then(() => {
         if (!alive) return;
         settle(landing);

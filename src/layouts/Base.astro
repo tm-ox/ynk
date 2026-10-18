@@ -427,11 +427,12 @@ const ogImage = new URL(image ?? "/og-default.jpg", Astro.site).href;
             };
             let oldShift = "0px";
             let turns = 0;
-            // The incoming content's wipe (an archive grid, a home panel) is a
-            // CSS animation on the live page, which starts when the page is
-            // swapped in, a frame or more before the slide of the snapshots
-            // does. Set back to the slide's start, so it keeps the slide's
-            // clock and the seam does not split in two.
+            // The incoming content's wipe (an archive grid, a home panel) is
+            // CSS animations on the live page (its seam and its share of the
+            // slide), which start when the page is swapped in, a frame or more
+            // before the snapshots' do. Set back to the slide's start, so they
+            // keep the same clock and the seam does not split in two. (The
+            // snapshots' own are set too, harmlessly: they start with it.)
             const syncTurn = async () => {
                 const css = document
                     .getAnimations()
@@ -439,7 +440,7 @@ const ogImage = new URL(image ?? "/og-default.jpg", Astro.site).href;
                 const slide = css.find((a) => a.animationName.startsWith("page-in-from-"));
                 if (!slide) return;
                 await slide.ready;
-                css.filter((a) => a.animationName.startsWith("turn-seam-in-")).forEach(
+                css.filter((a) => a.animationName.startsWith("turn-")).forEach(
                     (a) => (a.startTime = slide.startTime),
                 );
             };
