@@ -91,8 +91,9 @@ const label = "mb-0 text-xs font-bold tracking-normal uppercase md:text-sm font-
       <p class="flex items-center justify-center pt-1.5 pb-1 mb-0 text-xs h-footer font-displayCon text-accent-muted">© 2010–{new Date().getFullYear()} Yes No Klub</p>
     </div>
   </div>
-  <!-- The line that rides the edge as the panel opens and closes. -->
-  <span class="settings-seam" aria-hidden="true" hidden data-settings-seam></span>
+  <!-- The line that rides the edge as the panel opens and closes, in a window
+       the panel's size. -->
+  <span class="settings-seam" aria-hidden="true" hidden data-settings-seam><span></span></span>
 </dialog>
 
 <style>
@@ -126,14 +127,22 @@ const label = "mb-0 text-xs font-bold tracking-normal uppercase md:text-sm font-
       transition-delay: 0s;
     }
   }
-  /* Fixed, so it stays put while the panel scrolls; the panel's clip trims it
-     to the box. Slanted as the slashes are, about its mid-height. */
+  /* Fixed, so it stays put while the panel scrolls, and laid over the panel's
+     box (by the script), whose edges cut the line off: it never shows over the
+     backdrop. The line is slanted as the slashes are, about its mid-height. */
   .settings-seam {
     position: fixed;
+    overflow: hidden;
+    pointer-events: none;
+  }
+  .settings-seam > span {
+    position: absolute;
+    top: 0;
+    left: 0;
     width: var(--wipe-line);
+    height: 100%;
     background: var(--color-border);
     transform: skewX(-32deg);
-    pointer-events: none;
   }
 
   /* Theme choices share the row equally; the chosen one carries a tint. */
@@ -237,7 +246,8 @@ const label = "mb-0 text-xs font-bold tracking-normal uppercase md:text-sm font-
       return d.animate({ opacity: show ? [0, 1] : [1, 0] }, { duration: ms(style, "--settings-fade"), easing: "ease", fill }).finished;
     }
     const contents = d.firstElementChild as HTMLElement;
-    const line = d.querySelector<HTMLElement>("[data-settings-seam]")!;
+    const seam = d.querySelector<HTMLElement>("[data-settings-seam]")!;
+    const line = seam.firstElementChild as HTMLElement;
     const box = d.getBoundingClientRect();
     const inner = contents.getBoundingClientRect();
     const halo = parseFloat(style.getPropertyValue("--page-halo")) || 0;
@@ -254,8 +264,8 @@ const label = "mb-0 text-xs font-bold tracking-normal uppercase md:text-sm font-
       return `polygon(${x(b.top)}px 0, 10000px 0, 10000px ${b.height}px, ${x(b.bottom)}px ${b.height}px)`;
     };
     const timing = { duration: ms(style, "--settings-sweep"), easing: style.getPropertyValue("--page-seam-easing").trim(), fill };
-    Object.assign(line.style, { left: `${box.left}px`, top: `${box.top}px`, height: `${box.height}px` });
-    line.hidden = false;
+    Object.assign(seam.style, { left: `${box.left}px`, top: `${box.top}px`, width: `${box.width}px`, height: `${box.height}px` });
+    seam.hidden = false;
     return Promise.all(
       [
         d.animate({ clipPath: [clip(box, from, 0), clip(box, to, 0)] }, timing),
@@ -264,7 +274,7 @@ const label = "mb-0 text-xs font-bold tracking-normal uppercase md:text-sm font-
       ].map((a) => a.finished),
     ).finally(() => {
       // Unless it was cut short by a close, which needs the line again.
-      if (show && !d.hasAttribute("data-closing")) line.hidden = true;
+      if (show && !d.hasAttribute("data-closing")) seam.hidden = true;
     });
   }
 
