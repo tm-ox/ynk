@@ -229,15 +229,19 @@
         @apply relative pt-header;
     }
     /* The rules under the header and above the footer belong to the page frame,
-       not to the sections, so they stay put while a section changes. */
-    main::before,
+       not to the sections, so they stay put while a section changes. The one
+       under the header is an element of its own, named, so a page turn
+       captures it apart from the page: in the root snapshot, the incoming
+       home track (whose hero runs up under it) would cover it until the turn
+       ended. */
+    .frame-rule,
     main::after {
         content: "";
         @apply absolute inset-x-0 h-px bg-border pointer-events-none;
         /* Above the positioned layers inside a section (the hero picture). */
         z-index: 1;
     }
-    main::before {
+    .frame-rule {
         top: var(--spacing-header);
     }
     main::after {
