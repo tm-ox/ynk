@@ -34,7 +34,7 @@ const label = "mb-0 text-xs font-bold tracking-normal uppercase md:text-sm font-
 <dialog
   data-settings
   aria-labelledby="settings-title"
-  class="m-auto overscroll-contain w-[min(92vw,44rem)] max-h-[85dvh] p-0 overflow-y-auto border-y border-border bg-bg text-fg backdrop:bg-scrim-heavy backdrop:backdrop-blur-sm"
+  class="m-auto overscroll-contain w-fit max-w-[92vw] max-h-[85dvh] p-0 overflow-y-auto border-y border-border bg-bg text-fg backdrop:bg-scrim-heavy backdrop:backdrop-blur-sm"
 >
   <div class="flex flex-col p-4 pb-0 sm:p-6 sm:pb-0">
     <div class="flex items-center justify-between gap-4 pb-3">
@@ -78,7 +78,7 @@ const label = "mb-0 text-xs font-bold tracking-normal uppercase md:text-sm font-
       <hr class="mt-0" />
       <h3 class={`${label} sm:text-left`}>Good to know</h3>
       <hr class="mb-0" />
-      <ul class="flex flex-col py-3 text-sm font-light tracking-wide list-none font-body md:text-base">
+      <ul class="flex flex-col py-3 text-sm font-light tracking-wide list-none font-body text-pretty md:text-base">
         <li class="normal-case">The mouse wheel moves on the same way, once the page has scrolled to its end.
 </li>
         <li class="normal-case">Shortcuts pause while you type in a form.</li>
