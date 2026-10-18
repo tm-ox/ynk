@@ -247,10 +247,22 @@ const links = ROW.map((s, i) => ({
            0.686em; on one line as high as the type (leading-none) the cap
            tops lie 0.1665em under its top and the baseline 0.1475em over
            its foot, taken off the gaps. */
+        /* --menu-foot-extra adds room under the line, past the even gap,
+           so it is not on the screen's edge and Privacy is easy to reach;
+           Privacy's tap area reaches --menu-target high around its text. */
         .menu-foot {
+            --menu-foot-extra: calc(var(--spacing) * 4);
             line-height: 1;
             padding-top: calc(var(--menu-gap) - 0.1665em);
-            padding-bottom: calc(var(--menu-gap) - 0.1475em);
+            padding-bottom: calc(var(--menu-gap) - 0.1475em + var(--menu-foot-extra));
+        }
+        .menu-foot a {
+            position: relative;
+        }
+        .menu-foot a::after {
+            content: "";
+            position: absolute;
+            inset: calc((var(--menu-target) - 1em) / -2) -0.5rem;
         }
         .main-nav a[data-section] {
             font-family: var(--font-biorhyme-expanded);
