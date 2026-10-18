@@ -187,8 +187,9 @@ const parallax = { shift: 10, ease: 0.06, overscan: 1.02, title: 0.3 };
             </span>
         </h1>
         <!-- Out of the grid flow altogether (absolute), vertically centred on the
-             stage at its right edge, so it cannot move the headline. Size and
-             inset: see .hero-next in the styles. -->
+             stage at its right edge (at its lower end on narrow stages), so it
+             cannot move the headline. Size and inset: see .hero-next in the
+             styles. -->
         <a
             href="/featured/"
             target="_self"
@@ -574,6 +575,17 @@ const parallax = { shift: 10, ease: 0.06, overscan: 1.02, title: 0.3 };
         right: var(--next-inset);
         top: 50%;
         translate: 0 -50%;
+    }
+    /* Narrow stages: the headline runs the full width, so the arrow leaves
+       the middle of the right edge for its lower end, --next-bottom up from
+       the stage's foot, still cut off at the edge (--next-crop). */
+    @container (max-width: 48rem) {
+        .hero-next {
+            --next-bottom: 1rem;
+            top: auto;
+            bottom: var(--next-bottom);
+            translate: none;
+        }
     }
     .hero-next:focus-visible {
         outline-offset: -2px;
