@@ -17,10 +17,11 @@ const label = "mb-0 text-xs font-bold tracking-normal uppercase md:text-sm font-
 ---
 
 <!-- Below md (touch) the button is 2.5rem tall, pulled back into the row by
-     the difference, so the cog and its slash do not move. -->
+     the difference, so the cog and its slash do not move. On phones there is
+     no slash between it and the menu button, only a gap. -->
 <button
   type="button"
-  class="h-7 ml-2 pl-3.5 slash-l cursor-pointer max-md:h-10 max-md:-my-1.5"
+  class="h-7 ml-2 pl-2 sm:pl-3.5 sm:slash-l cursor-pointer max-md:h-10 max-md:-my-1.5"
   data-settings-open
   aria-label="Settings"
   aria-haspopup="dialog"
