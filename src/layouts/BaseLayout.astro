@@ -86,8 +86,12 @@ const links = ROW.map((s, i) => ({
                         </li>
                     ))
                 }
-                <li class="max-sm:mt-auto max-sm:pt-4 vt-nav menu-social" transition:name="nav-social">
+                <!-- On phones as wide as the © line under it, and no wider: a
+                     hidden, zero-height copy of that line sets the width
+                     (max-content), and the icons spread across it. -->
+                <li class="max-sm:mt-auto max-sm:pt-4 max-sm:self-start max-sm:grid max-sm:w-max vt-nav menu-social" transition:name="nav-social">
                     <Sosmed />
+                    <span class="invisible h-0 overflow-hidden text-xs tracking-wide uppercase sm:hidden font-displayCon" aria-hidden="true">© 2010–{new Date().getFullYear()} Yes No Klub</span>
                 </li>
                 <!-- Phones only: the footer line (Base.astro hides the footer
                      there), small and quiet under the social icons:
