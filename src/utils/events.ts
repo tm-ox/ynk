@@ -35,6 +35,14 @@ export interface GalleryImage {
   event: { id: string; title: string; date: string; venue?: { name?: string; url?: string } };
 }
 
+/** A photograph's own alt, where it says what is in the picture, leads its
+ *  description ("Pestapora 2024, day 1: Sukatani. Photograph 3 of …"). Most
+ *  events' photographs carry only the event's code or title (YNK#51,
+ *  Nusasonic), which the description already names, so a one-word alt or the
+ *  title itself adds nothing and is left out. */
+const lead = (alt: string | undefined, title: string) =>
+  alt && /\s/.test(alt.trim()) && alt !== title ? `${alt.trim()}. ` : "";
+
 /** Every gallery photo, in event order, with a descriptive alt. */
 export async function getGalleryImages(): Promise<GalleryImage[]> {
   const events = await getCollection("events", ({ data }) => {
@@ -68,7 +76,7 @@ export async function getGalleryImages(): Promise<GalleryImage[]> {
         groupId,
         event: info,
         position: { n: i + 1, of: photos.length },
-        description: `Photograph ${i + 1} of ${photos.length} from ${event.data.title}, ${event.data.date}${place(event.data)}`,
+        description: `${lead(image.alt, event.data.title)}Photograph ${i + 1} of ${photos.length} from ${event.data.title}, ${event.data.date}${place(event.data)}`,
       })),
     ];
   });
