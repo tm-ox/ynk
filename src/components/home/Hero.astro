@@ -113,7 +113,7 @@ const parallax = { shift: 10, ease: 0.06, overscan: 1.02, title: 0.3 };
     >
         <!-- Two of these show at once: the current picture and, above it, the
              next, masked to the right of the seam. The rest wait (display:none)
-             until their turn. The scrim sits over both. -->
+             until their turn. -->
         <div class="hero-pics" aria-hidden="true">
             {photos.map((src, i) => (
                 <div class="hero-pic" data-role={i === 0 ? "current" : i === 1 ? "next" : undefined}>
@@ -127,7 +127,6 @@ const parallax = { shift: 10, ease: 0.06, overscan: 1.02, title: 0.3 };
                     />
                 </div>
             ))}
-            <div class="hero-scrim"></div>
         </div>
         <!-- The line that rides the seam, between two strips of page background,
              as in the page turn. Below the headline. -->
@@ -398,16 +397,6 @@ const parallax = { shift: 10, ease: 0.06, overscan: 1.02, title: 0.3 };
         );
         mask-size: 100% 100%;
         mask-repeat: no-repeat;
-    }
-    /* A dark wash over the pictures, so the light headline reads over any
-       photograph: the dark theme's background in both themes, so the pictures
-       look the same whichever is on. Tune --scrim. */
-    .hero-scrim {
-        --scrim: 0.4;
-        position: absolute;
-        inset: 0;
-        z-index: 2;
-        background: rgb(4 27 27 / var(--scrim));
     }
     /* The page turn's band: the line between two strips of page background,
        just behind the edge. */
