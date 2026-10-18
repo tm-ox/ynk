@@ -19,8 +19,8 @@ const padding = Math.max(0, pageSize - events.length);
     <div class="gallery-group">
     <ul class="grid gap-2 grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gallery-grid">
         {
-            events.map((event, i) => (
-                <li class="min-w-0" style={`--i:${i}`}>
+            events.map((event) => (
+                <li class="min-w-0">
                     <a href={`/events/${event.id}/`} title={event.data.title}>
                         <h5 class="uppercase xl:truncate vt-title" transition:name={`${event.data.id}-title`}>{event.data.title}</h5>
                         <hr />

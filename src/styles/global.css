@@ -331,12 +331,16 @@
             scale: 0 1;
         }
     }
-    /* Archive thumbnails rise in, a little after one another (--i is the
-       cell's index). Titles and rules stay put. Plays on every arrival except
+    /* Archive thumbnails rise in, a little after one another along the
+       diagonal (--d is the cell's place on it, set by scripts/diagonal.ts;
+       --rise-step is the time per step). Titles and rules stay put. Plays on every arrival except
        when coming back from one of its pictures or events, and on page turns,
        where the grid slides in and wipes instead (data-returning, set in
        Base.astro, covers both). */
     @media (prefers-reduced-motion: no-preference) {
+        :root {
+            --rise-step: 25ms;
+        }
         @keyframes rise-in {
             from {
                 opacity: 0;
@@ -351,7 +355,7 @@
         /* Backwards, not both: once it has risen the animation lets go of
            opacity, so the spotlight below can dim the picture. */
         html:not([data-returning]) .gallery-grid .thumb img {
-            animation: rise-in 0.6s ease-out calc(var(--i, 0) * 25ms) backwards;
+            animation: rise-in 0.6s ease-out calc(var(--d, 0) * var(--rise-step)) backwards;
         }
     }
     /* Thumbnails that link somewhere: while the link is hovered or focused the
