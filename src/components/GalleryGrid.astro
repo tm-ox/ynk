@@ -1,6 +1,7 @@
 ---
 import { Image } from "astro:assets";
 import type { getGalleryImages } from "../utils/events";
+import { IMAGES_PER_PAGE } from "../utils/events";
 
 // Taken from the function's return type: Zed's language server fails to see the
 // module's `GalleryImage` export here (astro check and the build are fine).
@@ -10,16 +11,15 @@ interface Props {
     pageSize?: number;
     images: GalleryImage[];
 }
-const { images, pageSize = 24 } = Astro.props;
+const { images, pageSize = IMAGES_PER_PAGE } = Astro.props;
 // From xl up the last page is padded with invisible cells so it keeps the same
 // height, and the page numbers stay where they are.
 const padding = Math.max(0, pageSize - images.length);
 ---
 
 <!-- Thumbnails are always square and the grid always spans the content width.
-     From xl up a page (24 images) is meant to fit one screen: the number of
-     columns follows the shape of the space available (6, 8 or 12, so 4, 3 or
-     2 rows; 8 from a height of about half the width), and anything that still does not fit scrolls inside the grid.
+     From xl up a page (21 images) fits one screen: 7 columns by 3 rows, the
+     grid narrowing where the space is too short for three full-width rows.
      Below xl the grid flows with fewer columns. -->
 <div class="w-full mb-auto gallery-fit" data-scroll>
     <div class="gallery-spacer"></div>
@@ -125,22 +125,15 @@ const padding = Math.max(0, pageSize - images.length);
                so adding the gap above the grid does not make a snug page scroll. */
             min-height: 2rem;
         }
+        /* A page (21 images) is 7 columns by 3 rows. Three rows need about
+           3/7 of the grid's width plus 149px (the titles and gaps under each
+           row), so where the space is shorter than that the grid narrows
+           (set left) until the rows fit, rather than scroll. */
         .gallery-grid {
-            grid-template-columns: repeat(12, minmax(0, 1fr));
+            grid-template-columns: repeat(7, minmax(0, 1fr));
+            width: min(100%, calc((100cqh - 149px) * 7 / 3));
         }
-        /* 8 columns (3 rows) need a height of about 0.375 x width + 149px
-           (2.03 x wide at 1264px, 2.08 at 1424px), so 8 from 2:1 and
-           narrower; 12 columns (2 rows) need about 0.17 x width + 109px.
-           6 columns (4 rows, 0.67 x width + 189px) are for tall spaces. */
-        @container (max-aspect-ratio: 2/1) {
-            .gallery-grid {
-                grid-template-columns: repeat(8, minmax(0, 1fr));
-            }
-        }
-        @container (max-aspect-ratio: 10/9) {
-            .gallery-grid {
-                grid-template-columns: repeat(6, minmax(0, 1fr));
-            }
+    }
         }
     }
 </style>

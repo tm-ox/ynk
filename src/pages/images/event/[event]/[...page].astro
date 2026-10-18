@@ -5,7 +5,7 @@ import Paging from "../../../../components/Paging.astro";
 import Pagination from "../../../../components/Pagination.astro";
 import GalleryGrid from "../../../../components/GalleryGrid.astro";
 import GalleryFilter from "../../../../components/GalleryFilter.astro";
-import { slash, getGalleryEvents, getGalleryImages } from "../../../../utils/events";
+import { slash, getGalleryEvents, getGalleryImages, IMAGES_PER_PAGE } from "../../../../utils/events";
 
 export const getStaticPaths = (async ({ paginate }) => {
     const images = await getGalleryImages();
@@ -13,7 +13,7 @@ export const getStaticPaths = (async ({ paginate }) => {
     return events.flatMap((event) =>
         paginate(
             images.filter((image) => image.groupId === event.id),
-            { pageSize: 24, params: { event: event.id }, props: { event } },
+            { pageSize: IMAGES_PER_PAGE, params: { event: event.id }, props: { event } },
         ),
     );
 }) satisfies GetStaticPaths;
