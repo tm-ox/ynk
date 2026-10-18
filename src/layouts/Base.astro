@@ -296,12 +296,13 @@ const ogImage = new URL(image ?? "/og-default.jpg", Astro.site).href;
                 // The outgoing box turns as a .page (a detail's is not one
                 // otherwise; see turnBox).
                 if (turn) turnBox(document)?.style.setProperty("view-transition-class", "page");
-                // A turn between screens, not between pages of one archive:
-                // the page numbers are another set, so they go with their own
-                // grid rather than morph from one row into the other (which
-                // stretches them).
-                crossing =
-                    !!turn && e.from.pathname.split("/")[1] !== e.to.pathname.split("/")[1];
+                // A move to another set of page numbers (another screen, or
+                // between all images and one event's, or two events'), not
+                // between pages of one set: they go with their own page rather
+                // than morph from one row into the other (which stretches
+                // them). A set is its path less the page number.
+                const numbers = (u: URL) => u.pathname.replace(/\/\d+\/?$/, "/").replace(/\/?$/, "/");
+                crossing = numbers(e.from) !== numbers(e.to);
                 if (crossing) unnumber(document);
                 // Opening a picture or event from a grid (archive or
                 // Featured), or closing back to it: only its own thumbnail and
