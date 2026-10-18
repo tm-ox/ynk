@@ -150,29 +150,15 @@ const label = "mb-0 text-xs font-bold tracking-normal md:text-sm font-displayCon
   .listing-link:hover :is(h2, h3, h4, p, a):not(.section-action) {
     color: rgb(var(--rgb-accent-hover));
   }
-  /* The slash between date, time and venue spans the text: from the label's
-     cap height to the value's baseline. Worked out from BioRhyme's metrics
-     (ascent 1.127em, descent 0.422em, cap height 0.686em) and the two lines'
-     sizes: the label's (--lf, line --ll) and the value's (h4: 1rem, line
-     1.5rem). Anchored at the top, so a venue that wraps does not stretch it. */
-  .meta-slash {
-    --lf: 0.75rem;
-    --ll: 1rem;
-    --top: calc(var(--ll) / 2 - 0.3335 * var(--lf));
-    --slash-height: calc(var(--ll) + 0.75rem + 0.3525rem - var(--top));
-  }
-  @media (min-width: 48rem) {
-    .meta-slash {
-      --lf: 0.875rem;
-      --ll: 1.25rem;
-    }
-  }
-  /* At the right of its gap, as if leading the next item: its top leans
-     about 9px right of centre, so this leaves about 8px clear of the text. */
+  /* The slash between date, time and venue runs the row's full height, from
+     the rule above to the rule below (each 0.5rem off the row, hr's my-2).
+     It sits at the right of its gap, as if leading the next item, about 8px
+     clear of the label. */
   .meta-slash::before {
     left: auto;
-    right: 1.25rem;
-    top: var(--top);
+    right: 1rem;
+    top: -0.5rem;
+    height: calc(100% + 1rem);
     transform: skewX(-32deg);
   }
 </style>
