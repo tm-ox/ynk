@@ -1,5 +1,5 @@
-// The row of screens, left to right: home (the hero), Featured, the events
-// archive, the images archive (an event's own pictures included), About,
+// The row of screens, left to right: home (the hero), Featured, About, the
+// events archive, the images archive (an event's own pictures included),
 // Contact. Page turns (Base.astro), the arrow keys and the wheel
 // (scripts/step.ts), the nav and the position line (BaseLayout.astro) all
 // follow this order. Detail pages, privacy and 404 are not in the row.
@@ -21,6 +21,7 @@ export interface Screen {
 export const ROW: Screen[] = [
   { name: "home", label: "Home", href: "/", match: /^\/$/ },
   { name: "featured", label: "Featured", href: "/featured/", match: /^\/featured\/?$/ },
+  { name: "about", label: "About", href: "/about/", match: /^\/about\/?$/ },
   { name: "events", label: "Events", href: "/events/", match: /^\/events(\/(\d+\/?)?)?$/, paged: true },
   {
     name: "images",
@@ -29,7 +30,6 @@ export const ROW: Screen[] = [
     match: /^\/images(\/(\d+\/?)?)?$|^\/images\/event\/[^/]+(\/(\d+\/?)?)?$/,
     paged: true,
   },
-  { name: "about", label: "About", href: "/about/", match: /^\/about\/?$/ },
   { name: "contact", label: "Contact", href: "/contact/", match: /^\/contact\/?$/ },
 ];
 

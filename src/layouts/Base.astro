@@ -219,7 +219,7 @@ const ogImage = new URL(image ?? "/og-default.jpg", Astro.site).href;
                                 ? "paging-forward"
                                 : "paging-back";
                 }
-                // Home, Featured, the archives, About and Contact are one row
+                // Home, Featured, About, the archives and Contact are one row
                 // of screens (utils/row.ts), as the nav and the arrow keys
                 // have them. A move between two of them that are different
                 // screens turns the page that way, like page numbers do.
@@ -295,7 +295,10 @@ const ogImage = new URL(image ?? "/og-default.jpg", Astro.site).href;
                         : null;
                 // The outgoing box turns as a .page (a detail's is not one
                 // otherwise; see turnBox).
-                if (turn) turnBox(document)?.style.setProperty("view-transition-class", "page");
+                if (turn) {
+                    turnBox(document)?.style.setProperty("view-transition-class", "page");
+                    unbar(document);
+                }
                 // A move to another set of page numbers (another screen, or
                 // between all images and one event's, or two events'), not
                 // between pages of one set: they go with their own page rather
@@ -331,6 +334,13 @@ const ogImage = new URL(image ?? "/og-default.jpg", Astro.site).href;
             const unnumber = (root: ParentNode) =>
                 root
                     .querySelectorAll<HTMLElement>('nav[aria-label="Pagination"]')
+                    .forEach((el) => (el.style.viewTransitionName = "none"));
+            // The images archive's filter bar is named so it morphs into a
+            // picture's info strip; on a page turn it goes with its screen
+            // instead, as every screen's title row does.
+            const unbar = (root: ParentNode) =>
+                root
+                    .querySelectorAll<HTMLElement>(".gallery-filter")
                     .forEach((el) => (el.style.viewTransitionName = "none"));
             const bare = (path: string) => path.replace(/\/$/, "");
             // The named parts of grid thumbnails and of Featured (links
@@ -375,6 +385,7 @@ const ogImage = new URL(image ?? "/og-default.jpg", Astro.site).href;
                     // global.css draws the seam's line on (.into: its group
                     // takes its classes, also when it holds both pages).
                     turnBox(e.newDocument)?.style.setProperty("view-transition-class", "page into");
+                    unbar(e.newDocument);
                     // The outgoing screen, as captured for the slide (this
                     // runs before the swap). See seamShift.
                     const old = turnBox(document);

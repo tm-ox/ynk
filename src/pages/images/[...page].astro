@@ -30,7 +30,9 @@ const events = await getGalleryEvents();
         <Icon name="ion:close-sharp" class="icon" />
       </a>
     </div>
-    <section class="flex-col xl:h-section xl:min-h-0 xl:overflow-hidden">
+    <!-- The archive's screen: its bar and grid, named and a .vt-page, so a
+       turn slides the whole of it (see global.css). -->
+  <section class="flex-col xl:h-section xl:min-h-0 xl:overflow-hidden vt-page" transition:name="gallery-page">
         <h1 class="sr-only">Images</h1>
         <GalleryFilter label="Images" events={events}>
             <Pagination lastPage={page.lastPage} currentPage={page.currentPage} />
