@@ -77,7 +77,7 @@ const label = "mb-0 text-xs font-bold tracking-normal md:text-sm font-displayCon
           <h4>{event.data.date}</h4>
         </div>
         {/* From sm up the items sit apart with a slash centred in each gap. */}
-        <span class="hidden sm:block flex-1 slash-c [--slash-height:100%]" aria-hidden="true" />
+        <span class="hidden sm:block flex-1 slash-c meta-slash" aria-hidden="true" />
         {
           event.data.time !== "" && (
             <>
@@ -85,7 +85,7 @@ const label = "mb-0 text-xs font-bold tracking-normal md:text-sm font-displayCon
                 <p class={label}>time:</p>
                 <h4>{event.data.time}</h4>
               </div>
-              <span class="hidden sm:block flex-1 slash-c [--slash-height:100%]" aria-hidden="true" />
+              <span class="hidden sm:block flex-1 slash-c meta-slash" aria-hidden="true" />
             </>
           )
         }
@@ -149,5 +149,26 @@ const label = "mb-0 text-xs font-bold tracking-normal md:text-sm font-displayCon
      brightens all of its text, except the action link in the title row. */
   .listing-link:hover :is(h2, h3, h4, p, a):not(.section-action) {
     color: rgb(var(--rgb-accent-hover));
+  }
+  /* The slash between date, time and venue spans the text: from the label's
+     cap height to the value's baseline. Worked out from BioRhyme's metrics
+     (ascent 1.127em, descent 0.422em, cap height 0.686em) and the two lines'
+     sizes: the label's (--lf, line --ll) and the value's (h4: 1rem, line
+     1.5rem). Anchored at the top, so a venue that wraps does not stretch it. */
+  .meta-slash {
+    --lf: 0.75rem;
+    --ll: 1rem;
+    --top: calc(var(--ll) / 2 - 0.3335 * var(--lf));
+    --slash-height: calc(var(--ll) + 0.75rem + 0.3525rem - var(--top));
+  }
+  @media (min-width: 48rem) {
+    .meta-slash {
+      --lf: 0.875rem;
+      --ll: 1.25rem;
+    }
+  }
+  .meta-slash::before {
+    top: var(--top);
+    transform: skewX(-32deg);
   }
 </style>
