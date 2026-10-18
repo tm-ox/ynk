@@ -44,10 +44,13 @@
        on a picture. Both are this tall from sm up, so the rule below does not move. */
     --bar-row: calc(var(--spacing) * 7);
     --spacing-header: calc(var(--spacing) * 16);
-    /* The slash dividers (slash-l, slash-r): the header's full height, from
-       the top of the screen to the rule under it (they are only used in the
-       header, centred on its row), and a little over 1px wide. */
-    --slash-height: var(--spacing-header);
+    /* The slash dividers (slash-l, slash-c, slash-r), used in the header:
+       how far they reach above and below the row's centre. Above, to the top
+       of the logo's equals sign (0.61 of the logo, which is h-8, md:h-9; see
+       the media query below); below, down to the rule under the header. A
+       little over 1px wide. */
+    --slash-above: calc(var(--spacing) * 8 * 0.61 / 2);
+    --slash-below: calc(var(--spacing-header) / 2);
     --slash-weight: 1.2px;
     --spacing-footer: calc(var(--spacing) * 8);
     /* What a section's padding and the flyer's frame take from the screen height. */
@@ -81,22 +84,29 @@
 /* A divider at the logo's angle (its stroke rises at about 58deg, so it leans
    32deg off vertical), in place of a vertical border: slash-l on the element's
    left edge, slash-r on its right. It is centred on where the border was and
-   --slash-height tall, centred on the row. In the header it runs top to
-   rule, leaning 20px each way overall but only about 5px within the text's
-   height, so about 16px of space either side still clears the text. --slash-weight is a little over 1px so the leaning line looks as
-   heavy as a 1px upright one. The parent must be positioned (relative is set
+   reaches --slash-above above the row's centre and --slash-below below it,
+   leaning about the centre, so within the text's height it moves only about
+   5px and some 16px of space either side clears the text. --slash-weight is
+   a little over 1px so the leaning line looks as heavy as a 1px upright
+   one. The parent must be positioned (relative is set
    here). */
+@media (min-width: 48rem) {
+    :root {
+        --slash-above: calc(var(--spacing) * 9 * 0.61 / 2);
+    }
+}
 @utility slash-l {
     position: relative;
     &::before {
         content: "";
         position: absolute;
         left: calc(var(--slash-weight) / -2);
-        top: 50%;
+        top: calc(50% - var(--slash-above));
         width: var(--slash-weight);
-        height: var(--slash-height);
+        height: calc(var(--slash-above) + var(--slash-below));
         background: var(--color-border);
-        transform: translateY(-50%) skewX(-32deg);
+        transform: skewX(-32deg);
+        transform-origin: 50% var(--slash-above);
         pointer-events: none;
     }
 }
@@ -107,11 +117,12 @@
         content: "";
         position: absolute;
         left: calc(50% - var(--slash-weight) / 2);
-        top: 50%;
+        top: calc(50% - var(--slash-above));
         width: var(--slash-weight);
-        height: var(--slash-height);
+        height: calc(var(--slash-above) + var(--slash-below));
         background: var(--color-border);
-        transform: translateY(-50%) skewX(-32deg);
+        transform: skewX(-32deg);
+        transform-origin: 50% var(--slash-above);
         pointer-events: none;
     }
 }
@@ -121,11 +132,12 @@
         content: "";
         position: absolute;
         right: calc(var(--slash-weight) / -2);
-        top: 50%;
+        top: calc(50% - var(--slash-above));
         width: var(--slash-weight);
-        height: var(--slash-height);
+        height: calc(var(--slash-above) + var(--slash-below));
         background: var(--color-border);
-        transform: translateY(-50%) skewX(-32deg);
+        transform: skewX(-32deg);
+        transform-origin: 50% var(--slash-above);
         pointer-events: none;
     }
 }
