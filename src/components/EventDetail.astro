@@ -152,13 +152,14 @@ const label = "mb-0 text-xs font-bold tracking-normal md:text-sm font-displayCon
   }
   /* The slash between date, time and venue runs the row's full height, from
      the rule above to the rule below (each 0.5rem off the row, hr's my-2).
-     It sits at the right of its gap, as if leading the next item, about 8px
-     clear of the label. */
+     It leads the next item: it leans from where the text starts, at the top
+     rule, down and to the left (skewed about its top end). */
   .meta-slash::before {
     left: auto;
-    right: 1rem;
+    right: 0;
     top: -0.5rem;
     height: calc(100% + 1rem);
     transform: skewX(-32deg);
+    transform-origin: top;
   }
 </style>
