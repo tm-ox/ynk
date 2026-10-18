@@ -459,16 +459,16 @@ select:-webkit-autofill:focus {
    filling the moving box, starts as exactly that crop and opens out to the
    whole photograph, so it shows alone from the first frame. The old one, a
    crop scaled up, would only double it. Closing (data-closing, set in
-   Base.astro) is the mirror: the outgoing photograph closes down to the crop
-   and shows alone. (A flyer's thumbnail is the whole flyer, so the even
-   crossfade above suits it.) Not for Previous/Next, which slide. */
-html:not([data-astro-transition^="paging"]):not([data-closing])::view-transition-old(.photo),
-html[data-closing]::view-transition-new(.photo) {
+   Base.astro) keeps the even crossfade: tried with the outgoing photograph
+   alone, it read as the full picture shrinking and then snapping to the
+   crop, which tm found worse than the brief doubling. (A flyer's thumbnail is
+   the whole flyer, so the crossfade suits it both ways.) Not for
+   Previous/Next, which slide. */
+html:not([data-astro-transition^="paging"]):not([data-closing])::view-transition-old(.photo) {
     animation: none;
     opacity: 0;
 }
-html:not([data-astro-transition^="paging"]):not([data-closing])::view-transition-new(.photo),
-html[data-closing]::view-transition-old(.photo) {
+html:not([data-astro-transition^="paging"]):not([data-closing])::view-transition-new(.photo) {
     animation: none;
     opacity: 1;
 }

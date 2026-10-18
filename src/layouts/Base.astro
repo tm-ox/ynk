@@ -273,9 +273,10 @@ const ogImage = new URL(image ?? "/og-default.jpg", Astro.site).href;
                 // than captured on their own and painted over it.
                 focus = isDetail(e.to) ? e.to.pathname : isDetail(e.from) ? e.from.pathname : null;
                 if (!paging && focus) unname(document, focus);
-                // Closing a picture back to its grid: global.css shows the
-                // outgoing photograph rather than the incoming crop. Set on
-                // both pages, as the root's attributes are swapped mid-way.
+                // Closing a picture back to its grid: global.css keeps the
+                // crossfade there (the photograph opening rule is for opening
+                // only). Set on both pages, as the root's attributes are
+                // swapped mid-way.
                 closing = !paging && !!focus && isDetail(e.from);
                 document.documentElement.toggleAttribute("data-closing", closing);
             });
