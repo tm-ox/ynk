@@ -12,7 +12,9 @@ venue:
 with: ""
 info: ""
 flyer: { src: ../flyers/YNK Pestapora 2024 Rundown Day 3 Feed.png, alt: Pestapora2024 }
-photographer: Wandi
+photographer:
+  name: Wandi
+  url: https://www.instagram.com/wandirana/
 artists:
   - name: Sunlotus
     url: https://www.instagram.com/loudsunlotus/
@@ -27,6 +29,7 @@ artists:
   - name: Logic Lost
     url: https://www.instagram.com/logiclost/
   - name: Terbujurkaku
+    url: https://www.instagram.com/trbjrkxkx/
 images:
   - src: ../images/pp2024-3-01.jpg
     alt: "Pestapora 2024, day 3: crowd"

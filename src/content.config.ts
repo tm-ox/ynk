@@ -26,7 +26,9 @@ export const collections = {
         with: z.string(),
         info: z.string(),
         // Who photographed the event's documentation, where known.
-        photographer: z.string().optional(),
+        photographer: z
+          .object({ name: z.string(), url: z.string().optional() })
+          .optional(),
         // The event's artists, in the order they played, each linked once;
         // a picture names its artist by `name` (images[].artist). Recorded
         // for crediting later; nothing shows them yet.

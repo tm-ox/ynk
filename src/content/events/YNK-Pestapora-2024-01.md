@@ -12,7 +12,9 @@ venue:
 with: ""
 info: ""
 flyer: { src: ../flyers/YNK Pestapora 2024 Rundown Day 1 Feed.png, alt: Pestapora2024 }
-photographer: Wandi
+photographer:
+  name: Wandi
+  url: https://www.instagram.com/wandirana/
 artists:
   - name: Disharmonis
     url: https://www.instagram.com/disharmonisexp/
@@ -23,12 +25,15 @@ artists:
   - name: Putu Septa
     url: https://www.instagram.com/putu_septa/
   - name: Dracul
+    url: https://www.instagram.com/haidaraculla/
   - name: Asylum Uniform
     url: https://www.instagram.com/asylum.uniform/
   - name: Tanat Teeradakorn
+    url: https://www.instagram.com/pgm_991/
   - name: BHKT
     url: https://www.instagram.com/bhkt_prasetyo/
   - name: Prontaxan
+    url: https://www.instagram.com/prontaxan__/
 images:
   - src: ../images/pp2024-1-01.jpg
     alt: "Pestapora 2024, day 1: crowd"

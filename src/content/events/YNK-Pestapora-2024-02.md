@@ -12,7 +12,9 @@ venue:
 with: ""
 info: ""
 flyer: { src: ../flyers/YNK Pestapora 2024 Rundown Day 2 Feed.png, alt: Pestapora2024 }
-photographer: Wandi
+photographer:
+  name: Wandi
+  url: https://www.instagram.com/wandirana/
 artists:
   - name: Motherbank
     url: https://www.instagram.com/mother.bank/
