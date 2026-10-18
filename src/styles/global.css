@@ -43,14 +43,19 @@
     /* Height of the bar above a gallery: the filter on an archive, the info strip
        on a picture. Both are this tall from sm up, so the rule below does not move. */
     --bar-row: calc(var(--spacing) * 7);
-    --spacing-header: calc(var(--spacing) * 16);
+    /* The header: the logo's height (Logo.astro's h-8, md:h-9; see the media
+       query below) with the space it had centred in a 4rem bar above it, and
+       below it only what the event details leave between text and rule. */
+    --logo-h: calc(var(--spacing) * 8);
+    --header-top: calc((4rem - var(--logo-h)) / 2);
+    --header-bottom: 0.375rem;
+    --spacing-header: calc(var(--header-top) + var(--logo-h) + var(--header-bottom));
     /* The slash dividers (slash-l, slash-c, slash-r), used in the header:
        how far they reach above and below the row's centre. Above, to the top
-       of the logo's equals sign (0.61 of the logo, which is h-8, md:h-9; see
-       the media query below); below, down to the rule under the header. A
-       little over 1px wide. */
-    --slash-above: calc(var(--spacing) * 8 * 0.61 / 2);
-    --slash-below: calc(var(--spacing-header) / 2);
+       of the logo's equals sign (0.61 of the logo); below, down to the rule
+       under the header. A little over 1px wide. */
+    --slash-above: calc(var(--logo-h) * 0.61 / 2);
+    --slash-below: calc(var(--logo-h) / 2 + var(--header-bottom));
     --slash-weight: 1.2px;
     --spacing-footer: calc(var(--spacing) * 8);
     /* What a section's padding and the flyer's frame take from the screen height. */
@@ -92,7 +97,7 @@
    here). */
 @media (min-width: 48rem) {
     :root {
-        --slash-above: calc(var(--spacing) * 9 * 0.61 / 2);
+        --logo-h: calc(var(--spacing) * 9);
     }
 }
 @utility slash-l {
@@ -216,6 +221,9 @@
     }
     nav {
         @apply flex justify-between items-center gap-2 h-header max-w-site mx-auto px-2;
+        /* The row (centred) is the logo's height, set off the top and the rule. */
+        padding-top: var(--header-top);
+        padding-bottom: var(--header-bottom);
     }
     main {
         @apply relative pt-header;
