@@ -1,7 +1,7 @@
 // The position line under the header (BaseLayout.astro, global rule in its
-// style): where the screen in view sits in the row of home panels and archive
-// pages. Other pages set it from the build (--i, --n); on home its --i
-// follows the track.
+// style): where the screen in view sits in the row of home panels, archive
+// pages, About and Contact. Other pages set it from the build (--i, --n); on
+// home its --i follows the track.
 import { panelsOf, track } from "./track";
 
 const line = () => document.querySelector<HTMLElement>("[data-position]");

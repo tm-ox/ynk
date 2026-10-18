@@ -12,15 +12,17 @@ const currentPath = pathname.slice(1); // remove the first "/"
 const isHome = currentPath === "";
 const isCurrent = (name: string) =>
     currentPath === name || currentPath.startsWith(`${name}/`);
-// The events archive's last page: stepping back from the images archive (keys,
-// wheel) lands there, so the pages run in order (scripts/keys.ts).
+// The archives' last pages: stepping back from the next screen (keys) lands
+// there, so the pages run in order (scripts/keys.ts).
 const eventsPages = Math.max(1, Math.ceil((await getCollection("events")).length / EVENTS_PER_PAGE));
 const eventsLast = eventsPages > 1 ? `/events/${eventsPages}/` : "/events/";
 // The position line under the header (scripts/position.ts): the whole row of
-// screens is the home panels, then the events pages, then the images pages.
-// Detail pages, privacy and 404 are not in the row and have no line.
+// screens is the home panels, then the events pages, then the images pages,
+// then About and Contact. Detail pages, privacy and 404 are not in the row and
+// have no line.
 const imagesPages = Math.max(1, Math.ceil((await getGalleryImages()).length / IMAGES_PER_PAGE));
-const screens = HOME_PANELS + eventsPages + imagesPages;
+const imagesLast = imagesPages > 1 ? `/images/${imagesPages}/` : "/images/";
+const screens = HOME_PANELS + eventsPages + imagesPages + 2;
 const pageNo = Number(pathname.match(/^\/(?:events|images)\/(\d+)\/?$/)?.[1] ?? 1);
 const screenIndex =
     isHome ? 0
@@ -28,16 +30,18 @@ const screenIndex =
     // An event's own gallery counts as the images archive's first page.
     : /^\/images(\/(\d+\/?)?)?$/.test(pathname) || /^\/images\/event\//.test(pathname)
       ? HOME_PANELS + eventsPages + (pathname.startsWith("/images/event/") ? 0 : pageNo - 1)
+    : /^\/about\/?$/.test(pathname) ? HOME_PANELS + eventsPages + imagesPages
+    : /^\/contact\/?$/.test(pathname) ? HOME_PANELS + eventsPages + imagesPages + 1
     : null;
-// One run of links: what is on show first, then about and contact. (The row of
-// screens itself keeps its order: home panels, then the archives.)
+// One run of links, in the row's order: the home panels, the archives, then
+// About and Contact.
 const links = [
     { label: "Home", href: isHome ? "/#top" : "/", section: "top", current: false },
     { label: "Featured", href: "/#events", section: "events", current: false },
     { label: "Events", href: "/events/", section: "events-page", current: isCurrent("events"), last: eventsLast },
-    { label: "Images", href: "/images/", section: "images-page", current: isCurrent("images") },
-    { label: "About", href: "/#about", section: "about", current: false },
-    { label: "Contact", href: "/#contact", section: "contact", current: false },
+    { label: "Images", href: "/images/", section: "images-page", current: isCurrent("images"), last: imagesLast },
+    { label: "About", href: "/about/", section: "about", current: isCurrent("about") },
+    { label: "Contact", href: "/contact/", section: "contact", current: isCurrent("contact") },
 ];
 ---
 
@@ -99,8 +103,9 @@ const links = [
 </script>
 
 <script>
-    // Marks the nav link for the section in view on the home page, and the
-    // events/images links on their own routes (archives and detail pages). Only the theme is persisted
+    // Marks the nav link for the panel in view on the home page, and the
+    // events/images links on their own routes (archives and detail pages), and
+    // About and Contact on their pages. Only the theme is persisted
     // across transitions, so this runs on every page load.
     let observer: IntersectionObserver | undefined;
     // Panels sit side by side from sm up, stacked below it.
@@ -138,10 +143,13 @@ const links = [
                 .querySelectorAll("main section[id]")
                 .forEach((section) => observer!.observe(section));
         } else {
-            // Inner pages: the archive (or detail page) the route belongs to.
+            // Inner pages: the archive (or detail page) the route belongs to,
+            // or About and Contact.
             setActive(
                 path.startsWith("/events") ? "events-page"
                 : path.startsWith("/images") ? "images-page"
+                : /^\/about\/?$/.test(path) ? "about"
+                : /^\/contact\/?$/.test(path) ? "contact"
                 : null,
             );
         }

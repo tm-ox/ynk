@@ -24,7 +24,7 @@ const label = "text-xs uppercase font-displayCon md:text-sm text-accent-muted";
         <form
             name="contact"
             method="POST"
-            action="/"
+            action="/contact/"
             data-netlify="true"
             netlify-honeypot="bot-field"
             data-contact
@@ -93,8 +93,8 @@ const label = "text-xs uppercase font-displayCon md:text-sm text-accent-muted";
 </section>
 
 <script>
-    // Submit in place so the panel keeps its place; without JS the form posts
-    // normally and Netlify shows its own confirmation page.
+    // Submit in place, so the visitor stays where they are; without JS the form
+    // posts normally and Netlify brings them back to this page (its action).
     document.addEventListener("submit", async (e) => {
         const form = e.target;
         if (
