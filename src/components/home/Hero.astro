@@ -17,7 +17,9 @@ const pick = { preferred: 1600, fallback: 1200, enough: 6, most: 10 };
 // src/content/images; the event's next one that qualifies takes its place.
 const skip = ["ynk51-01", "ynk51-02", "ynk51-03", "ynk51-04", "ynk51-05"];
 const skipped = (src: ImageMetadata) =>
-    skip.some((name) => new RegExp(`/${name}(\\.[^/]*)?\\.[a-z]+(\\?|$)`, "i").test(src.src));
+    skip.some((name) =>
+        new RegExp(`/${name}(\\.[^/]*)?\\.[a-z]+(\\?|$)`, "i").test(src.src),
+    );
 
 type Candidate = { src: ImageMetadata; date: string };
 const events = await getCollection("events");
@@ -64,7 +66,14 @@ const widthsFor = (w: number) =>
 // one shown when nothing moves. Edit the list to change the cycle (two words at
 // least). The heading's text for screen readers is "Experimental etc." whatever
 // the list holds (the sr-only span below), not the still word: deliberately.
-const words = ["music", "sound", "performance", "people", "etc.", "whatever"];
+const words = [
+    "music",
+    "sound",
+    "performance",
+    "people",
+    "et cetera",
+    "whatever",
+];
 if (words.length < 2)
     throw new Error(
         "Hero.astro: the cycling headline needs at least two words.",
