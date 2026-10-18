@@ -86,17 +86,18 @@ const links = ROW.map((s, i) => ({
                         </li>
                     ))
                 }
-                <li class="max-sm:mt-auto max-sm:pt-4 vt-nav" transition:name="nav-social">
+                <li class="max-sm:mt-auto max-sm:pt-4 vt-nav menu-social" transition:name="nav-social">
                     <Sosmed />
                 </li>
                 <!-- Phones only: the footer line (Base.astro hides the footer
                      there), small and quiet under the social icons:
-                     --menu-gap below them and as much above the panel's foot.
-                     © at the left, Privacy at the right, on one baseline. -->
-                <li class="flex py-(--menu-gap) text-xs tracking-wide uppercase sm:hidden font-displayCon text-accent-muted">
+                     --menu-gap below them and as much above the panel's foot,
+                     measured from the ink (.menu-foot, below). © at the left,
+                     Privacy at the right, on one baseline. -->
+                <li class="flex text-xs tracking-wide uppercase sm:hidden font-displayCon text-accent-muted menu-foot">
                     <div class="flex items-baseline justify-between w-full">
                         <span>© 2010–{new Date().getFullYear()} Yes No Klub</span>
-                        <a href="/privacy" class="w-auto text-xs" target="_self">Privacy</a>
+                        <a href="/privacy" class="w-auto text-xs leading-none" target="_self">Privacy</a>
                     </div>
                 </li>
             </ul>
@@ -227,8 +228,29 @@ const links = ROW.map((s, i) => ({
             --menu-leading: 0.9em;
             --menu-target: 40px;
             /* Between the social icons and the footer line, and again
-               between the line and the panel's foot. */
+               between the line and the panel's foot, as seen: glyph to caps,
+               baseline to foot (below). */
             --menu-gap: calc(var(--spacing) * 6);
+            /* The icons' boxes are taller than their glyphs: on the row
+               (40px, SoundCloud's box; the 28px ones centred in it) the
+               lowest ink is Facebook's at 30.9px (912 of a 1024 viewBox),
+               then Instagram and YouTube at 30.5 (448.5 of 512) and
+               SoundCloud at 30 (18 of 24, stroke and all). The row is
+               pulled up by the space under the lowest. */
+            --menu-icon-slack: 9px;
+        }
+        .menu-social {
+            margin-bottom: calc(var(--menu-icon-slack) * -1);
+        }
+        /* The footer line's box trimmed to its caps (it has no
+           descenders). BioRhyme: ascent 1.127em, descent 0.422em, caps
+           0.686em; on one line as high as the type (leading-none) the cap
+           tops lie 0.1665em under its top and the baseline 0.1475em over
+           its foot, taken off the gaps. */
+        .menu-foot {
+            line-height: 1;
+            padding-top: calc(var(--menu-gap) - 0.1665em);
+            padding-bottom: calc(var(--menu-gap) - 0.1475em);
         }
         .main-nav a[data-section] {
             font-family: var(--font-biorhyme-expanded);
