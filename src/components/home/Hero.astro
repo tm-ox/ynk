@@ -12,6 +12,11 @@ import { Icon } from "astro-icon/components";
 // up to `most`. The script below keeps the first in place (it is the eager
 // one) and shuffles the rest on every visit.
 const pick = { preferred: 1600, fallback: 1200, enough: 6, most: 10 };
+// Photographs never to use here, by file name (without the extension) as in
+// src/content/images; the event's next one that qualifies takes its place.
+const skip = ["ynk51-01"];
+const skipped = (src: ImageMetadata) =>
+    skip.some((name) => new RegExp(`/${name}(\\.[^/]*)?\\.[a-z]+(\\?|$)`, "i").test(src.src));
 
 type Candidate = { src: ImageMetadata; date: string };
 const events = await getCollection("events");
@@ -20,6 +25,7 @@ const candidates = (minWidth: number): Candidate[] =>
         const photo = (event.data.images ?? []).find(
             (img) =>
                 img?.src &&
+                !skipped(img.src) &&
                 img.src.width > img.src.height &&
                 img.src.width >= minWidth,
         );
