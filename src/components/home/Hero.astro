@@ -517,8 +517,13 @@ const parallax = { shift: 10, ease: 0.06, overscan: 1.02, title: 0.3 };
        global.css, which now serve only the 404 page's .display-hero. Tune
        --strip, --size and --cap-lh. */
     .hero-title {
-        --strip: 80.6cqw;
-        --size: clamp(2.25rem, 9.1cqw, 8.5rem); /* strip and size scaled together (1.3x), so the lines break where they did */
+        /* Set flush with the stage's left edge (justify-self), its right end
+           where it was (9.7cqw short of the right, room for the arrow).
+           Strip and size are scaled together (1.3x, then 90.3 / 80.6), so the
+           lines break where they did. */
+        --strip: 90.3cqw;
+        --size: clamp(2.25rem, 10.2cqw, 9.5rem);
+        justify-self: start;
         --word-pull: 0.001em; /* moves the changing word up toward "Experimental" */
         --cap-lh: 0.56;
         display: flex;
