@@ -41,14 +41,9 @@ const basePath = `/images/event/${event.id}/`;
     <section class="flex-col xl:h-section xl:min-h-0 xl:overflow-hidden">
         <h1 class="sr-only">Images – {event.label}</h1>
         <GalleryFilter events={events} current={event.id}>
+            <Pagination lastPage={page.lastPage} currentPage={page.currentPage} basePath={basePath} />
             <a href="/images/" class="shrink-0 section-action">All images</a>
         </GalleryFilter>
-        <GalleryGrid images={page.data}>
-            <Pagination
-            lastPage={page.lastPage}
-            currentPage={page.currentPage}
-            basePath={basePath}
-        />
-        </GalleryGrid>
+        <GalleryGrid images={page.data} />
     </section>
 </BaseLayout>

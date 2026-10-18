@@ -1,11 +1,14 @@
 ---
 // Page numbers only; the Previous / Next arrows live in the nav (see the
-// archive pages' "subnav" slot).
+// archive pages' "subnav" slot). They sit at the right of the bar at the top
+// of an archive, near the arrows, where a visitor reaches for them.
 const { lastPage, currentPage, basePath = "/images/" } = Astro.props;
-// Only the pages either side are prefetched after load, not every number.
+// Only the pages either side are prefetched after load, not every number. A
+// single page has no numbers.
 ---
 
-<nav aria-label="Pagination" transition:name="pagination" class="flex flex-wrap justify-center h-auto max-w-none gap-x-6 mx-auto px-0">
+{lastPage > 1 && (
+<nav aria-label="Pagination" transition:name="pagination" class="flex flex-wrap items-center justify-end h-auto max-w-none gap-x-4 px-0 shrink-0 sm:h-(--bar-row) max-sm:justify-center max-sm:py-2">
     {
         Array.from({ length: lastPage }, (_, i) => i + 1).map((num) => (
             <span class="text-xs md:text-sm font-displayCon font-bold text-accent">
@@ -21,6 +24,7 @@ const { lastPage, currentPage, basePath = "/images/" } = Astro.props;
         ))
     }
 </nav>
+)}
 
 <style>
     @reference "../styles/global.css";

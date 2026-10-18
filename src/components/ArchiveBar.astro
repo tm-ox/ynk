@@ -1,0 +1,43 @@
+---
+// The bar at the top of the events archive, as the images archive's filter
+// bar (GalleryFilter.astro) is laid out: a label over a rule at the left, the
+// page numbers (slot) at the right, all in one --bar-row high row, so the two
+// archives' grids start at the same height.
+interface Props {
+    label: string;
+}
+const { label } = Astro.props;
+---
+
+<div class="archive-bar">
+    <div class="flex-1 min-w-0">
+        <p class="archive-label">{label}</p>
+        <hr />
+    </div>
+    <slot />
+</div>
+
+<style>
+    @reference "../styles/global.css";
+    .archive-bar {
+        @apply flex items-start w-full gap-6;
+    }
+    .archive-label {
+        @apply flex items-center mb-0 text-xs uppercase md:text-sm font-displayCon text-accent-muted max-sm:py-2 max-sm:text-base;
+    }
+    hr {
+        @apply mb-0;
+    }
+    @media (min-width: 40rem) {
+        .archive-label {
+            height: var(--bar-row);
+            line-height: 1;
+        }
+        .archive-bar > :global(nav) {
+            display: flex;
+            align-items: center;
+            height: var(--bar-row);
+            line-height: 1;
+        }
+    }
+</style>

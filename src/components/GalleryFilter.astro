@@ -135,9 +135,10 @@ const { events, current } = Astro.props;
             vertical-align: top;
             align-items: center;
         }
-        /* The slotted action (All images) sits in the same row, its text
-           centred like the select's, so the two read as one line. */
-        .gallery-filter > :global(a) {
+        /* The slotted pieces (the page numbers, All images) sit in the same
+           row, their text centred like the select's, so all read as one line. */
+        .gallery-filter > :global(a),
+        .gallery-filter > :global(nav) {
             display: flex;
             align-items: center;
             height: var(--bar-row);

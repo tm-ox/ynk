@@ -32,12 +32,9 @@ const events = await getGalleryEvents();
     </div>
     <section class="flex-col xl:h-section xl:min-h-0 xl:overflow-hidden">
         <h1 class="sr-only">Images</h1>
-        <GalleryFilter events={events} />
-        <GalleryGrid images={page.data}>
-            <Pagination
-            lastPage={page.lastPage}
-            currentPage={page.currentPage}
-        />
-        </GalleryGrid>
+        <GalleryFilter events={events}>
+            <Pagination lastPage={page.lastPage} currentPage={page.currentPage} />
+        </GalleryFilter>
+        <GalleryGrid images={page.data} />
     </section>
 </BaseLayout>
