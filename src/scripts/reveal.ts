@@ -1,6 +1,6 @@
 // Home panels wipe in as they arrive (sm and up; the CSS in global.css is gated
-// on prefers-reduced-motion, so this only toggles state). The hero is never
-// animated, and the panel in view on arrival is shown as is, so nothing fights
+// on prefers-reduced-motion, so this only toggles state). The hero takes part
+// like the rest; the panel in view on arrival is shown as is, so nothing fights
 // the page-to-page morphs.
 // State is derived from the track's scroll position on every scroll, so it does
 // not depend on the route taken: a panel is "in" once START of it is in view and
@@ -25,12 +25,11 @@ function arm() {
   if (!track || !wide.matches || !track.clientWidth) return;
 
   const panels = panelsOf(track);
-  const animated = panels.filter((s) => s.id !== "top");
 
   const update = () => {
     const w = track.clientWidth;
     if (!w) return;
-    for (const s of animated) {
+    for (const s of panels) {
       const offset = panels.indexOf(s) * w - track.scrollLeft;
       const visible = 1 - Math.abs(offset) / w;
       if (visible >= START) s.dataset.reveal = "in";
@@ -45,7 +44,7 @@ function arm() {
   // without a transition (no "out" state was ever applied to it).
   const w = track.clientWidth;
   const current = Math.round(track.scrollLeft / w);
-  animated.forEach((s) => {
+  panels.forEach((s) => {
     s.dataset.side = panels.indexOf(s) < current ? "left" : "right";
     if (panels.indexOf(s) !== current) s.dataset.reveal = "out";
   });

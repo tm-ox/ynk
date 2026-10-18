@@ -250,10 +250,10 @@
        reached (scripts/reveal.ts sets data-reveal in/out and data-side, the
        side of the screen an "out" panel waits on, so the edge enters from
        there). Without the script, or with reduced motion, panels are plain.
-       The hero is left alone. */
+       The hero takes part too. */
     @media (min-width: 40rem) and (prefers-reduced-motion: no-preference) {
         /* Positioned so the edge line (::after) can cover the panel. */
-        .home-track > section:not(#top) {
+        .home-track > section {
             position: relative;
         }
         /* The edge is a gradient the size of the panel, with its stop moved by
@@ -265,15 +265,15 @@
            huge tile this replaced, which left the 1px line unseen. The
            visible side is the one the panel arrives from the far side of:
            right-hand panels show what is right of the edge. */
-        .home-track > section:not(#top)[data-reveal],
-        .home-track > section:not(#top)[data-reveal][data-side="right"] {
+        .home-track > section[data-reveal],
+        .home-track > section[data-reveal][data-side="right"] {
             mask-image: linear-gradient(
                 var(--wipe-angle),
                 transparent calc(50% + var(--edge) * 0.848),
                 #000 calc(50% + var(--edge) * 0.848)
             );
         }
-        .home-track > section:not(#top)[data-reveal][data-side="left"] {
+        .home-track > section[data-reveal][data-side="left"] {
             mask-image: linear-gradient(
                 var(--wipe-angle),
                 #000 calc(50% + var(--edge) * 0.848),
@@ -282,17 +282,17 @@
         }
         /* Hidden, then in: the edge sweeps across the panel. Only "in" has a
            transition, so resetting to "out" is instant and unseen. */
-        .home-track > section:not(#top)[data-reveal="out"] {
+        .home-track > section[data-reveal="out"] {
             --edge: var(--wipe-reach);
         }
-        .home-track > section:not(#top)[data-reveal="out"][data-side="left"] {
+        .home-track > section[data-reveal="out"][data-side="left"] {
             --edge: calc(var(--wipe-reach) * -1);
         }
-        .home-track > section:not(#top)[data-reveal="in"] {
+        .home-track > section[data-reveal="in"] {
             --edge: calc(var(--wipe-reach) * -1);
             transition: --edge var(--panel-wipe-duration) var(--wipe-easing);
         }
-        .home-track > section:not(#top)[data-reveal="in"][data-side="left"] {
+        .home-track > section[data-reveal="in"][data-side="left"] {
             --edge: var(--wipe-reach);
         }
         /* The edge line. It is drawn on the panel itself, which the mask also
@@ -300,7 +300,7 @@
            half. So it is laid just inside the visible side instead (right of
            the edge for right-hand panels, left of it for left-hand ones). It
            inherits --edge, so it moves with exactly the mask's timing. */
-        .home-track > section:not(#top)[data-reveal]::after {
+        .home-track > section[data-reveal]::after {
             content: "";
             position: absolute;
             inset: 0;
@@ -314,7 +314,7 @@
                 transparent calc(50% + var(--edge) * 0.848 + var(--wipe-line))
             );
         }
-        .home-track > section:not(#top)[data-reveal][data-side="left"]::after {
+        .home-track > section[data-reveal][data-side="left"]::after {
             background-image: linear-gradient(
                 var(--wipe-angle),
                 transparent calc(50% + var(--edge) * 0.848 - var(--wipe-line)),
@@ -324,13 +324,13 @@
             );
         }
         /* Rules draw in from the left once the wipe is half done. */
-        .home-track > section:not(#top) hr {
+        .home-track > section hr {
             transform-origin: left;
         }
-        .home-track > section:not(#top)[data-reveal="out"] hr {
+        .home-track > section[data-reveal="out"] hr {
             scale: 0 1;
         }
-        .home-track > section:not(#top)[data-reveal="in"] hr {
+        .home-track > section[data-reveal="in"] hr {
             scale: 1 1;
             transition: scale 0.4s var(--wipe-easing) calc(var(--panel-wipe-duration) * 0.5);
         }
@@ -472,8 +472,8 @@ select:-webkit-autofill:focus {
     /* Thickness of the line that rides the home panels' wipe edge (0px turns
        it off). */
     --wipe-line: 1px;
-    /* The home panels' wipe, a little slower than paging's --wipe-duration. */
-    --panel-wipe-duration: 0.75s;
+    /* The home panels' wipe, a touch slower than paging's --wipe-duration. */
+    --panel-wipe-duration: 0.65s;
 }
 .vt-detail {
     view-transition-class: detail;
