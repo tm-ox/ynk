@@ -94,8 +94,10 @@ const dwell = { wide: 5, narrow: 7 };
 // The pointer parallax (fine pointers only): the most the pictures move
 // against the pointer, in px, and how much of the remaining distance they cover
 // per frame (lower is softer). `overscan` scales the pictures up so the shift
-// never shows an edge; the script clamps the shift to what it leaves.
-const parallax = { shift: 10, ease: 0.06, overscan: 1.02 };
+// never shows an edge; the script clamps the shift to what it leaves. `title`
+// is how far the headline moves the other way, toward the pointer, as a share
+// of the pictures' shift (0 holds it still).
+const parallax = { shift: 10, ease: 0.06, overscan: 1.02, title: 0.3 };
 ---
 
 <section id="top">
@@ -107,6 +109,7 @@ const parallax = { shift: 10, ease: 0.06, overscan: 1.02 };
         data-shift={parallax.shift}
         data-ease={parallax.ease}
         data-overscan={parallax.overscan}
+        data-title={parallax.title}
     >
         <!-- Two of these show at once: the current picture and, above it, the
              next, masked to the right of the seam. The rest wait (display:none)
@@ -293,6 +296,7 @@ const parallax = { shift: 10, ease: 0.06, overscan: 1.02 };
             const most = Number(stage.dataset.shift);
             const ease = Number(stage.dataset.ease);
             const spare = (Number(stage.dataset.overscan) - 1) / 2;
+            const title = Number(stage.dataset.title);
             const target = { x: 0, y: 0 };
             const now = { x: 0, y: 0 };
             const step = () => {
@@ -300,6 +304,8 @@ const parallax = { shift: 10, ease: 0.06, overscan: 1.02 };
                 now.y += (target.y - now.y) * ease;
                 stage.style.setProperty("--px", `${now.x.toFixed(2)}px`);
                 stage.style.setProperty("--py", `${now.y.toFixed(2)}px`);
+                stage.style.setProperty("--tx", `${(-now.x * title).toFixed(2)}px`);
+                stage.style.setProperty("--ty", `${(-now.y * title).toFixed(2)}px`);
                 const far = Math.abs(target.x - now.x) + Math.abs(target.y - now.y) > 0.05;
                 frame = far ? requestAnimationFrame(step) : 0;
             };
@@ -393,15 +399,15 @@ const parallax = { shift: 10, ease: 0.06, overscan: 1.02 };
         mask-size: 100% 100%;
         mask-repeat: no-repeat;
     }
-    /* A wash of the page background over the pictures, so the headline reads
-       over any photograph (darkening in the dark theme; in the light one,
-       where the headline is dark, it lightens). Tune --scrim. */
+    /* A dark wash over the pictures, so the light headline reads over any
+       photograph: the dark theme's background in both themes, so the pictures
+       look the same whichever is on. Tune --scrim. */
     .hero-scrim {
         --scrim: 0.4;
         position: absolute;
         inset: 0;
         z-index: 2;
-        background: rgb(var(--rgb-bg) / var(--scrim));
+        background: rgb(4 27 27 / var(--scrim));
     }
     /* The page turn's band: the line between two strips of page background,
        just behind the edge. */
@@ -469,24 +475,15 @@ const parallax = { shift: 10, ease: 0.06, overscan: 1.02 };
         }
     }
     @media (prefers-reduced-motion: no-preference) {
-        /* "Experimental" sways very slowly, the calm against the glitching word.
-           Movement only, no change of size or spacing, so it never reflows. */
-        .hero-lead {
-            animation: hero-sway 18s ease-in-out infinite alternate;
+        /* The headline drifts a few px toward the pointer as the pictures move
+           away from it (--tx, --ty, set by the script; see `parallax.title`).
+           Movement only, so it never reflows. */
+        .hero-title {
+            translate: var(--tx, 0px) var(--ty, 0px);
         }
         .hero-word {
             animation: hero-word var(--cycle) linear infinite both;
             animation-delay: calc(var(--i) * var(--step));
-        }
-    }
-    @keyframes hero-sway {
-        from {
-            translate: -0.07em 0;
-            rotate: -1.2deg;
-        }
-        to {
-            translate: 0.07em 0;
-            rotate: 1.2deg;
         }
     }
     .hero-next {

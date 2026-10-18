@@ -148,11 +148,12 @@ const label = "mb-0 text-xs font-bold tracking-normal uppercase md:text-sm font-
   /* Theme choices share the row equally; the chosen one carries a tint. */
   .settings-choice span {
     display: block;
-    padding: 0.875rem 0 0.625rem;
+    padding: 0.625rem 0 0.875rem;
     text-align: center;
     text-transform: uppercase;
     font-size: 0.875rem;
-    /* A little more room above than below optically centres the capitals. */
+    /* The line box keeps room above the capitals, so less padding above than
+       below centres them in the row. */
     line-height: 1;
     cursor: pointer;
     color: var(--color-accent-muted);
