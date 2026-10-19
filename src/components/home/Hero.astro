@@ -12,23 +12,48 @@ import { Icon } from "astro-icon/components";
 // up to `most`. The script below keeps the first two in place (the first is the
 // eager one; the second is the next, shown and loading from the start) and
 // shuffles the rest on every visit.
-const pick = { preferred: 1600, fallback: 1200, enough: 6, most: 10 };
-// Photographs never to use here, by file name (without the extension) as in
-// src/content/images; the event's next one that qualifies takes its place.
-const skip = ["ynk51-01", "ynk51-02", "ynk51-03", "ynk51-04", "ynk51-05"];
-const skipped = (src: ImageMetadata) =>
-    skip.some((name) =>
-        new RegExp(`/${name}(\\.[^/]*)?\\.[a-z]+(\\?|$)`, "i").test(src.src),
-    );
+const pick = { preferred: 1600, fallback: 1200, enough: 6, most: 20 };
+// The photograph to use for an event instead of its first that qualifies:
+// event id (the frontmatter `id`, e.g. "ynk51") to the photograph's file name
+// (without the extension) as in src/content/images, which must be one of that
+// event's own images. It is used as is, whatever its size or shape; the event
+// still takes part in the pick as usual.
+const override: Record<string, string> = {
+    ynk51: "ynk51-06",
+    ynk46: "ynk46-02",
+    ynkprepp2025: "ynkprepp2025-06",
+    ynd05: "ynd05-09",
+    "pp2024-3": "pp2024-3-76",
+    "pp2024-2": "pp2024-2-30",
+    "pp2024-1": "pp2024-1-73",
+    ynd02: "ynd02-02",
+    "pp2023-2": "pp2023-2-10",
+    "pp2023-1": "pp2023-1-15",
+};
+const named = (src: ImageMetadata, name: string) =>
+    new RegExp(`/${name}(\\.[^/]*)?\\.[a-z]+(\\?|$)`, "i").test(src.src);
 
 type Candidate = { src: ImageMetadata; date: string };
 const events = await getCollection("events");
+for (const [id, name] of Object.entries(override)) {
+    const event = events.find((e) => e.data.id === id);
+    if (!event?.data.images?.some((img) => img?.src && named(img.src, name)))
+        throw new Error(
+            `Hero.astro: override "${id}: ${name}" matches no image of that event.`,
+        );
+}
 const candidates = (minWidth: number): Candidate[] =>
     events.flatMap((event) => {
+        const chosen = override[event.data.id];
+        if (chosen) {
+            const own = event.data.images?.find(
+                (img) => img?.src && named(img.src, chosen),
+            );
+            return own?.src ? [{ src: own.src, date: event.data.date }] : [];
+        }
         const photo = (event.data.images ?? []).find(
             (img) =>
                 img?.src &&
-                !skipped(img.src) &&
                 img.src.width > img.src.height &&
                 img.src.width >= minWidth,
         );
@@ -584,6 +609,10 @@ const parallax = { shift: 10, ease: 0.06, overscan: 1.02, title: 0.3 };
     .hero-word {
         grid-area: 1 / 1;
         min-width: 0;
+        /* Raised a touch from the line's baseline; `top`, not `translate`,
+           which the glitch keyframes own. */
+        position: relative;
+        top: -1px;
         opacity: 0;
     }
     .hero-word:last-child {
