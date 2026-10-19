@@ -1,13 +1,14 @@
 // A sideways swipe steps as the arrow keys and the wheel do (scripts/step.ts):
 // Previous / Next where the page has them, past them the neighbouring screen
 // of the row. Swipe left goes on (Next), swipe right goes back. The step runs
-// on release, so the page turn is the same seam as a tap on the arrows; the
-// page does not follow the finger.
+// as soon as the finger has travelled far enough, without waiting for it to
+// lift, so the page turn is the same seam as a tap on the arrows; the page does
+// not follow the finger.
 import { stepFor } from "./step";
 import { PAGING } from "../utils/transitions";
 
 /** How far (px) a finger must travel sideways to count as a swipe. */
-const DISTANCE = 60;
+const DISTANCE = 48;
 /** How much more sideways than vertical it must be (a scroll is not a swipe). */
 const SLOPE = 1.5;
 /** Longer than this (ms) is a drag or a read, not a swipe. */
@@ -51,26 +52,24 @@ document.addEventListener(
   },
   { passive: true },
 );
-// A second finger (a pinch) cancels it.
+// A second finger (a pinch) cancels it. Once the finger has gone far enough,
+// sideways enough and quickly enough, that is the swipe: it steps there and
+// then, and the rest of the touch is spent.
 document.addEventListener(
   "touchmove",
   (e) => {
     if (e.touches.length > 1) start = null;
-  },
-  { passive: true },
-);
-document.addEventListener("touchcancel", () => (start = null), { passive: true });
-document.addEventListener(
-  "touchend",
-  (e) => {
     const s = start;
-    start = null;
-    if (!s || e.changedTouches.length !== 1) return;
-    const t = e.changedTouches[0];
+    if (!s) return;
+    const t = e.touches[0];
     const dx = t.clientX - s.x;
     const dy = t.clientY - s.y;
+    if (e.timeStamp - s.t > TIME) {
+      start = null;
+      return;
+    }
     if (Math.abs(dx) < DISTANCE || Math.abs(dx) < Math.abs(dy) * SLOPE) return;
-    if (e.timeStamp - s.t > TIME) return;
+    start = null;
     // One step per swipe, and none while the last one is still turning.
     if (e.timeStamp < lockUntil) return;
     const step = stepFor(dx < 0 ? 1 : -1);
@@ -80,3 +79,5 @@ document.addEventListener(
   },
   { passive: true },
 );
+document.addEventListener("touchcancel", () => (start = null), { passive: true });
+document.addEventListener("touchend", () => (start = null), { passive: true });

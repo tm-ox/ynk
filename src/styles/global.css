@@ -647,7 +647,7 @@ select:-webkit-autofill:focus {
     --wipe-line: 1px;
     /* How long the seam takes to cross the screen (it runs on its own clock,
        not the slide's). */
-    --seam-duration: 0.75s;
+    --seam-duration: 0.55s;
 }
 /* A picture that travels between a grid and its page (a flyer or a
    photograph) lands on its own timing, above everything else, in the morph
@@ -909,7 +909,7 @@ html[data-astro-transition^="paging"]::view-transition-new(gallery-bar):only-chi
     /* With the pages overlapping there is no gap to wait out, so a page turn's
        seam starts at once and gets going quickly. */
     --page-seam-delay: 0s;
-    --page-seam-easing: cubic-bezier(0.3, 0, 0.2, 1);
+    --page-seam-easing: cubic-bezier(0.2, 0, 0.1, 1);
     --page-slide-duration: calc(var(--page-seam-delay) + var(--seam-duration));
     --page-slide-easing: cubic-bezier(0.22, 0.61, 0.36, 1);
     /* How far past each side of the screen the seam starts and ends: the
