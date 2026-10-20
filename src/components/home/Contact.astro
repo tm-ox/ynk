@@ -1,5 +1,6 @@
 ---
 import SectionBar from "./SectionBar.astro";
+import Sosmed from "../Sosmed.astro";
 
 const field =
     "w-full px-2 py-2 text-base font-light tracking-wide border-0 rounded-none bg-accent-muted/10 font-body text-fg focus:bg-accent-muted/20 focus:outline focus:outline-1 focus:-outline-offset-1 focus:outline-accent-muted [&:not(:placeholder-shown)]:bg-transparent!";
@@ -19,7 +20,11 @@ const label = "text-xs uppercase font-displayCon md:text-sm text-accent-muted";
             </span>
         </p>
         <!-- Netlify Forms: detected at build, spam-filtered, forwarded to the
-             notification address set in the Netlify dashboard. The honeypot
+             notification address set in the Netlify dashboard, with the
+             Subject field's value (Netlify's `subject` field) as the email's
+             subject line, which the script below prefixes ("YNK Web
+             Inquiry:"); data-remove-prefix drops Netlify's own "[Netlify]".
+             Without JS it posts as typed. The honeypot
              field is hidden from people and filled in by bots. -->
         <form
             name="contact"
@@ -69,6 +74,22 @@ const label = "text-xs uppercase font-displayCon md:text-sm text-accent-muted";
             </div>
             <div class="flex flex-col">
                 <hr class="mt-0" />
+                <label for="contact-subject" class={label}>
+                    Subject
+                </label>
+                <hr class="mb-0" />
+                <input
+                    id="contact-subject"
+                    name="subject"
+                    type="text" placeholder=" "
+                    maxlength="120"
+                    autocomplete="off"
+                    data-remove-prefix
+                    class={field}
+                />
+            </div>
+            <div class="flex flex-col">
+                <hr class="mt-0" />
                 <label for="contact-message" class={label}>
                     Message
                 </label>
@@ -89,6 +110,13 @@ const label = "text-xs uppercase font-displayCon md:text-sm text-accent-muted";
             </button>
             <p class="mt-2 mb-0 text-xs md:text-sm" role="status" aria-live="polite" data-contact-status></p>
         </form>
+    </div>
+    <!-- Phones only (from sm the icons are in the header): the social icons
+         as the menu has them, centred across and halfway down the space
+         between the form and the screen's foot (at least 2.5rem each side),
+         so they are not found only in the menu. -->
+    <div class="flex items-center justify-center flex-1 py-10 sm:hidden">
+        <Sosmed />
     </div>
 </section>
 
@@ -113,6 +141,12 @@ const label = "text-xs uppercase font-displayCon md:text-sm text-accent-muted";
             const body = new URLSearchParams(
                 new FormData(form) as unknown as Record<string, string>,
             );
+            // The email's subject line (Netlify uses the form's `subject`):
+            // marked as from the site, then what they wrote or, if nothing,
+            // their name, so the inbox shows who it is from.
+            const typed = String(body.get("subject") ?? "").trim();
+            const who = String(body.get("name") ?? "").trim();
+            body.set("subject", `YNK Web Inquiry: ${typed || who}`);
             const res = await fetch(form.action, {
                 method: "POST",
                 headers: {
