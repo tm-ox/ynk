@@ -816,6 +816,11 @@ const parallax = { shift: 10, ease: 0.06, overscan: 1.02, title: 0.3 };
     /* The arrows are the site's own icon (as the big arrow), drawn with a
        lighter stroke (the icon's own is 48) to sit with the lettering; raise
        width/height to make them larger. */
+    /* Two arrows side by side carry the empty margin inside each icon on top
+       of the key padding, so the pair is drawn a little closer. */
+    .hero-key:has(.hero-key-icon) + .hero-key:has(.hero-key-icon) {
+        margin-left: calc(var(--key) * -0.1);
+    }
     .hero-key-icon {
         width: calc(var(--key) * 0.625);
         height: calc(var(--key) * 0.625);
