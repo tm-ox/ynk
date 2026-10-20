@@ -252,6 +252,7 @@ const parallax = { shift: 10, ease: 0.06, overscan: 1.02, title: 0.3 };
                 <kbd class="hero-key"><Icon name="ion:arrow-back-sharp" class="hero-key-icon" /></kbd><kbd class="hero-key"><Icon name="ion:arrow-forward-sharp" class="hero-key-icon" /></kbd>
                 <kbd class="hero-key">h</kbd><kbd class="hero-key">l</kbd>
                 <kbd class="hero-key hero-key-word">scroll</kbd>
+                <kbd class="hero-key">?</kbd>
             </span>
             <kbd class="hero-key hero-key-word hero-hint-touch">swipe</kbd>
         </p>
@@ -779,8 +780,8 @@ const parallax = { shift: 10, ease: 0.06, overscan: 1.02, title: 0.3 };
            the slash looks the label's. */
         margin-left: calc(var(--key-pad) * -1 - var(--key) * 0.094 + var(--slash-room));
         /* The last key's side padding and its trailing letter-spacing are
-           taken back at the right, so the rules end flush with the L of
-           scroll. */
+           taken back at the right, so the rules end flush with the last key
+           (the ?). */
         margin-right: calc(var(--key-pad) * -1 - 0.08em);
     }
     /* Keys outlined in the primary colour, lettering the same. Every key is the same height and takes its own
