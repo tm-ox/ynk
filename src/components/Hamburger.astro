@@ -17,6 +17,20 @@
     .hamburger:hover .line {
         @apply bg-accent;
     }
+    /* Open (the script sets aria-expanded): the two bars cross into an X. Each
+       moves half the distance between their centres (5px bar + 7px gap = 12px,
+       so 6px) to meet in the middle, then turns 45 degrees. */
+    .hamburger[aria-expanded="true"] .line {
+        @apply bg-accent;
+    }
+    .hamburger[aria-expanded="true"] .line:first-child {
+        translate: 0 6px;
+        rotate: 45deg;
+    }
+    .hamburger[aria-expanded="true"] .line:last-child {
+        translate: 0 -6px;
+        rotate: -45deg;
+    }
 </style>
 
 <script>
