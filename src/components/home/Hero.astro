@@ -230,16 +230,31 @@ const parallax = { shift: 10, ease: 0.06, overscan: 1.02, title: 0.3 };
         </h1>
         <!-- Out of the grid flow altogether (absolute), vertically centred on the
              stage at its right edge, so it cannot move the headline; on
-             narrow stages centred in the grid's third row instead. Size and inset: see .hero-next in the
+             narrow stages centred in the grid's third row instead. Size and inset: see .hero-nav in the
              styles. -->
-        <a
-            href="/featured/"
-            target="_self"
-            aria-label="Next section"
-            class="absolute hero-next"
-        >
-            <Icon name="ion:arrow-forward-sharp" class="icon hero-next-icon" />
-        </a>
+        <div class="absolute hero-nav">
+            <a
+                href="/featured/"
+                target="_self"
+                aria-label="Next section"
+                class="hero-next"
+            >
+                <Icon name="ion:arrow-forward-sharp" class="icon hero-next-icon" />
+            </a>
+        </div>
+        <!-- How the site moves on, for those who would not guess, in one row
+             along the stage's foot: keys and the wheel with a pointer, a swipe
+             on a touch screen (the same split as Settings). -->
+        <p class="absolute hero-hint" aria-hidden="true">
+            <span class="hero-hint-label">Navigate</span>
+            <span class="hero-hint-slash"></span>
+            <span class="hero-hint-keys">
+                <kbd class="hero-key"><Icon name="ion:arrow-back-sharp" class="hero-key-icon" /></kbd><kbd class="hero-key"><Icon name="ion:arrow-forward-sharp" class="hero-key-icon" /></kbd>
+                <kbd class="hero-key">h</kbd><kbd class="hero-key">l</kbd>
+                <kbd class="hero-key hero-key-word">scroll</kbd>
+            </span>
+            <kbd class="hero-key hero-key-word hero-hint-touch">swipe</kbd>
+        </p>
     </div>
 </section>
 
@@ -638,31 +653,198 @@ const parallax = { shift: 10, ease: 0.06, overscan: 1.02, title: 0.3 };
             animation-delay: calc(var(--i) * var(--step));
         }
     }
-    .hero-next {
+    .hero-nav {
         --next-size: clamp(3.5rem, 9cqw, 8rem);
         /* Raise --next-inset to bring the arrow back in from the edge. */
         --next-inset: 0px;
         right: var(--next-inset);
         top: 50%;
         translate: 0 -50%;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-end;
     }
     /* Narrow stages: the headline runs the full width, so the arrow leaves
        the middle of the right edge for the grid's third row, centred in it:
        halfway between the headline's foot and the stage's. In the flow there
-       (relative, so it stays over the pictures), at the right edge, with less
-       of its point cut off (--next-crop: only the tip). */
+       (relative, so it stays over the pictures), at the right edge, with a little
+       less of its point cut off than on wide stages (--next-crop 0.08 to 0.1);
+       the crop is a share of the arrow's size, so it follows the larger arrow. */
     @container (max-width: 48rem) {
-        .hero-next {
+        .hero-nav {
+            /* The arrow's drawn head is about 0.63 of its box tall; the
+               headline's capitals (15cqw type, 0.72em tall) are about 10.8cqw,
+               which 17cqw would match. Doubled (34cqw, capped at 8rem), so the
+               arrow leads over the hint beneath it. */
+            --next-size: clamp(3.5rem, 34cqw, 8rem);
+            /* Between the headline's foot and the hint's top, not the stage's
+               foot: the margin is what the hint takes from the foot (its
+               inset, 0.75rem, its key height, 1.25rem, two rule gaps,
+               0.25rem, and the two 1px rules; see .hero-hint below). The box
+               fills that space and the arrow sits in it a third of the way
+               down: the spare space is shared 1 above to 2 below (the
+               pseudo-elements), so the arrow rides high, nearer the headline. */
+            margin-bottom: calc(0.75rem + 1.25rem + 0.25rem + 2px);
             position: relative;
             grid-row: 3;
             justify-self: end;
-            align-self: center;
+            align-self: stretch;
             top: auto;
             translate: none;
         }
+        .hero-nav::before,
+        .hero-nav::after {
+            content: "";
+            flex: 1 1 0;
+        }
+        .hero-nav::after {
+            flex-grow: 2;
+        }
         /* (Two classes: outranks the rule below, which sets the default.) */
         .hero-next .hero-next-icon {
-            --next-crop: 0.04;
+            --next-crop: 0.08;
+        }
+    }
+    /* The navigation hint: one row along the stage's foot, at the right. Tune
+       --hint-inset (from the right edge and the foot). */
+    .hero-hint {
+        --hint-inset: 1rem;
+        /* The keys' size (and the lettering with it); smaller on narrow
+           stages, below. --key-pad is the space either side of each key's
+           ink: the keys take their own widths (an l is narrower than an h),
+           so the gaps between what is drawn are the same all along. */
+        --key: 1.5rem;
+        --key-pad: calc(var(--key) * 0.25);
+        /* Extra space between the slash and the first key: the slash leans
+           toward the keys at its top, so level gaps look tight there. */
+        --slash-room: calc(var(--key) * 0.25);
+        /* Right to the stage's edge, so the top rule runs out to the picture's
+           edge; the padding keeps the keys where the inset had them (the
+           narrow rule below puts both back). */
+        right: 0;
+        padding-right: var(--hint-inset);
+        /* On the stage's foot, whose edge is its bottom rule (the narrow
+           rule below lifts it clear, with its own). */
+        bottom: 0;
+        margin: 0;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        pointer-events: none;
+        color: var(--color-accent);
+        font-family: var(--font-displayCon);
+        font-size: calc(var(--key) * 0.5);
+        font-weight: 800;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        text-shadow: 0 0 0.4rem rgb(0 0 0 / 0.7);
+    }
+    /* Ruled above (1px, the primary colour) and, on narrow stages, below (on
+       wide ones the stage's foot is the rule), with a slash at the
+       logo's angle (as the header's dividers) between the label and the keys,
+       reaching from rule to rule. */
+    .hero-hint {
+        /* Half a spacing step (0.125rem, 2px), as p-0.5 elsewhere and the page
+           turn's --page-halo; the next step up is 0.25rem (gap-1). */
+        --rule-gap: calc(var(--spacing) * 0.5);
+        padding-block: var(--rule-gap);
+        border-top: 1px solid var(--color-accent);
+    }
+    .hero-hint-slash {
+        align-self: stretch;
+        width: var(--slash-weight);
+        margin-block: calc(var(--rule-gap) * -1);
+        background: var(--color-accent);
+        transform: skewX(-32deg);
+    }
+    /* Same height and line-height as the keys, so its lettering is centred on
+       theirs. Lighter than they are. */
+    .hero-hint-label {
+        display: inline-flex;
+        align-items: center;
+        height: var(--key);
+        line-height: 1;
+        font-weight: 400;
+        /* Room before the slash, the same as after it. */
+        margin-right: var(--slash-room);
+        /* Dropped a little to sit level with the keys' lettering. */
+        position: relative;
+        top: 2px;
+    }
+    .hero-hint-keys {
+        display: inline-flex;
+        gap: 0;
+        /* The first key's side padding and the empty margin inside its arrow
+           (about 0.15 of the icon's width) are taken back, so the space after
+           the slash looks the label's. */
+        margin-left: calc(var(--key-pad) * -1 - var(--key) * 0.094 + var(--slash-room));
+        /* The last key's side padding and its trailing letter-spacing are
+           taken back at the right, so the rules end flush with the L of
+           scroll. */
+        margin-right: calc(var(--key-pad) * -1 - 0.08em);
+    }
+    /* Keys outlined in the primary colour, lettering the same. Every key is the same height and takes its own
+       width, with --key-pad either side. */
+    .hero-key {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        height: var(--key);
+        flex: none;
+        padding: 0 var(--key-pad);
+        box-sizing: border-box;
+        /* Boxes tried and dropped as too dominant; to bring them back:
+           border: 1px solid var(--color-accent);
+           background: rgb(0 0 0 / 0.25); */
+        color: var(--color-accent);
+        font-family: var(--font-displayCon);
+        font-size: calc(var(--key) * 0.5);
+        font-weight: 400;
+        line-height: 1;
+        text-transform: none;
+    }
+    /* The lettering sits high in its box (the font's line box is not centred
+       on its capitals), so letters and words are pushed down a little; the
+       arrow icons are already centred. Tune the padding. */
+    .hero-key:not(:has(.hero-key-icon)) {
+        padding-top: 0.125rem;
+    }
+    .hero-key-word {
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+    }
+    /* The arrows are the site's own icon (as the big arrow), drawn with a
+       lighter stroke (the icon's own is 48) to sit with the lettering; raise
+       width/height to make them larger. */
+    .hero-key-icon {
+        width: calc(var(--key) * 0.625);
+        height: calc(var(--key) * 0.625);
+    }
+    .hero-key-icon :global(path) {
+        stroke-width: 36;
+    }
+    /* Narrow stages: a smaller, quieter hint. Lower --key to shrink it more. */
+    @container (max-width: 48rem) {
+        .hero-hint {
+            --hint-inset: 0.75rem;
+            --key: 1.25rem;
+            bottom: var(--hint-inset);
+            border-bottom: 1px solid var(--color-accent);
+        }
+    }
+    .hero-hint-touch {
+        display: none;
+    }
+    @media (hover: none) and (pointer: coarse) {
+        .hero-hint-keys {
+            display: none;
+        }
+        .hero-hint-touch {
+            display: inline-flex;
+            /* Its own side padding is taken back after the slash, as the
+               keys' margin is on a pointer screen. */
+            margin-left: calc(var(--key-pad) * -1 + var(--slash-room));
+            margin-right: calc(var(--key-pad) * -1 - 0.08em);
         }
     }
     .hero-next:focus-visible {
