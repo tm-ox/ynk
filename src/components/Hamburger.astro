@@ -1,34 +1,50 @@
 <button
     type="button"
-    class="z-(--z-overlay) ml-auto cursor-pointer hamburger py-3.5 -my-3.5 sm:hidden sm:ml-0"
+    class="z-(--z-overlay) cursor-pointer hamburger py-3.5 -my-3.5 sm:hidden"
     aria-label="Menu"
     aria-expanded="false"
     aria-controls="main-nav"
 >
-    <span class="mb-[7px] line"></span>
+    <span class="line"></span>
     <span class="line"></span>
 </button>
 
 <style>
     @reference "../styles/global.css";
+    /* The bars are the logo's equals sign, same size and on the same line.
+       The logo (Logo.astro) is a 569 x 488 drawing in an svg whose width and
+       height attributes are 500 x 488, so at --logo-h tall it is drawn
+       --logo-h * 500 / 488 wide (scale --k per drawing unit, centred in its
+       box); its two bars are 569 wide and 98.5 thick with 100.5 between.
+       Measured, not guessed: 32.78 wide, bars 5.7px, gap 5.8px at 2rem. */
+    .hamburger {
+        --k: calc(var(--logo-h) * 500 / (488 * 569));
+        --bar: calc(var(--k) * 98.5);
+        --bar-gap: calc(var(--k) * 100.5);
+    }
     .hamburger .line {
-        @apply block w-8 h-[5px] bg-accent-muted transition;
+        @apply block bg-accent-muted transition;
+        width: calc(var(--k) * 569);
+        height: var(--bar);
+    }
+    .hamburger .line:first-child {
+        margin-bottom: var(--bar-gap);
     }
     .hamburger:hover .line {
         @apply bg-accent;
     }
     /* Open (the script sets aria-expanded): the two bars cross into an X. Each
-       moves half the distance between their centres (5px bar + 7px gap = 12px,
-       so 6px) to meet in the middle, then turns 45 degrees. */
+       moves half the distance between their centres (a bar plus the gap) to
+       meet in the middle, then turns 45 degrees. */
     .hamburger[aria-expanded="true"] .line {
         @apply bg-accent;
     }
     .hamburger[aria-expanded="true"] .line:first-child {
-        translate: 0 6px;
+        translate: 0 calc((var(--bar) + var(--bar-gap)) / 2);
         rotate: 45deg;
     }
     .hamburger[aria-expanded="true"] .line:last-child {
-        translate: 0 -6px;
+        translate: 0 calc((var(--bar) + var(--bar-gap)) / -2);
         rotate: -45deg;
     }
 </style>

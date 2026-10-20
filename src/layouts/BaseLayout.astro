@@ -44,6 +44,10 @@ const links = ROW.map((s, i) => ({
 
 <Base title={title} description={description} image={image} jsonLd={jsonLd} bleed={bleed}>
     <div slot="nav" class="flex items-center justify-center w-full">
+        <!-- Phones only (the logo shows the name in words from lg): the name
+             centred between the logo and the menu button, whose own auto
+             margin is gone so the two gaps are equal. -->
+        <span aria-hidden="true" class="relative mx-auto text-base font-extrabold tracking-wider uppercase sm:hidden font-display top-[1px] -left-[5px] whitespace-nowrap text-accent">Yes No Klub</span>
         <Hamburger />
         <div
             id="main-nav"
