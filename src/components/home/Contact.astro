@@ -22,8 +22,8 @@ const label = "text-xs uppercase font-displayCon md:text-sm text-accent-muted";
         <!-- Netlify Forms: detected at build, spam-filtered, forwarded to the
              notification address set in the Netlify dashboard, with the
              Subject field's value (Netlify's `subject` field) as the email's
-             subject line, which the script below prefixes ("YNK Web
-             Inquiry:"); data-remove-prefix drops Netlify's own "[Netlify]".
+             subject line, which the script below prefixes ("YNK
+             Web:"); data-remove-prefix drops Netlify's own "[Netlify]".
              Without JS it posts as typed. The honeypot
              field is hidden from people and filled in by bots. -->
         <form
@@ -146,7 +146,7 @@ const label = "text-xs uppercase font-displayCon md:text-sm text-accent-muted";
             // their name, so the inbox shows who it is from.
             const typed = String(body.get("subject") ?? "").trim();
             const who = String(body.get("name") ?? "").trim();
-            body.set("subject", `YNK Web Inquiry: ${typed || who}`);
+            body.set("subject", `YNK Web: ${typed || who}`);
             const res = await fetch(form.action, {
                 method: "POST",
                 headers: {
