@@ -33,13 +33,25 @@ const { prev, next, close, iconClass } = Astro.props;
        places do not move; the gap widens to keep the targets apart. */
     @media (width < 48rem) {
         .paging {
-            --hit: 2.5rem;
-            --hit-pad: calc((var(--hit) - 1.75rem) / 2);
+            --hit: 2.75rem;
+            --icon: 1.75rem;
+            --hit-pad: calc((var(--hit) - var(--icon)) / 2);
             gap: calc(var(--hit-pad) * 2);
         }
         .paging > :global(*) {
             padding: var(--hit-pad);
             margin: calc(var(--hit-pad) * -1);
+        }
+    }
+    /* Phones: the bar's title row is --bar-top (2.75rem) high, so the arrows
+       can be larger inside it; the target is the row's height. */
+    @media (width < 40rem) {
+        .paging {
+            --icon: 2rem;
+        }
+        .paging :global(svg) {
+            width: var(--icon);
+            height: var(--icon);
         }
     }
 </style>

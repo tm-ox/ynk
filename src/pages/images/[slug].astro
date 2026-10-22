@@ -2,7 +2,7 @@
 import { Image, getImage } from "astro:assets";
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import ImageInfo from "../../components/ImageInfo.astro";
-import { getGalleryImages } from "../../utils/events";
+import { getGalleryImages, groupSlug } from "../../utils/events";
 
 export async function getStaticPaths() {
   const images = await getGalleryImages();
@@ -25,6 +25,10 @@ const pageTitle = image.kind === "flyer"
   : position
   ? `${image.alt} – photo ${position.n} of ${position.of}`
   : `${image.alt} – photo`;
+// Phones: a landscape picture (wide enough to fit edge to edge in the room
+// there is) runs out into the gutters; a taller one (a flyer, a portrait
+// photograph) keeps to the content's width.
+const wide = image.src.width / image.src.height >= 1.3;
 const positionLabel = image.kind === "flyer" ? "Flyer" : position ? `${position.n} of ${position.of}` : undefined;
 // The neighbours' pictures, prefetched with the same options the neighbour
 // page renders them with, so the hashed URLs match.
@@ -49,7 +53,21 @@ const neighbourPictures = await Promise.all(
       prev={prevImage ? `/images/${prevImage.id}/` : undefined}
       next={nextImage ? `/images/${nextImage.id}/` : undefined}
     />
-    <div class="grid w-full flex-1 min-h-0 mt-bar-gap sm:mt-3 place-items-center [container-type:size]">
+    {/* Phones: the position and the Event images link (a touch target of its
+        own) are a row under the strip, and the picture starts just under it,
+        so both stay in the same place from the flyer to every photograph
+        (whatever the strip holds, they follow it down). From sm up the row is
+        in the info strip and the picture is centred in its box. */}
+    <div class="sm:hidden flex w-full items-center justify-between shrink-0 text-xs uppercase font-displayCon text-accent-muted">
+      <span>{positionLabel}</span>
+      <a href={`/images/event/${groupSlug(image.event.title)}/`} class="section-action flex items-center h-11">Event images</a>
+    </div>
+    <div
+      class:list={[
+        "grid w-full flex-1 min-h-0 sm:mt-3 place-items-center [container-type:size] max-sm:items-start",
+        wide && "max-sm:-mx-gutter max-sm:w-[calc(100%+2*var(--spacing-gutter))]",
+      ]}
+    >
       <Image
         src={image.src}
         alt={image.description}
@@ -60,5 +78,19 @@ const neighbourPictures = await Promise.all(
         transition:name={image.id}
       />
     </div>
+    {
+      image.kind === "photo" && image.event.photographer && (
+        <p class="md:hidden w-full mt-auto pt-2 mb-0 shrink-0 text-xs text-center uppercase font-displayCon text-accent">
+          Images:{" "}
+          {image.event.photographer.url ? (
+            <a href={image.event.photographer.url} target="_blank" rel="noopener noreferrer" class="text-accent hover:text-accent-hover">
+              {image.event.photographer.name}
+            </a>
+          ) : (
+            image.event.photographer.name
+          )}
+        </p>
+      )
+    }
   </section>
 </BaseLayout>

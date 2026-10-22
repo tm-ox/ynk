@@ -375,6 +375,20 @@
     }
 }
 
+/* The bar's top row (a screen's title, with the arrows and Close or what leads
+   off at its right) is --bar-row high from sm up. On phones it is taller, so
+   the arrows' touch targets (Paging.astro) fit inside it; every screen's
+   title is centred in it, so the titles stay level from screen to screen. The
+   rows under it (the filter's dropdown, the page numbers) stay --bar-row. */
+:root {
+    --bar-top: var(--bar-row);
+}
+@media (width < 40rem) {
+    :root {
+        --bar-top: calc(var(--spacing) * 11);
+    }
+}
+
 @layer components {
     .icon {
         @apply z-(--z-overlay) text-4xl transition cursor-pointer w-7 h-7 text-accent-muted border-border bg-none hover:text-accent;
@@ -583,7 +597,7 @@
         @apply shrink-0 mb-0 text-xs font-bold text-left uppercase md:text-sm font-displayCon;
         display: flex;
         align-items: center;
-        height: var(--bar-row);
+        height: var(--bar-top);
         line-height: 1;
     }
     .section-action {

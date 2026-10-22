@@ -12,6 +12,9 @@ interface Props {
 }
 const { image, position, prev, next } = Astro.props;
 const { event } = image;
+// A venue written "Place - Venue" is two lines on phones (the " - " drops out),
+// one line with the dash from sm up.
+const venueParts = event.venue?.name?.split(" - ") ?? [];
 ---
 
 <!-- Info strip for a single picture. It takes the place of the gallery filter
@@ -21,28 +24,43 @@ const { event } = image;
      the other; keep the two in step. On phones it wraps in rows --bar-row
      apart: the title and the arrows first, as on the bars, then the rest.
      Below lg it holds under the header rule should the page scroll
-     (detail-sticky, global.css). Credits for who is in the photograph can
-     join it later. -->
+     (detail-sticky, global.css). The photographer's credit is here from md up;
+     below it the position and the Event images link, and the credit, are
+     round the picture instead (images/[slug].astro). -->
 <div class="w-full image-info max-lg:detail-sticky" transition:name="gallery-bar">
     <div class="flex flex-wrap items-center w-full gap-x-6 text-xs uppercase font-displayCon md:text-sm max-sm:leading-(--bar-row) max-sm:text-base sm:flex-nowrap sm:h-(--bar-row) sm:leading-none">
-        <h1 class="min-w-0 m-0 text-xs font-bold leading-[inherit] truncate md:text-sm max-sm:text-base max-sm:flex-1 text-accent">
+        <h1 class="min-w-0 m-0 text-xs font-bold leading-[inherit] truncate md:text-sm max-sm:text-base max-sm:leading-(--bar-top) max-sm:flex-1 text-accent">
             <a href={`/events/${event.id}/`} title={event.title} class="hover:text-accent-hover">{event.title}</a>
         </h1>
         <span class="text-accent-muted shrink-0 max-sm:order-3">{event.date}</span>
         {
             event.venue?.name && (
-                <span class="min-w-0 truncate text-accent-muted max-sm:order-3">
+                <span class="min-w-0 truncate text-accent-muted max-sm:order-3 max-sm:basis-full max-sm:overflow-visible max-sm:whitespace-normal max-sm:leading-tight max-sm:py-1">
                     {event.venue.url ? (
                         <a href={event.venue.url} title={event.venue.name} target="_blank" rel="noopener noreferrer" class="hover:text-accent">
-                            {event.venue.name}
+                            {venueParts.map((part, i) => (<>{i > 0 && (<><span class="max-sm:hidden"> - </span><br class="sm:hidden" /></>)}{part}</>))}
                         </a>
                     ) : (
-                        event.venue.name
+                        venueParts.map((part, i) => (<>{i > 0 && (<><span class="max-sm:hidden"> - </span><br class="sm:hidden" /></>)}{part}</>))
                     )}
                 </span>
             )
         }
-        <span class="flex items-baseline gap-6 ml-auto shrink-0 max-sm:order-3">
+        <span class="flex items-baseline gap-6 ml-auto shrink-0 max-sm:hidden">
+            {
+                image.kind === "photo" && event.photographer && (
+                    <span class="text-accent-muted max-md:hidden">
+                        Images:{" "}
+                        {event.photographer.url ? (
+                            <a href={event.photographer.url} target="_blank" rel="noopener noreferrer" class="hover:text-accent">
+                                {event.photographer.name}
+                            </a>
+                        ) : (
+                            event.photographer.name
+                        )}
+                    </span>
+                )
+            }
             {position && <span class="text-accent-muted">{position}</span>}
             <a href={`/images/event/${groupSlug(event.title)}/`} class="section-action">Event images</a>
         </span>

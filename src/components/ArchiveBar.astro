@@ -33,6 +33,10 @@ const { label } = Astro.props;
         min-height: var(--bar-row);
         line-height: 1;
     }
+    /* The arrows are in the title's row (--bar-top, taller on phones). */
+    .archive-bar > :global(.paging) {
+        min-height: var(--bar-top);
+    }
     @media (width < 48rem) {
         .archive-bar > :global(nav) {
             order: 1;

@@ -199,8 +199,12 @@ const { label, events, current } = Astro.props;
         overflow: hidden;
         text-overflow: ellipsis;
     }
+    /* The select's own line is --select-h tall (to centre its text in the row);
+       the options' are ordinary, so a name that wraps ("... (22)") stays
+       together and the space is between the entries. */
     option {
         white-space: normal;
+        line-height: 1.35;
     }
     /* The slotted pieces (the page numbers, All images, the arrows) sit
        in the same row, centred like the select's text, so all read as one
@@ -212,6 +216,12 @@ const { label, events, current } = Astro.props;
         align-items: center;
         min-height: var(--bar-row);
         line-height: 1;
+    }
+    /* All images and the arrows are in the title's row (--bar-top, taller on
+       phones). */
+    .gallery-filter > :global(a),
+    .gallery-filter > :global(.paging) {
+        min-height: var(--bar-top);
     }
     /* Below md (touch) the dropdown and All images are --hit tall, pulled
        back into the row by the difference, so the row and its text do not
@@ -227,7 +237,7 @@ const { label, events, current } = Astro.props;
         }
         .gallery-filter > :global(a) {
             min-height: var(--hit);
-            margin-block: calc((var(--bar-row) - var(--hit)) / 2);
+            margin-block: calc((var(--bar-top) - var(--hit)) / 2);
         }
     }
     /* A square's bottom and right borders turned 45deg: the V is the lower
@@ -265,7 +275,7 @@ const { label, events, current } = Astro.props;
         }
         option {
             /* Off the list's edges, as the row's text is off the bar's. */
-            @apply px-3 py-1 text-accent-muted;
+            @apply px-3 py-2 text-accent-muted;
             outline: none;
         }
         option:hover,
