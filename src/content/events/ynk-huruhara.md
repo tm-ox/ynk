@@ -3,7 +3,7 @@ id: ynkhuruhara
 title: YNK#HuruHara
 date: "2020-02-20"
 time: "until 2020-03-01"
-venue: { name: Kedai Kebun Forum, url: https://kedaikebun.com }
+venue: { name: Asia TOPA Festival, url: https://www.asiatopa.com.au/ }
 with: Duto Hardono (BDG), Karina Sokowati (BDG), Riar Rizaldi (BDG) & MIXXIT (BDG)
 info: Collaborative tour of Indonesian artists with/for HuruHara & the AsiaTopa Festival.
 flyer: { src: ../flyers/YNKHuruHara.jpg, alt: YNK#HuruHara }

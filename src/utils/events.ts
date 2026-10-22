@@ -11,6 +11,26 @@ type EventData = {
 const place = (data: EventData) =>
   data.venue?.name ? ` at ${data.venue.name}` : "";
 
+/** The photographer of the event documentation since YNK#42 (2022-07-22). An
+ *  event's own `photographer` (frontmatter) wins; an event from that date on
+ *  with photographs and none of its own is credited to them; earlier events
+ *  are not. */
+export const PHOTOGRAPHER = {
+  name: "Swandi Ranadila",
+  url: "https://www.instagram.com/wandirana/",
+  since: "2022-07-22",
+};
+
+export const photographerOf = (data: {
+  date: string;
+  images?: unknown[];
+  photographer?: { name: string; url?: string };
+}) =>
+  data.photographer ??
+  ((data.images ?? []).filter(Boolean).length > 0 && data.date >= PHOTOGRAPHER.since
+    ? { name: PHOTOGRAPHER.name, url: PHOTOGRAPHER.url }
+    : undefined);
+
 /** Short alt for flyer thumbnails in listings. */
 export const flyerAltShort = (data: EventData) =>
   `Flyer for ${data.title}, ${data.date}`;
@@ -32,7 +52,13 @@ export interface GalleryImage {
   /** Photographs only: this one's place among the event's photographs. */
   position?: { n: number; of: number };
   /** The event the picture belongs to, for the info strip on its own page. */
-  event: { id: string; title: string; date: string; venue?: { name?: string; url?: string } };
+  event: {
+    id: string;
+    title: string;
+    date: string;
+    venue?: { name?: string; url?: string };
+    photographer?: { name: string; url?: string };
+  };
 }
 
 /** A photograph's own alt, where it says what is in the picture, leads its
@@ -57,6 +83,7 @@ export async function getGalleryImages(): Promise<GalleryImage[]> {
       title: event.data.title,
       date: event.data.date,
       venue: event.data.venue,
+      photographer: photographerOf(event.data),
     };
     // The flyer leads the event's photographs (only events that have some).
     const flyer = event.data.flyer && {

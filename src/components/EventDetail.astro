@@ -1,7 +1,7 @@
 ---
 import { Image } from "astro:assets";
 import type { CollectionEntry } from "astro:content";
-import { flyerAlt } from "../utils/events";
+import { flyerAlt, photographerOf } from "../utils/events";
 
 interface Props {
   event: CollectionEntry<"events">;
@@ -27,6 +27,7 @@ const { event, headingHref, docsHref, capped = false, summary = false } = Astro.
 const Title = summary ? "h2" : "h1";
 // Keeps the h2 look on the h1.
 const titleClass = summary ? "" : "text-xl md:text-3xl font-bold";
+const photographer = photographerOf(event.data);
 const label = "mb-0 text-xs font-bold tracking-normal md:text-sm font-displayCon text-accent";
 ---
 
@@ -79,7 +80,7 @@ const label = "mb-0 text-xs font-bold tracking-normal md:text-sm font-displayCon
       <div class="flex w-full flex-col sm:flex-row">
         <div class="flex flex-col">
           <p class={label}>date:</p>
-          <h4>{event.data.date}</h4>
+          <h4 class="whitespace-nowrap">{event.data.date}</h4>
         </div>
         {/* From sm up the items sit apart with a slash centred in each gap. */}
         <span class="hidden sm:block flex-1 slash-c meta-slash" aria-hidden="true" />
@@ -88,7 +89,11 @@ const label = "mb-0 text-xs font-bold tracking-normal md:text-sm font-displayCon
             <>
               <div class="flex flex-col">
                 <p class={label}>time:</p>
-                <h4>{event.data.time}</h4>
+                <h4>
+                  {event.data.time.split(/(\d{4}-\d{2}-\d{2})/).map((part) =>
+                    /^\d{4}-\d{2}-\d{2}$/.test(part) ? <span class="whitespace-nowrap">{part}</span> : part,
+                  )}
+                </h4>
               </div>
               <span class="hidden sm:block flex-1 slash-c meta-slash" aria-hidden="true" />
             </>
@@ -138,6 +143,25 @@ const label = "mb-0 text-xs font-bold tracking-normal md:text-sm font-displayCon
       )
     }
     {
+      !summary && photographer && (
+        <>
+          <div>
+            <p class={label}>images:</p>
+            <h4>
+              {photographer.url ? (
+                <a href={photographer.url} target="_blank" rel="noopener noreferrer" class="relative z-10">
+                  {photographer.name}
+                </a>
+              ) : (
+                photographer.name
+              )}
+            </h4>
+          </div>
+          <hr style="--r:5" />
+        </>
+      )
+    }
+    {
       summary ? (
         <slot name="footer" />
       ) : (
@@ -179,12 +203,20 @@ const label = "mb-0 text-xs font-bold tracking-normal md:text-sm font-displayCon
   }
   /* The slash between date, time and venue runs the row's full height, from
      the rule above to the rule below. It leads the next item: it leans from
-     the top rule down and to the left (skewed about its top end), meeting the
-     rule --gap before the text starts, the same space the text has from the
-     rules. */
+     the top rule down and to the left (skewed about its top end), its top
+     two --gap before the text that follows, so that text stays set against
+     it, left aligned. The gap is never narrower than the lean (--lean, the
+     slash's sideways run over the row's height, about 0.625 of it) plus the
+     same clear space (--clear) on each side, so the text before it keeps off
+     its foot as far as the text after keeps off its top. */
+  .meta-slash {
+    --lean: 2.5rem;
+    --clear: 0.75rem;
+    min-width: calc(var(--lean) + 2 * var(--clear));
+  }
   .meta-slash::before {
     left: auto;
-    right: var(--gap);
+    right: var(--clear);
     top: calc(var(--gap) * -1);
     height: calc(100% + 2 * var(--gap));
     transform: skewX(-32deg);

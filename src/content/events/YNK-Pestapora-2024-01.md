@@ -13,7 +13,7 @@ with: ""
 info: ""
 flyer: { src: ../flyers/YNK Pestapora 2024 Rundown Day 1 Feed.png, alt: Pestapora2024 }
 photographer:
-  name: Wandi
+  name: Swandi Ranadila
   url: https://www.instagram.com/wandirana/
 artists:
   - name: Disharmonis
