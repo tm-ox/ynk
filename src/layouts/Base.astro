@@ -195,7 +195,9 @@ const ogImage = new URL(image ?? "/og-default.jpg", Astro.site).href;
             import "../scripts/diagonal";
 
             import { screenOf } from "../utils/row";
-            import { stepFor } from "../scripts/step";
+            import { stepFor, prefetchNeighbours } from "../scripts/step";
+            // Once the page has loaded, so it never competes with the page itself.
+            document.addEventListener("astro:page-load", prefetchNeighbours);
 
             // The wheel steps as the arrow keys do (scripts/step.ts): Next /
             // Previous, and past them the neighbouring screen of the row. Only

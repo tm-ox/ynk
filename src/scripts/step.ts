@@ -6,6 +6,7 @@
 // lands on its last page, as the nav has it (BaseLayout.astro), so the pages
 // run in order.
 import { navigate } from "astro:transitions/client";
+import { prefetch } from "astro:prefetch";
 import { neighbour } from "../utils/row";
 
 const link = (dir: 1 | -1) =>
@@ -21,4 +22,14 @@ export function stepFor(dir: 1 | -1): (() => void) | undefined {
   if (a) return () => a.click();
   const to = neighbour(location.pathname, dir, (s) => last(s.name));
   if (to) return () => navigate(to);
+}
+
+/** Prefetches the screens either side of this one, so a step past Previous /
+ *  Next (swipe, key, wheel) finds the page already fetched, as the arrows'
+ *  own targets are (data-astro-prefetch="load"). Run on each page load. */
+export function prefetchNeighbours() {
+  for (const dir of [1, -1] as const) {
+    const to = neighbour(location.pathname, dir, (s) => last(s.name));
+    if (to) prefetch(to);
+  }
 }
