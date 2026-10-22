@@ -6,7 +6,9 @@
 // lands on its last page, as the nav has it (BaseLayout.astro), so the pages
 // run in order.
 import { navigate } from "astro:transitions/client";
-import { prefetch } from "astro:prefetch";
+// The router's own prefetch (astro:prefetch needs the prefetch config, which
+// the router does not).
+import { prefetch } from "astro/virtual-modules/prefetch.js";
 import { neighbour } from "../utils/row";
 
 const link = (dir: 1 | -1) =>
