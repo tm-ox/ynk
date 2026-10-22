@@ -81,7 +81,7 @@ const neighbourPictures = await Promise.all(
     {
       image.kind === "photo" && image.event.photographer && (
         <p class="md:hidden w-full mt-auto pt-2 mb-0 shrink-0 text-xs text-center uppercase font-displayCon text-accent">
-          Images:{" "}
+          Image:{" "}
           {image.event.photographer.url ? (
             <a href={image.event.photographer.url} target="_blank" rel="noopener noreferrer" class="text-accent hover:text-accent-hover">
               {image.event.photographer.name}

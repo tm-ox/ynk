@@ -50,7 +50,7 @@ const venueParts = event.venue?.name?.split(" - ") ?? [];
             {
                 image.kind === "photo" && event.photographer && (
                     <span class="text-accent-muted max-md:hidden">
-                        Images:{" "}
+                        Image:{" "}
                         {event.photographer.url ? (
                             <a href={event.photographer.url} target="_blank" rel="noopener noreferrer" class="hover:text-accent">
                                 {event.photographer.name}
