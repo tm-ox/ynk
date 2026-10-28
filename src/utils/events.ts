@@ -74,7 +74,19 @@ export async function getGalleryImages(): Promise<GalleryImage[]> {
   const events = await getCollection("events", ({ data }) => {
     return data.images && data.images.length > 0;
   });
-  events.sort((b, a) => Date.parse(a.data.date) - Date.parse(b.data.date));
+  // Newest series first, but the days of one series (Pestapora 2025 day 1-3)
+  // run in order, so the album starts at day one.
+  const start = new Map<string, number>();
+  for (const e of events) {
+    const g = groupSlug(e.data.title);
+    const t = Date.parse(e.data.date);
+    start.set(g, Math.min(start.get(g) ?? t, t));
+  }
+  events.sort(
+    (a, b) =>
+      start.get(groupSlug(b.data.title))! - start.get(groupSlug(a.data.title))! ||
+      Date.parse(a.data.date) - Date.parse(b.data.date),
+  );
   return events.flatMap((event) => {
     const photos = (event.data.images ?? []).filter(Boolean) as any[];
     const groupId = groupSlug(event.data.title);
