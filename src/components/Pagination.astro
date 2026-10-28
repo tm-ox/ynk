@@ -97,7 +97,29 @@ const START = lastPage <= 16 ? lastPage : 3;
         show(r);
         // A label too long for the bar even with the fewest numbers is left
         // to truncate; the numbers do not give way to it.
-        const label = !!select && select.scrollWidth <= select.clientWidth + 1;
+        // "Fits" means the select is wide enough for its label and its padding
+        // (which holds the chevron's room). Not "no text overflow", which still
+        // passes with the padding squeezed away and the chevron touching the
+        // label. The label is measured in a hidden span set in the select's type.
+        const labelFits = () => {
+            if (!select) return true;
+            const cs = getComputedStyle(select);
+            const probe = document.createElement("span");
+            probe.style.cssText = "position:absolute;visibility:hidden;white-space:nowrap";
+            probe.style.fontFamily = cs.fontFamily;
+            probe.style.fontSize = cs.fontSize;
+            probe.style.fontWeight = cs.fontWeight;
+            probe.style.fontStyle = cs.fontStyle;
+            probe.style.letterSpacing = cs.letterSpacing;
+            probe.style.textTransform = cs.textTransform;
+            probe.textContent = select.selectedOptions[0]?.text ?? "";
+            document.body.append(probe);
+            const text = probe.getBoundingClientRect().width;
+            probe.remove();
+            const pad = parseFloat(cs.paddingLeft) + parseFloat(cs.paddingRight);
+            return select.clientWidth + 1 >= text + pad;
+        };
+        const label = labelFits();
         // The bar wraps (flex-wrap), so a run too long for its line drops the
         // numbers (or the arrows after them) to a line of their own rather
         // than overflowing: the bar's height with the fewest numbers is the
@@ -108,7 +130,7 @@ const START = lastPage <= 16 ? lastPage : 3;
         const fits = () =>
             nav.scrollWidth <= nav.clientWidth + 1 &&
             bar.offsetHeight <= height &&
-            (!label || select!.scrollWidth <= select!.clientWidth + 1);
+            (!label || labelFits());
         while (current - r > 1 || current + r < last) {
             show(r + 1);
             if (!fits()) {
