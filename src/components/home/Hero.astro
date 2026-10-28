@@ -22,6 +22,9 @@ const override: Record<string, string> = {
     ynk51: "ynk51-06",
     ynk46: "ynk46-02",
     ynkprepp2025: "ynkprepp2025-06",
+    "pp2025-1": "pp2025-1-40",
+    "pp2025-2": "pp2025-2-76",
+    "pp2025-3": "pp2025-3-54",
     ynd05: "ynd05-09",
     "pp2024-3": "pp2024-3-76",
     "pp2024-2": "pp2024-2-30",
@@ -122,7 +125,7 @@ const jolt = (list: string[], i: number) => list[i % list.length];
 // Colour fringes echo the photograph's blue and pink.
 const slot = 100 / words.length;
 const split = (e: number) =>
-    `text-shadow: ${e}em 0 rgb(255 40 140 / 0.75), -${e}em 0 rgb(0 210 255 / 0.75)`;
+    `text-shadow: ${e}em 0 var(--hero-fringe-a), -${e}em 0 var(--hero-fringe-b)`;
 const frames: [number, string][] = [
     [0, "opacity: 0"],
     [
@@ -591,6 +594,7 @@ const parallax = { shift: 10, ease: 0.06, overscan: 1.02, title: 0.3 };
            their own bearings. */
         margin-left: -0.062em;
         --cap-lh: 0.56;
+        color: var(--hero-ink);
         display: flex;
         flex-direction: column;
         align-items: flex-start;
@@ -732,7 +736,7 @@ const parallax = { shift: 10, ease: 0.06, overscan: 1.02, title: 0.3 };
         align-items: center;
         gap: 0.5rem;
         pointer-events: none;
-        color: var(--color-accent);
+        color: var(--hero-hint);
         font-family: var(--font-displayCon);
         font-size: calc(var(--key) * 0.5);
         font-weight: 800;
@@ -749,13 +753,13 @@ const parallax = { shift: 10, ease: 0.06, overscan: 1.02, title: 0.3 };
            turn's --page-halo; the next step up is 0.25rem (gap-1). */
         --rule-gap: calc(var(--spacing) * 0.5);
         padding-block: var(--rule-gap);
-        border-top: 1px solid var(--color-accent);
+        border-top: 1px solid var(--hero-hint);
     }
     .hero-hint-slash {
         align-self: stretch;
         width: var(--slash-weight);
         margin-block: calc(var(--rule-gap) * -1);
-        background: var(--color-accent);
+        background: var(--hero-hint);
         transform: skewX(-32deg);
     }
     /* Same height and line-height as the keys, so its lettering is centred on
@@ -797,7 +801,7 @@ const parallax = { shift: 10, ease: 0.06, overscan: 1.02, title: 0.3 };
         /* Boxes tried and dropped as too dominant; to bring them back:
            border: 1px solid var(--color-accent);
            background: rgb(0 0 0 / 0.25); */
-        color: var(--color-accent);
+        color: var(--hero-hint);
         font-family: var(--font-displayCon);
         font-size: calc(var(--key) * 0.5);
         font-weight: 400;
@@ -835,7 +839,7 @@ const parallax = { shift: 10, ease: 0.06, overscan: 1.02, title: 0.3 };
             --hint-inset: 0.75rem;
             --key: 1.25rem;
             bottom: var(--hint-inset);
-            border-bottom: 1px solid var(--color-accent);
+            border-bottom: 1px solid var(--hero-hint);
         }
     }
     .hero-hint-touch {
@@ -866,5 +870,9 @@ const parallax = { shift: 10, ease: 0.06, overscan: 1.02, title: 0.3 };
         --next-crop: 0.1;
         margin-right: calc(var(--next-size) * (-0.13 - var(--next-crop)));
         filter: drop-shadow(0 0 0.4rem rgb(0 0 0 / 0.7));
+        color: var(--hero-arrow);
+    }
+    .hero-next:hover .hero-next-icon {
+        color: var(--hero-arrow-hover);
     }
 </style>

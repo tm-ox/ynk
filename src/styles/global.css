@@ -179,23 +179,42 @@
         --rgb-accent-muted: 3 149 28;
         --rgb-fg: 213 215 213;
         --rgb-bg: 4 27 27;
+        /* Text laid over the hero photographs (title, hint). */
+        --hero-ink: rgb(var(--rgb-accent));
+        --hero-hint: rgb(var(--rgb-accent));
+        --hero-arrow: rgb(var(--rgb-accent-muted));
+        --hero-arrow-hover: rgb(var(--rgb-accent));
+        --hero-fringe-a: rgb(255 40 140 / 0.75);
+        --hero-fringe-b: rgb(0 210 255 / 0.75);
     }
     [data-theme="light"] {
         color-scheme: light;
-        --rgb-accent: 0 100 14;
-        --rgb-accent-hover: 0 70 10;
-        --rgb-accent-muted: 0 128 18;
-        --rgb-fg: 35 40 47;
-        --rgb-bg: 249 251 251;
+        --rgb-accent: 22 108 8;
+        --rgb-accent-hover: 14 74 6;
+        --rgb-accent-muted: 30 114 12;
+        --rgb-fg: 18 30 26;
+        --rgb-bg: 250 247 241;
+        --hero-ink: rgb(190 212 178);
+        --hero-hint: rgb(190 212 178);
+        --hero-arrow: rgb(190 212 178);
+        --hero-arrow-hover: rgb(190 212 178);
+        --hero-fringe-a: rgb(var(--rgb-accent) / 0.9);
+        --hero-fringe-b: rgb(var(--rgb-accent) / 0.9);
     }
     @media (prefers-color-scheme: light) {
         :root:not([data-theme]) {
             color-scheme: light;
-            --rgb-accent: 0 100 14;
-            --rgb-accent-hover: 0 70 10;
-            --rgb-accent-muted: 0 128 18;
-            --rgb-fg: 35 40 47;
-            --rgb-bg: 249 251 251;
+            --rgb-accent: 22 108 8;
+            --rgb-accent-hover: 14 74 6;
+            --rgb-accent-muted: 30 114 12;
+            --rgb-fg: 18 30 26;
+            --rgb-bg: 250 247 241;
+            --hero-ink: rgb(190 212 178);
+            --hero-hint: rgb(190 212 178);
+            --hero-arrow: rgb(190 212 178);
+            --hero-arrow-hover: rgb(190 212 178);
+            --hero-fringe-a: rgb(var(--rgb-accent) / 0.9);
+            --hero-fringe-b: rgb(var(--rgb-accent) / 0.9);
         }
     }
 

@@ -1,12 +1,13 @@
 ---
 import { Icon } from "astro-icon/components";
+import { THEME_CHOICE } from "../utils/theme";
 
 // Reference for the Keyboard group: [keys, what they do].
 const keyboard: [string[], string][] = [
   [["←", "→", "h", "l"], "Move between screens, events, photographs and pages."],
   [["↑", "↓", "j", "k"], "Scroll the event or page. Steps through the image filter."],
   [["Esc"], "Close and go back."],
-  [["?"], "Open settings."],
+  [["?"], "Open this info."],
 ];
 // Reference for the Touch group, shown instead on a touch screen (no hover,
 // a coarse pointer): what the site's own controls do there, each drawn as
@@ -35,11 +36,11 @@ const label = "mb-0 text-xs font-bold tracking-normal uppercase md:text-sm font-
   type="button"
   class="h-7 ml-2 pl-2 sm:pl-3.5 sm:slash-l cursor-pointer max-md:h-10 max-md:-my-1.5 max-sm:hidden"
   data-settings-open
-  aria-label="Settings"
+  aria-label="Info"
   aria-haspopup="dialog"
   transition:persist="settings"
 >
-  <Icon name="bx:bxs-cog" class="sm:w-5 sm:h-5 icon" />
+  <Icon name="bx:bxs-help-circle" class="sm:w-5 sm:h-5 icon" />
 </button>
 
 <!-- A native modal dialog: centred on screen, the page behind is inert, focus
@@ -53,12 +54,13 @@ const label = "mb-0 text-xs font-bold tracking-normal uppercase md:text-sm font-
 >
   <div class="flex flex-col p-4 pb-0 sm:p-6 sm:pb-0">
     <div class="flex items-center justify-between gap-4 pb-3">
-      <h2 id="settings-title" tabindex="-1" autofocus class="focus:outline-none mb-0 text-xl uppercase md:text-3xl">Settings</h2>
-      <button type="button" data-settings-close aria-label="Close settings" class="cursor-pointer -translate-y-0.75">
+      <h2 id="settings-title" tabindex="-1" autofocus class="focus:outline-none mb-0 text-xl uppercase md:text-3xl">Info</h2>
+      <button type="button" data-settings-close aria-label="Close info" class="cursor-pointer -translate-y-0.75">
         <Icon name="ion:close-sharp" class="icon" />
       </button>
     </div>
 
+    {THEME_CHOICE && (
     <div>
       <hr class="mt-0" />
       <h3 id="settings-theme" class={label}>Theme</h3>
@@ -72,6 +74,7 @@ const label = "mb-0 text-xs font-bold tracking-normal uppercase md:text-sm font-
         ))}
       </div>
     </div>
+    )}
 
     <div class="settings-keys">
       <hr class="mt-0" />
